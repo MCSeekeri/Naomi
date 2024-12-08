@@ -131,6 +131,15 @@
         443
         7844
       ]; # 防火墙放行端口设置
+      allowedTCPPortRanges = [
+        # 预留给开发环境
+        # 只是提醒一下……如果写了 10000-20000，那么 nix 会真的进行计算，得出 -10000 然后报错
+        # 真是聪明的有点傻
+        {
+          from = 10000;
+          to = 20000;
+        }
+      ];
     };
   };
 
@@ -147,6 +156,7 @@
         "networkmanager"
         "wheel"
         "video"
+        "podman"
       ];
       shell = pkgs.fish;
       openssh.authorizedKeys.keys = [
@@ -229,7 +239,9 @@
     };
   };
   security = {
-    sudo.execWheelOnly = true; # 只允许 wheel 组执行 sudo
+    sudo-rs.enable = true; # 锈批！
+    sudo-rs.execWheelOnly = true;
+    # sudo.execWheelOnly = true; # 只允许 wheel 组执行 sudo
     chromiumSuidSandbox.enable = true; # Chrome 沙盒化
     forcePageTableIsolation = true; # 页表隔离，完全避免熔断漏洞
   };
@@ -243,8 +255,18 @@
       settings.PermitRootLogin = "no"; # 禁止 root 远程登录
       banner = "UNAUTHORIZED ACCESS TO THIS DEVICE IS PROHIBITED\n禁止未经授权访问本设备\n\nYou must have explicit, authorized permission to access or configure this device. Unauthorized attempts and actions to access or use this system may result in civil and/or criminal penalties. All activities performed on this device are logged and monitored.\n您必须具有明确的授权权限才能访问或配置此设备。未经授权尝试访问或使用本系统可能会导致民事和/或刑事处罚。在此设备上执行的所有活动都会被记录和监控。\n\n";
     }; # 从 Reddit 抄的，好玩
+    fail2ban = {
+      enable = true;
+      ignoreIP = [
+        "127.0.0.1"
+        "192.168.0.0/16"
+        "100.64.0.0/10" # tailscale 豁免
+      ];
+      maxretry = 5; # 我总是搞错密码
+    };
     xserver = {
       enable = true;
+      # videoDrivers = [  "nvidia" "modesetting" "fbdev"];
     };
     desktopManager.plasma6.enable = true;
     displayManager.sddm.enable = true;
@@ -265,6 +287,19 @@
     #   defaultWindowManager = "startplasma-wayland";
     # };
     # 给 Windows 用户准备的，唉，兼容性
+    clamav = {
+      updater = {
+        enable = true;
+      };
+      daemon = {
+        enable = true;
+        settings = {
+          MaxThreads = 16;
+          MaxDirectoryRecursion = 65535;
+          VirusEvent = "echo 'Virus Detected' >> /etc/motd";
+        };
+      };
+    };
     tailscale = {
       enable = true;
       extraUpFlags = [ "--accept-routes --advertise-exit-node" ];
@@ -300,6 +335,8 @@
   # 字体这里还有很大的问题，之后慢慢修复
   fonts = {
     fontDir.enable = true;
+    enableDefaultPackages = true; # 自动安装基本字体
+    enableGhostscriptFonts = true; # 啥
     fontconfig = {
       useEmbeddedBitmaps = true; # 啥
       cache32Bit = true;
@@ -314,6 +351,12 @@
       noto-fonts-cjk-sans
       noto-fonts-cjk-serif
       noto-fonts-emoji
+      sarasa-gothic
+      fira-code
+      cascadia-code
+      unifont
+      # 诸如微软雅黑或者苹方什么的……为了避免版权炮，自行添加到
+      # $HOME/.local/share/fonts
     ];
   };
 
@@ -321,6 +364,17 @@
   # 优先 Nix,搞不定再去琢磨 dotfiles.
   programs = {
     partition-manager.enable = true;
+    proxychains.proxies = {
+      geph5 = {
+        type = "socks5";
+        host = "127.0.0.1";
+        port = 14514;
+      };
+    };
+    nh = {
+      enable = true;
+      # clean.enable = true; # 和 nix.gc 不共存
+    };
     fish = {
       enable = true; # 比 zsh 更好，可惜不兼容 bash
       useBabelfish = true; # 啥
@@ -330,6 +384,16 @@
       };
     };
     xwayland.enable = true;
+    steam = {
+      # enable = true; # 编译大爆炸，之后再说
+      extest.enable = true;
+      dedicatedServer.openFirewall = true;
+      localNetworkGameTransfers.openFirewall = true;
+      remotePlay.openFirewall = true;
+    };
+    obs-studio = {
+      enableVirtualCamera = true;
+    };
   };
 
   # 安装的软件包
@@ -469,6 +533,13 @@
     libvirtd = {
       enable = true;
       qemu.swtpm.enable = true; # 不知道为什么这年头所有人都在讲 TPM
+    };
+    # waydroid.enable = true; # 弗如原神
+    podman = {
+      enable = true;
+      dockerSocket.enable = true;
+      dockerCompat = true; # 用户体验不变
+      networkSocket.openFirewall = true;
     };
   };
 }
