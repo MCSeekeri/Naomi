@@ -77,19 +77,19 @@ in
     plasma = {
       enable = true;
       workspace = {
-        clickItemTo = select; # 禁止历史倒车
+        clickItemTo = "select"; # 禁止历史倒车
         cursor.size = 36;
         splashScreen.theme = "Lain"; # I am falling, I am fading, I have lost it all
       };
       kwin = {
-        virtualDesktops.number = 1;
+        virtualDesktops.number = 2;
         virtualDesktops.rows = 2;
       };
       session = {
         general.askForConfirmationOnLogout = true;
         sessionRestore.restoreOpenApplicationsOnLogin = "startWithEmptySession"; # 不不不，不要看到上次开机干了啥
       };
-      input.keyboard.numlockOnStartup = true;
+      input.keyboard.numlockOnStartup = "on";
       powerdevil = {
         battery = {
           dimDisplay = {
@@ -115,6 +115,7 @@ in
           pointSize = 13;
         };
         small = {
+          family = "Noto Sans";
           pointSize = 11;
         };
       };
