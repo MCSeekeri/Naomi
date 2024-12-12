@@ -32,9 +32,11 @@
         "https://mirror.nju.edu.cn/nix-channels/store"
         "https://cache.nixos.org/"
         "https://nix-community.cachix.org"
+        "https://cache.garnix.io"
       ];
       trusted-public-keys = [
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+        "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
       ];
       # 启动 Flake，勿动，除非你知道你在做什么
       # https://nixos.wiki/wiki/Flakes
