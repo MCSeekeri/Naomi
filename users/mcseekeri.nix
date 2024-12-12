@@ -5,6 +5,22 @@
   ...
 }:
 
+let
+  theme-lain = pkgs.stdenv.mkDerivation {
+    pname = "lain";
+    version = "ce5c8a0acf48eb116882f04fe731339b0f710927";
+    src = pkgs.fetchFromGitHub {
+      owner = "dgudim";
+      repo = "themes";
+      rev = "ce5c8a0acf48eb116882f04fe731339b0f710927";
+      hash = "sha256-GVZWWJvaZjO2YvhSIpEVUakkEXnWcfwg3E+1QXHuDeY=";
+    };
+    installPhase = ''
+      mkdir -p $out/share/plasma/look-and-feel
+      cp -aR KDE-loginscreens/Lain/ $out/share/plasma/look-and-feel/Lain
+    '';
+  };
+in
 {
   fonts.fontconfig.enable = true; # 允许用户自定义字体
   home = {
@@ -29,6 +45,8 @@
       kdePackages.xdg-desktop-portal-kde
       qq
       wpsoffice-cn
+      # 主题
+      theme-lain
       # 游戏娱乐
       moonlight-qt
       # 输入法
@@ -156,5 +174,5 @@
     kdeconnect.enable = true;
     flameshot.enable = true;
   };
-  # TODO: 预置主题(?)
+  # TODO: 外观微调，常见软件的预配置
 }
