@@ -7,6 +7,7 @@
   config,
   lib,
   pkgs,
+  inputs,
   modulesPath,
   ...
 }:
@@ -435,6 +436,10 @@
       nix-visualize
       nix-output-monitor
       nixfmt-rfc-style
+      inputs.nixos-conf-editor.packages.${system}.nixos-conf-editor
+      inputs.nix-software-center.packages.${system}.nix-software-center
+      inputs.nix-alien.packages.${system}.nix-alien
+      nix-update
       # 安全防护
       fail2ban
       firewalld-gui
