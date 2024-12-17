@@ -16,6 +16,7 @@
     };
     flatpak.enable = true; # 开启 flatpak 支持，有效解决 nixOS 桌面软件水土不服的问题
   };
+  xdg.portal.enable = true;
   qt.platformTheme = "kde";
   # 字体这里还有很大的问题，之后慢慢修复
   fonts = {

@@ -1,18 +1,17 @@
 {
   steam = {
-    # enable = true; # 编译大爆炸，之后再说
+    enable = true;
     extest.enable = true;
     dedicatedServer.openFirewall = true;
     localNetworkGameTransfers.openFirewall = true;
     remotePlay.openFirewall = true;
+    protontricks.enable = true;
   };
   obs-studio = {
+    enable = true;
     enableVirtualCamera = true;
   };
   hardware = {
-    # nvidia.open = true; # bruh
-    # nvidia.nvidiaPersistenced = true; # brruh
-    # nvidia-container-toolkit.enable = true; # brrruh
     xpadneo.enable = true;
   };
 }
