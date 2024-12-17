@@ -12,6 +12,10 @@
     ../../modules/Server/clamav.nix
     ../../modules/Desktop/gui.nix
     ../../modules/Desktop/sunshine.nix
+    ../../modules/Desktop/programs.nix
+    ../../modules/Desktop/gaming.nix
+
+    ../../users/mcseekeri
   ];
 
   # 网络配置
@@ -19,8 +23,6 @@
     hostName = "Naomi"; # 主机名，设置好之后最好不要修改
     networkmanager.enable = true;
   };
-  
-  home-manager.users.mcseekeri = import ../../users/mcseekeri.nix;
 
   system = {
     stateVersion = "24.11";

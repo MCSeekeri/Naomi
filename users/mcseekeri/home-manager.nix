@@ -22,7 +22,6 @@ let
   };
 in
 {
-  fonts.fontconfig.enable = true; # 允许用户自定义字体
   home = {
     username = "mcseekeri";
     homeDirectory = "/home/mcseekeri";
