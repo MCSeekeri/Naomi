@@ -1,10 +1,16 @@
-{ pkgs, ...}:{  # 安装的软件包
+{
+  pkgs,
+  inputs,
+  ...
+}:
+{
+  # 安装的软件包
   environment = {
     variables.EDITOR = "vim";
     systemPackages = with pkgs; [
       # Nix 相关
-      inputs.nixos-conf-editor.packages.${system}.nixos-conf-editor
-      inputs.nix-software-center.packages.${system}.nix-software-center
+      # inputs.nixos-conf-editor.packages.${system}.nixos-conf-editor
+      # inputs.nix-software-center.packages.${system}.nix-software-center
       # 输入法
       fcitx5
       fcitx5-configtool

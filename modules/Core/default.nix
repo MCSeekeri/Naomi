@@ -14,7 +14,6 @@
     ./ssh.nix
     ./tailscale.nix
     ./time.nix
-    ./users.nix
     ./virt.nix
   ];
 
