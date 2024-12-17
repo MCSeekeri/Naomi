@@ -37,23 +37,19 @@
       nixos-generators,
       ...
     }@inputs:
+    let
+      inherit (self) outputs;
+      lib = nixpkgs.lib // home-manager.lib;
+    in
     {
-      nixosConfigurations.Naomi = nixpkgs.lib.nixosSystem rec {
-        system = "x86_64-linux"; # 显而易见
-        specialArgs = { inherit inputs; }; # 传入 inputs 到文件
-        modules = [
-          ./configuration.nix # 啥
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.sharedModules = [ plasma-manager.homeManagerModules.plasma-manager ];
-            home-manager.users.mcseekeri = import users/mcseekeri.nix;
-
-            # home-manager.extraSpecialArgs = inputs;
-          }
-        ];
+      inherit lib;
+      nixosConfigurations = {
+        VM = lib.nixosSystem {
+          modules = [ ./hosts/VM ];
+          specialArgs = {
+            inherit inputs outputs plasma-manager;
+          };
+        };
       };
-      programs.nix-ld.enable = true;
     };
 }
