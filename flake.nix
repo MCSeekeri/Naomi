@@ -50,6 +50,12 @@
             inherit inputs outputs plasma-manager;
           };
         };
+        ISO = lib.nixosSystem {
+          modules = [ ./hosts/ISO ];
+          specialArgs = {
+            inherit inputs outputs;
+          };
+        };
       };
     };
 }

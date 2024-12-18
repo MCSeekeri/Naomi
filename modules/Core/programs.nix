@@ -59,11 +59,6 @@
       inputs.nix-alien.packages.${system}.nix-alien
       inputs.home-manager.packages.${pkgs.system}.default
       nix-update
-      # 安全防护
-      fail2ban
-      firewalld-gui
-      firewalld
-      clamav
       # 终端优化
       bash-completion
       meslo-lgs-nf
