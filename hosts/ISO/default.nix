@@ -1,17 +1,17 @@
 {
   pkgs,
   inputs,
+  lib,
   ...
 }:
 {
   imports = [
-    ../../modules/Core
-
-    ../../modules/Desktop/gui.nix
-    ../../modules/Desktop/sunshine.nix
-    ../../modules/Desktop/programs.nix
+    <nixpkgs/nixos/modules/installer/cd-dvd/installation-cd-graphical-calamares-plasma6.nix>
+    <nixpkgs/nixos/modules/installer/cd-dvd/channel.nix>
   ];
   nixpkgs.hostPlatform = "x86_64-linux"; # 目前只考虑 x86_64
+
+  services.openssh.settings.PermitRootLogin = lib.mkForce "yes";
 
   # 网络配置
   networking = {

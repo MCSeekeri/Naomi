@@ -10,6 +10,7 @@
 
     ../../modules/Server/firewall.nix
     ../../modules/Server/clamav.nix
+    ../../modules/Server/hardened.nix
     ../../modules/Desktop/gui.nix
     ../../modules/Desktop/sunshine.nix
     ../../modules/Desktop/programs.nix
