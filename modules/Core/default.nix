@@ -7,14 +7,12 @@
   imports = [
     inputs.home-manager.nixosModules.home-manager
     ./boot.nix
-    ./hardened.nix
     ./i18n.nix
     ./nix.nix
     ./programs.nix
     ./ssh.nix
     ./tailscale.nix
     ./time.nix
-    ./virt.nix
   ];
 
   home-manager.useGlobalPkgs = true;

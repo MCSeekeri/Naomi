@@ -25,6 +25,11 @@
       url = "github:nix-community/nixos-generators";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # nix-mineral = {
+    #   url = "github:cynicsketch/nix-mineral"; # Refers to the main branch and is updated to the latest commit when you use "nix flake update" 
+    #   flake = false;
+    # };
+    # 等待 nm-override.nix 重做
   };
 
   outputs =
