@@ -52,6 +52,7 @@
       openssl
       ntfs3g
       dnsutils
+      sshfs
       # Nix 相关
       nix-visualize
       nix-output-monitor
