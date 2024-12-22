@@ -3,6 +3,7 @@
 }:
 {
   imports = [
+    ./disko-config.nix
     ../../modules/Core
 
     ../../modules/Server/firewall.nix
