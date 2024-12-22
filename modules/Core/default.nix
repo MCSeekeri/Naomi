@@ -6,6 +6,7 @@
 {
   imports = [
     inputs.home-manager.nixosModules.home-manager
+    inputs.disko.nixosModules.disko
     ./boot.nix
     ./i18n.nix
     ./nix.nix
@@ -25,5 +26,8 @@
     config = {
       allowUnfree = true;
     };
+  };
+  networking = {
+    networkmanager.enable = true;
   };
 }

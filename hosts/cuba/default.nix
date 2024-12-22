@@ -1,13 +1,13 @@
 {
-  pkgs,
-  inputs,
   lib,
+  modulesPath,
   ...
 }:
 {
   imports = [
-    <nixpkgs/nixos/modules/installer/cd-dvd/installation-cd-graphical-calamares-plasma6.nix>
-    <nixpkgs/nixos/modules/installer/cd-dvd/channel.nix>
+    "${modulesPath}/installer/cd-dvd/installation-cd-minimal-new-kernel-no-zfs.nix"
+    "${modulesPath}/installer/cd-dvd/channel.nix"
+    # 需要用 modulesPath 避免纯评估模式出错，大概
   ];
   nixpkgs.hostPlatform = "x86_64-linux"; # 目前只考虑 x86_64
 
@@ -15,8 +15,7 @@
 
   # 网络配置
   networking = {
-    hostName = "Naomi-LiveCD"; # 主机名，设置好之后最好不要修改
-    networkmanager.enable = true;
+    hostName = "cuba"; # 主机名，设置好之后最好不要修改
   };
 
   system = {

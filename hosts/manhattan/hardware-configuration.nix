@@ -12,14 +12,12 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-label/nixos";
+    { device = "/dev/disk/by-partlabel/root";
       fsType = "ext4";
     };
-
-  fileSystems."/boot/EFI" =
-    { device = "/dev/disk/by-label/ESP";
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-partlabel/ESP";
       fsType = "vfat";
-      options = [ "fmask=0022" "dmask=0022" ];
     };
 
   swapDevices = [ ];
