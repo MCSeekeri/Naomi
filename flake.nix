@@ -48,6 +48,7 @@
     #   flake = false;
     # };
     # 等待 nm-override.nix 重做
+    sops-nix.url = "github:Mic92/sops-nix";
   };
 
   outputs =
@@ -56,6 +57,7 @@
       nixpkgs,
       home-manager,
       plasma-manager,
+      sops-nix,
       ...
     }@inputs:
     let

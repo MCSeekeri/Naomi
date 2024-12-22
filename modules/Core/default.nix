@@ -7,6 +7,7 @@
     ./i18n.nix
     ./nix.nix
     ./programs.nix
+    ./sops.nix
     ./ssh.nix
     ./tailscale.nix
     ./time.nix
