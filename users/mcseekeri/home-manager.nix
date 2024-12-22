@@ -1,11 +1,8 @@
-{
-  pkgs,
-  ...
-}:
+{ pkgs, ... }:
 
 let
-    theme-lain = pkgs.callPackage ../../pkgs/theme-lain { };
-  in
+  theme-lain = pkgs.callPackage ../../pkgs/theme-lain { };
+in
 {
   home = {
     username = "mcseekeri";
@@ -159,5 +156,5 @@ let
     kdeconnect.enable = true;
     flameshot.enable = true;
   };
-    # TODO: 外观微调，常见软件的预配置
+  # TODO: 外观微调，常见软件的预配置
 }

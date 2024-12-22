@@ -1,4 +1,4 @@
-{ pkgs,stdenv }:
+{ pkgs, stdenv }:
 
 stdenv.mkDerivation rec {
   pname = "theme-lain";
