@@ -7,4 +7,11 @@
       powerManagement.enable = true;
     };
   };
+  services.xserver = {
+    videoDrivers = [
+      "nvidia"
+      "modesetting"
+      "fbdev"
+    ];
+  };
 }
