@@ -1,5 +1,21 @@
 {
   description = "Naomi Flake Configuration";
+  nixConfig = {
+      extra-substituters = [
+        "https://mirrors.ustc.edu.cn/nix-channels/store"
+        "https://mirror.sjtu.edu.cn/nix-channels/store"
+        "https://cache.nixos.org/"
+        "https://nix-community.cachix.org"
+        "https://cache.garnix.io"
+      ];
+      extra-trusted-public-keys = [
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+        "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
+      ];
+      trusted-users = [
+        "root"
+      ];
+  };
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11"; # 官方源
@@ -25,8 +41,11 @@
       url = "github:nix-community/nixos-generators";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    disko ={
+      url = "github:nix-community/disko";
+    inputs.nixpkgs.follows = "nixpkgs";};
     # nix-mineral = {
-    #   url = "github:cynicsketch/nix-mineral"; # Refers to the main branch and is updated to the latest commit when you use "nix flake update" 
+    #   url = "github:cynicsketch/nix-mineral"; # Refers to the main branch and is updated to the latest commit when you use "nix flake update"
     #   flake = false;
     # };
     # 等待 nm-override.nix 重做
@@ -38,8 +57,6 @@
       nixpkgs,
       home-manager,
       plasma-manager,
-      nix-alien,
-      nixos-generators,
       ...
     }@inputs:
     let
@@ -49,14 +66,26 @@
     {
       inherit lib;
       nixosConfigurations = {
-        VM = lib.nixosSystem {
-          modules = [ ./hosts/VM ];
+        manhattan = lib.nixosSystem {
+          modules = [ ./hosts/manhattan ];
           specialArgs = {
             inherit inputs outputs plasma-manager;
           };
         };
-        ISO = lib.nixosSystem {
-          modules = [ ./hosts/ISO ];
+        seychelles = lib.nixosSystem {
+          modules = [ ./hosts/seychelles ];
+          specialArgs = {
+            inherit inputs outputs;
+          };
+        };
+        cyprus = lib.nixosSystem {
+          modules = [ ./hosts/cyprus ];
+          specialArgs = {
+            inherit inputs outputs plasma-manager;
+          };
+        };
+        cuba = lib.nixosSystem {
+          modules = [ ./hosts/cuba ];
           specialArgs = {
             inherit inputs outputs;
           };
