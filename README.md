@@ -8,7 +8,7 @@ NAOMI: Aggregate Online Modular Infrastructure，简称 Naomi，是基于 NixOS 
 设备代号[见此](docs/designator.md)
 1. 下载 NixOS 24.11 版本镜像，并制作启动盘。
 2. 启动后，将本项目全部代码复制到 /tmp/Naomi 目录。
-3. 执行 `sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko/latest -- --mode destroy,format,mount --yes-wipe-all-disks /tmp/Naomi/hosts/<设备代号>/disk-config.nix` 并等待完成。
+3. 执行 `sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko/latest -- --mode destroy,format,mount --yes-wipe-all-disks /tmp/Naomi/hosts/<设备代号>/disko-config.nix` 并等待完成。
 > [!WARNING]
 > 这一步会格式化硬盘并按照预置的方式进行分区，默认设备为 /dev/sda。
 4. `nixos-install --flake /tmp/Naomi#<设备代号>`并在终端提示时全部输入`y`以确认。\

@@ -1,8 +1,4 @@
-{
-  inputs,
-  outputs,
-  ...
-}:
+{ inputs, outputs, ... }:
 {
   imports = [
     inputs.home-manager.nixosModules.home-manager
@@ -17,9 +13,7 @@
   ];
 
   home-manager.useGlobalPkgs = true;
-  home-manager.extraSpecialArgs = {
-    inherit inputs outputs;
-  };
+  home-manager.extraSpecialArgs = { inherit inputs outputs; };
   home-manager.sharedModules = [ inputs.plasma-manager.homeManagerModules.plasma-manager ];
 
   nixpkgs = {

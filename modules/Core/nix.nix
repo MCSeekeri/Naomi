@@ -26,9 +26,7 @@
         "nix-command"
         "flakes"
       ];
-      trusted-users = [
-        "root"
-      ];
+      trusted-users = [ "root" ];
     };
   };
   # 允许非自由软件
