@@ -1,3 +1,4 @@
+{ pkgs, ... }:
 {
   programs = {
     steam = {
@@ -7,11 +8,13 @@
       localNetworkGameTransfers.openFirewall = true;
       remotePlay.openFirewall = true;
       protontricks.enable = true;
+      extraCompatPackages = with pkgs; [ proton-ge-bin ];
     };
     obs-studio = {
       enable = true;
       enableVirtualCamera = true;
     };
+    gamemode.enable = true;
   };
   hardware = {
     xpadneo.enable = true;
