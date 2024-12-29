@@ -8,9 +8,6 @@
       # inputs.nixos-conf-editor.packages.${system}.nixos-conf-editor
       # inputs.nix-software-center.packages.${system}.nix-software-center
       nixos-generators
-      # 输入法
-      fcitx5
-      fcitx5-configtool
       # 桌面应用
       ungoogled-chromium
       xdg-desktop-portal
