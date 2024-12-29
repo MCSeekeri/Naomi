@@ -15,4 +15,5 @@
       "fbdev"
     ];
   };
+  programs.nix-required-mounts.presets.nvidia-gpu.enable = true;
 }
