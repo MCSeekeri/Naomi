@@ -12,6 +12,7 @@
     ../../modules/Desktop/sunshine.nix
     ../../modules/Desktop/programs.nix
     ../../modules/Desktop/gaming.nix
+    ../../modules/Desktop/fcitx5.nix
 
     ../../users/mcseekeri
   ];

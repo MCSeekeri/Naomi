@@ -4,6 +4,7 @@ let
   theme-lain = pkgs.callPackage ../../pkgs/theme-lain { };
 in
 {
+  imports = [ ../../home/fcitx5 ];
   home = {
     username = "mcseekeri";
     homeDirectory = "/home/mcseekeri";
@@ -26,14 +27,17 @@ in
       kdePackages.xdg-desktop-portal-kde
       qq
       wpsoffice-cn
+      motrix
+      kdePackages.kdenlive
+      geph.gui
+      anki-bin
       # 主题
       theme-lain
       # 游戏娱乐
       moonlight-qt
-      # 输入法
-      fcitx5-pinyin-moegirl
-      fcitx5-pinyin-zhwiki
-      fcitx5-fluent
+      # 开发套件
+      jetbrains.pycharm-professional
+      jetbrains.idea-ultimate
     ];
   };
 
