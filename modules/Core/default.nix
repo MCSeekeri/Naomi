@@ -6,6 +6,7 @@
     ./boot.nix
     ./i18n.nix
     ./nix.nix
+    ./podman.nix
     ./programs.nix
     ./sops.nix
     ./ssh.nix
