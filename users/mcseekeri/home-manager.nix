@@ -29,7 +29,6 @@ in
       wpsoffice-cn
       motrix
       kdePackages.kdenlive
-      geph.gui
       anki-bin
       # 主题
       theme-lain
