@@ -52,6 +52,7 @@
     # };
     # 等待 nm-override.nix 重做
     sops-nix.url = "github:Mic92/sops-nix";
+    nix-minecraft.url = "github:Infinidoge/nix-minecraft";
   };
 
   outputs =

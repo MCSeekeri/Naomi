@@ -14,6 +14,9 @@
     ../../modules/Desktop/gaming.nix
     ../../modules/Desktop/fcitx5.nix
 
+    ../../modules/Games/minecraft.nix
+    ../../modules/Games/minecraft_server.nix
+
     ../../users/mcseekeri
   ];
 

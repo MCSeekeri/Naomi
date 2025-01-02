@@ -25,6 +25,10 @@
         proxy = "proxychains4 -q";
       };
     };
+    java = {
+      enable = true;
+      binfmt = true;
+    };
   };
   environment = {
     variables.EDITOR = "vim";
