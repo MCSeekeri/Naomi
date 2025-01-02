@@ -1,8 +1,7 @@
-{ pkgs, ... }:
+{ inputs, pkgs, ... }:
 {
   # 安装的软件包
   environment = {
-    variables.EDITOR = "vim";
     systemPackages = with pkgs; [
       # Nix 相关
       # inputs.nixos-conf-editor.packages.${system}.nixos-conf-editor

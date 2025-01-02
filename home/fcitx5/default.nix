@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 {
   xdg.configFile = {
     "fcitx5/profile" = {
