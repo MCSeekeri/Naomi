@@ -4,13 +4,16 @@
     inputs.home-manager.nixosModules.home-manager
     inputs.disko.nixosModules.disko
     ./boot.nix
+    ./fonts.nix
     ./i18n.nix
+    ./kmscon.nix
     ./nix.nix
     ./podman.nix
     ./programs.nix
     ./sops.nix
     ./ssh.nix
     ./tailscale.nix
+    ./zram.nix
   ];
 
   home-manager.useGlobalPkgs = true;
@@ -20,6 +23,9 @@
   networking = {
     networkmanager.enable = true;
   };
-  hardware.enableAllFirmware = true;
+  hardware = {
+    enableAllFirmware = true;
+    graphics.enable32Bit = true;
+  };
 
 }
