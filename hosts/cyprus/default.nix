@@ -12,7 +12,7 @@
     ../../modules/Desktop/sunshine.nix
     ../../modules/Desktop/programs.nix
     ../../modules/Desktop/gaming.nix
-    ../../modules/Desktop/nvidia.nix
+    ../../modules/Hardware/nvidia_laptop.nix
 
     ../../users/mcseekeri
   ];

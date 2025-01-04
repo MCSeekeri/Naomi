@@ -8,9 +8,10 @@
     ../../modules/Server/clamav.nix
     ../../modules/Server/hardened.nix
     ../../modules/Server/virt.nix
-    ../../modules/Server/nvidia.nix
     ../../modules/Desktop/gui.nix
     ../../modules/Desktop/programs.nix
+
+    ../../modules/Hardware/nvidia.nix
 
     ../../users/mcseekeri
   ];
