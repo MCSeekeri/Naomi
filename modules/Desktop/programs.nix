@@ -19,7 +19,7 @@
       vscodium-fhs
       nodejs_22
       go
-      jdk21
+      jdk
       maven
       python311
       python311Packages.pip
@@ -47,6 +47,8 @@
       conntrack-tools
       # 专业救场
       remmina
+      wineWowPackages.stable
+      winetricks
       # Just For Fun!
       hollywood
       fastfetch

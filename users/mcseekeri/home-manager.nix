@@ -156,7 +156,10 @@ in
 
   };
   services = {
-    kdeconnect.enable = true;
+    kdeconnect = {
+      enable = true;
+      package = pkgs.kdePackages.kdeconnect-kde;
+    };
     flameshot.enable = true;
   };
   # TODO: 外观微调，常见软件的预配置
