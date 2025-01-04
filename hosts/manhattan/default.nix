@@ -14,6 +14,10 @@
     ../../modules/Desktop/gaming.nix
     ../../modules/Desktop/fcitx5.nix
 
+    ../../modules/Services/cockpit.nix
+    ../../modules/Services/cloudflared.nix
+    ../../modules/Services/uptime-kuma.nix
+
     ../../modules/Games/minecraft.nix
     ../../modules/Games/minecraft_server.nix
 
