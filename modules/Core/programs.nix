@@ -15,11 +15,6 @@
     fish = {
       enable = true; # 比 zsh 更好，可惜不兼容 bash
       useBabelfish = true; # 啥
-      vendor = {
-        completions.enable = true;
-        config.enable = true;
-        functions.enable = true;
-      };
       shellAliases = {
         conda = "micromamba";
         proxy = "proxychains4 -q";
@@ -70,6 +65,7 @@
       inputs.home-manager.packages.${pkgs.system}.default
       nix-update
       # 终端优化
+      babelfish
       bash-completion
       meslo-lgs-nf
       speedtest-cli
