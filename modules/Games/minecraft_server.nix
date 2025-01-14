@@ -28,7 +28,7 @@ in
         gamemode = "survival";
         motd = "NixOS MC Server";
         allow-cheats = true;
-        white-list = true;
+        white-list = false;
         online-mode = false;
         max-players = 20;
         simulation-distance = 10;
