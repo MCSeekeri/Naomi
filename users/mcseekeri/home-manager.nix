@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 let
-  theme-lain = pkgs.callPackage ../../pkgs/theme-lain { };
+  lain-kde-splashscreen = pkgs.callPackage ../../pkgs/lain-kde-splashscreen { };
 in
 {
   imports = [ ../../home/fcitx5 ];
@@ -31,7 +31,9 @@ in
       kdePackages.kdenlive
       anki-bin
       # 主题
-      theme-lain
+      lain-kde-splashscreen
+      kora-icon-theme
+      dracula-icon-theme
       # 游戏娱乐
       moonlight-qt
       # 开发套件
@@ -60,7 +62,10 @@ in
     };
     plasma = {
       enable = true;
+      overrideConfig = true;
       workspace = {
+        # lookAndFeel = "Plasma-Overdose";
+        enableMiddleClickPaste = true;
         clickItemTo = "select"; # 禁止历史倒车
         cursor.size = 36;
         splashScreen.theme = "Lain"; # I am falling, I am fading, I have lost it all
