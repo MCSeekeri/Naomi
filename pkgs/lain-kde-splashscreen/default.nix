@@ -1,9 +1,13 @@
-{ pkgs, stdenv }:
+{
+  lib,
+  stdenv,
+  fetchFromGitHub,
+}:
 
 stdenv.mkDerivation rec {
-  pname = "theme-lain";
-  version = "ce5c8a0acf48eb116882f04fe731339b0f710927";
-  src = pkgs.fetchFromGitHub {
+  pname = "lain-kde-splashscreen";
+  version = "2.0.0";
+  src = fetchFromGitHub {
     owner = "dgudim";
     repo = "themes";
     rev = "ce5c8a0acf48eb116882f04fe731339b0f710927";
