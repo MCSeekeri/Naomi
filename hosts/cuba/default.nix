@@ -18,4 +18,12 @@
     stateVersion = "24.11";
     autoUpgrade.enable = true;
   };
+
+  users.users.root = {
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOTidxwTS5kyQENgBQ1n4FukaocS1CHhBZ0uaEDifLA0 mcseekeri@outlook.com"
+    ];
+    # hashedPassword = "";
+  };
+
 }
