@@ -1,6 +1,6 @@
 keys:
   - &user_mcseekeri age1pjfem9kpmexdtucmxvzvhvt9uz4wk29q6l3ap0sv4tvg49mhj4espup3wk
-  - &manhattan age1arems4jk0dwzgd09xm9xejmvd6ttyd6jf89qqugqnzz8quxwup8s6p0pgf
+  - &manhattan age12gdm5t5d7q2h8ysmn3r2f9hj6cwj9rzc8y9syguf2yp8s9272ggq6jgyd9
   - &base age1k2apmcsa5hhpfrp89dedafp9gdxk5hac4s3vufu8khzmrf0msugse089vx
 creation_rules:
   - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
