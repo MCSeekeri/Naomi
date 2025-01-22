@@ -13,5 +13,6 @@
         configurationLimit = 20;
       };
     };
+    tmp.cleanOnBoot = true;
   };
 }

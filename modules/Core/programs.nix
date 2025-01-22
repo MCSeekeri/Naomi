@@ -24,9 +24,12 @@
       enable = true;
       binfmt = true;
     };
+    vim = {
+      enable = true;
+      defaultEditor = true;
+    };
   };
   environment = {
-    variables.EDITOR = "vim";
     systemPackages = with pkgs; [
       # 基础必备
       vim
@@ -64,6 +67,7 @@
       inputs.nix-alien.packages.${system}.nix-alien
       inputs.home-manager.packages.${pkgs.system}.default
       nix-update
+      hydra
       # 终端优化
       babelfish
       bash-completion
@@ -87,6 +91,7 @@
       iotop
       iftop
       conntrack-tools
+      quota
     ];
   };
 }
