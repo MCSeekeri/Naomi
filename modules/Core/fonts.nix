@@ -8,9 +8,12 @@
       useEmbeddedBitmaps = true; # 啥
       cache32Bit = true;
       defaultFonts = {
-        serif = [ "Noto Serif" ];
-        sansSerif = [ "Noto Sans CJK" ];
-        monospace = [ "Noto Sans Mono" ];
+        serif = [
+          "Noto Serif"
+          "Noto Serif CJK SC"
+        ];
+        sansSerif = [ "Sarasa Gothic SC" ];
+        monospace = [ "Sarasa Mono SC" ];
       };
     };
     packages = with pkgs; [
@@ -19,7 +22,7 @@
       noto-fonts
       noto-fonts-cjk-sans
       noto-fonts-cjk-serif
-      noto-fonts-emoji
+      noto-fonts-color-emoji
       sarasa-gothic
       fira-code
       cascadia-code

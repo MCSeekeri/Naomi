@@ -4,8 +4,8 @@
     enable = true;
     fonts = [
       {
-        name = "Source Code Pro";
-        package = pkgs.source-code-pro;
+        name = "Sarasa Term SC";
+        package = pkgs.sarasa-gothic;
       }
     ];
     extraConfig = "font-size=16";
