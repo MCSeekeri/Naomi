@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 let
   lain-kde-splashscreen = pkgs.callPackage ../../pkgs/lain-kde-splashscreen { };
@@ -9,6 +9,12 @@ in
     username = "mcseekeri";
     homeDirectory = "/home/mcseekeri";
     stateVersion = "24.11";
+    activation = {
+      TideConfigure =
+        lib.hm.dag.entryAfter [ "writeBoundary" ]
+          ''run ${pkgs.fish}/bin/fish -c "tide configure --auto --style=Rainbow --prompt_colors='16 colors' --show_time='24-hour format' --rainbow_prompt_separators=Angled --powerline_prompt_heads=Sharp --powerline_prompt_tails=Flat --powerline_prompt_style='Two lines, character and frame' --prompt_connection=Solid --powerline_right_prompt_frame=Yes --prompt_spacing=Sparse --icons='Many icons' --transient=Yes"'';
+    };
+    extraActivationPath = [ pkgs.babelfish ];
 
     packages = with pkgs; [
       #命令行
@@ -39,6 +45,7 @@ in
       # 开发套件
       jetbrains.pycharm-professional
       jetbrains.idea-ultimate
+      micromamba
     ];
   };
 
@@ -63,6 +70,10 @@ in
     plasma = {
       enable = true;
       overrideConfig = true;
+      resetFilesExclude = [
+        "baloofilerc"
+        "kactivitymanagerd-statsrc" # 不这么设置的话，添加常用程序的时候会卡死。
+      ];
       workspace = {
         # lookAndFeel = "Plasma-Overdose";
         enableMiddleClickPaste = true;
@@ -70,9 +81,141 @@ in
         cursor.size = 36;
         splashScreen.theme = "Lain"; # I am falling, I am fading, I have lost it all
       };
+      panels = [
+        # ~/.config/plasma-org.kde.plasma.desktop-appletsrc
+        {
+          location = "bottom";
+          widgets = [
+            {
+              name = "org.kde.plasma.kickoff";
+              config = {
+                General = {
+                  icon = "planetkde";
+                  alphaSort = true;
+                };
+              };
+            }
+            "org.kde.plasma.pager"
+            {
+              iconTasks = {
+                launchers = [
+                  "applications:org.kde.dolphin.desktop"
+                  "applications:org.kde.konsole.desktop"
+                  "applications:librewolf.desktop"
+                ];
+              };
+            }
+            {
+              systemMonitor = {
+                displayStyle = "org.kde.ksysguard.piechart";
+                sensors = [
+                  {
+                    name = "cpu/all/usage";
+                    color = "61,174,233";
+                    label = "总 CPU 使用情况";
+                  }
+                ];
+                totalSensors = [ "cpu/all/usage" ];
+                textOnlySensors = [
+                  "cpu/all/cpuCount"
+                  "cpu/all/coreCount"
+                ];
+                settings = {
+                  refreshInterval = 1000;
+                };
+              };
+            }
+            {
+              systemMonitor = {
+                displayStyle = "org.kde.ksysguard.piechart";
+                sensors = [
+                  {
+                    name = "memory/physical/used";
+                    color = "61,174,233";
+                    label = "内存使用情况";
+                  }
+                ];
+                totalSensors = [ "cpu/all/usage" ];
+                textOnlySensors = [
+                  "cpu/all/cpuCount"
+                  "cpu/all/coreCount"
+                ];
+                settings = {
+                  refreshInterval = 1000;
+                };
+              };
+            }
+            {
+              systemMonitor = {
+                displayStyle = "org.kde.ksysguard.textonly";
+                sensors = [
+                  {
+                    name = "network/all/download";
+                    color = "61,174,233";
+                    label = "下载速率";
+                  }
+                  {
+                    name = "network/all/upload";
+                    color = "233,120,61";
+                    label = "上传速率";
+                  }
+                ];
+                settings = {
+                  refreshInterval = 1000;
+                };
+              };
+            }
+            {
+              systemMonitor = {
+                displayStyle = "org.kde.ksysguard.textonly";
+                sensors = [
+                  {
+                    name = "disk/all/write";
+                    color = "61,174,233";
+                    label = "写入速率";
+                  }
+                  {
+                    name = "disk/all/read";
+                    color = "233,120,61";
+                    label = "读取速率";
+                  }
+                ];
+                settings = {
+                  refreshInterval = 1000;
+                };
+              };
+            }
+            "org.kde.plasma.marginsseparator"
+            {
+              systemTray.items = {
+                shown = [
+                  "org.kde.plasma.battery"
+                  "org.kde.plasma.bluetooth"
+                  "org.kde.plasma.volume"
+                  "org.kde.plasma.networkmanagement"
+                  "org.kde.plasma.notifications"
+                ];
+                hidden = [ ];
+              };
+            }
+            {
+              digitalClock = {
+                calendar.firstDayOfWeek = "monday";
+                time.format = "24h";
+                time.showSeconds = "always";
+              };
+            }
+            "org.kde.plasma.showdesktop"
+          ];
+          height = 60;
+        }
+      ];
       kwin = {
         virtualDesktops.number = 2;
         virtualDesktops.rows = 2;
+        effects = {
+          shakeCursor.enable = true;
+        };
       };
       session = {
         general.askForConfirmationOnLogout = true;
@@ -165,7 +308,6 @@ in
       enable = true;
       package = pkgs.kdePackages.kdeconnect-kde;
     };
-    flameshot.enable = true;
   };
   # TODO: 外观微调，常见软件的预配置
 }
