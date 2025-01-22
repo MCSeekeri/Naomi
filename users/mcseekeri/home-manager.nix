@@ -2,6 +2,10 @@
 
 let
   lain-kde-splashscreen = pkgs.callPackage ../../pkgs/lain-kde-splashscreen { };
+  defaultFont = {
+    family = "Sarasa UI SC";
+    pointSize = 13;
+  };
 in
 {
   imports = [ ../../home/fcitx5 ];
@@ -242,14 +246,19 @@ in
         timeout = 2;
       };
       fonts = {
-        general = {
-          family = "Noto Sans";
-          pointSize = 13;
+        # 重复设置太多，抽象一下
+        general = defaultFont;
+        fixedWidth = {
+          inherit (defaultFont) pointSize;
+          family = "Sarasa Mono SC";
         };
         small = {
-          family = "Noto Sans";
+          inherit (defaultFont) family;
           pointSize = 11;
         };
+        toolbar = defaultFont;
+        menu = defaultFont;
+        windowTitle = defaultFont;
       };
       shortcuts = {
         "kwin"."Kill Window" = "Meta+Ctrl+Esc";
