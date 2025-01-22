@@ -8,6 +8,7 @@
     ../../modules/Server/clamav.nix
     ../../modules/Server/hardened.nix
     ../../modules/Server/virt.nix
+    ../../modules/Server/failsafe.nix
     ../../modules/Desktop/gui.nix
     ../../modules/Desktop/programs.nix
 

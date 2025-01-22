@@ -1,13 +1,14 @@
-{ ... }:
+{ lib, ... }:
 {
   imports = [
-    ./hardware-configuration.nix
+    ./disko-config.nix
 
     ../../modules/Core
 
     ../../modules/Server/firewall.nix
     ../../modules/Server/clamav.nix
     ../../modules/Server/hardened.nix
+    ../../modules/Server/failsafe.nix
     ../../modules/Desktop/gui.nix
     ../../modules/Desktop/sunshine.nix
     ../../modules/Desktop/programs.nix
@@ -26,6 +27,7 @@
 
   # 网络配置
   networking = {
+    useDHCP = lib.mkDefault true;
     hostName = "manhattan"; # 主机名，设置好之后最好不要修改
   };
   nixpkgs.hostPlatform = "x86_64-linux";
