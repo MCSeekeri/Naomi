@@ -86,6 +86,10 @@
           modules = [ ./hosts/cuba ];
           specialArgs = { inherit inputs outputs; };
         };
+        costarica = lib.nixosSystem {
+          modules = [ ./hosts/costarica ];
+          specialArgs = { inherit inputs outputs; };
+        };
       };
     };
 }
