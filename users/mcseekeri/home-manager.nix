@@ -1,4 +1,9 @@
-{ pkgs, lib, ... }:
+{
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 
 let
   lain-kde-splashscreen = pkgs.callPackage ../../pkgs/lain-kde-splashscreen { };
@@ -21,15 +26,7 @@ in
     extraActivationPath = [ pkgs.babelfish ];
 
     packages = with pkgs; [
-      #命令行
-      fishPlugins.tide
-      fishPlugins.done
-      fishPlugins.autopair
-      # fishPlugins.fish-you-should-use # 等写了一堆缩写之后再考虑
-      # fishPlugins.sponge # 带来的问题比解决的问题多
       # 桌面应用
-      librewolf
-      ungoogled-chromium
       thunderbird
       xdg-desktop-portal
       xdg-dbus-proxy
@@ -55,7 +52,49 @@ in
 
   programs = {
     home-manager.enable = true;
-    librewolf.languagePacks = [ "zh-CN" ];
+    librewolf = {
+      enable = true;
+      # package = pkgs.librewolf;
+      languagePacks = [ "zh-CN" ];
+      policies = {
+        DisableTelemetry = true;
+        DisableFirefoxStudies = true;
+        Preferences = { };
+      };
+      profiles = {
+        mcseekeri = {
+          settings = {
+            "extensions.autoDisableScopes" = 0;
+            "privacy.resistFingerprinting.letterboxing" = true;
+            "privacy.resistFingerprinting.autoDeclineNoUserInputCanvasPrompts" = true;
+          };
+          extensions = with inputs.firefox-addons.packages.${pkgs.system}; [
+            # https://discourse.nixos.org/t/firefox-extensions-with-home-manager/34108/4
+            ublock-origin
+            violentmonkey
+            kiss-translator
+            # aw-watcher-web
+            multi-account-containers
+            private-relay
+            temporary-containers
+            keepassxc-browser
+            steam-database
+          ];
+        };
+      };
+    };
+    chromium = {
+      enable = true;
+      package = pkgs.ungoogled-chromium;
+      extensions = [
+        { id = "cjpalhdlnbpafiamejdnhcphjbkeiagm"; } # ublock origin
+        { id = "dhdgffkkebhmkfjojejmpbldmpobfkfo"; } # Tampermonkey
+        { id = "fpeoodllldobpkbkabpblcfaogecpndd"; } # Webrecoder
+        { id = "pfnededegaaopdmhkdmcofjmoldfiped"; } # ZeroOmega
+        { id = "chphlpgkkbolifaimnlloiipkdnihall"; } # OneTab
+        { id = "ocaahdebbfolfmndjeplogmgcagdmblk"; } # Chromium Web Store
+      ];
+    };
     git = {
       enable = true;
       userName = "MCSeekeri";
