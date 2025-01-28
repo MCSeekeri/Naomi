@@ -1,4 +1,4 @@
-{ ... }:
+{ lib, ... }:
 {
   imports = [
     ./disko-config.nix
@@ -22,14 +22,20 @@
     hostName = "cyprus"; # 主机名，设置好之后最好不要修改
   };
   nixpkgs.hostPlatform = "x86_64-linux";
-  boot.initrd.availableKernelModules = [
-    "xhci_pci"
-    "nvme"
-    "usbhid"
-    "uas"
-    "sd_mod"
-  ];
-  boot.kernelModules = [ "kvm-intel" ];
+  hardware = {
+    enableRedistributableFirmware = lib.mkDefault true;
+    cpu.intel.updateMicrocode = lib.mkDefault true;
+  };
+  boot = {
+    initrd.availableKernelModules = [
+      "xhci_pci"
+      "nvme"
+      "usbhid"
+      "uas"
+      "sd_mod"
+    ];
+    kernelModules = [ "kvm-intel" ];
+  };
 
   system = {
     stateVersion = "24.11";

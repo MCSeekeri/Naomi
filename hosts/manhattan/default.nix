@@ -14,6 +14,7 @@
     ../../modules/Desktop/programs.nix
     ../../modules/Desktop/gaming.nix
     ../../modules/Desktop/fcitx5.nix
+    ../../modules/Desktop/clash.nix
 
     ../../modules/Services/cockpit.nix
     ../../modules/Services/cloudflared.nix
@@ -23,6 +24,7 @@
     ../../modules/Games/minecraft_server.nix
 
     ../../users/mcseekeri
+    ../../users/remote
   ];
 
   # 网络配置
@@ -32,6 +34,14 @@
   };
   nixpkgs.hostPlatform = "x86_64-linux";
   virtualisation.virtualbox.guest.enable = true;
+
+  boot.initrd.availableKernelModules = [
+    "ata_piix"
+    "ohci_pci"
+    "ehci_pci"
+    "ahci"
+    "sr_mod"
+  ];
 
   system = {
     stateVersion = "24.11";
