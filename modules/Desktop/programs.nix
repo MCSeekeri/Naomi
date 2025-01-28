@@ -31,19 +31,12 @@
       podman-tui
       podman-compose
       podman-desktop
-      # 网络属实不怎么安全
-      metasploit
-      wireshark
-      netcat-openbsd
       # 系统维护
       kdePackages.partitionmanager
       kdePackages.ksystemlog
       kdePackages.filelight
-      btrfs-snap
-      snapper
       cloudflared
       bubblewrap
-      virt-manager
       conntrack-tools
       # 专业救场
       remmina
