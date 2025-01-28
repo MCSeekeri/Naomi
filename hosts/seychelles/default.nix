@@ -1,4 +1,4 @@
-{ ... }:
+{ lib, ... }:
 {
   imports = [
     ./disko-config.nix
@@ -21,10 +21,27 @@
   networking = {
     hostName = "seychelles"; # 主机名，设置好之后最好不要修改
   };
-  nixpkgs.hostPlatform = "x86_64-linux";
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
   system = {
     stateVersion = "24.11";
     autoUpgrade.enable = true;
   };
+
+  hardware = {
+    enableRedistributableFirmware = lib.mkDefault true;
+    cpu.intel.updateMicrocode = lib.mkDefault true;
+  };
+  boot = {
+    initrd.availableKernelModules = [
+      "xhci_pci"
+      "ahci"
+      "nvme"
+      "sd_mod"
+    ];
+    kernelModules = [ "kvm-intel" ];
+  };
+
+  networking.useDHCP = lib.mkDefault true;
+
 }
