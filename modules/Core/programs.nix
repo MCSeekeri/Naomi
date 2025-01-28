@@ -68,12 +68,16 @@
       inputs.home-manager.packages.${pkgs.system}.default
       nix-update
       hydra
+      vulnix
       # 终端优化
       babelfish
       bash-completion
       meslo-lgs-nf
       speedtest-cli
       killall
+      fishPlugins.tide
+      fishPlugins.done
+      fishPlugins.autopair
       # 网络属实不怎么安全
       nmap
       socat
