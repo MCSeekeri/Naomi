@@ -11,7 +11,7 @@
       auto-optimise-store = true; # 会让 build 变慢，见仁见智吧
       substituters = lib.mkForce [
         "https://mirrors.ustc.edu.cn/nix-channels/store?priority=1"
-        "https://mirror.sjtu.edu.cn/nix-channels/store?priority=2"
+        "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store?priority=2"
         "https://cache.nixos.org/?priority=3"
         "https://cache.garnix.io?priority=4"
         "https://nix-community.cachix.org?priority=5"
