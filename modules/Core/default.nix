@@ -17,9 +17,11 @@
     ./zram.nix
   ];
 
-  home-manager.useGlobalPkgs = true;
-  home-manager.extraSpecialArgs = { inherit inputs outputs; };
-  home-manager.sharedModules = [ inputs.plasma-manager.homeManagerModules.plasma-manager ];
+  home-manager = {
+    useGlobalPkgs = true;
+    extraSpecialArgs = { inherit inputs outputs; };
+    sharedModules = [ inputs.plasma-manager.homeManagerModules.plasma-manager ];
+  };
 
   networking = {
     networkmanager.enable = true;
