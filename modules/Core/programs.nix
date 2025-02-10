@@ -69,6 +69,8 @@
       nix-update
       hydra
       vulnix
+      nix-du
+      nix-tree
       # 终端优化
       babelfish
       bash-completion

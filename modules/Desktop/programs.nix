@@ -4,8 +4,6 @@
   environment = {
     systemPackages = with pkgs; [
       # Nix 相关
-      # inputs.nixos-conf-editor.packages.${system}.nixos-conf-editor
-      # inputs.nix-software-center.packages.${system}.nix-software-center
       nixos-generators
       # 桌面应用
       ungoogled-chromium
