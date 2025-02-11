@@ -1,7 +1,16 @@
 {
   description = "Naomi Flake Configuration";
+
   nixConfig = {
     auto-optimise-store = true; # 会让 build 变慢，见仁见智吧
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+    connect-timeout = 20;
+    http-connections = 64;
+    max-substitution-jobs = 32;
+    builders-use-substitutes = true;
     extra-substituters = [
       "https://mirrors.ustc.edu.cn/nix-channels/store?priority=1"
       "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store?priority=2"
@@ -15,59 +24,61 @@
       "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
       "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="
     ];
-    experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
-    trusted-users = [ "root" ];
-    connect-timeout = 20;
-    http-connections = 64;
-    max-substitution-jobs = 32; # 加速下载
-    builders-use-substitutes = true;
   };
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11"; # 官方源
+
     home-manager = {
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     plasma-manager = {
       url = "github:nix-community/plasma-manager";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
-    # nix-mineral = {
-    #   url = "github:cynicsketch/nix-mineral";
-    #   flake = false;
-    # };
-    # 不稳定，之后加入
-    nix-alien.url = "github:thiagokokada/nix-alien";
-    nixos-conf-editor.url = "github:snowfallorg/nixos-conf-editor";
-    nix-software-center.url = "github:snowfallorg/nix-software-center";
+
+    nix-alien = {
+      url = "github:thiagokokada/nix-alien";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nixos-generators = {
       # 我们又回到了老路上？
       url = "github:nix-community/nixos-generators";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # nix-mineral = {
-    #   url = "github:cynicsketch/nix-mineral"; # Refers to the main branch and is updated to the latest commit when you use "nix flake update"
-    #   flake = false;
-    # };
-    # 等待 nm-override.nix 重做
-    sops-nix.url = "github:Mic92/sops-nix";
-    nix-minecraft.url = "github:Infinidoge/nix-minecraft";
+
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nix-minecraft = {
+      url = "github:Infinidoge/nix-minecraft";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     flake-programs-sqlite = {
       # 修复 command-not-found
       url = "github:wamserma/flake-programs-sqlite";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nix-topology = {
+      url = "github:oddlama/nix-topology";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -76,37 +87,46 @@
     {
       self,
       nixpkgs,
-      home-manager,
-      plasma-manager,
+      nix-topology,
       ...
     }@inputs:
     let
-      inherit (self) outputs;
-      lib = nixpkgs.lib // home-manager.lib;
+      mkHost =
+        hostName:
+        nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            (./hosts + "/${hostName}")
+            inputs.nix-topology.nixosModules.default
+          ];
+          specialArgs = { inherit inputs hostName; };
+        };
+
+      # 为拓扑定制的 pkgs 实例
+      topology-pkgs = import nixpkgs {
+        system = "x86_64-linux";
+        overlays = [ nix-topology.overlays.default ];
+      };
     in
     {
-      inherit lib;
       nixosConfigurations = {
-        manhattan = lib.nixosSystem {
-          modules = [ ./hosts/manhattan ];
-          specialArgs = { inherit inputs outputs plasma-manager; };
-        };
-        seychelles = lib.nixosSystem {
-          modules = [ ./hosts/seychelles ];
-          specialArgs = { inherit inputs outputs; };
-        };
-        cyprus = lib.nixosSystem {
-          modules = [ ./hosts/cyprus ];
-          specialArgs = { inherit inputs outputs plasma-manager; };
-        };
-        cuba = lib.nixosSystem {
-          modules = [ ./hosts/cuba ];
-          specialArgs = { inherit inputs outputs; };
-        };
-        costarica = lib.nixosSystem {
-          modules = [ ./hosts/costarica ];
-          specialArgs = { inherit inputs outputs; };
-        };
+        manhattan = mkHost "manhattan";
+        seychelles = mkHost "seychelles";
+        cyprus = mkHost "cyprus";
+        cuba = mkHost "cuba";
+        costarica = mkHost "costarica";
       };
+
+      # 拓扑生成配置
+      topology."x86_64-linux" = import nix-topology {
+        pkgs = topology-pkgs;
+        modules = [
+          ./topology.nix
+          { inherit (self) nixosConfigurations; }
+        ];
+      };
+
+      # nix build .#topology
+      packages.x86_64-linux.topology = self.topology.x86_64-linux.config.output;
     };
 }
