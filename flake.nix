@@ -81,6 +81,13 @@
       url = "github:oddlama/nix-topology";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nur = {
+      url = "github:nix-community/NUR";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+
   };
 
   outputs =
@@ -88,6 +95,7 @@
       self,
       nixpkgs,
       nix-topology,
+      nur,
       ...
     }@inputs:
     let
@@ -98,6 +106,7 @@
           modules = [
             (./hosts + "/${hostName}")
             inputs.nix-topology.nixosModules.default
+            { nixpkgs.overlays = [ nur.overlays.default ]; }
           ];
           specialArgs = { inherit inputs hostName; };
         };
