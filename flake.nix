@@ -40,10 +40,7 @@
       inputs.home-manager.follows = "home-manager";
     };
 
-    nix-alien = {
-      url = "github:thiagokokada/nix-alien";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    nix-alien.url = "github:thiagokokada/nix-alien";
 
     nixos-generators = {
       # 我们又回到了老路上？
