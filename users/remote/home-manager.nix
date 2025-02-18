@@ -22,9 +22,7 @@ in
     packages = with pkgs; [
       # 桌面应用
       ungoogled-chromium
-      xdg-desktop-portal
-      xdg-dbus-proxy
-      kdePackages.xdg-desktop-portal-kde
+
       # 开发套件
       jetbrains.pycharm-professional
       jetbrains.idea-ultimate
