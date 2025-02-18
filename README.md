@@ -1,6 +1,9 @@
 # Naomi
 NAOMI: Aggregate Online Modular Infrastructure，简称 Naomi，是基于 NixOS 的“定制系统”。
 
+[![built with nix](https://builtwithnix.org/badge.svg)](https://builtwithnix.org)
+[![built with garnix](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fgarnix.io%2Fapi%2Fbadges%2FMCSeekeri%2FNaomi&style=for-the-badge)](https://garnix.io/repo/MCSeekeri/Naomi)
+![](https://img.shields.io/github/repo-size/MCSeekeri/Naomi?style=for-the-badge)
 ## 简明安装指南
 主要的安装方法有三种，使用修改后的镜像，使用官方镜像或使用 nixos-anywhere.\
 其中 nixos-anywhere 适合在现有系统上进行清洁安装，但需要另一台正确安装并配置了 Nix 的设备。\
