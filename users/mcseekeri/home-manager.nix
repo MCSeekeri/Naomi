@@ -266,6 +266,7 @@ in
       input.keyboard.numlockOnStartup = "on";
       powerdevil = {
         battery = {
+          powerButtonAction = "shutDown";
           dimDisplay = {
             idleTimeout = 60;
           };
@@ -275,6 +276,12 @@ in
           };
           autoSuspend.idleTimeout = 180;
           powerProfile = "balanced";
+        };
+        AC = {
+          powerButtonAction = "shutDown";
+        };
+        lowBattery = {
+          powerButtonAction = "shutDown";
         };
       };
       kscreenlocker = {
