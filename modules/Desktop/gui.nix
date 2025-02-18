@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 {
   services = {
     xserver = {
@@ -16,7 +16,10 @@
     };
     flatpak.enable = true; # 开启 flatpak 支持，有效解决 nixOS 桌面软件水土不服的问题
   };
-  xdg.portal.enable = true;
+  xdg.portal = {
+    enable = true;
+    extraPortals = with pkgs; [ kdePackages.xdg-desktop-portal-kde ];
+  };
   qt.platformTheme = "kde";
   security.rtkit.enable = true;
 }

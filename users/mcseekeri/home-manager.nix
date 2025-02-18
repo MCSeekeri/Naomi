@@ -28,10 +28,7 @@ in
     packages = with pkgs; [
       # 桌面应用
       thunderbird
-      xdg-desktop-portal
-      xdg-dbus-proxy
       keepassxc
-      kdePackages.xdg-desktop-portal-kde
       qq
       wpsoffice-cn
       motrix

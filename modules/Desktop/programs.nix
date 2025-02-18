@@ -7,9 +7,6 @@
       nixos-generators
       # 桌面应用
       ungoogled-chromium
-      xdg-desktop-portal
-      xdg-dbus-proxy
-      kdePackages.xdg-desktop-portal-kde
       # 开发环境
       gcc
       cmake
