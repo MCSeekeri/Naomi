@@ -13,7 +13,9 @@ let
   };
 in
 {
-  imports = [ ../../home/fcitx5 ];
+  imports = [
+    ../../modules/Home/fcitx5
+  ];
   home = {
     username = "mcseekeri";
     homeDirectory = "/home/mcseekeri";
