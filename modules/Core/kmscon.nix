@@ -1,5 +1,10 @@
 { pkgs, ... }:
 {
+  console = {
+    earlySetup = true;
+    packages = [ pkgs.kmscon ];
+  };
+
   services.kmscon = {
     enable = true;
     fonts = [
