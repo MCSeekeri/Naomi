@@ -119,6 +119,9 @@ in
     pkgs.rsync
     pkgs.disko
     pkgs.bore-cli
+    pkgs.geph.cli
+    pkgs.clash-rs
+    pkgs.proxychains-ng
     network-status
   ];
 
