@@ -122,6 +122,16 @@ in
     pkgs.geph.cli
     pkgs.clash-rs
     pkgs.proxychains-ng
+    pkgs.dae
+    pkgs.busybox
+    pkgs.bind
+    pkgs.ripgrep
+    pkgs.btop
+    pkgs.libressl
+    pkgs.python3Minimal
+    pkgs.progress
+    pkgs.tmux
+    pkgs.file
     network-status
   ];
 
