@@ -1,9 +1,9 @@
 # Naomi
 NAOMI: Aggregate Online Modular Infrastructure，简称 Naomi，是基于 NixOS 的“定制系统”。
 
-[![built with nix](https://builtwithnix.org/badge.svg)](https://builtwithnix.org)
 [![built with garnix](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fgarnix.io%2Fapi%2Fbadges%2FMCSeekeri%2FNaomi&style=for-the-badge)](https://garnix.io/repo/MCSeekeri/Naomi)
 ![](https://img.shields.io/github/repo-size/MCSeekeri/Naomi?style=for-the-badge)
+[![built with nix](https://builtwithnix.org/badge.svg)](https://builtwithnix.org)
 ## 简明安装指南
 主要的安装方法有三种，使用修改后的镜像，使用官方镜像或使用 nixos-anywhere.\
 其中 nixos-anywhere 适合在现有系统上进行清洁安装，但需要另一台正确安装并配置了 Nix 的设备。\
@@ -11,16 +11,7 @@ NAOMI: Aggregate Online Modular Infrastructure，简称 Naomi，是基于 NixOS 
 > [!CAUTION]
 > 安装过程会按照预置的磁盘规划进行格式化，请确保已备份重要数据。
 ### 使用修改后的安装镜像 (推荐)
-可自行编译设备代号为`cuba`的配置以获得修改后的安装镜像。
-```
-nix run github:nix-community/nixos-generators -- --flake github:MCSeekeri/Naomi#cuba -f iso
-```
-> 如需其他格式，请参考 [nixos-generators](https://github.com/nix-community/nixos-generators) 的文档。
-
-以编译后的镜像启动，运行以下命令。
-```
-nix run 'github:nix-community/disko/latest#disko-install' -- --flake github:MCSeekeri/Naomi#<设备代号> --disk main <设备文件位置>
-```
+参见 [相关文档](docs/livecd.md)
 ### 使用官方安装镜像
 ```
 nix run --experimental-features "nix-command flakes" 'github:nix-community/disko/latest#disko-install' -- --flake github:MCSeekeri/Naomi#<设备代号> --disk main <设备文件位置>
