@@ -110,7 +110,11 @@ in
 
   boot = {
     initrd.systemd.emergencyAccess = true;
-    kernelParams = [ "nouveau.modeset=0" ];
+    kernelParams = [
+      "nouveau.modeset=0"
+      "console=tty0"
+      "console=ttyS0,115200" # 串口调试
+    ];
   };
 
   environment.systemPackages = [
