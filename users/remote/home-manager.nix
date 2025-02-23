@@ -7,9 +7,7 @@ let
   };
 in
 {
-  imports = [
-    ../../modules/Home/fcitx5
-  ];
+  imports = [ ../../modules/Home/fcitx5 ];
   home = {
     username = "remote";
     homeDirectory = "/home/remote";
