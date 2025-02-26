@@ -5,7 +5,6 @@
       enable = true;
       dockerSocket.enable = true;
       dockerCompat = true; # 用户体验不变
-      networkSocket.openFirewall = true;
       defaultNetwork.settings.dns_enabled = true;
     };
     # oci-containers.containers = {
