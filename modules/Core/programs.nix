@@ -98,6 +98,7 @@
       iftop
       conntrack-tools
       quota
+      quickemu
     ];
   };
 }

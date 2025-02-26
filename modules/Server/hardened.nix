@@ -66,7 +66,7 @@
       "fs.protected_hardlinks" = 1; # 创建符号链接会验证所有者
       "fs.protected_fifos" = 2;
       "fs.protected_regular" = 2; # 防止在全局可写的目录里创建文件
-      "vm.max_map_count" = 1048576;
+      # "vm.max_map_count" = 1048576;
       "fs.suid_dumpable" = 0; # 从 sysctl 禁用出错内存转储
       "vm.swappiness" = 1; # 仅在绝对必要的时候使用虚拟内存
     };
