@@ -12,6 +12,8 @@
     ../../modules/Desktop/fcitx5.nix
     ../../modules/Games/minecraft_server.nix
 
+    ../../modules/Containers/aquadx.nix
+
     ../../users/mcseekeri
   ];
 
