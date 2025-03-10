@@ -92,6 +92,11 @@
       };
     };
 
+    arion = {
+      url = "github:hercules-ci/arion";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
 
   outputs =

@@ -1,19 +1,40 @@
+{ config, pkgs, ... }:
 {
   virtualisation = {
-    containers.enable = true;
+    oci-containers.backend = "podman";
+    containers = {
+      enable = true;
+      containersConf.settings = {
+        engine = {
+          env = [
+            "http_proxy=http://100.100.1.1:19999"
+            "https_proxy=http://100.100.1.1:19999"
+          ];
+        };
+      };
+    };
     podman = {
       enable = true;
       dockerSocket.enable = true;
       dockerCompat = true; # 用户体验不变
       defaultNetwork.settings.dns_enabled = true;
     };
-    # oci-containers.containers = {
-    #   hello = {
-    #     image = "docker.io/library/hello-world:latest";
-    #     autoStart = false;
-    #     ports = [ "" ];
-    #   };
-    # };
-    # 我之后修好这个
   };
+  environment.systemPackages = [
+    pkgs.arion
+    pkgs.docker-client
+  ];
+  virtualisation.arion = {
+    backend = "podman-socket";
+  };
+  networking.firewall.interfaces =
+    let
+      matchAll = if !config.networking.nftables.enable then "podman+" else "podman*";
+    in
+    {
+      "${matchAll}".allowedUDPPorts = [
+        53
+        5353
+      ];
+    };
 }
