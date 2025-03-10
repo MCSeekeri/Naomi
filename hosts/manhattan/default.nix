@@ -25,6 +25,8 @@
     ../../modules/Games/minecraft.nix
     ../../modules/Games/minecraft_server.nix
 
+    ../../modules/Containers/aquadx.nix
+
     ../../users/mcseekeri
     ../../users/remote
   ];
