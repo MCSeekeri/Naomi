@@ -4,6 +4,7 @@
     inputs.home-manager.nixosModules.home-manager
     inputs.disko.nixosModules.disko
     inputs.flake-programs-sqlite.nixosModules.programs-sqlite
+    inputs.arion.nixosModules.arion
     ./avahi.nix
     ./boot.nix
     ./fonts.nix
