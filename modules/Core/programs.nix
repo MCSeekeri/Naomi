@@ -40,26 +40,27 @@
       file
       screen
       tmux
+      which
+      gnused
+      gawk
+      screen
+      ripgrep
+      jq
+      # 解压缩
       unzip
       zip
       xz
       zstd
       p7zip
-      btrfs-progs
-      which
-      gnused
       gnutar
-      gawk
+      # 加解密
       gnupg
       age
       sops
-      screen
-      ripgrep
-      jq
-      openssl
-      ntfs3g
-      dnsutils
+      # 文件系统
       sshfs
+      btrfs-progs
+      ntfs3g
       # Nix 相关
       nix-visualize
       nix-output-monitor
@@ -80,10 +81,14 @@
       fishPlugins.tide
       fishPlugins.done
       fishPlugins.autopair
-      # 网络属实不怎么安全
+      # 网络工具
       nmap
       socat
       openvpn
+      geph.cli
+      openssl
+      dnsutils
+      mariadb.client # 仅安装客户端，而非整个数据库
       # 系统维护
       sysstat
       lm_sensors
