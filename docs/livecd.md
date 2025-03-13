@@ -12,9 +12,15 @@ cuba 镜像设计之初是为了解决远程协助安装的问题，因此启动
 ![](https://github.com/MCSeekeri/storage/raw/main/docs/livecd_qrcode.webp)
 如果您不需要使用 SSH 远程安装，请 Ctrl-C 回到终端，然后输入以下命令
 ```
-nix run 'github:nix-community/disko/latest#disko-install' -- --flake github:MCSeekeri/Naomi#<设备代号> --disk main <设备文件位置>
+disko-install -f github:MCSeekeri/Naomi#<设备代号> --disk main <设备文件位置>
 ```
 > [!CAUTION]
 > 安装过程会按照预置的磁盘规划进行格式化，请确保已备份重要数据。
 
-同时考虑到国内的网络环境，镜像内预置了 Geph 5,Proxychains-ng 和 Clash-rs，必要时还可以通过配置 [dae](https://github.com/daeuniverse/dae) 来更好的实现透明代理和流量分流。
+极少数情况下，`disko-install` 会遇到一些无法预知的问题，此时需要手动挂载磁盘并安装。\
+先使用`cfdisk`分区，格式化，同时依照`disko-config.nix`中的名称设置分区标签，挂载到 `/mnt` 目录，然后执行以下命令：
+```
+nixos-install --root /mnt -f github:MCSeekeri/Naomi#<设备代号>
+```
+> [!NOTE]
+> 考虑到国内的网络环境，镜像内预置了 Geph 5,Proxychains-ng 和 Clash-rs，必要时还可以通过配置 [dae](https://github.com/daeuniverse/dae) 来更好的实现透明代理和流量分流。
