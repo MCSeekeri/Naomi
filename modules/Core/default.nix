@@ -10,6 +10,7 @@
     ./fonts.nix
     ./i18n.nix
     ./kmscon.nix
+    ./mDNS.nix
     ./nix.nix
     ./podman.nix
     ./programs.nix
