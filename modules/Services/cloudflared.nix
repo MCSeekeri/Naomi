@@ -4,7 +4,7 @@
     enable = true;
     tunnels = {
       "Naomi" = {
-        credentialsFile = "${config.sops.secrets.cloudflared-creds.path}";
+        credentialsFile = "${config.sops.secrets.cloudflared-creds.path}"; # 有点问题，之后修
         default = "http_status:404";
       };
     };
