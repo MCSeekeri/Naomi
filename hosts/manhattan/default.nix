@@ -22,13 +22,9 @@
     ../../modules/Services/cloudflared.nix
     ../../modules/Services/uptime-kuma.nix
 
-    ../../modules/Games/minecraft.nix
-    ../../modules/Games/minecraft_server.nix
-
-    ../../modules/Containers/aquadx.nix
+    ../../modules/Games/aquadx.nix
 
     ../../users/mcseekeri
-    ../../users/remote
   ];
 
   # 网络配置

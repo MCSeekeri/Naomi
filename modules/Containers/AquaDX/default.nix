@@ -1,3 +1,4 @@
+{ pkgs, ... }:
 {
   virtualisation.arion.projects.aquadx = {
     serviceName = "aquadx";
@@ -18,7 +19,7 @@
         };
         depends_on = [ "aquadx_db" ];
         volumes = [
-          "aquadx_config:/app/config"
+          "${builtins.path { path = ./application.properties; }}:/app/config/application.properties"
           "aquadx_data:/app/data"
         ];
       };
@@ -31,13 +32,10 @@
           MYSQL_PASSWORD = "meow";
         };
         ports = [ "127.0.0.1:3369:3306" ];
-        volumes = [
-          "aquadx_mariadb_data:/var/lib/mysql"
-        ];
+        volumes = [ "aquadx_mariadb_data:/var/lib/mysql" ];
       };
 
       docker-compose.volumes = {
-        aquadx_config = { };
         aquadx_data = { };
         aquadx_mariadb_data = { };
       };
