@@ -19,7 +19,6 @@
     ../../modules/Desktop/stylix.nix
 
     ../../modules/Services/cockpit.nix
-    ../../modules/Services/cloudflared.nix
     ../../modules/Services/uptime-kuma.nix
 
     ../../modules/Games/aquadx.nix
