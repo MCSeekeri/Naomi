@@ -47,6 +47,7 @@ in
     inputs.stylix.nixosModules.stylix
     ../../modules/Core/ssh.nix
     ../../modules/Core/kmscon.nix
+    ../../modules/Core/mDNS.nix
   ];
   nixpkgs.hostPlatform = "x86_64-linux"; # 目前只考虑 x86_64
   services = {
@@ -54,8 +55,13 @@ in
       autologinUser = lib.mkForce "root";
       fonts = lib.mkForce [
         {
-          name = "WenQuanYi Zen Hei Mono";
-          package = pkgs.wqy_zenhei;
+          name = "FiraCode Nerd Font Mono";
+          package = pkgs.fira-code-nerdfont;
+        }
+        {
+          # 一个中文字体的体积比一堆工具加起来还大，难办……
+          name = "Noto Sans CJK SC";
+          package = pkgs.noto-fonts-cjk-sans;
         }
       ];
       extraConfig = lib.mkForce "font-size=12";
@@ -80,9 +86,6 @@ in
   networking = {
     hostName = "cuba"; # 主机名，设置好之后最好不要修改
     tempAddresses = "disabled";
-    firewall = {
-      allowedUDPPorts = [ 5353 ]; # mDNS 设置
-    };
     useNetworkd = true;
     wireless = {
       enable = false;
@@ -193,10 +196,6 @@ in
 
   systemd = {
     tmpfiles.rules = [ "d /var/shared 0777 root root - -" ];
-    network.networks = {
-      "99-ethernet-default-dhcp".networkConfig.MulticastDNS = lib.mkDefault "yes";
-      "99-wireless-client-dhcp".networkConfig.MulticastDNS = lib.mkDefault "yes";
-    };
     services = {
       bore-tunnel = {
         description = "Bore tunnel service";
