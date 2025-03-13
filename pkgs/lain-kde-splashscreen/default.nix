@@ -1,4 +1,8 @@
-{ stdenv, fetchFromGitHub }:
+{
+  lib,
+  stdenv,
+  fetchFromGitHub,
+}:
 
 stdenv.mkDerivation rec {
   pname = "lain-kde-splashscreen";
@@ -13,4 +17,9 @@ stdenv.mkDerivation rec {
     mkdir -p $out/share/plasma/look-and-feel
     cp -aR KDE-loginscreens/Lain/ $out/share/plasma/look-and-feel/Lain
   '';
+
+  meta = {
+    homepage = "https://github.com/dgudim/themes";
+    license = lib.licenses.unfree;
+  };
 }
