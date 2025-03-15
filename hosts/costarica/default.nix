@@ -10,11 +10,10 @@
     ../../modules/Desktop/gui.nix
     ../../modules/Desktop/programs.nix
     ../../modules/Desktop/fcitx5.nix
-    ../../modules/Games/minecraft_server.nix
 
-    ../../modules/Containers/aquadx.nix
+    ../../modules/Games/aquadx.nix
 
-    ../../users/mcseekeri
+    ../../users/mihomo
   ];
 
   # 网络配置
