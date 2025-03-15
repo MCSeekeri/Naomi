@@ -1,5 +1,6 @@
 { pkgs, ... }:
 {
+  networking.firewall.allowedTCPPorts = [ 80 8443 22345 ];
   virtualisation.arion.projects.aquadx = {
     serviceName = "aquadx";
     settings = {
