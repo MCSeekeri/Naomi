@@ -113,10 +113,22 @@ in
 
   boot = {
     initrd.systemd.emergencyAccess = true;
+    supportedFilesystems = [
+       "ext4"
+       "btrfs"
+       "f2fs"
+       "ntfs"
+       "vfat"
+       "xfs"
+     ];
     kernelParams = [
       "nouveau.modeset=0"
       "console=tty0"
       "console=ttyS0,115200" # 串口调试
+      "zswap.enabled=1"
+      "zswap.max_pool_percent=50"
+      "zswap.compressor=zstd"
+      "zswap.zpool=zsmalloc"
     ];
   };
 
