@@ -114,13 +114,13 @@ in
   boot = {
     initrd.systemd.emergencyAccess = true;
     supportedFilesystems = [
-       "ext4"
-       "btrfs"
-       "f2fs"
-       "ntfs"
-       "vfat"
-       "xfs"
-     ];
+      "ext4"
+      "btrfs"
+      "f2fs"
+      "ntfs"
+      "vfat"
+      "xfs"
+    ];
     kernelParams = [
       "nouveau.modeset=0"
       "console=tty0"

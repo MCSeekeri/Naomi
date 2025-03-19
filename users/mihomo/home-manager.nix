@@ -24,9 +24,7 @@ in
     };
     extraActivationPath = [ pkgs.babelfish ];
 
-    packages = with pkgs; [
-      motrix
-    ];
+    packages = with pkgs; [ motrix ];
   };
 
   programs = {
