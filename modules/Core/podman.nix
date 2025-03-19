@@ -4,14 +4,15 @@
     oci-containers.backend = "podman";
     containers = {
       enable = true;
-      containersConf.settings = {
-        engine = {
-          env = [
-            "http_proxy=http://100.100.1.1:19999"
-            "https_proxy=http://100.100.1.1:19999"
-          ];
-        };
-      };
+      # 迟早得改，等普及代理再说
+      # containersConf.settings = {
+      #   engine = {
+      #     env = [
+      #       "http_proxy=http://100.100.1.1:19999"
+      #       "https_proxy=http://100.100.1.1:19999"
+      #     ];
+      #   };
+      # };
     };
     podman = {
       enable = true;

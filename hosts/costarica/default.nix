@@ -11,6 +11,8 @@
     ../../modules/Desktop/programs.nix
     ../../modules/Desktop/fcitx5.nix
 
+    ../../modules/Services/nginx.nix
+
     ../../modules/Games/aquadx.nix
 
     ../../users/mihomo
