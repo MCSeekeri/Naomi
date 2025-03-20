@@ -4,9 +4,6 @@
   lib,
   ...
 }:
-let
-  geph5-client = pkgs.callPackage ../../pkgs/geph5-client { };
-in
 {
 
   systemd = {
@@ -19,7 +16,7 @@ in
       serviceConfig = {
         TimeoutStartSec = 0;
         Type = "simple";
-        ExecStart = "${geph5-client}/bin/geph5-client --config ${config.sops.secrets.geph5-config.path}";
+        ExecStart = "${pkgs.geph5-client}/bin/geph5-client --config ${config.sops.secrets.geph5-config.path}";
         Restart = "on-failure";
         RestartSec = "5s";
         LimitNOFILE = 65535;

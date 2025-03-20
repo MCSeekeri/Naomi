@@ -115,7 +115,12 @@
           modules = [
             (./hosts + "/${hostName}")
             inputs.nix-topology.nixosModules.default
-            { nixpkgs.overlays = [ nur.overlays.default ]; }
+            {
+              nixpkgs.overlays = [
+                nur.overlays.default
+                mc-overlay
+              ];
+            }
           ];
           specialArgs = { inherit inputs hostName; };
         };
@@ -125,6 +130,17 @@
         system = "x86_64-linux";
         overlays = [ nix-topology.overlays.default ];
       };
+      mc-overlay = final: prev: {
+        geph5-client = final.callPackage ./pkgs/geph5-client { };
+        lain-kde-splashscreen = final.callPackage ./pkgs/lain-kde-splashscreen { };
+        aquanet = final.callPackage ./pkgs/aquanet { };
+      };
+      pkgs = import nixpkgs {
+        system = "x86_64-linux";
+        config.allowUnfree = true;
+        overlays = [ mc-overlay ];
+      };
+
     in
     {
       nixosConfigurations = {
@@ -143,8 +159,12 @@
           { inherit (self) nixosConfigurations; }
         ];
       };
-
-      # nix build .#topology
-      packages.x86_64-linux.topology = self.topology.x86_64-linux.config.output;
+      # nix build .#包名
+      packages.x86_64-linux = {
+        topology = self.topology.x86_64-linux.config.output;
+        geph5-client = pkgs.geph5-client;
+        lain-kde-splashscreen = pkgs.lain-kde-splashscreen;
+        aquanet = pkgs.aquanet;
+      };
     };
 }
