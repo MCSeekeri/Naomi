@@ -3,7 +3,6 @@
   imports = [
     inputs.home-manager.nixosModules.home-manager
     inputs.disko.nixosModules.disko
-    inputs.flake-programs-sqlite.nixosModules.programs-sqlite
     inputs.arion.nixosModules.arion
     inputs.daeuniverse.nixosModules.dae
     # inputs.daeuniverse.nixosModules.daed
