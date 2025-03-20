@@ -97,6 +97,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    daeuniverse.url = "github:daeuniverse/flake.nix";
+
   };
 
   outputs =
