@@ -63,12 +63,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    flake-programs-sqlite = {
-      # 修复 command-not-found
-      url = "github:wamserma/flake-programs-sqlite";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -76,11 +70,6 @@
 
     nix-topology = {
       url = "github:oddlama/nix-topology";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    nur = {
-      url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -106,7 +95,6 @@
       self,
       nixpkgs,
       nix-topology,
-      nur,
       ...
     }@inputs:
     let
@@ -117,12 +105,7 @@
           modules = [
             (./hosts + "/${hostName}")
             inputs.nix-topology.nixosModules.default
-            {
-              nixpkgs.overlays = [
-                nur.overlays.default
-                mc-overlay
-              ];
-            }
+            { nixpkgs.overlays = [ mc-overlay ]; }
           ];
           specialArgs = { inherit inputs hostName; };
         };
