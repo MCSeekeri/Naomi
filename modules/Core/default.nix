@@ -5,8 +5,11 @@
     inputs.disko.nixosModules.disko
     inputs.flake-programs-sqlite.nixosModules.programs-sqlite
     inputs.arion.nixosModules.arion
+    inputs.daeuniverse.nixosModules.dae
+    # inputs.daeuniverse.nixosModules.daed
     ./avahi.nix
     ./boot.nix
+    ./dae
     ./fonts.nix
     ./geph5.nix
     ./i18n.nix
