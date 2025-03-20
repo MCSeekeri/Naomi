@@ -8,6 +8,7 @@
     ./avahi.nix
     ./boot.nix
     ./fonts.nix
+    ./geph5.nix
     ./i18n.nix
     ./kmscon.nix
     ./mDNS.nix
