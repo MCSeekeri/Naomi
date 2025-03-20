@@ -6,7 +6,6 @@
 }:
 
 let
-  lain-kde-splashscreen = pkgs.callPackage ../../pkgs/lain-kde-splashscreen { };
   defaultFont = {
     family = "Sarasa UI SC";
     pointSize = 13;
@@ -41,9 +40,7 @@ in
       # 游戏娱乐
       moonlight-qt
       # 开发套件
-      jetbrains.pycharm-professional
-      jetbrains.idea-ultimate
-      micromamba
+      uv
     ];
   };
 

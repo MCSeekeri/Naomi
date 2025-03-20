@@ -9,7 +9,7 @@
           port = 4173;
         }
       ];
-      root = (pkgs.callPackage ../../pkgs/aquanet { });
+      root = pkgs.aquanet;
 
       locations."/aqua/" = {
         proxyPass = "http://100.100.20.1/";
