@@ -7,6 +7,7 @@
       nixos-generators
       # 桌面应用
       ungoogled-chromium
+      brave
       # 开发环境
       gcc
       cmake
