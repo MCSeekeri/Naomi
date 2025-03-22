@@ -79,14 +79,20 @@ in
     };
     chromium = {
       enable = true;
-      package = pkgs.ungoogled-chromium;
+      package = pkgs.brave;
       extensions = [
         { id = "cjpalhdlnbpafiamejdnhcphjbkeiagm"; } # ublock origin
-        { id = "dhdgffkkebhmkfjojejmpbldmpobfkfo"; } # Tampermonkey
+        { id = "jinjaccalgkegednnccohejagnlnfdag"; } # violentmonkey
         { id = "fpeoodllldobpkbkabpblcfaogecpndd"; } # Webrecoder
         { id = "pfnededegaaopdmhkdmcofjmoldfiped"; } # ZeroOmega
         { id = "chphlpgkkbolifaimnlloiipkdnihall"; } # OneTab
-        { id = "ocaahdebbfolfmndjeplogmgcagdmblk"; } # Chromium Web Store
+        { id = "mnjggcdmjocbbbhaepdhchncahnbgone"; } # SponsorBlock
+        { id = "eaoelafamejbnggahofapllmfhlhajdd"; } # B站空降助手
+        { id = "oboonakemofpalcgghocfoadofidjkkk"; } # KeePassXC
+        { id = "mafpmfcccpbjnhfhjnllmmalhifmlcie"; } # ...
+        { id = "bpoadfkcbjbfhfodiogcnhhhpibjhbnh"; } # 沉浸式翻译
+        { id = "cimiefiiaegbelhefglklhhakcgmhkai"; } # Plasma Integration
+        { id = "kdbmhfkmnlmbkgbabkdealhhbfhlmmon"; } # SteamDB
       ];
     };
     vscode = {
