@@ -89,6 +89,26 @@ in
         { id = "ocaahdebbfolfmndjeplogmgcagdmblk"; } # Chromium Web Store
       ];
     };
+    vscode = {
+      enable = true;
+      package = pkgs.vscodium;
+      extensions = with pkgs.vscode-marketplace; [
+        activitywatch.aw-watcher-vscode
+        alibaba-cloud.tongyi-lingma
+        dracula-theme.theme-dracula
+        esbenp.prettier-vscode
+        huacnlee.autocorrect
+        mhutchie.git-graph
+        ms-ceintl.vscode-language-pack-zh-hans
+        ms-vscode-remote.remote-ssh
+        ms-vscode.remote-explorer
+        pinage404.nix-extension-pack
+        redhat.vscode-xml
+        redhat.vscode-yaml
+        usernamehw.errorlens
+        vivaxy.vscode-conventional-commits
+      ];
+    };
     git = {
       enable = true;
       userName = "MCSeekeri";
