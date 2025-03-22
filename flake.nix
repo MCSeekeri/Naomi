@@ -87,6 +87,7 @@
     };
 
     daeuniverse.url = "github:daeuniverse/flake.nix";
+    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
 
   };
 
@@ -105,7 +106,12 @@
           modules = [
             (./hosts + "/${hostName}")
             inputs.nix-topology.nixosModules.default
-            { nixpkgs.overlays = [ mc-overlay ]; }
+            {
+              nixpkgs.overlays = [
+                inputs.nix-vscode-extensions.overlays.default
+                mc-overlay
+              ];
+            }
           ];
           specialArgs = { inherit inputs hostName; };
         };
