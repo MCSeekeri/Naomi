@@ -18,11 +18,13 @@
       "https://cache.garnix.io?priority=4"
       "https://nix-community.cachix.org?priority=5"
       "https://numtide.cachix.org?priority=6"
+      "https://devenv.cachix.org?priority=7"
     ];
     extra-trusted-public-keys = [
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
       "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="
+      "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
     ];
   };
 
@@ -88,6 +90,7 @@
 
     daeuniverse.url = "github:daeuniverse/flake.nix";
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
+    devenv.url = "github:cachix/devenv";
 
   };
 
@@ -96,6 +99,7 @@
       self,
       nixpkgs,
       nix-topology,
+      devenv,
       ...
     }@inputs:
     let
@@ -156,6 +160,14 @@
         geph5-client = pkgs.geph5-client;
         lain-kde-splashscreen = pkgs.lain-kde-splashscreen;
         aquanet = pkgs.aquanet;
+        devenv-up = self.devShells.x86_64-linux.default.config.procfileScript;
+        devenv-test = self.devShells.x86_64-linux.default.config.test;
+      };
+      devShells.x86_64-linux.default = devenv.lib.mkShell {
+        inherit inputs pkgs;
+        modules = [
+          ./devenv.nix
+        ];
       };
     };
 }
