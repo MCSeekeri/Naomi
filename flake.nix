@@ -112,6 +112,7 @@
       nixpkgs,
       nix-topology,
       devenv,
+      nixos-generators,
       ...
     }@inputs:
     let
@@ -172,14 +173,19 @@
         geph5-client = pkgs.geph5-client;
         lain-kde-splashscreen = pkgs.lain-kde-splashscreen;
         aquanet = pkgs.aquanet;
-        devenv-up = self.devShells.x86_64-linux.default.config.procfileScript;
-        devenv-test = self.devShells.x86_64-linux.default.config.test;
+        cuba = nixos-generators.nixosGenerate {
+          system = "x86_64-linux";
+          format = "install-iso";
+          modules = [
+            (./hosts + "/cuba")
+            { nixpkgs.overlays = [ mc-overlay ]; }
+          ];
+          specialArgs = { inherit inputs; };
+        };
       };
       devShells.x86_64-linux.default = devenv.lib.mkShell {
         inherit inputs pkgs;
-        modules = [
-          ./devenv.nix
-        ];
+        modules = [ ./devenv.nix ];
       };
     };
 }
