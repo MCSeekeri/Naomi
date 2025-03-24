@@ -4,25 +4,19 @@
   inputs,
   ...
 }:
-
-let
-  defaultFont = {
-    family = "Sarasa UI SC";
-    pointSize = 13;
-  };
-in
 {
-  imports = [ ../../modules/Home/fcitx5 ];
+  imports = [
+    ../../modules/Home/fcitx5
+    ../../modules/Home/plasma-manager
+    ../../modules/Home/browser/librewolf.nix
+    ../../modules/Home/browser/chromium.nix
+    ../../modules/Home/vscode.nix
+    ../../modules/Home/fish/tide.nix
+  ];
   home = {
     username = "mcseekeri";
     homeDirectory = "/home/mcseekeri";
     stateVersion = "24.11";
-    activation = {
-      TideConfigure =
-        lib.hm.dag.entryAfter [ "writeBoundary" ]
-          ''run ${pkgs.fish}/bin/fish -c "tide configure --auto --style=Rainbow --prompt_colors='16 colors' --show_time='24-hour format' --rainbow_prompt_separators=Angled --powerline_prompt_heads=Sharp --powerline_prompt_tails=Flat --powerline_prompt_style='Two lines, character and frame' --prompt_connection=Solid --powerline_right_prompt_frame=Yes --prompt_spacing=Sparse --icons='Many icons' --transient=Yes"'';
-    };
-    extraActivationPath = [ pkgs.babelfish ];
 
     packages = with pkgs; [
       # 桌面应用
@@ -47,30 +41,13 @@ in
   programs = {
     home-manager.enable = true;
     librewolf = {
-      enable = true;
-      # package = pkgs.librewolf;
-      languagePacks = [ "zh-CN" ];
-      policies = {
-        DisableTelemetry = true;
-        DisableFirefoxStudies = true;
-        Preferences = { };
-      };
       profiles = {
-        mcseekeri = {
-          settings = {
-            "extensions.autoDisableScopes" = 0;
-            "privacy.resistFingerprinting.letterboxing" = true;
-            "privacy.resistFingerprinting.autoDeclineNoUserInputCanvasPrompts" = true;
-          };
+        user = {
           extensions = with inputs.firefox-addons.packages.${pkgs.system}; [
             # https://discourse.nixos.org/t/firefox-extensions-with-home-manager/34108/4
-            ublock-origin
-            violentmonkey
             kiss-translator
             # aw-watcher-web
-            multi-account-containers
             private-relay
-            temporary-containers
             keepassxc-browser
             steam-database
           ];
@@ -78,11 +55,8 @@ in
       };
     };
     chromium = {
-      enable = true;
       package = pkgs.brave;
       extensions = [
-        { id = "cjpalhdlnbpafiamejdnhcphjbkeiagm"; } # ublock origin
-        { id = "jinjaccalgkegednnccohejagnlnfdag"; } # violentmonkey
         { id = "fpeoodllldobpkbkabpblcfaogecpndd"; } # Webrecoder
         { id = "pfnededegaaopdmhkdmcofjmoldfiped"; } # ZeroOmega
         { id = "chphlpgkkbolifaimnlloiipkdnihall"; } # OneTab
@@ -90,27 +64,17 @@ in
         { id = "eaoelafamejbnggahofapllmfhlhajdd"; } # B站空降助手
         { id = "oboonakemofpalcgghocfoadofidjkkk"; } # KeePassXC
         { id = "mafpmfcccpbjnhfhjnllmmalhifmlcie"; } # ...
-        { id = "bpoadfkcbjbfhfodiogcnhhhpibjhbnh"; } # 沉浸式翻译
-        { id = "cimiefiiaegbelhefglklhhakcgmhkai"; } # Plasma Integration
         { id = "kdbmhfkmnlmbkgbabkdealhhbfhlmmon"; } # SteamDB
       ];
     };
     vscode = {
-      enable = true;
       package = pkgs.vscodium;
       extensions = with pkgs.vscode-marketplace; [
         activitywatch.aw-watcher-vscode
         alibaba-cloud.tongyi-lingma
         dracula-theme.theme-dracula
         esbenp.prettier-vscode
-        huacnlee.autocorrect
-        mhutchie.git-graph
-        ms-ceintl.vscode-language-pack-zh-hans
-        ms-vscode-remote.remote-ssh
-        ms-vscode.remote-explorer
         pinage404.nix-extension-pack
-        redhat.vscode-xml
-        redhat.vscode-yaml
         usernamehw.errorlens
         vivaxy.vscode-conventional-commits
       ];
@@ -133,14 +97,8 @@ in
     plasma = {
       enable = true;
       overrideConfig = true;
-      resetFilesExclude = [
-        "baloofilerc"
-        "kactivitymanagerd-statsrc" # 不这么设置的话，添加常用程序的时候会卡死。
-      ];
       workspace = {
         # lookAndFeel = "Plasma-Overdose";
-        enableMiddleClickPaste = true;
-        clickItemTo = "select"; # 禁止历史倒车
         cursor.size = 36;
         splashScreen.theme = "Lain"; # I am falling, I am fading, I have lost it all
       };
@@ -276,18 +234,9 @@ in
       kwin = {
         virtualDesktops.number = 2;
         virtualDesktops.rows = 2;
-        effects = {
-          shakeCursor.enable = true;
-        };
       };
-      session = {
-        general.askForConfirmationOnLogout = true;
-        sessionRestore.restoreOpenApplicationsOnLogin = "startWithEmptySession"; # 不不不，不要看到上次开机干了啥
-      };
-      input.keyboard.numlockOnStartup = "on";
       powerdevil = {
         battery = {
-          powerButtonAction = "shutDown";
           dimDisplay = {
             idleTimeout = 60;
           };
@@ -296,38 +245,10 @@ in
             idleTimeoutWhenLocked = 60;
           };
           autoSuspend.idleTimeout = 180;
-          powerProfile = "balanced";
-        };
-        AC = {
-          powerButtonAction = "shutDown";
-        };
-        lowBattery = {
-          powerButtonAction = "shutDown";
         };
       };
       kscreenlocker = {
-        autoLock = true;
-        lockOnResume = true;
-        passwordRequired = true; # 显而易见
         timeout = 2;
-      };
-      fonts = {
-        # 重复设置太多，抽象一下
-        general = defaultFont;
-        fixedWidth = {
-          inherit (defaultFont) pointSize;
-          family = "Sarasa Mono SC";
-        };
-        small = {
-          inherit (defaultFont) family;
-          pointSize = 11;
-        };
-        toolbar = defaultFont;
-        menu = defaultFont;
-        windowTitle = defaultFont;
-      };
-      shortcuts = {
-        "kwin"."Kill Window" = "Meta+Ctrl+Esc";
       };
       configFile = {
         "kcminputrc"."Mouse"."X11LibInputXAccelProfileFlat" = true;
@@ -355,11 +276,6 @@ in
         "klipperrc"."General"."MaxClipItems" = 150;
         "krunnerrc"."PlasmaRunnerManager"."migrated" = true;
         "krunnerrc"."Plugins"."baloosearchEnabled" = true;
-        "kwinrc"."Wayland"."InputMethod" = {
-          value = "/run/current-system/sw/share/applications/fcitx5-wayland-launcher.desktop";
-          shellExpand = true;
-        };
-        "kwinrc"."Wayland"."VirtualKeyboardEnabled" = true;
         "kwinrc"."Xwayland"."Scale" = 1.25; # 适合这年头常见的 2560x1440 屏幕
         "kwinrc"."Xwayland"."XwaylandEavesdrops" = "Modifiers";
         # "kxkbrc"."Layout"."Options" = "terminate:ctrl_alt_bksp"; # Nuclear
@@ -384,5 +300,4 @@ in
       package = pkgs.kdePackages.kdeconnect-kde;
     };
   };
-  # TODO: 外观微调，常见软件的预配置
 }
