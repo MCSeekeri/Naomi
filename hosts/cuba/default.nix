@@ -103,7 +103,6 @@ in
   };
 
   system = {
-    stateVersion = "24.11";
     activationScripts.root-password = ''
       mkdir -p /var/shared
       cat /dev/urandom | tr -dc 'A-HJ-KMNP-Z2-9' | fold -w 4 | head -n 4 | paste -sd "-" - > /var/shared/root-password
@@ -138,7 +137,7 @@ in
     pkgs.rsync
     pkgs.disko
     pkgs.bore-cli
-    pkgs.geph.cli
+    pkgs.geph5-client
     pkgs.clash-rs
     pkgs.proxychains-ng
     pkgs.dae
@@ -156,25 +155,23 @@ in
 
   stylix = {
     enable = true;
-    targets = {
-      console.enable = true;
-      grub.enable = true;
-      plymouth.enable = true;
-      fish.enable = true;
-      kmscon.enable = true;
-    };
+    autoEnable = true;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/dracula.yaml";
   };
 
   # https://github.com/NixOS/nixpkgs/issues/219239
   programs = {
-    bash.interactiveShellInit = ''
+    fish.interactiveShellInit = ''
       watch --no-title --color ${network-status}/bin/network-status
     '';
     fish = {
       enable = true;
       useBabelfish = true;
     };
+  };
+
+  users.users.root = {
+    shell = pkgs.fish;
   };
 
   nix = {
