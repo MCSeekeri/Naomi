@@ -6,6 +6,7 @@
 }:
 {
   imports = [
+    ../../modules/Home/userdir.nix
     ../../modules/Home/fcitx5
     ../../modules/Home/plasma-manager
     ../../modules/Home/browser/librewolf.nix
@@ -299,5 +300,14 @@
       enable = true;
       package = pkgs.kdePackages.kdeconnect-kde;
     };
+  };
+  stylix = {
+    enable = true;
+    image = pkgs.fetchurl {
+      url = "https://github.com/MCSeekeri/storage/raw/main/wallpaper/ahh_a_snake.jpg";
+      sha256 = "1gifgvnp5dr0hzj1nif5448jd4vclppnfw1msvxyicb4m1k1hibm";
+    }; # https://www.deviantart.com/chasingartwork/art/ahh-a-snake-383715432
+    polarity = "dark";
+    base16Scheme = "${pkgs.base16-schemes}/share/themes/rose-pine-moon.yaml";
   };
 }
