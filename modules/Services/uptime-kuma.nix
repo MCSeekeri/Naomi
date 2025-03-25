@@ -1,14 +1,17 @@
-{ ... }:
+{ config, lib, ... }:
+
 {
   services.uptime-kuma = {
     enable = true;
-    # settings = {
-    #   UPTIME_KUMA_CLOUDFLARED_TOKEN = "$(cat ${config.sops.secrets.uptime-kuma-cf-token.path})";
-    # };
-    # 我之后再修好这个
+    settings = {
+      UPTIME_KUMA_CLOUDFLARED_TOKEN = "$(cat ${
+        config.sops.secrets."cf-token-${config.networking.hostName}".path
+      })";
+    };
   };
-  # sops.secrets.uptime-kuma-cf-token = {
-  #   sopsFile = ../../secrets/services.yaml;
-  #   neededForUsers = true;
-  # };
+
+  sops.secrets."cf-token-${config.networking.hostName}" = {
+    sopsFile = ../../secrets/services/uptime-kuma.yaml;
+    neededForUsers = true;
+  };
 }

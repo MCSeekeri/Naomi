@@ -1,16 +1,19 @@
-{ config, ... }:
+{ config, lib, ... }:
 {
   services.cloudflared = {
     enable = true;
     tunnels = {
-      "Naomi" = {
-        credentialsFile = "${config.sops.secrets.cloudflared-creds.path}"; # 有点问题，之后修
+      "${config.networking.hostName}" = {
+        credentialsFile = "${config.sops.secrets."cloudflare-tunnel-${config.networking.hostName}".path}";
         default = "http_status:404";
       };
     };
   };
-  sops.secrets.cloudflared-creds = {
-    sopsFile = ../../secrets/services.yaml;
+  # 虽然虽然官方仪表板配置的方式不那么"Nix 风味"，但是我个人认为隧道这种配置最好还是能够随时调整，适应不同情况。
+  # 记得在启动之后迁移隧道，理论上不会影响现有功能。
+
+  sops.secrets."cloudflare-tunnel-${config.networking.hostName}" = {
+    sopsFile = ../../secrets/services/cloudflare.yaml;
     owner = "cloudflared";
     group = "cloudflared";
   };
