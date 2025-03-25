@@ -1,7 +1,7 @@
 keys:
   - &user_mcseekeri age1pjfem9kpmexdtucmxvzvhvt9uz4wk29q6l3ap0sv4tvg49mhj4espup3wk
   - &manhattan age12gdm5t5d7q2h8ysmn3r2f9hj6cwj9rzc8y9syguf2yp8s9272ggq6jgyd9
-  - &base age1k2apmcsa5hhpfrp89dedafp9gdxk5hac4s3vufu8khzmrf0msugse089vx
+  - &costarica age1jh7ggpp3qx0p35en6vsqyna8fz4j5lwap5p8u63qx5xp97uax3hqsn522x
 creation_rules:
   - path_regex: "secrets/.*\\.(yaml|json|env|ini)$"
     # 冷知识普及时间，yml 这种后现代缩写主要是为了兼容某个最长只能有三位扩展名的老登系统。
@@ -10,4 +10,4 @@ creation_rules:
       - age:
           - *user_mcseekeri
           - *manhattan
-          - *base
+          - *costarica
