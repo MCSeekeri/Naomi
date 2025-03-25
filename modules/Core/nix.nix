@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ inputs, lib, ... }:
 {
   # 设置软件源
   nix = {
@@ -16,11 +16,13 @@
         "https://cache.garnix.io?priority=4"
         "https://nix-community.cachix.org?priority=5"
         "https://numtide.cachix.org?priority=6"
+        "https://devenv.cachix.org?priority=7"
       ];
       trusted-public-keys = [
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
         "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="
+        "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
       ];
       # 启动 Flake，勿动，除非你知道你在做什么
       # https://nixos.wiki/wiki/Flakes
@@ -41,5 +43,4 @@
   nixpkgs.config = {
     allowUnfree = true;
   };
-  programs.nix-ld.enable = true;
 }

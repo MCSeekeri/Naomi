@@ -85,7 +85,6 @@
       nmap
       socat
       openvpn
-      geph.cli
       openssl
       dnsutils
       mariadb.client # 仅安装客户端，而非整个数据库

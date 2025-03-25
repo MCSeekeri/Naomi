@@ -16,10 +16,11 @@
     ../../modules/Desktop/gaming.nix
     ../../modules/Desktop/fcitx5.nix
     ../../modules/Desktop/clash.nix
-    ../../modules/Desktop/stylix.nix
 
     ../../modules/Services/cockpit.nix
     ../../modules/Services/uptime-kuma.nix
+    ../../modules/Services/cloudflared.nix
+    ../../modules/Services/ollama.nix
 
     ../../modules/Games/aquadx.nix
 

@@ -6,7 +6,6 @@
     inputs.arion.nixosModules.arion
     inputs.daeuniverse.nixosModules.dae
     # inputs.daeuniverse.nixosModules.daed
-    ./avahi.nix
     ./boot.nix
     ./dae
     ./fonts.nix
@@ -19,6 +18,7 @@
     ./programs.nix
     ./sops.nix
     ./ssh.nix
+    ./stylix.nix
     ./tailscale.nix
     ./zram.nix
   ];
