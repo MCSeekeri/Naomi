@@ -29,6 +29,6 @@
   };
   services.loki = {
     enable = true;
-    configFile = ./loki-config.yml;
+    configFile = ./loki-config.yaml;
   };
 }
