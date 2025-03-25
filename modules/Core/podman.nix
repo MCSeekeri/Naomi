@@ -4,7 +4,7 @@
     oci-containers.backend = "podman";
     containers = {
       enable = true;
-      # 迟早得改，等普及代理再说
+      # 用大鹅而不是设置代理，能避免一些不必要的麻烦
       # containersConf.settings = {
       #   engine = {
       #     env = [

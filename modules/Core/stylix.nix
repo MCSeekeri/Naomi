@@ -6,16 +6,11 @@
     enable = true;
     autoEnable = true;
     image = pkgs.fetchurl {
-      url = "https://github.com/MCSeekeri/storage/raw/main/wallpaper/ahh_a_snake.jpg";
-      sha256 = "1gifgvnp5dr0hzj1nif5448jd4vclppnfw1msvxyicb4m1k1hibm";
-    }; # https://www.deviantart.com/chasingartwork/art/ahh-a-snake-383715432
-    base16Scheme = "${pkgs.base16-schemes}/share/themes/dracula.yaml";
+      url = "https://github.com/MCSeekeri/storage/raw/main/wallpaper/nixos-catppuccin-macchiato-rainbow.png";
+      sha256 = "19z7zvj8qci156c35n5l5s9398dz30xj0zjk2fwkwlrk6c3ijpwv";
+    }; # https://github.com/lunik1/nix-wallpaper
+    base16Scheme = "${pkgs.base16-schemes}/share/themes/rebecca.yaml";
     polarity = "dark";
-    cursor = {
-      name = "macOS";
-      package = pkgs.apple-cursor;
-      size = 36;
-    };
     fonts = {
       sizes = {
         applications = 14;
