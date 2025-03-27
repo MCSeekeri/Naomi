@@ -2,17 +2,18 @@
   pkgs,
   lib,
   inputs,
+  self,
   ...
 }:
 {
   imports = [
-    ../../modules/Home/userdir.nix
-    ../../modules/Home/fcitx5
-    ../../modules/Home/plasma-manager
-    ../../modules/Home/browser/librewolf.nix
-    ../../modules/Home/browser/chromium.nix
-    ../../modules/Home/vscode.nix
-    ../../modules/Home/fish/tide.nix
+    "${self}/modules/Home/userdir.nix"
+    "${self}/modules/Home/fcitx5"
+    "${self}/modules/Home/plasma-manager"
+    "${self}/modules/Home/browser/librewolf.nix"
+    "${self}/modules/Home/browser/chromium.nix"
+    "${self}/modules/Home/vscode.nix"
+    "${self}/modules/Home/fish/tide.nix"
   ];
   home = {
     username = "mcseekeri";

@@ -1,6 +1,6 @@
-{ pkgs, ... }:
+{ pkgs, self, ... }:
 {
-  imports = [ ../Containers/AquaDX ];
+  imports = [ "${self}/modules/Containers/AquaDX" ];
   services.nginx = {
     virtualHosts."aquadx" = {
       listen = [

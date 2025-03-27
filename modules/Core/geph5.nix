@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  self,
   ...
 }:
 {
@@ -26,6 +27,6 @@
   sops.secrets.geph5-config = {
     format = "yaml";
     key = "";
-    sopsFile = ../../secrets/geph5.yaml;
+    sopsFile = "${self}/secrets/geph5.yaml";
   };
 }

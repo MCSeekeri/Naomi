@@ -1,20 +1,20 @@
-{ lib, ... }:
+{ lib, self, ... }:
 {
   imports = [
     ./disko-config.nix
-    ../../modules/Core
+    "${self}/modules/Core"
 
-    ../../modules/Server/firewall.nix
-    ../../modules/Server/clamav.nix
-    ../../modules/Server/hardened.nix
-    ../../modules/Server/virt.nix
-    ../../modules/Desktop/gui.nix
-    ../../modules/Desktop/sunshine.nix
-    ../../modules/Desktop/programs.nix
-    ../../modules/Desktop/gaming.nix
-    ../../modules/Hardware/nvidia_laptop.nix
+    "${self}/modules/Server/firewall.nix"
+    "${self}/modules/Server/clamav.nix"
+    "${self}/modules/Server/hardened.nix"
+    "${self}/modules/Server/virt.nix"
+    "${self}/modules/Desktop/gui.nix"
+    "${self}/modules/Desktop/sunshine.nix"
+    "${self}/modules/Desktop/programs.nix"
+    "${self}/modules/Desktop/gaming.nix"
+    "${self}/modules/Hardware/nvidia_laptop.nix"
 
-    ../../users/mcseekeri
+    "${self}/users/mcseekeri"
   ];
 
   # 网络配置

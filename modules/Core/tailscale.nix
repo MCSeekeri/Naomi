@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, self, ... }:
 {
   services = {
     tailscale = {
@@ -10,6 +10,6 @@
   };
   # 90 天一换，别忘记了……
   sops.secrets."auth-key" = {
-    sopsFile = ../../secrets/services/tailscale.yaml;
+    sopsFile = "${self}/secrets/services/tailscale.yaml";
   };
 }

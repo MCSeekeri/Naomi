@@ -1,4 +1,9 @@
-{ pkgs, lib, ... }:
+{
+  pkgs,
+  lib,
+  self,
+  ...
+}:
 
 let
   defaultFont = {
@@ -7,7 +12,7 @@ let
   };
 in
 {
-  imports = [ ../../modules/Home/fcitx5 ];
+  imports = [ "${self}/modules/Home/fcitx5" ];
   home = {
     username = "remote";
     homeDirectory = "/home/remote";
