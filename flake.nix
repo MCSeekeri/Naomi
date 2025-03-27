@@ -130,7 +130,7 @@
               ];
             }
           ];
-          specialArgs = { inherit inputs hostName; };
+          specialArgs = { inherit self inputs hostName; };
         };
 
       # 为拓扑定制的 pkgs 实例
@@ -180,7 +180,7 @@
             (./hosts + "/cuba")
             { nixpkgs.overlays = [ mc-overlay ]; }
           ];
-          specialArgs = { inherit inputs; };
+          specialArgs = { inherit self inputs; };
         };
       };
       devShells.x86_64-linux.default = devenv.lib.mkShell {

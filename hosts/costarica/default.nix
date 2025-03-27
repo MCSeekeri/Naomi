@@ -1,21 +1,21 @@
-{ ... }:
+{ self, ... }:
 {
   imports = [
     ./disko-config.nix
 
-    ../../modules/Core
+    "${self}/modules/Core"
 
-    ../../modules/Server/firewall.nix
-    ../../modules/Server/hardened.nix
-    ../../modules/Desktop/gui.nix
-    ../../modules/Desktop/programs.nix
-    ../../modules/Desktop/fcitx5.nix
+    "${self}/modules/Server/firewall.nix"
+    "${self}/modules/Server/hardened.nix"
+    "${self}/modules/Desktop/gui.nix"
+    "${self}/modules/Desktop/programs.nix"
+    "${self}/modules/Desktop/fcitx5.nix"
 
-    ../../modules/Services/nginx.nix
+    "${self}/modules/Services/nginx.nix"
 
-    ../../modules/Games/aquadx.nix
+    "${self}/modules/Games/aquadx.nix"
 
-    ../../users/mihomo
+    "${self}/users/mihomo"
   ];
 
   # 网络配置

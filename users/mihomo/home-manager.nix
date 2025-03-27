@@ -2,6 +2,7 @@
   pkgs,
   lib,
   inputs,
+  self,
   ...
 }:
 
@@ -12,7 +13,7 @@ let
   };
 in
 {
-  imports = [ ../../modules/Home/fcitx5 ];
+  imports = [ "${self}/modules/Home/fcitx5" ];
   home = {
     username = "mihomo";
     homeDirectory = "/home/mihomo";

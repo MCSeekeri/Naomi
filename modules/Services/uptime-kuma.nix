@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  self,
+  ...
+}:
 
 {
   services.uptime-kuma = {
@@ -11,7 +16,7 @@
   };
 
   sops.secrets."cf-token-${config.networking.hostName}" = {
-    sopsFile = ../../secrets/services/uptime-kuma.yaml;
+    sopsFile = "${self}/secrets/services/uptime-kuma.yaml";
     neededForUsers = true;
   };
 }

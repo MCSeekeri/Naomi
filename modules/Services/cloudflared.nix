@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  self,
+  ...
+}:
 {
   services.cloudflared = {
     enable = true;
@@ -13,7 +18,7 @@
   # 记得在启动之后迁移隧道，理论上不会影响现有功能。
 
   sops.secrets."cloudflare-tunnel-${config.networking.hostName}" = {
-    sopsFile = ../../secrets/services/cloudflare.yaml;
+    sopsFile = "${self}/secrets/services/cloudflare.yaml";
     owner = "cloudflared";
     group = "cloudflared";
   };

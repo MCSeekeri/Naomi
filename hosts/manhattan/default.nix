@@ -1,30 +1,30 @@
-{ lib, ... }:
+{ lib, self, ... }:
 {
   imports = [
     ./disko-config.nix
 
-    ../../modules/Core
+    "${self}/modules/Core"
 
-    ../../modules/Server/firewall.nix
-    ../../modules/Server/clamav.nix
-    ../../modules/Server/hardened.nix
-    ../../modules/Server/failsafe.nix
-    ../../modules/Server/lxd.nix
-    ../../modules/Desktop/gui.nix
-    ../../modules/Desktop/sunshine.nix
-    ../../modules/Desktop/programs.nix
-    ../../modules/Desktop/gaming.nix
-    ../../modules/Desktop/fcitx5.nix
-    ../../modules/Desktop/clash.nix
+    "${self}/modules/Server/firewall.nix"
+    "${self}/modules/Server/clamav.nix"
+    "${self}/modules/Server/hardened.nix"
+    "${self}/modules/Server/failsafe.nix"
+    "${self}/modules/Server/lxd.nix"
+    "${self}/modules/Desktop/gui.nix"
+    "${self}/modules/Desktop/sunshine.nix"
+    "${self}/modules/Desktop/programs.nix"
+    "${self}/modules/Desktop/gaming.nix"
+    "${self}/modules/Desktop/fcitx5.nix"
+    "${self}/modules/Desktop/clash.nix"
 
-    ../../modules/Services/cockpit.nix
-    ../../modules/Services/uptime-kuma.nix
-    ../../modules/Services/cloudflared.nix
-    ../../modules/Services/ollama.nix
+    "${self}/modules/Services/cockpit.nix"
+    "${self}/modules/Services/uptime-kuma.nix"
+    "${self}/modules/Services/cloudflared.nix"
+    "${self}/modules/Services/ollama.nix"
 
-    ../../modules/Games/aquadx.nix
+    "${self}/modules/Games/aquadx.nix"
 
-    ../../users/mcseekeri
+    "${self}/users/mcseekeri"
   ];
 
   # 网络配置
