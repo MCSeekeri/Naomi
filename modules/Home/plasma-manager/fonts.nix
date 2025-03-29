@@ -12,7 +12,7 @@ in
         general = defaultFont;
         fixedWidth = {
           inherit (defaultFont) pointSize;
-          family = "Sarasa Mono SC";
+          family = "Maple Mono SC NF";
         };
         small = {
           inherit (defaultFont) family;

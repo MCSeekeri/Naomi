@@ -56,13 +56,9 @@ in
       autologinUser = lib.mkForce "root";
       fonts = lib.mkForce [
         {
-          name = "FiraCode Nerd Font Mono";
-          package = pkgs.fira-code-nerdfont;
-        }
-        {
           # 一个中文字体的体积比一堆工具加起来还大，难办……
-          name = "Noto Sans CJK SC";
-          package = pkgs.noto-fonts-cjk-sans;
+          package = pkgs.maple-mono-SC-NF;
+          name = "Maple Mono SC NF";
         }
       ];
       extraConfig = lib.mkForce "font-size=12";
