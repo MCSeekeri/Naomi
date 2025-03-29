@@ -21,6 +21,7 @@
     "${self}/modules/Services/uptime-kuma.nix"
     "${self}/modules/Services/cloudflared.nix"
     "${self}/modules/Services/ollama.nix"
+    "${self}/modules/Services/searx.nix"
 
     "${self}/modules/Games/aquadx.nix"
 
