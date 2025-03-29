@@ -19,16 +19,16 @@
         terminal = 14;
       };
       sansSerif = {
-        package = pkgs.sarasa-gothic;
-        name = "Sarasa Gothic SC";
+        package = pkgs.source-han-sans;
+        name = "Source Han Sans SC";
       };
       serif = {
-        package = pkgs.noto-fonts-cjk-serif;
-        name = "Noto Serif CJK SC";
+        package = pkgs.source-han-serif;
+        name = "Source Han Serif SC";
       };
       monospace = {
-        package = pkgs.sarasa-gothic;
-        name = "Sarasa Mono SC";
+        package = pkgs.maple-mono-SC-NF;
+        name = "Maple Mono SC NF";
       };
       emoji = {
         package = pkgs.noto-fonts-emoji;

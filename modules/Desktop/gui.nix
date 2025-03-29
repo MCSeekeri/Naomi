@@ -19,7 +19,19 @@
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [ kdePackages.xdg-desktop-portal-kde ];
+    config.common.default = "kde";
   };
   qt.platformTheme = "kde";
   security.rtkit.enable = true;
+  fonts = {
+    packages = with pkgs; [
+      material-design-icons
+      font-awesome
+      noto-fonts-emoji
+      fira-code
+      jetbrains-mono
+      sarasa-gothic
+      cascadia-code
+    ];
+  };
 }
