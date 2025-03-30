@@ -87,7 +87,7 @@
     };
   };
   networking.firewall.allowedTCPPorts = [
-   (lib.head config.services.nginx.virtualHosts."SearXNG".listen).port
+    (lib.head config.services.nginx.virtualHosts."SearXNG".listen).port
   ];
   users.groups.searx.members = [ "nginx" ];
   services.nginx = {

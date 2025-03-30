@@ -30,7 +30,7 @@
       source-han-serif
       noto-fonts-emoji
       maple-mono-SC-NF
-      # TODO)) 等 7.x 的 Maple Mono 发布之后还得重写所有的字体配置
+      # [TODO] 等 7.x 的 Maple Mono 发布之后还得重写所有的字体配置
       # maple-mono.Normal-NF-CN-unhinted
       unifont
 

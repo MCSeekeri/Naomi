@@ -8,6 +8,6 @@
       enable = true;
       openFirewall = true;
     };
-    # TODO:预置配置文件
+    # [TODO]:预置配置文件
   };
 }
