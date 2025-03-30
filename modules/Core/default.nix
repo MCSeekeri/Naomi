@@ -42,4 +42,9 @@
     graphics.enable32Bit = true;
   };
 
+  services = {
+    power-profiles-daemon.enable = true;
+    upower.enable = true;
+  };
+
 }
