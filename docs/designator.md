@@ -1,4 +1,5 @@
 # 预置的设备配置及代号
+
 - `manhattan`: Oracle VirtualBox 虚拟机，目前主要的测试对象。
 - `cyprus`: Lenovo Y7000P，用于开发的笔记本，同时也是主要游戏设备。
 - `seychelles`: Lenovo ThinkStation PX，用于模型训练的工作站。
@@ -6,6 +7,7 @@
 - `cuba`: 用于生成 Live CD 的配置，目前仅用于测试。
 
 # 自定义
+
 如果您需要添加新的设备配置和账户配置，请在 Fork 之后修改。\
 Naomi 设计之初就考虑了最终用户自定义的情况，因此大部分配置都是模块，请自行按需导入。\
 `hosts/<代号>/default.nix`写引入的模块，`hosts/<代号>/disko-config.nix`写磁盘分区配置，借鉴现有的范例即可。\
