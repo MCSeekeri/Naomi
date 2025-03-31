@@ -125,12 +125,9 @@
   };
   security = {
     auditd.enable = true;
-    chromiumSuidSandbox.enable = true; # Chrome 沙盒化
+    # chromiumSuidSandbox.enable = true; # Chrome 沙盒化 似乎不可用于 ungoogled-chromium
     forcePageTableIsolation = true; # 页表隔离，完全避免熔断漏洞
     # lockKernelModules = true # 启动后完全禁止内核模块加载，太激进了……
-    sudo-rs.enable = true; # 锈批！
-    sudo-rs.execWheelOnly = true;
-    # sudo.execWheelOnly = true; # 只允许 wheel 组执行 sudo
   };
   # environment.memoryAllocator.provider = "graphene-hardened"; # 想给自己找点刺激就打开这个。
 }
