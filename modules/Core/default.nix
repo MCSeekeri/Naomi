@@ -47,4 +47,11 @@
     upower.enable = true;
   };
 
+  security = {
+    sudo-rs = {
+      enable = true;
+      execWheelOnly = true; # https://unix.stackexchange.com/questions/1262/where-did-the-wheel-group-get-its-name
+    };
+  };
+
 }
