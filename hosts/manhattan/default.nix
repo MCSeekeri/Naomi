@@ -9,7 +9,6 @@
     "${self}/modules/Server/clamav.nix"
     # "${self}/modules/Server/hardened.nix"
     "${self}/modules/Server/failsafe.nix"
-    "${self}/modules/Server/lxd.nix"
     "${self}/modules/Desktop/gui.nix"
     "${self}/modules/Desktop/sunshine.nix"
     "${self}/modules/Desktop/programs.nix"
