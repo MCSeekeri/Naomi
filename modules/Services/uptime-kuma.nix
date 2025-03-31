@@ -1,9 +1,4 @@
-{
-  config,
-  lib,
-  self,
-  ...
-}:
+{ config, self, ... }:
 
 {
   services.uptime-kuma = {

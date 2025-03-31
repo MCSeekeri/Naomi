@@ -1,5 +1,4 @@
 {
-  lib,
   rustPlatform,
   fetchFromGitHub,
   pkg-config,
@@ -8,7 +7,6 @@
   jemalloc,
   sqlite,
   vulkan-loader,
-  stdenv,
   wayland,
 }:
 
