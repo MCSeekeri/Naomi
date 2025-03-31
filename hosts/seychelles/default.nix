@@ -7,7 +7,6 @@
     "${self}/modules/Server/firewall.nix"
     "${self}/modules/Server/clamav.nix"
     "${self}/modules/Server/hardened.nix"
-    "${self}/modules/Server/virt.nix"
     "${self}/modules/Server/failsafe.nix"
     "${self}/modules/Desktop/gui.nix"
     "${self}/modules/Desktop/programs.nix"

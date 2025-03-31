@@ -62,25 +62,22 @@
       btrfs-progs
       ntfs3g
       # Nix 相关
-      nix-visualize
-      nix-output-monitor
       nixfmt-rfc-style
       inputs.nix-alien.packages.${system}.nix-alien
       inputs.home-manager.packages.${pkgs.system}.default
       nix-update
-      hydra
-      vulnix
       nix-du
       nix-tree
       # 终端优化
       babelfish
       bash-completion
-      meslo-lgs-nf
       speedtest-cli
       killall
       fishPlugins.tide
       fishPlugins.done
       fishPlugins.autopair
+      bat
+      fd
       # 网络工具
       nmap
       socat
@@ -102,7 +99,6 @@
       iftop
       conntrack-tools
       quota
-      quickemu
     ];
   };
 }
