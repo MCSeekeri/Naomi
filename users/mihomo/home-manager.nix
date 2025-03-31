@@ -1,11 +1,4 @@
-{
-  pkgs,
-  lib,
-  inputs,
-  self,
-  ...
-}:
-
+{ pkgs, self, ... }:
 let
   defaultFont = {
     family = "Sarasa UI SC";
