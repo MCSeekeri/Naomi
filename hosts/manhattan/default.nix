@@ -7,7 +7,7 @@
 
     "${self}/modules/Server/firewall.nix"
     "${self}/modules/Server/clamav.nix"
-    "${self}/modules/Server/hardened.nix"
+    # "${self}/modules/Server/hardened.nix"
     "${self}/modules/Server/failsafe.nix"
     "${self}/modules/Server/lxd.nix"
     "${self}/modules/Desktop/gui.nix"
@@ -18,14 +18,18 @@
     "${self}/modules/Desktop/clash.nix"
     "${self}/modules/Desktop/adb.nix"
     "${self}/modules/Desktop/cups.nix"
+    "${self}/modules/Desktop/bluetooth.nix"
 
     "${self}/modules/Services/cockpit.nix"
     "${self}/modules/Services/uptime-kuma.nix"
     "${self}/modules/Services/cloudflared.nix"
     "${self}/modules/Services/ollama.nix"
     "${self}/modules/Services/searx.nix"
+    "${self}/modules/Services/archisteamfarm.nix"
+    # "${self}/modules/Services/privatebin.nix"
 
     "${self}/modules/Games/aquadx.nix"
+    "${self}/modules/Games/retro.nix"
 
     "${self}/users/mcseekeri"
   ];
