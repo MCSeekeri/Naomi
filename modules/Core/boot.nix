@@ -14,5 +14,11 @@
       };
     };
     tmp.cleanOnBoot = true;
+    kernelParams = [
+      "zswap.enabled=1"
+      "zswap.max_pool_percent=50"
+      "zswap.compressor=zstd"
+      "zswap.zpool=zsmalloc"
+    ];
   };
 }
