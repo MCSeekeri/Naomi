@@ -7,13 +7,13 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "aquanet";
-  version = "1dcaddb";
+  version = "a6837f4";
 
   src = fetchFromGitHub {
     owner = "MewoLab";
     repo = "AquaDX";
-    rev = "1dcaddb4c4136557127a9ea38f3516da70edc1f9";
-    hash = "sha256-5PooG3RjmHtKG3Q2QQgKXUMK6UE+27RQhHjhco5l2ZE=";
+    rev = "a6837f4555d2dfdcb093640a1e421ae5c721d0e0";
+    hash = "sha256-/o/lHRuqeXQshU2AusyEDp01RyBIImk4ThvryRFSUrs=";
   };
 
   nativeBuildInputs = with pkgs; [
@@ -44,7 +44,7 @@ stdenv.mkDerivation (finalAttrs: {
 
   meta = {
     description = "A certain magical arcade server";
-    homepage = "https://github.com/MewoLab/AquaDX/tree/1dcaddb4c4136557127a9ea38f3516da70edc1f9/AquaNet";
+    homepage = "https://github.com/MewoLab/AquaDX/tree/v1-dev/AquaNet";
     license = lib.licenses.cc-by-nc-sa-40;
   };
 })
