@@ -26,9 +26,12 @@
     "${self}/modules/Services/searx.nix"
     "${self}/modules/Services/archisteamfarm.nix"
     # "${self}/modules/Services/privatebin.nix"
+    "${self}/modules/Services/misskey.nix"
 
     "${self}/modules/Games/aquadx.nix"
     "${self}/modules/Games/retro.nix"
+
+    "${self}/modules/Containers/peerbanhelper.nix"
 
     "${self}/users/mcseekeri"
   ];
