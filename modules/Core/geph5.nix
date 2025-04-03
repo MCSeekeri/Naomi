@@ -5,7 +5,6 @@
   ...
 }:
 {
-
   systemd = {
     tmpfiles.rules = [ "d /root/.config 0755 root root" ];
     services.geph5-client = {

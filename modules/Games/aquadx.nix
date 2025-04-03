@@ -18,7 +18,6 @@
       locations."/d/" = {
         proxyPass = "https://aquadx.net/d/";
       };
-
     };
   };
 

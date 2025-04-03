@@ -1,5 +1,4 @@
 { config, self, ... }:
-
 {
   services.uptime-kuma = {
     enable = true;

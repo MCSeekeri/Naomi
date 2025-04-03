@@ -9,7 +9,6 @@
   vulkan-loader,
   wayland,
 }:
-
 rustPlatform.buildRustPackage rec {
   pname = "geph5";
   version = "v0.2.36";

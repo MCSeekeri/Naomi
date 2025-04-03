@@ -293,7 +293,6 @@
         "dolphin/view_properties/global/.directory"."Settings"."HiddenFilesShown" = true;
       };
     };
-
   };
   services = {
     kdeconnect = {

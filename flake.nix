@@ -97,7 +97,6 @@
       url = "github:nix-community/nix-vscode-extensions";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
   };
 
   outputs =
@@ -141,7 +140,6 @@
         config.allowUnfree = true;
         overlays = [ mc-overlay ];
       };
-
     in
     {
       nixosConfigurations = {
@@ -190,6 +188,7 @@
           fh
           libressl # openssl rand -hex 64
           deadnix
+          alejandra
         ];
 
         shellHook = ''
