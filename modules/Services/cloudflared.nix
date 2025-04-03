@@ -4,7 +4,7 @@
     enable = true;
     tunnels = {
       "${config.networking.hostName}" = {
-        credentialsFile = "${config.sops.secrets."cloudflare-tunnel-${config.networking.hostName}".path}";
+        credentialsFile = config.sops.secrets."cloudflare-tunnel-${config.networking.hostName}".path;
         default = "http_status:404";
       };
     };

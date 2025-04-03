@@ -4,7 +4,6 @@
   stdenv,
   fetchFromGitHub,
 }:
-
 stdenv.mkDerivation (finalAttrs: {
   pname = "aquanet";
   version = "a6837f4";
