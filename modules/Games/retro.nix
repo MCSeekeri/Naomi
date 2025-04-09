@@ -34,5 +34,8 @@
     dsda-launcher
     gzdoom
     ecwolf
+
+    # 640KiB
+    dosbox-x
   ];
 }

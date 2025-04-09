@@ -5,6 +5,8 @@
 
     "${self}/modules/Core"
 
+    "${self}/modules/Hardware/intel.nix"
+
     "${self}/modules/Server/firewall.nix"
     "${self}/modules/Server/clamav.nix"
     # "${self}/modules/Server/hardened.nix"
@@ -27,6 +29,7 @@
     "${self}/modules/Services/archisteamfarm.nix"
     # "${self}/modules/Services/privatebin.nix"
     "${self}/modules/Services/misskey.nix"
+    "${self}/modules/Services/glances.nix"
 
     "${self}/modules/Games/aquadx.nix"
     "${self}/modules/Games/retro.nix"

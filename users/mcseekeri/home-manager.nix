@@ -7,6 +7,7 @@
 {
   imports = [
     "${self}/modules/Home/userdir.nix"
+    "${self}/modules/Home/direnv.nix"
     "${self}/modules/Home/fcitx5"
     "${self}/modules/Home/plasma-manager"
     "${self}/modules/Home/browser/librewolf.nix"
@@ -24,6 +25,7 @@
       thunderbird
       keepassxc
       qq
+      wechat-uos
       wpsoffice-cn
       motrix
       kdePackages.kdenlive
