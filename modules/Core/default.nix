@@ -39,7 +39,6 @@
   };
   hardware = {
     enableAllFirmware = true;
-    graphics.enable32Bit = true;
   };
 
   services = {
