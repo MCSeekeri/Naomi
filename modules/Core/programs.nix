@@ -67,6 +67,7 @@
       inputs.home-manager.packages.${pkgs.system}.default
       nix-update
       nix-du
+      graphviz # nix-du -s=500MB | dot -Tsvg > store.svg
       nix-tree
       # 终端优化
       babelfish

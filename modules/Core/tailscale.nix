@@ -12,4 +12,10 @@
   sops.secrets."auth-key" = {
     sopsFile = "${self}/secrets/services/tailscale.yaml";
   };
+  boot = {
+    kernel.sysctl = {
+      "net.ipv4.ip_forward" = 1;
+      "net.ipv6.conf.all.forwarding" = 1;
+    };
+  };
 }

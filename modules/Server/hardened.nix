@@ -75,8 +75,6 @@
     kernel.sysctl = {
       # 网络
       # "net.core.bpf_jit_enable" = false; # 禁用 bpf() JIT 防止喷射攻击 # 大鹅需要这个，暂时不能设置
-      "net.core.rmem_max" = 12582912; # https://github.com/quic-go/quic-go/wiki/UDP-Buffer-Sizes
-      "net.core.wmem_max" = 8388608;
 
       "net.ipv4.conf.all.accept_redirects" = false;
       "net.ipv4.conf.all.accept_source_route" = 0;
