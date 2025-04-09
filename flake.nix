@@ -10,6 +10,7 @@
     connect-timeout = 20;
     http-connections = 64;
     max-substitution-jobs = 32;
+    max-jobs = "auto";
     builders-use-substitutes = true;
     extra-substituters = [
       "https://mirrors.ustc.edu.cn/nix-channels/store?priority=1"
@@ -28,6 +29,9 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11"; # 官方源
+    flake-utils.url = "github:numtide/flake-utils";
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    flake-compat.url = "github:edolstra/flake-compat";
 
     home-manager = {
       url = "github:nix-community/home-manager/release-24.11";
@@ -36,13 +40,18 @@
 
     plasma-manager = {
       url = "github:nix-community/plasma-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.home-manager.follows = "home-manager";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        home-manager.follows = "home-manager";
+      };
     };
 
     nix-alien = {
       url = "github:thiagokokada/nix-alien";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-compat.follows = "flake-compat";
+      };
     };
 
     nixos-generators = {
@@ -63,7 +72,11 @@
 
     nix-minecraft = {
       url = "github:Infinidoge/nix-minecraft";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-utils.follows = "flake-utils";
+        flake-compat.follows = "flake-compat";
+      };
     };
 
     firefox-addons = {
@@ -73,7 +86,10 @@
 
     nix-topology = {
       url = "github:oddlama/nix-topology";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-utils.follows = "flake-utils";
+      };
     };
 
     stylix = {
@@ -81,21 +97,33 @@
       inputs = {
         home-manager.follows = "home-manager";
         nixpkgs.follows = "nixpkgs";
+        flake-utils.follows = "flake-utils";
+        flake-compat.follows = "flake-compat";
       };
     };
 
     arion = {
       url = "github:hercules-ci/arion";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
+      };
     };
 
     daeuniverse = {
       url = "github:daeuniverse/flake.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
+      };
     };
+
     nix-vscode-extensions = {
       url = "github:nix-community/nix-vscode-extensions";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-utils.follows = "flake-utils";
+      };
     };
   };
 
@@ -108,10 +136,11 @@
       ...
     }@inputs:
     let
+      system = "x86_64-linux";
       mkHost =
         hostName:
         nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
+          inherit system;
           modules = [
             (./hosts + "/${hostName}")
             inputs.nix-topology.nixosModules.default
@@ -151,7 +180,7 @@
       };
 
       # 拓扑生成配置
-      topology."x86_64-linux" = import nix-topology {
+      topology."${system}" = import nix-topology {
         pkgs = topology-pkgs;
         modules = [
           ./topology.nix
@@ -159,13 +188,13 @@
         ];
       };
       # nix build .#包名
-      packages.x86_64-linux = {
-        topology = self.topology.x86_64-linux.config.output;
-        geph5-client = pkgs.geph5-client;
-        lain-kde-splashscreen = pkgs.lain-kde-splashscreen;
-        aquanet = pkgs.aquanet;
+      packages."${system}" = {
+        topology = self.topology."${system}".config.output;
+        inherit (pkgs) geph5-client;
+        inherit (pkgs) lain-kde-splashscreen;
+        inherit (pkgs) aquanet;
         cuba = nixos-generators.nixosGenerate {
-          system = "x86_64-linux";
+          inherit system;
           format = "install-iso";
           modules = [
             (./hosts + "/cuba")
@@ -179,6 +208,7 @@
         packages = with pkgs; [
           nix
           git
+          fish
           sops
           age
           home-manager
@@ -189,6 +219,7 @@
           libressl # openssl rand -hex 64
           deadnix
           alejandra
+          statix
         ];
 
         shellHook = ''
