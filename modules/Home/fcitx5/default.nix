@@ -1,4 +1,3 @@
-{ ... }:
 {
   xdg.configFile = {
     "fcitx5/profile" = {
