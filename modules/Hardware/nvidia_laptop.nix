@@ -4,9 +4,10 @@
   hardware.nvidia = {
     prime = {
       sync.enable = true;
-      intelBusId = "PCI:0:2:0";
-      nvidiaBusId = "PCI:1:0:0"; # https://wiki.nixos.org/wiki/Nvidia
+      intelBusId = lib.mkDefault "PCI:0:2:0";
+      nvidiaBusId = lib.mkDefault "PCI:1:0:0"; # https://wiki.nixos.org/wiki/Nvidia
     };
+    # 主机配置里写比较合适
   };
   specialisation.offload.configuration = {
     system.nixos.tags = [ "offload" ];
