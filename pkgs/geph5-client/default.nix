@@ -1,4 +1,5 @@
 {
+  lib,
   rustPlatform,
   fetchFromGitHub,
   pkg-config,
@@ -9,18 +10,18 @@
   vulkan-loader,
   wayland,
 }:
-rustPlatform.buildRustPackage rec {
+rustPlatform.buildRustPackage (finalAttrs: {
   pname = "geph5";
-  version = "v0.2.36";
+  version = "0.2.43";
 
   src = fetchFromGitHub {
     owner = "geph-official";
     repo = "geph5";
-    rev = "geph5-client-${version}";
-    hash = "sha256-c99l4gUAz6CnXCPywj7bnH5pFCkoJmAct25SX+24jQg=";
+    rev = "geph5-client-v${finalAttrs.version}";
+    hash = "sha256-Yn/oAUXNhKmgu1Xi2VvaOP+B4vnrn/lQQldXXtQiA3U=";
   };
 
-  cargoHash = "sha256-QtPyVRkC1fpI/PaUOoo6jN5mgZ8s6TNoFia8YH3lRys=";
+  cargoHash = "sha256-lpWKzsgMSRg3BNdCyXn6b9HdGjndZF8YOoTIshz4BYU=";
 
   nativeBuildInputs = [ pkg-config ];
 
@@ -44,8 +45,12 @@ rustPlatform.buildRustPackage rec {
   };
 
   meta = {
-    description = "Geph is a modular Internet censorship circumvention system designed specifically to deal with national filtering. ";
+    description = "Modular Internet censorship circumvention system designed specifically to deal with national filtering";
     homepage = "https://github.com/geph-official/geph5";
+    changelog = "https://github.com/geph-official/geph5/releases/tag/geph5-client-v${finalAttrs.version}";
     mainProgram = "geph5-client";
+    platforms = lib.platforms.linux;
+    license = lib.licenses.mpl20;
+    maintainers = with lib.maintainers; [ MCSeekeri ];
   };
-}
+})
