@@ -16,9 +16,9 @@
       "https://mirrors.ustc.edu.cn/nix-channels/store?priority=1"
       "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store?priority=2"
       "https://cache.nixos.org/?priority=3"
-      "https://cache.garnix.io?priority=4"
-      "https://nix-community.cachix.org?priority=5"
-      "https://numtide.cachix.org?priority=6"
+      "https://nix-community.cachix.org?priority=4"
+      "https://numtide.cachix.org?priority=5"
+      "https://cache.garnix.io?priority=6"
     ];
     extra-trusted-public-keys = [
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
@@ -29,9 +29,14 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11"; # 官方源
-    flake-utils.url = "github:numtide/flake-utils";
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-compat.url = "github:edolstra/flake-compat";
+    systems.url = "github:nix-systems/default"; # 两年没更新，都不知道为什么有 Flake 引用这个……
+
+    flake-utils = {
+      url = "github:numtide/flake-utils";
+      inputs.systems.follows = "systems";
+    };
 
     home-manager = {
       url = "github:nix-community/home-manager/release-24.11";
@@ -99,6 +104,7 @@
         nixpkgs.follows = "nixpkgs";
         flake-utils.follows = "flake-utils";
         flake-compat.follows = "flake-compat";
+        systems.follows = "systems";
       };
     };
 
@@ -163,6 +169,7 @@
         geph5-client = final.callPackage ./pkgs/geph5-client { };
         lain-kde-splashscreen = final.callPackage ./pkgs/lain-kde-splashscreen { };
         aquanet = final.callPackage ./pkgs/aquanet { };
+        aquadx = final.callPackage ./pkgs/aquadx { };
       };
       pkgs = import nixpkgs {
         system = "x86_64-linux";
@@ -193,6 +200,7 @@
         inherit (pkgs) geph5-client;
         inherit (pkgs) lain-kde-splashscreen;
         inherit (pkgs) aquanet;
+        inherit (pkgs) aquadx;
         cuba = nixos-generators.nixosGenerate {
           inherit system;
           format = "install-iso";
