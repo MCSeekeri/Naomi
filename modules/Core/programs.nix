@@ -28,6 +28,11 @@
       enable = true;
       defaultEditor = true;
     };
+    nix-ld.enable = true;
+    appimage = {
+      enable = true;
+      binfmt = true;
+    };
   };
   environment = {
     systemPackages = with pkgs; [
