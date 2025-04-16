@@ -13,9 +13,9 @@
         "https://mirrors.ustc.edu.cn/nix-channels/store?priority=1"
         "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store?priority=2"
         "https://cache.nixos.org/?priority=3"
-        "https://cache.garnix.io?priority=4"
-        "https://nix-community.cachix.org?priority=5"
-        "https://numtide.cachix.org?priority=6"
+        "https://nix-community.cachix.org?priority=4"
+        "https://numtide.cachix.org?priority=5"
+        "https://cache.garnix.io?priority=6"
       ];
       trusted-public-keys = [
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
