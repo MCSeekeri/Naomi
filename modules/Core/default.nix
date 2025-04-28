@@ -28,6 +28,11 @@
     ./zram.nix
   ];
 
+  nixpkgs.overlays = [
+    self.overlays.default
+    inputs.nix-vscode-extensions.overlays.default
+  ];
+
   home-manager = {
     useGlobalPkgs = true;
     extraSpecialArgs = { inherit self inputs outputs; };

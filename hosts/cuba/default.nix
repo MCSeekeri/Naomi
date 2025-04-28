@@ -50,7 +50,10 @@ in
     "${self}/modules/Core/kmscon.nix"
     "${self}/modules/Core/mDNS.nix"
   ];
-  nixpkgs.hostPlatform = "x86_64-linux"; # 目前只考虑 x86_64
+  nixpkgs = {
+    hostPlatform = "x86_64-linux"; # 目前只考虑 x86_64
+    overlays = [ self.overlays.default ];
+  };
   services = {
     kmscon = {
       autologinUser = lib.mkForce "root";
