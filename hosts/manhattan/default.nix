@@ -16,7 +16,7 @@
     "${self}/modules/Desktop/programs.nix"
     "${self}/modules/Desktop/gaming.nix"
     "${self}/modules/Desktop/fcitx5.nix"
-    "${self}/modules/Desktop/clash.nix"
+    # "${self}/modules/Desktop/clash.nix" # CVE
     "${self}/modules/Desktop/adb.nix"
     "${self}/modules/Desktop/cups.nix"
     "${self}/modules/Desktop/bluetooth.nix"
@@ -31,7 +31,7 @@
     "${self}/modules/Services/misskey.nix"
     "${self}/modules/Services/glances.nix"
 
-    "${self}/modules/Games/aquadx.nix"
+    "${self}/modules/Games/AquaDX"
     "${self}/modules/Games/retro.nix"
 
     "${self}/modules/Containers/peerbanhelper.nix"

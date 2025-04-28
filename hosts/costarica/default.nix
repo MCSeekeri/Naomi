@@ -13,7 +13,7 @@
 
     "${self}/modules/Services/nginx.nix"
 
-    "${self}/modules/Games/aquadx.nix"
+    "${self}/modules/Games/AquaDX"
 
     "${self}/users/mihomo"
   ];

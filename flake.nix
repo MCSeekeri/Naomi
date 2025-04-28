@@ -32,6 +32,10 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-compat.url = "github:edolstra/flake-compat";
     systems.url = "github:nix-systems/default"; # 两年没更新，都不知道为什么有 Flake 引用这个……
+    devshell = {
+      url = "github:numtide/devshell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     flake-utils = {
       url = "github:numtide/flake-utils";
@@ -94,6 +98,7 @@
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-utils.follows = "flake-utils";
+        devshell.follows = "devshell";
       };
     };
 
@@ -134,105 +139,84 @@
   };
 
   outputs =
-    {
-      self,
-      nixpkgs,
-      nix-topology,
-      nixos-generators,
-      ...
-    }@inputs:
-    let
-      system = "x86_64-linux";
-      mkHost =
-        hostName:
-        nixpkgs.lib.nixosSystem {
-          inherit system;
-          modules = [
-            (./hosts + "/${hostName}")
-            inputs.nix-topology.nixosModules.default
-            {
-              nixpkgs.overlays = [
-                inputs.nix-vscode-extensions.overlays.default
-                mc-overlay
+    inputs@{ flake-parts, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } (
+      {
+        withSystem,
+        self,
+        config,
+        ...
+      }:
+      {
+        imports = [
+          inputs.devshell.flakeModule
+          inputs.nix-topology.flakeModule
+          inputs.flake-parts.flakeModules.easyOverlay
+          ./hosts/flake-module.nix
+          ./pkgs/flake-module.nix
+        ];
+        systems = [ "x86_64-linux" ];
+
+        perSystem =
+          {
+            config,
+            inputs',
+            self',
+            pkgs,
+            lib,
+            system,
+            final,
+            ...
+          }:
+          {
+            overlayAttrs = {
+              inherit (config.packages)
+                geph5-client
+                lain-kde-splashscreen
+                aquanet
+                aquadx
+                ;
+            };
+
+            packages = {
+              topology = self.topology.${system}.config.output;
+              cuba = inputs.nixos-generators.nixosGenerate {
+                system = "x86_64-linux";
+                format = "install-iso";
+                modules = [ (./hosts + "/cuba") ];
+                specialArgs = { inherit inputs self; };
+              };
+            };
+
+            _module.args.pkgs = import inputs.nixpkgs {
+              inherit system;
+              overlays = [ inputs.nix-vscode-extensions.overlays.default ];
+              config.allowUnfree = true;
+            };
+
+            devshells.default = {
+              packages = with pkgs; [
+                nix
+                git
+                fish
+                sops
+                age
+                home-manager
+                nix-init
+                nh
+                nixfmt-rfc-style
+                fh
+                libressl # openssl rand -hex 64
+                deadnix
+                alejandra
+                statix
               ];
-            }
-          ];
-          specialArgs = { inherit self inputs hostName; };
-        };
-
-      # 为拓扑定制的 pkgs 实例
-      topology-pkgs = import nixpkgs {
-        system = "x86_64-linux";
-        overlays = [ nix-topology.overlays.default ];
-      };
-      mc-overlay = final: prev: {
-        geph5-client = final.callPackage ./pkgs/geph5-client { };
-        lain-kde-splashscreen = final.callPackage ./pkgs/lain-kde-splashscreen { };
-        aquanet = final.callPackage ./pkgs/aquanet { };
-        aquadx = final.callPackage ./pkgs/aquadx { };
-      };
-      pkgs = import nixpkgs {
-        system = "x86_64-linux";
-        config.allowUnfree = true;
-        overlays = [ mc-overlay ];
-      };
-    in
-    {
-      nixosConfigurations = {
-        manhattan = mkHost "manhattan";
-        seychelles = mkHost "seychelles";
-        cyprus = mkHost "cyprus";
-        cuba = mkHost "cuba";
-        costarica = mkHost "costarica";
-      };
-
-      # 拓扑生成配置
-      topology."${system}" = import nix-topology {
-        pkgs = topology-pkgs;
-        modules = [
-          ./topology.nix
-          { inherit (self) nixosConfigurations; }
-        ];
-      };
-      # nix build .#包名
-      packages."${system}" = {
-        topology = self.topology."${system}".config.output;
-        inherit (pkgs) geph5-client;
-        inherit (pkgs) lain-kde-splashscreen;
-        inherit (pkgs) aquanet;
-        inherit (pkgs) aquadx;
-        cuba = nixos-generators.nixosGenerate {
-          inherit system;
-          format = "install-iso";
-          modules = [
-            (./hosts + "/cuba")
-            { nixpkgs.overlays = [ mc-overlay ]; }
-          ];
-          specialArgs = { inherit self inputs; };
-        };
-      };
-
-      devShells.x86_64-linux.default = pkgs.mkShell {
-        packages = with pkgs; [
-          nix
-          git
-          fish
-          sops
-          age
-          home-manager
-          nix-init
-          nh
-          nixfmt-rfc-style
-          fh
-          libressl # openssl rand -hex 64
-          deadnix
-          alejandra
-          statix
-        ];
-
-        shellHook = ''
-          export FLAKE="."
-        '';
-      };
-    };
+            };
+            topology = {
+              nixosConfigurations = { };
+              modules = [ { imports = [ ./topology.nix ]; } ];
+            };
+          };
+      }
+    );
 }
