@@ -1,6 +1,6 @@
 { pkgs, self, ... }:
 {
-  imports = [ "${self}/modules/Containers/AquaDX" ];
+  imports = [ "${self}/modules/Services/aquadx.nix" ];
   services.nginx = {
     virtualHosts."aquadx" = {
       listen = [
@@ -22,4 +22,11 @@
   };
 
   networking.firewall.allowedTCPPorts = [ 4173 ];
+
+  services.aquadx = {
+    enable = true;
+    package = pkgs.aquadx;
+    configFile = ./application.properties;
+    database.createLocally = true;
+  };
 }
