@@ -6,7 +6,7 @@
 }:
 {
   imports = [
-    "${self}/modules/Home/userdir.nix"
+    "${self}/modules/Home/default.nix"
     "${self}/modules/Home/direnv.nix"
     "${self}/modules/Home/fcitx5"
     "${self}/modules/Home/plasma-manager"
@@ -18,7 +18,6 @@
   home = {
     username = "mcseekeri";
     homeDirectory = "/home/mcseekeri";
-    stateVersion = "24.11";
 
     packages = with pkgs; [
       # 桌面应用
@@ -42,7 +41,6 @@
   };
 
   programs = {
-    home-manager.enable = true;
     librewolf = {
       profiles = {
         user = {

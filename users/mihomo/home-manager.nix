@@ -2,7 +2,7 @@
 {
   imports = [
     "${self}/modules/Home/fcitx5"
-    "${self}/modules/Home/userdir.nix"
+    "${self}/modules/Home/default.nix"
     "${self}/modules/Home/plasma-manager"
     "${self}/modules/Home/browser/chromium.nix"
     "${self}/modules/Home/vscode.nix"
@@ -11,12 +11,10 @@
   home = {
     username = "mihomo";
     homeDirectory = "/home/mihomo";
-    stateVersion = "24.11";
     packages = with pkgs; [ motrix ];
   };
 
   programs = {
-    home-manager.enable = true;
     fish = {
       enable = true;
       shellAliases = {
