@@ -11,6 +11,7 @@
     inputs.arion.nixosModules.arion
     inputs.daeuniverse.nixosModules.dae
     # inputs.daeuniverse.nixosModules.daed
+    inputs.lix-module.nixosModules.default
     ./boot.nix
     ./dae
     ./fonts.nix
