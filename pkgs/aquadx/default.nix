@@ -7,19 +7,19 @@
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "aquadx";
-  version = "6b99ab";
+  version = "a3b3b3";
   src = fetchFromGitHub {
     owner = "MewoLab";
     repo = "AquaDX";
-    rev = "6b99ab9e43ecca112f2ad94679f2588bfcbbcc09";
-    hash = "sha256-Sb3oFwR//MS9bCCjd5uIm3SNi5KkIbjC98DY0B7/wHk=";
+    rev = "a3b3b3dd9329d061d2ce79b257dbd646e5fd3683";
+    hash = "sha256-Mi7iqJCeQo43jAplQNZb97+63zfwZbATK7uVy+LoVWQ=";
   };
   nativeBuildInputs = [
     gradle_8
     jdk21
   ];
   mitmCache = gradle_8.fetchDeps {
-    inherit (finalAttrs) pname;
+    pkg = finalAttrs;
     data = ./deps.json;
   };
 
