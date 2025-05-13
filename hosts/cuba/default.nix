@@ -161,7 +161,7 @@ in
 
   # https://github.com/NixOS/nixpkgs/issues/219239
   programs = {
-    fish.interactiveShellInit = ''
+    bash.interactiveShellInit = ''
       watch --no-title --color ${network-status}/bin/network-status
     '';
     fish = {
@@ -171,7 +171,7 @@ in
   };
 
   users.users.root = {
-    shell = pkgs.fish;
+    shell = pkgs.bash; # 非 POSIX 兼容 Shell 会导致 nixos-anywhere 出问题
   };
 
   nix = {
