@@ -24,4 +24,6 @@
   };
 
   services.xserver.videoDrivers = [ "nvidia" ];
+
+  nixpkgs.config.cudaSupport = true;
 }
