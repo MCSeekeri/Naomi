@@ -84,13 +84,13 @@
       fishPlugins.autopair
       bat
       fd
+      yazi
       # 网络工具
       nmap
       socat
       openvpn
       openssl
       dnsutils
-      mariadb.client # 仅安装客户端，而非整个数据库
       # 系统维护
       sysstat
       lm_sensors
