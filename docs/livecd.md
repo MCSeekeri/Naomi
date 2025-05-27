@@ -2,13 +2,13 @@
 
 ## 生成镜像
 
-首先，你需要一个 Nix 环境，安装步骤在此不再赘述。
+首先，你需要一个 Nix 环境，并且安装了 nixos-rebuild，安装步骤在此不再赘述。
 
 ```nix
-nix build github:MCSeekeri/Naomi#cuba
+nixos-rebuild build-image --flake .#cuba --image-variant iso-installer
 ```
 
-如果一切正常，会在当前目录下生成一个 result 文件夹，将其中的 ISO 复制到启动介质中，在此推荐使用 [Ventoy](https://www.ventoy.net) 启动。
+如果一切正常，终端会提示输出的 ISO 路径，将其中的 ISO 复制到启动介质中，在此推荐使用 [Ventoy](https://www.ventoy.net) 启动。
 
 ## 启动后
 

@@ -4,7 +4,7 @@
     vscode = {
       enable = true;
       # package = pkgs.vscode-fhs;
-      extensions = with pkgs.vscode-marketplace; [
+      profiles.default.extensions = with pkgs.vscode-marketplace; [
         huacnlee.autocorrect
         mhutchie.git-graph
         ms-ceintl.vscode-language-pack-zh-hans

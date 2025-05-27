@@ -42,7 +42,6 @@ let
 in
 {
   imports = [
-    "${modulesPath}/installer/cd-dvd/installation-cd-minimal-new-kernel-no-zfs.nix"
     "${modulesPath}/installer/cd-dvd/channel.nix"
     # 需要用 modulesPath 避免纯评估模式出错，大概
     inputs.stylix.nixosModules.stylix
@@ -183,11 +182,13 @@ in
         "https://nix-community.cachix.org?priority=4"
         "https://numtide.cachix.org?priority=5"
         "https://cache.garnix.io?priority=6"
+        "https://cache.lix.systems/?priority=7"
       ];
       trusted-public-keys = [
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
         "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="
+        "cache.lix.systems:aBnZUw8zA7H35Cz2RyKFVs3H4PlGTLawyY5KRbvJR8o="
       ];
       experimental-features = [
         "nix-command"
@@ -279,5 +280,4 @@ in
       };
     };
   };
-  isoImage.squashfsCompression = "zstd"; # zstd 快，xz 更小，没有银弹……
 }

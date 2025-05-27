@@ -44,7 +44,7 @@
     librewolf = {
       profiles = {
         user = {
-          extensions = with inputs.firefox-addons.packages.${pkgs.system}; [
+          extensions.packages = with inputs.firefox-addons.packages.${pkgs.system}; [
             # https://discourse.nixos.org/t/firefox-extensions-with-home-manager/34108/4
             kiss-translator
             # aw-watcher-web
@@ -70,7 +70,7 @@
     };
     vscode = {
       package = pkgs.vscodium;
-      extensions = with pkgs.vscode-marketplace; [
+      profiles.default.extensions = with pkgs.vscode-marketplace; [
         activitywatch.aw-watcher-vscode
         alibaba-cloud.tongyi-lingma
         dracula-theme.theme-dracula

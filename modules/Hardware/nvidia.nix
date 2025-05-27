@@ -22,7 +22,7 @@
         enable = lib.mkDefault false; # 服务器不需要考虑休眠，有资料指出这东西有点毛病
         finegrained = lib.mkDefault false;
       };
-      package = lib.mkDefault config.boot.kernelPackages.nvidiaPackages.production;
+      # package = lib.mkDefault config.boot.kernelPackages.nvidiaPackages.production; # 25.05 版本默认使用 production
       # 当前节点应该是 550
       # https://github.com/NixOS/nixpkgs/blob/nixos-24.11/pkgs/os-specific/linux/nvidia-x11/default.nix
     };

@@ -30,7 +30,7 @@
   };
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11"; # 官方源
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05"; # 官方源
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-compat.url = "github:edolstra/flake-compat";
     systems.url = "github:nix-systems/default"; # 两年没更新，都不知道为什么有 Flake 引用这个……
@@ -45,7 +45,7 @@
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.11";
+      url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -63,12 +63,6 @@
         nixpkgs.follows = "nixpkgs";
         flake-compat.follows = "flake-compat";
       };
-    };
-
-    nixos-generators = {
-      # 我们又回到了老路上？
-      url = "github:nix-community/nixos-generators";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     disko = {
@@ -105,11 +99,11 @@
     };
 
     stylix = {
-      url = "github:danth/stylix/release-24.11";
+      url = "github:danth/stylix/release-25.05";
       inputs = {
         home-manager.follows = "home-manager";
         nixpkgs.follows = "nixpkgs";
-        flake-utils.follows = "flake-utils";
+        flake-parts.follows = "flake-parts";
         flake-compat.follows = "flake-compat";
         systems.follows = "systems";
       };
@@ -140,7 +134,7 @@
     };
 
     lix-module = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.92.0-3.tar.gz";
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.0.tar.gz";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-utils.follows = "flake-utils";
@@ -190,12 +184,6 @@
 
             packages = {
               topology = self.topology.${system}.config.output;
-              cuba = inputs.nixos-generators.nixosGenerate {
-                system = "x86_64-linux";
-                format = "install-iso";
-                modules = [ (./hosts + "/cuba") ];
-                specialArgs = { inherit inputs self; };
-              };
             };
 
             _module.args.pkgs = import inputs.nixpkgs {
