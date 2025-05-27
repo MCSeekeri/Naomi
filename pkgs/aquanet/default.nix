@@ -6,12 +6,12 @@
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "aquanet";
-  version = "a3b3b3";
+  version = "47a171";
   src = fetchFromGitHub {
     owner = "MewoLab";
     repo = "AquaDX";
-    rev = "a3b3b3dd9329d061d2ce79b257dbd646e5fd3683";
-    hash = "sha256-Mi7iqJCeQo43jAplQNZb97+63zfwZbATK7uVy+LoVWQ=";
+    rev = "47a171b1a4ac4ba7fea1f298d5ac5fa1cdf1d365";
+    hash = "sha256-AEvpP5tBHgP2AZpLv9E6rEM5XWQhH/wDznHI2oTdzZ8=";
   };
 
   nativeBuildInputs = with pkgs; [
@@ -22,7 +22,7 @@ stdenv.mkDerivation (finalAttrs: {
   pnpmDeps = pkgs.pnpm.fetchDeps {
     inherit (finalAttrs) pname version src;
     sourceRoot = "${finalAttrs.src.name}/AquaNet";
-    hash = "sha256-+kZa62a8UJ8x7XgkLnoOnxprZD/Nb8e/D07pPwX/3+k=";
+    hash = "sha256-oVDqrAxcjTKLL042pNIBdNaNQHpydSYQjbYBcc5I6Ec=";
   };
   pnpmRoot = "AquaNet";
 

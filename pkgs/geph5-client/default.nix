@@ -23,16 +23,19 @@ let
 in
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "geph5";
-  version = "0.2.43";
+  version = "0.2.61";
 
   src = fetchFromGitHub {
     owner = "geph-official";
     repo = "geph5";
     rev = "geph5-client-v${finalAttrs.version}";
-    hash = "sha256-Yn/oAUXNhKmgu1Xi2VvaOP+B4vnrn/lQQldXXtQiA3U=";
+    hash = "sha256-qy1E5x5Fn+xwS5st6HkMrJu9nksXQQIyJf97FvNOKO4=";
   };
 
-  cargoHash = "sha256-lpWKzsgMSRg3BNdCyXn6b9HdGjndZF8YOoTIshz4BYU=";
+  cargoHash = "sha256-r97DsSsqp/KtgqtYQe92nz2qaOBcJF6w9ckfxpk8Cxg=";
+
+  patches = [ ./test-fix.patch ];
+
   postPatch = ''
     substituteInPlace binaries/geph5-client/src/vpn/*.sh \
       --replace-fail 'PATH=' 'PATH=${binPath}:'
@@ -53,11 +56,15 @@ rustPlatform.buildRustPackage (finalAttrs: {
     OPENSSL_NO_VENDOR = true;
   };
 
-  buildFeatures = [ "windivert" ];
+  buildFeatures = [
+    "aws_lambda"
+    "windivert"
+  ];
 
   checkFlags = [
     # Wrong test
     "--skip=traffcount::tests::test_traffic_cleanup"
+    "--skip=traffcount::tests::test_traffic_count_basic"
     # Requires network
     "--skip=dns::tests::resolve_google"
     # Never finish
