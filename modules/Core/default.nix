@@ -29,6 +29,11 @@
     ./zram.nix
   ];
 
+  system = {
+    autoUpgrade.flake = "github:MCSeekeri/Naomi";
+    rebuild.enableNg = true;
+  };
+
   nixpkgs.overlays = [
     self.overlays.default
     inputs.nix-vscode-extensions.overlays.default

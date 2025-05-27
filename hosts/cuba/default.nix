@@ -51,7 +51,14 @@ in
   ];
   nixpkgs = {
     hostPlatform = "x86_64-linux"; # 目前只考虑 x86_64
-    overlays = [ self.overlays.default ];
+    overlays = [
+      self.overlays.default
+      (final: prev: {
+        cifs-utils = prev.cifs-utils.overrideAttrs (oldAttrs: {
+          buildInputs = builtins.filter (x: x != prev.samba) oldAttrs.buildInputs; # 剔除掉 samba 依赖
+        });
+      })
+    ];
   };
   services = {
     kmscon = {
@@ -59,7 +66,7 @@ in
       fonts = lib.mkForce [
         {
           # 一个中文字体的体积比一堆工具加起来还大，难办……
-          package = pkgs.maple-mono-SC-NF;
+          package = pkgs.maple-mono.Normal-CN;
           name = "Maple Mono SC NF";
         }
       ];
@@ -104,9 +111,10 @@ in
   system = {
     activationScripts.root-password = ''
       mkdir -p /var/shared
-      cat /dev/urandom | tr -dc 'A-HJ-KMNP-Z2-9' | fold -w 4 | head -n 4 | paste -sd "-" - > /var/shared/root-password
+      cat /dev/urandom | tr -dc 'A-HJ-KMNP-Y3-9' | fold -w 4 | head -n 4 | paste -sd "-" - > /var/shared/root-password
       echo "root:$(cat /var/shared/root-password)" | chpasswd
     '';
+    rebuild.enableNg = true;
   };
 
   boot = {
@@ -129,23 +137,19 @@ in
       "zswap.zpool=zsmalloc"
     ];
   };
-
+  services.samba.enable = false;
   environment.systemPackages = [
-    pkgs.nixos-install-tools
+    (lib.hiPrio pkgs.uutils-coreutils-noprefix)
     pkgs.jq
-    pkgs.rsync
     pkgs.disko
     pkgs.bore-cli
     pkgs.geph5-client
     pkgs.clash-rs
     pkgs.proxychains-ng
     pkgs.dae
-    pkgs.busybox
     pkgs.bind
     pkgs.ripgrep
     pkgs.btop
-    pkgs.libressl
-    pkgs.python3Minimal
     pkgs.progress
     pkgs.tmux
     pkgs.file
@@ -172,6 +176,8 @@ in
   users.users.root = {
     shell = pkgs.bash; # 非 POSIX 兼容 Shell 会导致 nixos-anywhere 出问题
   };
+
+  security.sudo.enable = false;
 
   nix = {
     settings = {

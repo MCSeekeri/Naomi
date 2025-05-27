@@ -37,6 +37,11 @@
       moonlight-qt
       # 开发套件
       uv
+      # 终端增强
+      mycli
+      pgcli
+      iredis
+      usql
     ];
   };
 
