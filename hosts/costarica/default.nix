@@ -6,7 +6,6 @@
     "${self}/modules/Core"
 
     "${self}/modules/Server/firewall.nix"
-    "${self}/modules/Server/hardened.nix"
     "${self}/modules/Desktop/gui.nix"
     "${self}/modules/Desktop/programs.nix"
     "${self}/modules/Desktop/fcitx5.nix"
