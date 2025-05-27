@@ -27,7 +27,7 @@
         name = "Source Han Serif SC";
       };
       monospace = {
-        package = pkgs.maple-mono-SC-NF;
+        package = pkgs.maple-mono.Normal-NF-CN;
         name = "Maple Mono SC NF";
       };
       emoji = {

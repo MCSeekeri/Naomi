@@ -11,8 +11,7 @@
     libretro.mgba
     libretro.gambatte
     libretro.mupen64plus
-    torzu
-    # ryubing # [TODO] 等待新版本之后启用
+    ryubing
 
     # 所有的游戏在这里集结
     libretro.beetle-psx

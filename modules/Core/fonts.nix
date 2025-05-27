@@ -29,9 +29,7 @@
       source-han-sans
       source-han-serif
       noto-fonts-emoji
-      maple-mono-SC-NF
-      # [TODO] 等 7.x 的 Maple Mono 发布之后还得重写所有的字体配置
-      # maple-mono.Normal-NF-CN-unhinted
+      maple-mono.Normal-NF-CN-unhinted
       unifont
 
       # 诸如微软雅黑或者苹方什么的……为了避免版权炮，自行添加到

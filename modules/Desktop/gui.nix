@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   hardware = {
     graphics = {
@@ -25,9 +25,9 @@
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [ kdePackages.xdg-desktop-portal-kde ];
-    config.common.default = "kde";
+    config.common.default = lib.mkDefault "kde";
   };
-  qt.platformTheme = "kde";
+  qt.platformTheme = lib.mkDefault "kde";
   security.rtkit.enable = true;
   fonts = {
     packages = with pkgs; [
