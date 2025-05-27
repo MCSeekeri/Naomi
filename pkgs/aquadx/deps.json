@@ -351,9 +351,9 @@
   "org/jetbrains/kotlin#kotlin-noarg/2.1.10/gradle85": {
    "jar": "sha256-Vh16PAZkNCgi/HwYuEMHIkKnU39y0aajNTxDPVzxg0E="
   },
-  "org/jetbrains/kotlin#kotlin-reflect/1.9.24": {
-   "jar": "sha256-plFmRFu4XvgWzeEnJ5/gAX0rfMQ5s7lyOQ4bc21k6Uw=",
-   "pom": "sha256-CghcMAUb1tSrdlrVoMUXnEE7NfdBjyiDFy+9m6GrzMk="
+  "org/jetbrains/kotlin#kotlin-reflect/2.0.21": {
+   "jar": "sha256-OtL8rQwJ3cCSLeurRETWEhRLe0Zbdai7dYfiDd+v15k=",
+   "pom": "sha256-Aqt66rA8aPQBAwJuXpwnc2DLw2CBilsuNrmjqdjosEk="
   },
   "org/jetbrains/kotlin#kotlin-serialization/2.1.10": {
    "module": "sha256-lOQv7nHHGThWVRVaL6igF3tPvp0aqI4IGhJZXWIYo4s=",
@@ -362,9 +362,9 @@
   "org/jetbrains/kotlin#kotlin-serialization/2.1.10/gradle85": {
    "jar": "sha256-MWCNdmHGw/o91kfXUR8ajloLrK8WdM16GJOWZQP0lWs="
   },
-  "org/jetbrains/kotlin#kotlin-stdlib-common/1.9.24": {
-   "module": "sha256-6Y6oxE+zaCDQG7iwAxaOI6IhtAHLQyVtcjo/C3fWFsI=",
-   "pom": "sha256-XZfiDNWGLoR6aYF1uTno3Fxr11vtmZ1vPU6ghIESFsA="
+  "org/jetbrains/kotlin#kotlin-stdlib-common/2.0.21": {
+   "module": "sha256-b134r2M2AKa5z7D8x2SvPVEZ83Zndne5G2rugWsdMKs=",
+   "pom": "sha256-X0As+413MZW5ZwUBJMnom1+EsXJGThiUkpeJv1xMLyk="
   },
   "org/jetbrains/kotlin#kotlin-stdlib-jdk7/1.8.21": {
    "jar": "sha256-M9FI2w4R3r0NkGd9KCQrztkH+cd3MAAP1ZeGcIkDnYY=",
@@ -374,10 +374,10 @@
    "jar": "sha256-PbdSowB08G7mxXmEqm8n2kT00rvH9UQmUfaYjxyyt9c=",
    "pom": "sha256-ODnXKNfDCaXDaLAnC0S08ceHj/XKXTKpogT6o0kUWdg="
   },
-  "org/jetbrains/kotlin#kotlin-stdlib/1.9.24": {
-   "jar": "sha256-hYuQJpbanPWFq52Y/8HCcSJpgoNU3+kQfjcRsISjZGg=",
-   "module": "sha256-8uKmVztbUmXEEtXFgfv46gDGKxC5yS1WdMnpfy8zNbM=",
-   "pom": "sha256-uc6tTCIt7pDHT28BPTFqnlD4EaApMxPDNRrssvfM7V8="
+  "org/jetbrains/kotlin#kotlin-stdlib/2.0.21": {
+   "jar": "sha256-8xzFPxBafkjAk2g7vVQ3Vh0SM5IFE3dLRwgFZBvtvAk=",
+   "module": "sha256-gf1tGBASSH7jJG7/TiustktYxG5bWqcpcaTd8b0VQe0=",
+   "pom": "sha256-/LraTNLp85ZYKTVw72E3UjMdtp/R2tHKuqYFSEA+F9o="
   },
   "org/jetbrains/kotlin#kotlin-tooling-core/2.1.10": {
    "jar": "sha256-QXbGEgmMuS3zikhf+LEKqiSrtAD2ENSPUIiusHyAAsg=",
