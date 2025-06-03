@@ -173,14 +173,7 @@
             ...
           }:
           {
-            overlayAttrs = {
-              inherit (config.packages)
-                geph5-client
-                lain-kde-splashscreen
-                aquanet
-                aquadx
-                ;
-            };
+            overlayAttrs = { inherit (config.packages) lain-kde-splashscreen aquanet aquadx; };
 
             packages = {
               topology = self.topology.${system}.config.output;
