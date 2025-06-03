@@ -139,7 +139,6 @@ in
   };
   services.samba.enable = false;
   environment.systemPackages = [
-    (lib.hiPrio pkgs.uutils-coreutils-noprefix)
     pkgs.jq
     pkgs.disko
     pkgs.bore-cli
