@@ -28,7 +28,7 @@ disko-install -f github:MCSeekeri/Naomi#<设备代号> --disk main <设备文件
 
 ```nix
 disko -f github:MCSeekeri/Naomi#<设备代号>
-nixos-install --root /mnt -f github:MCSeekeri/Naomi#<设备代号>
+nixos-install --root /mnt --flake github:MCSeekeri/Naomi#<设备代号>
 ```
 
 如果仍然无法正常安装，请手动使用`cfdisk`分区，格式化，同时依照`disko-config.nix`中的名称设置分区标签，挂载到 `/mnt` 目录，然后再次运行`nixos-install`
