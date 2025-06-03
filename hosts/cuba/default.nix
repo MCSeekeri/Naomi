@@ -142,7 +142,7 @@ in
     pkgs.jq
     pkgs.disko
     pkgs.bore-cli
-    pkgs.geph5-client
+    pkgs.geph
     pkgs.clash-rs
     pkgs.proxychains-ng
     pkgs.dae
