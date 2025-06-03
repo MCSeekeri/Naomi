@@ -1,5 +1,7 @@
 builds:
-  exclude: [devShells.x86_64-linux.default]
+  exclude:
+    - "devShells.x86_64-linux.default"
+    - "nixosConfigurations.cuba"
   include:
     - "*.x86_64-linux.*"
     - homeConfigurations.*

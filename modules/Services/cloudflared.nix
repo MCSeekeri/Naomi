@@ -16,7 +16,5 @@
 
   sops.secrets."cloudflare-tunnel-${config.networking.hostName}" = {
     sopsFile = "${self}/secrets/services/cloudflare.yaml";
-    owner = "cloudflared";
-    group = "cloudflared";
   };
 }
