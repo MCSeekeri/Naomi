@@ -15,7 +15,10 @@
         intel-compute-runtime
         vpl-gpu-rt
       ];
-      extraPackages32 = with pkgs.pkgsi686Linux; [ intel-media-driver ];
+      extraPackages32 = with pkgs.pkgsi686Linux; [
+        intel-media-driver
+        intel-vaapi-driver
+      ];
     };
   };
   environment.sessionVariables = {

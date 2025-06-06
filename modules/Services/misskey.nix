@@ -30,4 +30,5 @@
       id = "aidx";
     };
   };
+  services.meilisearch.package = pkgs.meilisearch;
 }
