@@ -6,6 +6,7 @@ NAOMI: Aggregate Online Modular Infrastructure，简称 Naomi，是基于 NixOS 
 ![](https://img.shields.io/github/repo-size/MCSeekeri/Naomi?style=for-the-badge)
 [![built with nix](https://builtwithnix.org/badge.svg)](https://builtwithnix.org)
 
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/MCSeekeri/Naomi)
 ## 简明安装指南
 
 主要的安装方法有三种，使用修改后的镜像，使用官方镜像或使用 nixos-anywhere.\
