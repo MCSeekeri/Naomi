@@ -2,6 +2,7 @@
   inputs,
   outputs,
   self,
+  lib,
   ...
 }:
 {
@@ -12,6 +13,7 @@
     inputs.daeuniverse.nixosModules.dae
     # inputs.daeuniverse.nixosModules.daed
     inputs.lix-module.nixosModules.default
+    ./apparmor.nix
     ./boot.nix
     ./dae
     ./fonts.nix
@@ -30,7 +32,11 @@
   ];
 
   system = {
-    autoUpgrade.flake = "github:MCSeekeri/Naomi";
+    autoUpgrade = {
+      flake = "github:MCSeekeri/Naomi";
+      operation = lib.mkDefault "boot";
+      dates = lib.mkDefault "weekly";
+    };
     rebuild.enableNg = true;
   };
 

@@ -27,4 +27,10 @@
       # https://github.com/NixOS/nixpkgs/blob/nixos-24.11/pkgs/os-specific/linux/nvidia-x11/default.nix
     };
   };
+  environment = {
+    systemPackages = with pkgs; [
+      nvidia-vaapi-driver
+      nv-codec-headers-12
+    ];
+  };
 }

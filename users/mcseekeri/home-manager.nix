@@ -8,6 +8,8 @@
   imports = [
     "${self}/modules/Home/default.nix"
     "${self}/modules/Home/direnv.nix"
+    "${self}/modules/Home/awesome-terminal.nix"
+    "${self}/modules/Home/kitty.nix"
     "${self}/modules/Home/fcitx5"
     "${self}/modules/Home/plasma-manager"
     "${self}/modules/Home/browser/librewolf.nix"

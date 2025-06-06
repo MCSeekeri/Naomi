@@ -51,7 +51,10 @@
       screen
       ripgrep
       jq
+      progress
+      hexyl
       # 解压缩
+      ouch # 一站式压缩解决方案
       unzip
       zip
       xz
@@ -85,6 +88,9 @@
       bat
       fd
       yazi
+      zellij # tmux
+      zoxide # cd
+      gping # ping
       # 网络工具
       nmap
       socat

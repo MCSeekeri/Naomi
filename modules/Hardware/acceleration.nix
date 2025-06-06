@@ -2,11 +2,20 @@
 {
   environment = {
     systemPackages = with pkgs; [
+      mpv # 测试硬件加速用的
+    ];
+  };
+  hardware.graphics = {
+    extraPackages = with pkgs; [
+      mesa
       libva-utils
       vdpauinfo
-      driversi686Linux.vdpauinfo
-      vulkan-tools
-      mpv # 测试硬件加速用的
+      libvdpau-va-gl
+    ];
+    extraPackages32 = with pkgs.pkgsi686Linux; [
+      mesa
+      libvdpau-va-gl
+      vdpauinfo
     ];
   };
 }
