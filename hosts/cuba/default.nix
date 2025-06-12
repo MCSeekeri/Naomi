@@ -117,6 +117,12 @@ in
     rebuild.enableNg = true;
   };
 
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd";
+    memoryPercent = 70;
+  };
+
   boot = {
     initrd.systemd.emergencyAccess = true;
     supportedFilesystems = [
@@ -131,9 +137,6 @@ in
       "nouveau.modeset=0"
       "console=tty0"
       "console=ttyS0,115200" # 串口调试
-      "zswap.enabled=1"
-      "zswap.max_pool_percent=50"
-      "zswap.compressor=zstd"
       "zswap.zpool=zsmalloc"
     ];
   };
