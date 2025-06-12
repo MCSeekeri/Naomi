@@ -1,6 +1,6 @@
 # 预置的设备配置及代号
 
-- `manhattan`: Oracle VirtualBox 虚拟机，目前主要的测试对象。
+- `manhattan`: QEMU 虚拟机，目前主要的测试对象。
 - `cyprus`: Lenovo Y7000P，用于开发的笔记本，同时也是主要游戏设备。
 - `seychelles`: Lenovo ThinkStation PX，用于模型训练的工作站。
 - `costarica`: VMware 虚拟机，用于搭建各类游戏服务器。

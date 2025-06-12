@@ -8,6 +8,8 @@
   hardware.graphics = {
     extraPackages = with pkgs; [
       mesa
+      mesa-demos
+      vulkan-tools
       libva-utils
       vdpauinfo
       libvdpau-va-gl
