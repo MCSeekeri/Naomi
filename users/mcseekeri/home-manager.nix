@@ -6,7 +6,7 @@
 }:
 {
   imports = [
-    "${self}/modules/Home/default.nix"
+    "${self}/modules/Home/xdg.nix"
     "${self}/modules/Home/direnv.nix"
     "${self}/modules/Home/awesome-terminal.nix"
     "${self}/modules/Home/kitty.nix"
@@ -20,6 +20,7 @@
   home = {
     username = "mcseekeri";
     homeDirectory = "/home/mcseekeri";
+    stateVersion = "25.05";
 
     packages = with pkgs; [
       # 桌面应用
@@ -48,6 +49,7 @@
   };
 
   programs = {
+    home-manager.enable = true;
     librewolf = {
       profiles = {
         user = {

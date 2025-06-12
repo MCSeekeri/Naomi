@@ -2,7 +2,7 @@
 {
   imports = [
     "${self}/modules/Home/fcitx5.nix"
-    "${self}/modules/Home/default.nix"
+    "${self}/modules/Home/xdg.nix"
     "${self}/modules/Home/plasma-manager"
     "${self}/modules/Home/browser/chromium.nix"
     "${self}/modules/Home/vscode.nix"
