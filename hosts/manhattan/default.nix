@@ -1,11 +1,18 @@
-{ lib, self, ... }:
+{
+  lib,
+  self,
+  modulesPath,
+  ...
+}:
 {
   imports = [
     ./disko-config.nix
+    "${modulesPath}/profiles/qemu-guest.nix"
 
     "${self}/modules/Core"
 
     "${self}/modules/Hardware/intel.nix"
+    "${self}/modules/Hardware/qemu.nix"
 
     "${self}/modules/Server/firewall.nix"
     "${self}/modules/Server/clamav.nix"
@@ -19,6 +26,7 @@
     "${self}/modules/Desktop/adb.nix"
     "${self}/modules/Desktop/cups.nix"
     "${self}/modules/Desktop/bluetooth.nix"
+    "${self}/modules/Desktop/hyprland.nix"
 
     "${self}/modules/Services/cockpit.nix"
     "${self}/modules/Services/uptime-kuma.nix"
@@ -30,7 +38,6 @@
     "${self}/modules/Services/misskey.nix"
     "${self}/modules/Services/glances.nix"
 
-    "${self}/modules/Games/AquaDX"
     "${self}/modules/Games/retro.nix"
 
     "${self}/modules/Containers/peerbanhelper.nix"
@@ -44,16 +51,22 @@
     hostName = "manhattan"; # 主机名，设置好之后最好不要修改
   };
   nixpkgs.hostPlatform = "x86_64-linux";
-  virtualisation.virtualbox.guest.enable = true;
 
-  boot.initrd.availableKernelModules = [
-    "ata_piix"
-    "ohci_pci"
-    "ehci_pci"
-    "ahci"
-    "sr_mod"
-  ];
-
+  boot = {
+    initrd.availableKernelModules = [
+      "ata_piix"
+      "xhci_pci"
+      "ahci"
+      "sr_mod"
+    ];
+    kernelModules = [ "kvm-intel" ];
+  };
+  services = {
+    qemuGuest.enable = true;
+    spice-vdagentd.enable = true;
+    spice-autorandr.enable = true;
+    spice-webdavd.enable = true;
+  };
   system = {
     stateVersion = "24.11";
     autoUpgrade.enable = true;
