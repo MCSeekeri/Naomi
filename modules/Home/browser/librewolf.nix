@@ -28,4 +28,5 @@
       };
     };
   };
+  stylix.targets.librewolf.profileNames = [ "user" ];
 }
