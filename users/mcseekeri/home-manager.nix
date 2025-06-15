@@ -12,6 +12,7 @@
     "${self}/modules/Home/kitty.nix"
     "${self}/modules/Home/fcitx5.nix"
     "${self}/modules/Home/plasma-manager"
+    "${self}/modules/Home/hyprland"
     "${self}/modules/Home/browser/librewolf.nix"
     "${self}/modules/Home/browser/chromium.nix"
     "${self}/modules/Home/vscode.nix"
