@@ -7,7 +7,7 @@
     "${self}/modules/Server/firewall.nix"
     "${self}/modules/Server/clamav.nix"
     "${self}/modules/Server/failsafe.nix"
-    "${self}/modules/Desktop/gui.nix"
+    "${self}/modules/Desktop/plasma.nix"
     "${self}/modules/Desktop/programs.nix"
 
     "${self}/modules/Hardware/nvidia.nix"
