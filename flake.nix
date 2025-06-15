@@ -34,6 +34,19 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-compat.url = "github:edolstra/flake-compat";
     systems.url = "github:nix-systems/default"; # 两年没更新，都不知道为什么有 Flake 引用这个……
+    gitignore = {
+      url = "github:hercules-ci/gitignore.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    pre-commit-hooks = {
+      url = "github:cachix/git-hooks.nix";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-compat.follows = "flake-compat";
+        gitignore.follows = "gitignore";
+      };
+    };
+
     devshell = {
       url = "github:numtide/devshell";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -95,6 +108,7 @@
         nixpkgs.follows = "nixpkgs";
         flake-utils.follows = "flake-utils";
         devshell.follows = "devshell";
+        pre-commit-hooks.follows = "pre-commit-hooks";
       };
     };
 
@@ -106,6 +120,7 @@
         flake-parts.follows = "flake-parts";
         flake-compat.follows = "flake-compat";
         systems.follows = "systems";
+        git-hooks.follows = "pre-commit-hooks";
       };
     };
 
