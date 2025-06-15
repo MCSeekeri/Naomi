@@ -61,12 +61,6 @@
     ];
     kernelModules = [ "kvm-intel" ];
   };
-  services = {
-    qemuGuest.enable = true;
-    spice-vdagentd.enable = true;
-    spice-autorandr.enable = true;
-    spice-webdavd.enable = true;
-  };
   system = {
     stateVersion = "24.11";
     autoUpgrade.enable = true;
