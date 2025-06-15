@@ -11,8 +11,6 @@
       enable = true;
       # videoDrivers = [  "nvidia" "modesetting" "fbdev"];
     };
-    desktopManager.plasma6.enable = true;
-    displayManager.sddm.enable = true;
     pipewire = {
       enable = true;
       alsa.enable = true;
@@ -24,10 +22,7 @@
   };
   xdg.portal = {
     enable = true;
-    extraPortals = with pkgs; [ kdePackages.xdg-desktop-portal-kde ];
-    config.common.default = lib.mkDefault "kde";
   };
-  qt.platformTheme = lib.mkDefault "kde";
   security.rtkit.enable = true;
   fonts = {
     packages = with pkgs; [
@@ -40,4 +35,8 @@
       cascadia-code
     ];
   };
+  environment.pathsToLink = [
+    "/share/xdg-desktop-portal"
+    "/share/applications"
+  ]; # https://github.com/nix-community/home-manager/blob/release-25.05/modules/misc/xdg-portal.nix
 }
