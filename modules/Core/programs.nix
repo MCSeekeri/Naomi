@@ -1,5 +1,9 @@
 { pkgs, inputs, ... }:
 {
+  services = {
+    sysstat.enable = true;
+    gvfs.enable = true;
+  };
   programs = {
     proxychains.proxies = {
       geph5 = {
@@ -28,27 +32,54 @@
       enable = true;
       defaultEditor = true;
     };
-    nix-ld.enable = true;
     appimage = {
       enable = true;
       binfmt = true;
     };
+    git = {
+      enable = true;
+      lfs.enable = true;
+    };
+    tmux = {
+      enable = true;
+      clock24 = true; # 显而易见
+      aggressiveResize = true;
+    };
+    yazi = {
+      enable = true;
+      settings = {
+        yazi = {
+          mgr.show_hidden = true;
+          preview.show_hidden = "yes";
+        };
+      };
+      plugins = {
+        git = pkgs.yaziPlugins.git;
+        sudo = pkgs.yaziPlugins.sudo;
+        ouch = pkgs.yaziPlugins.ouch;
+        mount = pkgs.yaziPlugins.mount;
+        duckdb = pkgs.yaziPlugins.duckdb;
+        mediainfo = pkgs.yaziPlugins.mediainfo;
+      };
+    };
+    openvpn3.enable = true;
+    zoxide.enable = true;
+    bat.enable = true;
+    screen.enable = true;
+    nix-ld.enable = true;
+    iotop.enable = true;
+    iftop.enable = true;
   };
   environment = {
     systemPackages = with pkgs; [
       # 基础必备
-      vim
       curl
       wget
-      git
       tree
       file
-      screen
-      tmux
       which
       gnused
       gawk
-      screen
       ripgrep
       jq
       progress
@@ -79,7 +110,6 @@
       nix-tree
       # 终端优化
       babelfish
-      bash-completion
       speedtest-cli
       killall
       fishPlugins.tide
@@ -89,16 +119,13 @@
       fd
       yazi
       zellij # tmux
-      zoxide # cd
       gping # ping
       # 网络工具
       nmap
       socat
-      openvpn
-      openssl
+      libressl
       dnsutils
       # 系统维护
-      sysstat
       lm_sensors
       ethtool
       pciutils
@@ -107,10 +134,8 @@
       ltrace
       lsof
       btop
-      iotop
-      iftop
       conntrack-tools
-      quota
+      ncdu
     ];
   };
 }
