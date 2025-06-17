@@ -54,12 +54,12 @@
         };
       };
       plugins = {
-        git = pkgs.yaziPlugins.git;
-        sudo = pkgs.yaziPlugins.sudo;
-        ouch = pkgs.yaziPlugins.ouch;
-        mount = pkgs.yaziPlugins.mount;
-        duckdb = pkgs.yaziPlugins.duckdb;
-        mediainfo = pkgs.yaziPlugins.mediainfo;
+        inherit (pkgs.yaziPlugins) git;
+        inherit (pkgs.yaziPlugins) sudo;
+        inherit (pkgs.yaziPlugins) ouch;
+        inherit (pkgs.yaziPlugins) mount;
+        inherit (pkgs.yaziPlugins) duckdb;
+        inherit (pkgs.yaziPlugins) mediainfo;
       };
     };
     openvpn3.enable = true;

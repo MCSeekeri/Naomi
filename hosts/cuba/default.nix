@@ -53,7 +53,7 @@ in
     hostPlatform = "x86_64-linux"; # 目前只考虑 x86_64
     overlays = [
       self.overlays.default
-      (final: prev: {
+      (_final: prev: {
         cifs-utils = prev.cifs-utils.overrideAttrs (oldAttrs: {
           buildInputs = builtins.filter (x: x != prev.samba) oldAttrs.buildInputs; # 剔除掉 samba 依赖
         });
