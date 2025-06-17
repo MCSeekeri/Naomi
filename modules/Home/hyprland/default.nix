@@ -1,3 +1,4 @@
+{ lib, ... }:
 {
   home = {
     sessionVariables = {
@@ -80,6 +81,40 @@
         workspace_swipe = true;
       };
 
+      # https://github.com/end-4/dots-hyprland
+      animations = {
+        enabled = true;
+        bezier = [
+          "linear, 0, 0, 1, 1"
+          "md3_standard, 0.2, 0, 0, 1"
+          "md3_decel, 0.05, 0.7, 0.1, 1"
+          "md3_accel, 0.3, 0, 0.8, 0.15"
+          "overshot, 0.05, 0.9, 0.1, 1.1"
+          "crazyshot, 0.1, 1.5, 0.76, 0.92 "
+          "hyprnostretch, 0.05, 0.9, 0.1, 1.0"
+          "menu_decel, 0.1, 1, 0, 1"
+          "menu_accel, 0.38, 0.04, 1, 0.07"
+          "easeInOutCirc, 0.85, 0, 0.15, 1"
+          "easeOutCirc, 0, 0.55, 0.45, 1"
+          "easeOutExpo, 0.16, 1, 0.3, 1"
+          "softAcDecel, 0.26, 0.26, 0.15, 1"
+          "md2, 0.4, 0, 0.2, 1 "
+        ];
+
+        animation = [
+          "windows, 1, 3, md3_decel, popin 60%"
+          "windowsIn, 1, 3, md3_decel, popin 60%"
+          "windowsOut, 1, 3, md3_accel, popin 60%"
+          "border, 1, 10, default"
+          "fade, 1, 3, md3_decel"
+          "layersIn, 1, 3, menu_decel, slide"
+          "layersOut, 1, 1.6, menu_accel"
+          "fadeLayersIn, 1, 2, menu_decel"
+          "fadeLayersOut, 1, 4.5, menu_accel"
+          "workspaces, 1, 7, menu_decel, slide"
+        ];
+      };
+
       bind = [
         "$mainMod, T, exec, $terminal"
         "$mainMod, E, exec, $fileManager"
@@ -126,17 +161,78 @@
         ",XF86MonBrightnessDown, exec, brightnessctl s 10%-"
       ];
 
-      windowrule = [
-        "suppressevent maximize, class:.*"
-        "nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0"
+      windowrulev2 = [
+        "tag +file-manager, class:^([Tt]hunar|org.gnome.Nautilus|[Pp]cmanfm-qt)$"
+        "tag +terminal, class:^(com.mitchellh.ghostty|org.wezfurlong.wezterm|Alacritty|kitty|kitty-dropterm)$"
+        "tag +browser, class:^(Brave-browser(-beta|-dev|-unstable)?)$"
+        "tag +browser, class:^([Ff]irefox|org.mozilla.firefox|[Ff]irefox-esr)$"
+        "tag +browser, class:^([Gg]oogle-chrome(-beta|-dev|-unstable)?)$"
+        "tag +projects, class:^(codium|codium-url-handler|VSCodium)$"
+        "tag +projects, class:^(VSCode|code-url-handler)$"
+        "tag +im, class:^([Dd]iscord|[Ww]ebCord|[Vv]esktop)$"
+        "tag +im, class:^(org.telegram.desktop|io.github.tdesktop_x64.TDesktop|AyuGram)$"
+        "tag +games, class:^(gamescope)$"
+        "tag +games, class:^(steam_app_\d+)$"
+        "tag +gamestore, class:^([Ss]team)$"
+        "tag +gamestore, title:^([Ll]utris)$"
+        "tag +settings, class:^(gnome-disks|wihotspot(-gui)?)$"
+        "tag +settings, class:^([Rr]ofi)$"
+        "tag +settings, class:^(file-roller|org.gnome.FileRoller)$"
+        "tag +settings, class:^(nm-applet|nm-connection-editor|blueman-manager)$"
+        "tag +settings, class:^(pavucontrol|org.pulseaudio.pavucontrol|com.saivert.pwvucontrol)$"
+        "tag +settings, class:^(nwg-look|qt5ct|qt6ct|[Yy]ad)$"
+        "tag +settings, class:(xdg-desktop-portal-gtk)"
+        "tag +settings, class:(.blueman-manager-wrapped)"
+        "tag +settings, class:(nwg-displays)"
+        "center, class:^(pavucontrol|org.pulseaudio.pavucontrol|com.saivert.pwvucontrol)$"
+        "center, class:([Tt]hunar), title:negative:(.*[Tt]hunar.*)"
+        "idleinhibit fullscreen, class:^(*)$"
+        "idleinhibit fullscreen, title:^(*)$"
+        "idleinhibit fullscreen, fullscreen:1"
+        "float, tag:settings*"
+        "float, class:(codium|codium-url-handler|VSCodium), title:negative:(.*codium.*|.*VSCodium.*)"
+        "float, class:^(com.heroicgameslauncher.hgl)$, title:negative:(Heroic Games Launcher)"
+        "float, class:^([Ss]team)$, title:negative:^([Ss]team)$"
+        "float, class:([Tt]hunar), title:negative:(.*[Tt]hunar.*)"
+        "size 70% 70%, tag:settings*"
+        "opacity 1.0 1.0, tag:browser*"
+        "opacity 0.9 0.8, tag:projects*"
+        "opacity 0.94 0.86, tag:im*"
+        "opacity 0.9 0.8, tag:file-manager*"
+        "opacity 0.8 0.7, tag:terminal*"
+        "opacity 0.8 0.7, tag:settings*"
+        "opacity 0.8 0.7, class:^(gedit|org.gnome.TextEditor|mousepad)$"
+        "opacity 0.9 0.8, class:^(seahorse)$ # gnome-keyring gui"
+        "noblur, tag:games*"
+        "fullscreen, tag:games*"
       ];
     };
   };
   services = {
     hyprpolkitagent.enable = true;
     hyprsunset.enable = true;
-    hypridle.enable = true;
     hyprpaper.enable = true;
+    hypridle = {
+      enable = true;
+      settings = {
+        general = {
+          after_sleep_cmd = "hyprctl dispatch dpms on";
+          ignore_dbus_inhibit = false;
+          lock_cmd = "hyprlock";
+        };
+        listener = [
+          {
+            timeout = lib.mkDefault 180; # 3 min
+            on-timeout = "hyprlock";
+          }
+          {
+            timeout = lib.mkDefault 900; # 15 min
+            on-timeout = "hyprctl dispatch dpms off";
+            on-resume = "hyprctl dispatch dpms on";
+          }
+        ];
+      };
+    };
   };
   programs.hyprlock.enable = true;
 }
