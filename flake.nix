@@ -160,12 +160,7 @@
   outputs =
     inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } (
-      {
-        withSystem,
-        self,
-        config,
-        ...
-      }:
+      { self, ... }:
       {
         imports = [
           inputs.devshell.flakeModule
@@ -179,12 +174,8 @@
         perSystem =
           {
             config,
-            inputs',
-            self',
             pkgs,
-            lib,
             system,
-            final,
             ...
           }:
           {

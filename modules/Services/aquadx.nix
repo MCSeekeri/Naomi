@@ -62,7 +62,7 @@ in
     services.mysql = lib.mkIf cfg.database.createLocally {
       enable = true;
       package = pkgs.mariadb;
-      initialDatabases = [ { name = cfg.database.name; } ];
+      initialDatabases = [ { inherit (cfg.database) name; } ];
       ensureUsers = [
         {
           name = cfg.database.user;
