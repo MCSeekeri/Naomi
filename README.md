@@ -45,5 +45,6 @@ nix run github:nix-community/nixos-anywhere -- --build-on-remote --flake github:
 - [NixOS 官方文档](https://nixos.org/manual/)
 - [Flake 非官方文档](https://nixos-and-flakes.thiscute.world/zh/)
 - [一份适用于新手的参考配置](https://github.com/Misterio77/nix-starter-configs/)
+- [比较完善的各类工具配置](https://gitlab.com/Zaney/zaneyos/)
 - [Awesome Nix](https://github.com/nix-community/awesome-nix)
 - [适合调试时聆听的放松音乐](https://www.youtube.com/watch?v=xxLpuXfnwkE)
