@@ -39,6 +39,7 @@
       dracula-icon-theme
       # 游戏娱乐
       moonlight-qt
+      go-musicfox
       # 开发套件
       uv
       # 终端增强
@@ -318,5 +319,9 @@
     }; # https://www.deviantart.com/chasingartwork/art/ahh-a-snake-383715432
     polarity = "dark";
     base16Scheme = "${pkgs.base16-schemes}/share/themes/rose-pine-moon.yaml";
+  };
+
+  wayland.windowManager.hyprland.settings = {
+    monitor = ",2560x1440@60,auto,1.5";
   };
 }

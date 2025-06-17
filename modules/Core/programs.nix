@@ -62,13 +62,20 @@
         inherit (pkgs.yaziPlugins) mediainfo;
       };
     };
+    zoxide = {
+      enable = true;
+      flags = [ "--cmd cd" ];
+    };
     openvpn3.enable = true;
-    zoxide.enable = true;
-    bat.enable = true;
+    bat.enable = true; # cat
     screen.enable = true;
+    nix-index.enable = true;
+    command-not-found.enable = false;
     nix-ld.enable = true;
     iotop.enable = true;
     iftop.enable = true;
+    mtr.enable = true; # traceroute
+    bandwhich.enable = true;
   };
   environment = {
     systemPackages = with pkgs; [
@@ -120,6 +127,7 @@
       yazi
       zellij # tmux
       gping # ping
+      tlrc # tldr
       # 网络工具
       nmap
       socat
