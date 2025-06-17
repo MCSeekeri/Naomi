@@ -43,6 +43,7 @@
     "${self}/modules/Containers/peerbanhelper.nix"
 
     "${self}/users/mcseekeri"
+    "${self}/users/mihomo"
   ];
 
   # 网络配置

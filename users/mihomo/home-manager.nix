@@ -4,6 +4,7 @@
     "${self}/modules/Home/fcitx5.nix"
     "${self}/modules/Home/xdg.nix"
     "${self}/modules/Home/plasma-manager"
+    "${self}/modules/Home/hyprland"
     "${self}/modules/Home/browser/chromium.nix"
     "${self}/modules/Home/vscode.nix"
     "${self}/modules/Home/fish/tide.nix"
@@ -37,5 +38,10 @@
         "plasma-localerc"."Translations"."LANGUAGE" = "zh_CN";
       };
     };
+  };
+  stylix = {
+    enable = true;
+    autoEnable = true;
+    image = "${pkgs.hyprland}/share/hypr/wall2.png";
   };
 }
