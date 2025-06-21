@@ -6,6 +6,7 @@
 }:
 {
   imports = [ "${self}/modules/Hardware/acceleration.nix" ];
+  boot.kernelParams = [ "intel_iommu=on" ];
   hardware = {
     cpu.intel.updateMicrocode = true;
     intel-gpu-tools.enable = true;

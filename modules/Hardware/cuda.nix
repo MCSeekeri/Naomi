@@ -23,7 +23,5 @@
     CUDA_PATH = pkgs.cudaPackages.cudatoolkit;
   };
 
-  services.xserver.videoDrivers = [ "nvidia" ];
-
   nixpkgs.config.cudaSupport = true;
 }
