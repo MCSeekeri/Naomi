@@ -19,5 +19,9 @@
       "zswap.compressor=zstd"
       "zswap.zpool=zsmalloc"
     ];
+    kernel.sysctl."kernel.sysrq" = 1;
+    # PrtSc 或者 Fn+S
+    # Alt+SysRq+f 触发 OOM Killer
+    # 如果还救不回来，那就 Reboot Even If System Utterly Broken
   };
 }
