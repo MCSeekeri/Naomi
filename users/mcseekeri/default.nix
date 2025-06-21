@@ -9,6 +9,8 @@
       "video"
       "podman"
       "minecraft" # 访问套接字需要位于这个组……或者 sudo
+      "kvm"
+      "libvirtd"
     ];
     shell = pkgs.fish;
     openssh.authorizedKeys.keys = [
@@ -16,5 +18,9 @@
     ];
     hashedPassword = "$y$j9T$lxgYXhMXDKlSzeS55r.nT/$X0TR61QgiVXNMYpbHOXitEKrtYE7LvKQf/gYgcL3Nc0";
   };
+
+  services.udev.extraRules = ''
+    SUBSYSTEM=="kvmfr", OWNER="mcseekeri", GROUP="kvm", MODE="0660"
+  '';
   home-manager.users.mcseekeri = import ./home-manager.nix;
 }
