@@ -9,7 +9,6 @@
   services = {
     xserver = {
       enable = true;
-      # videoDrivers = [  "nvidia" "modesetting" "fbdev"];
     };
     pipewire = {
       enable = true;
