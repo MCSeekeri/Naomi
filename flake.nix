@@ -121,6 +121,7 @@
         flake-compat.follows = "flake-compat";
         systems.follows = "systems";
         git-hooks.follows = "pre-commit-hooks";
+        nur.follows = "nur";
       };
     };
 
@@ -153,6 +154,14 @@
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-utils.follows = "flake-utils";
+      };
+    };
+
+    nur = {
+      url = "github:nix-community/NUR";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
       };
     };
   };
