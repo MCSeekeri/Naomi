@@ -13,6 +13,7 @@
     inputs.daeuniverse.nixosModules.dae
     # inputs.daeuniverse.nixosModules.daed
     inputs.lix-module.nixosModules.default
+    inputs.nur.modules.nixos.default
     ./apparmor.nix
     ./boot.nix
     ./dae
