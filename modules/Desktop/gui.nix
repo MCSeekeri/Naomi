@@ -34,8 +34,4 @@
       cascadia-code
     ];
   };
-  environment.pathsToLink = [
-    "/share/xdg-desktop-portal"
-    "/share/applications"
-  ]; # https://github.com/nix-community/home-manager/blob/release-25.05/modules/misc/xdg-portal.nix
 }

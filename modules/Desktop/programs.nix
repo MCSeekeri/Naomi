@@ -46,4 +46,5 @@
       neo-cowsay
     ];
   };
+  nixpkgs.config.chromium.enableWideVine = true;
 }

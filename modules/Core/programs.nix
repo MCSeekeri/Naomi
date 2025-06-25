@@ -3,6 +3,7 @@
   services = {
     sysstat.enable = true;
     gvfs.enable = true;
+    pcscd.enable = true;
   };
   programs = {
     proxychains.proxies = {
@@ -65,6 +66,10 @@
     zoxide = {
       enable = true;
       flags = [ "--cmd cd" ];
+    };
+    gnupg.agent ={
+      enable = true;
+      enableExtraSocket = true;
     };
     openvpn3.enable = true;
     bat.enable = true; # cat
