@@ -1,7 +1,7 @@
 let
   defaultFont = {
     family = "Sarasa UI SC";
-    pointSize = 13;
+    pointSize = 16;
   };
 in
 {
@@ -16,7 +16,7 @@ in
         };
         small = {
           inherit (defaultFont) family;
-          pointSize = 11;
+          pointSize = 14;
         };
         toolbar = defaultFont;
         menu = defaultFont;

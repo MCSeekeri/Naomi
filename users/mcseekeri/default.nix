@@ -16,11 +16,13 @@
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOTidxwTS5kyQENgBQ1n4FukaocS1CHhBZ0uaEDifLA0 mcseekeri@outlook.com"
     ];
-    hashedPassword = "$y$j9T$lxgYXhMXDKlSzeS55r.nT/$X0TR61QgiVXNMYpbHOXitEKrtYE7LvKQf/gYgcL3Nc0";
+    hashedPassword = "$y$j9T$lwFIo.UGTIFIrxztfMWSf/$YT54vMs0sQim6XLFalhmo3/PtmJ7VTU6kuOWTuZOom6";
   };
 
   services.udev.extraRules = ''
     SUBSYSTEM=="kvmfr", OWNER="mcseekeri", GROUP="kvm", MODE="0660"
   '';
+  nixpkgs.config.permittedInsecurePackages = [ "openssl-1.1.1w" ]; # DingTalk
+  nix.settings.trusted-users = [ "mcseekeri" ];
   home-manager.users.mcseekeri = import ./home-manager.nix;
 }
