@@ -26,7 +26,6 @@
     # "${self}/modules/Desktop/clash.nix" # CVE
     "${self}/modules/Desktop/adb.nix"
     "${self}/modules/Desktop/cups.nix"
-    "${self}/modules/Desktop/bluetooth.nix"
     "${self}/modules/Desktop/hyprland.nix"
 
     "${self}/modules/Services/cockpit.nix"

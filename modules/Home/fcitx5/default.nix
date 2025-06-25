@@ -1,4 +1,7 @@
 {
+  xdg.configFile = {
+    "fcitx5/conf/classicui.conf".source = ./classicui.conf;
+  };
   programs = {
     plasma = {
       configFile = {
@@ -13,6 +16,7 @@
   i18n.inputMethod = {
     type = "fcitx5";
     fcitx5 = {
+      waylandFrontend = true;
       themes = "FluentLight-solid";
       settings.inputMethod = {
         GroupOrder."0" = "Default";
@@ -26,4 +30,20 @@
       };
     };
   };
+
+  gtk = {
+    gtk3.extraConfig = {
+      gtk-im-module = "fcitx";
+    };
+    gtk4.extraConfig = {
+      gtk-im-module = "fcitx";
+    };
+  };
+
+  home.sessionVariables = {
+  #  QT_QPA_PLATFORM = "xcb";
+  QT_IM_MODULE = "fcitx";
+  #  QT_IM_MODULES = "wayland;fcitx;ibus";
+  };
+
 }

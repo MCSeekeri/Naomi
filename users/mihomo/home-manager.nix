@@ -1,7 +1,7 @@
 { pkgs, self, ... }:
 {
   imports = [
-    "${self}/modules/Home/fcitx5.nix"
+    "${self}/modules/Home/fcitx5"
     "${self}/modules/Home/xdg.nix"
     "${self}/modules/Home/plasma-manager"
     "${self}/modules/Home/hyprland"
