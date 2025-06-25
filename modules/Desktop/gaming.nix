@@ -9,7 +9,7 @@
       remotePlay.openFirewall = true;
       protontricks.enable = true;
       gamescopeSession.enable = true;
-      fontPackages = with pkgs; [ source-han-sans ];
+      # fontPackages = with pkgs; [ source-han-sans ];
       extraCompatPackages = with pkgs; [ proton-ge-bin ];
     };
     gamescope = {
@@ -32,5 +32,6 @@
     mangohud
     adwsteamgtk
     samrewritten
+    steam-run
   ];
 }

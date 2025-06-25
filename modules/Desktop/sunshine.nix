@@ -1,3 +1,4 @@
+{ pkgs, ... }:
 {
   services = {
     sunshine = {
@@ -7,4 +8,5 @@
       openFirewall = true;
     };
   };
+  environment.systemPackages = [ pkgs.moonlight-qt ];
 }

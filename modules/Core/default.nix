@@ -28,6 +28,7 @@
     ./ssh.nix
     ./stylix.nix
     ./tailscale.nix
+    ./users.nix
     ./zram.nix
   ];
 

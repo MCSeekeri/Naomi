@@ -1,4 +1,9 @@
-{ pkgs, inputs, ... }:
+{
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 {
   imports = [ inputs.stylix.nixosModules.stylix ];
 
@@ -19,20 +24,20 @@
         terminal = 14;
       };
       sansSerif = {
-        package = pkgs.source-han-sans;
-        name = "Source Han Sans SC";
+        package = lib.mkDefault pkgs.source-han-sans;
+        name = lib.mkDefault "Source Han Sans SC";
       };
       serif = {
-        package = pkgs.source-han-serif;
-        name = "Source Han Serif SC";
+        package = lib.mkDefault pkgs.source-han-serif;
+        name = lib.mkDefault "Source Han Serif SC";
       };
       monospace = {
-        package = pkgs.maple-mono.Normal-NF-CN;
-        name = "Maple Mono SC NF";
+        package = lib.mkDefault pkgs.maple-mono.Normal-NF-CN-unhinted;
+        name = lib.mkDefault "Maple Mono SC NF";
       };
       emoji = {
-        package = pkgs.noto-fonts-emoji;
-        name = "Noto Color Emoji";
+        package = lib.mkDefault pkgs.noto-fonts-emoji;
+        name = lib.mkDefault "Noto Color Emoji";
       };
     };
   };
