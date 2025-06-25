@@ -6,7 +6,10 @@
 }:
 {
   imports = [ "${self}/modules/Hardware/acceleration.nix" ];
-  services.xserver.videoDrivers = lib.mkAfter [ "nvidia" ];
+  services.xserver.videoDrivers = [
+    "modesetting"
+    "nvidia"
+  ];
   hardware = {
     nvidia-container-toolkit.enable = true;
     nvidia = {
@@ -31,6 +34,7 @@
     systemPackages = with pkgs; [
       nvidia-vaapi-driver
       nv-codec-headers-12
+      nvtopPackages.full
     ];
   };
 }
