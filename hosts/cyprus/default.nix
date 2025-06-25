@@ -1,10 +1,11 @@
-{ lib, self, ... }:
+{ pkgs, lib, self, ... }:
 {
   imports = [
     "${self}/modules/Core"
 
     "${self}/modules/Hardware/intel.nix"
-    "${self}/modules/Hardware/qemu.nix"
+    "${self}/modules/Hardware/nvidia_laptop.nix"
+    "${self}/modules/Hardware/cuda.nix"
 
     "${self}/modules/Server/firewall.nix"
     "${self}/modules/Server/clamav.nix"
@@ -17,8 +18,6 @@
     "${self}/modules/Desktop/fcitx5.nix"
     "${self}/modules/Desktop/adb.nix"
     "${self}/modules/Desktop/cups.nix"
-    "${self}/modules/Desktop/bluetooth.nix"
-    "${self}/modules/Desktop/hyprland.nix"
 
     "${self}/modules/Services/searx.nix"
     "${self}/modules/Services/archisteamfarm.nix"
@@ -39,12 +38,16 @@
     enableRedistributableFirmware = lib.mkDefault true;
   };
   boot = {
-    initrd.availableKernelModules = [
-      "xhci_pci"
-      "nvme"
-      "usbhid"
-    ];
+    initrd = {
+      availableKernelModules = [
+        "xhci_pci"
+        "nvme"
+        "usbhid"
+      ];
+      luks.devices."root".device = "/dev/disk/by-partlabel/root";
+    };
     kernelModules = [ "kvm-intel" ];
+    kernelPackages = pkgs.linuxKernel.packages.linux_zen;
   };
 
   system = {
@@ -52,31 +55,42 @@
     autoUpgrade.enable = true;
   };
 
-  fileSystems."/" = {
-    device = "/dev/mapper/root";
-    fsType = "btrfs";
-    options = [ "subvol=@" ];
-  };
+  fileSystems = {
 
-  boot.initrd.luks.devices."root".device = "/dev/disk/by-partlabel/root";
+    "/" = {
+      device = "/dev/mapper/root";
+      fsType = "btrfs";
+      options = [
+        "compress=zstd"
+        "subvol=@"
+      ];
+    };
 
-  fileSystems."/home" = {
-    device = "/dev/mapper/root";
-    fsType = "btrfs";
-    options = [ "subvol=@home" ];
-  };
+    "/boot" = {
+      device = "/dev/disk/by-label/BOOT";
+      fsType = "vfat";
+      options = [
+        "fmask=0022"
+        "dmask=0022"
+      ];
+    };
 
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-partlabel/boot";
-    fsType = "ext4";
-  };
+    "/home" = {
+      device = "/dev/mapper/root";
+      fsType = "btrfs";
+      options = [
+        "compress=zstd"
+        "subvol=@home"
+      ];
+    };
 
-  fileSystems."/boot/EFI" = {
-    device = "/dev/disk/by-partlabel/EFI";
-    fsType = "vfat";
-    options = [
-      "fmask=0022"
-      "dmask=0022"
-    ];
+    "/nix" = {
+      device = "/dev/mapper/root";
+      fsType = "btrfs";
+      options = [
+        "compress=zstd"
+        "subvol=@nix"
+      ];
+    };
   };
 }
