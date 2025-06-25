@@ -12,7 +12,6 @@
     "${self}/modules/Home/kitty.nix"
     "${self}/modules/Home/fcitx5"
     "${self}/modules/Home/plasma-manager"
-    "${self}/modules/Home/hyprland"
     "${self}/modules/Home/browser/librewolf.nix"
     "${self}/modules/Home/browser/chromium.nix"
     "${self}/modules/Home/vscode.nix"
@@ -28,11 +27,16 @@
       thunderbird
       keepassxc
       qq
-      wechat-uos
+      wechat
       wpsoffice-cn
       motrix
       kdePackages.kdenlive
+      kdePackages.kleopatra
       anki-bin
+      discord
+      ayugram-desktop
+      parsec-bin
+      nur.repos.xddxdd.dingtalk
       # 主题
       lain-kde-splashscreen
       kora-icon-theme
@@ -40,6 +44,7 @@
       # 游戏娱乐
       moonlight-qt
       go-musicfox
+      vlc
       # 开发套件
       uv
       # 终端增强
@@ -47,6 +52,12 @@
       pgcli
       iredis
       usql
+      # 常用工具
+      btrfs-assistant
+      nix-diff
+
+      vista-fonts
+      vista-fonts-chs # 很好笑，很好笑……
     ];
   };
 
@@ -77,6 +88,7 @@
         { id = "oboonakemofpalcgghocfoadofidjkkk"; } # KeePassXC
         { id = "mafpmfcccpbjnhfhjnllmmalhifmlcie"; } # ...
         { id = "kdbmhfkmnlmbkgbabkdealhhbfhlmmon"; } # SteamDB
+        { id = "hhinaapppaileiechjoiifaancjggfjm"; } # Web Scrobbler
       ];
     };
     vscode = {
@@ -95,6 +107,10 @@
       enable = true;
       userName = "MCSeekeri";
       userEmail = "mcseekeri@outlook.com";
+      signing = {
+        key = "3276666666666666!";
+        signByDefault = true;
+      };
     };
     fish = {
       enable = true; # 比 zsh 更好，可惜不兼容 bash
@@ -109,6 +125,20 @@
     plasma = {
       enable = true;
       overrideConfig = true;
+      input = {
+        touchpads = [
+          {
+            disableWhileTyping = true;
+            enable = true;
+            middleButtonEmulation = true;
+            naturalScroll = true;
+            tapToClick = true;
+            name = "ELAN0001:00 04F3:327E Touchpad";
+            productId = "327e";
+            vendorId = "04f3";
+          }
+        ];
+      };
       workspace = {
         # lookAndFeel = "Plasma-Overdose";
         cursor.size = 36;
@@ -134,7 +164,7 @@
                 launchers = [
                   "applications:org.kde.dolphin.desktop"
                   "applications:org.kde.konsole.desktop"
-                  "applications:librewolf.desktop"
+                  "applications:brave-browser.desktop"
                 ];
               };
             }
@@ -168,10 +198,26 @@
                     label = "内存使用情况";
                   }
                 ];
-                totalSensors = [ "cpu/all/usage" ];
-                textOnlySensors = [
-                  "cpu/all/cpuCount"
-                  "cpu/all/coreCount"
+                totalSensors = [ "memory/physical/applicationPercent" ];
+                settings = {
+                  refreshInterval = 1000;
+                };
+              };
+            }
+            {
+              systemMonitor = {
+                displayStyle = "org.kde.ksysguard.textonly";
+                sensors = [
+                  {
+                    name = "disk/all/write";
+                    color = "61,174,233";
+                    label = "写入速率";
+                  }
+                  {
+                    name = "disk/all/read";
+                    color = "233,120,61";
+                    label = "读取速率";
+                  }
                 ];
                 settings = {
                   refreshInterval = 1000;
@@ -191,26 +237,6 @@
                     name = "network/all/upload";
                     color = "233,120,61";
                     label = "上传速率";
-                  }
-                ];
-                settings = {
-                  refreshInterval = 1000;
-                };
-              };
-            }
-            {
-              systemMonitor = {
-                displayStyle = "org.kde.ksysguard.textonly";
-                sensors = [
-                  {
-                    name = "disk/all/write";
-                    color = "61,174,233";
-                    label = "写入速率";
-                  }
-                  {
-                    name = "disk/all/read";
-                    color = "233,120,61";
-                    label = "读取速率";
                   }
                 ];
                 settings = {
@@ -240,7 +266,7 @@
             }
             "org.kde.plasma.showdesktop"
           ];
-          height = 60;
+          height = 68;
         }
       ];
       kwin = {
@@ -265,9 +291,11 @@
       configFile = {
         "kcminputrc"."Mouse"."X11LibInputXAccelProfileFlat" = true;
         "kcminputrc"."Mouse"."XLbInptPointerAcceleration" = 0.4;
+        "kdeglobals"."KDE"."AnimationDurationFactor" = 0.25;
         "kdeglobals"."DialogIcons"."Size" = 48;
         "kdeglobals"."DirSelect Dialog"."DirSelectDialog Size" = "1292,596";
-        "kdeglobals"."General"."BrowserApplication" = "librewolf.desktop";
+        "kdeglobals"."General"."TerminalApplication" = "kitty";
+        "kdeglobals"."General"."TerminalService" = "kitty.desktop";
         "kdeglobals"."General"."XftAntialias" = true;
         "kdeglobals"."General"."XftHintStyle" = "hintfull";
         "kdeglobals"."General"."XftSubPixel" = "rgb";
@@ -313,12 +341,13 @@
   };
   stylix = {
     enable = true;
+    autoEnable = true;
     image = pkgs.fetchurl {
       url = "https://github.com/MCSeekeri/storage/raw/main/wallpaper/ahh_a_snake.jpg";
       sha256 = "1gifgvnp5dr0hzj1nif5448jd4vclppnfw1msvxyicb4m1k1hibm";
     }; # https://www.deviantart.com/chasingartwork/art/ahh-a-snake-383715432
     polarity = "dark";
-    base16Scheme = "${pkgs.base16-schemes}/share/themes/rose-pine-moon.yaml";
+    base16Scheme = "${pkgs.base16-schemes}/share/themes/ayu-dark.yaml";
   };
 
   wayland.windowManager.hyprland.settings = {

@@ -29,6 +29,12 @@
       shortcuts = {
         "kwin"."Kill Window" = "Meta+Ctrl+Esc";
       };
+      hotkeys.commands = {
+        kitty = {
+          command = "kitty";
+          key = "Ctrl+Alt+T";
+        };
+      };
       workspace = {
         clickItemTo = "select"; # 禁止历史倒车
         enableMiddleClickPaste = true;
