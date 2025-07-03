@@ -104,6 +104,7 @@
       zstd
       p7zip
       gnutar
+      unrar
       # 加解密
       gnupg
       age
@@ -112,6 +113,7 @@
       sshfs
       btrfs-progs
       ntfs3g
+      compsize
       # Nix 相关
       nixfmt-rfc-style
       inputs.nix-alien.packages.${system}.nix-alien

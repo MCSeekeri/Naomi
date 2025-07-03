@@ -33,5 +33,6 @@
     adwsteamgtk
     samrewritten
     steam-run
+    steamtinkerlaunch
   ];
 }
