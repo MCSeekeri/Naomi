@@ -89,6 +89,7 @@
       fsType = "btrfs";
       options = [
         "compress=zstd"
+        "noatime"
         "subvol=@nix"
       ];
     };

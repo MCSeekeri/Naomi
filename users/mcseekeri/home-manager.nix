@@ -37,6 +37,7 @@
       ayugram-desktop
       parsec-bin
       nur.repos.xddxdd.dingtalk
+      qbittorrent
       # 主题
       lain-kde-splashscreen
       kora-icon-theme
@@ -47,6 +48,9 @@
       vlc
       # 开发套件
       uv
+      rustup
+      gnumake
+      musl
       # 终端增强
       mycli
       pgcli
@@ -55,6 +59,9 @@
       # 常用工具
       btrfs-assistant
       nix-diff
+      yt-dlp
+      ffmpeg
+      peazip
 
       vista-fonts
       vista-fonts-chs # 很好笑，很好笑……
