@@ -3,7 +3,7 @@
   programs = {
     steam = {
       enable = true;
-      extest.enable = true;
+      # extest.enable = true;
       dedicatedServer.openFirewall = true;
       localNetworkGameTransfers.openFirewall = true;
       remotePlay.openFirewall = true;

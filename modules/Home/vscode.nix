@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   programs = {
     vscode = {
@@ -15,4 +15,8 @@
       ];
     };
   };
+
+  stylix.targets.vscode.enable = lib.mkForce false;
+  # 字体最好由用户手动设置，而不是 Stylix 默认
+  # 等宽和宋体混杂别提多难受了
 }
