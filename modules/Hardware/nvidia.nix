@@ -6,10 +6,7 @@
 }:
 {
   imports = [ "${self}/modules/Hardware/acceleration.nix" ];
-  services.xserver.videoDrivers = [
-    "modesetting"
-    "nvidia"
-  ];
+  services.xserver.videoDrivers = lib.mkDefault [ "nvidia" ];
   hardware = {
     nvidia-container-toolkit.enable = true;
     nvidia = {

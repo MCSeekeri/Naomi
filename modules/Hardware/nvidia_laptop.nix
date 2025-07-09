@@ -11,6 +11,10 @@
   };
   specialisation.offload.configuration = {
     system.nixos.tags = [ "offload" ];
+    services.xserver.videoDrivers = [
+      "modesetting"
+      "nvidia"
+    ];
     hardware.nvidia = {
       powerManagement = {
         enable = true;
