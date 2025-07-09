@@ -1,4 +1,9 @@
-{ pkgs, lib, self, ... }:
+{
+  pkgs,
+  lib,
+  self,
+  ...
+}:
 {
   imports = [
     "${self}/modules/Core"
@@ -21,6 +26,7 @@
 
     "${self}/modules/Services/searx.nix"
     "${self}/modules/Services/archisteamfarm.nix"
+    "${self}/modules/Services/adguardhome.nix"
 
     "${self}/modules/Games/retro.nix"
 
@@ -56,7 +62,6 @@
   };
 
   fileSystems = {
-
     "/" = {
       device = "/dev/mapper/root";
       fsType = "btrfs";

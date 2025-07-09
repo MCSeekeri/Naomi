@@ -46,6 +46,8 @@
       moonlight-qt
       go-musicfox
       vlc
+      lutris
+      bottles
       # 开发套件
       uv
       rustup
@@ -62,6 +64,7 @@
       yt-dlp
       ffmpeg
       peazip
+      localsend
 
       vista-fonts
       vista-fonts-chs # 很好笑，很好笑……
@@ -170,7 +173,7 @@
               iconTasks = {
                 launchers = [
                   "applications:org.kde.dolphin.desktop"
-                  "applications:org.kde.konsole.desktop"
+                  "applications:kitty.desktop"
                   "applications:brave-browser.desktop"
                 ];
               };
