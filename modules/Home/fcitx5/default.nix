@@ -41,9 +41,8 @@
   };
 
   home.sessionVariables = {
-  #  QT_QPA_PLATFORM = "xcb";
-  QT_IM_MODULE = "fcitx";
-  #  QT_IM_MODULES = "wayland;fcitx;ibus";
+    #  QT_QPA_PLATFORM = "xcb";
+    QT_IM_MODULE = "fcitx";
+    #  QT_IM_MODULES = "wayland;fcitx;ibus";
   };
-
 }
