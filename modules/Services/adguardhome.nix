@@ -28,18 +28,6 @@
         }
         {
           enabled = true;
-          url = "https://gcore.jsdelivr.net/gh/1Hosts/1Hosts@master/hosts.txt";
-          name = "1Hosts (mini)";
-          id = 514;
-        }
-        {
-          enabled = true;
-          url = "https://gp.adrules.top/dns.txt";
-          name = "CHN=AdRules DNS List";
-          id = 1919;
-        }
-        {
-          enabled = true;
           url = "https://anti-ad.net/easylist.txt";
           name = "CHN=anti-AD";
           id = 810;
