@@ -115,12 +115,9 @@
     stylix = {
       url = "github:danth/stylix/release-25.05";
       inputs = {
-        home-manager.follows = "home-manager";
         nixpkgs.follows = "nixpkgs";
         flake-parts.follows = "flake-parts";
-        flake-compat.follows = "flake-compat";
         systems.follows = "systems";
-        git-hooks.follows = "pre-commit-hooks";
         nur.follows = "nur";
       };
     };
@@ -202,7 +199,7 @@
 
             devshells.default = {
               packages = with pkgs; [
-                nix
+                lix
                 git
                 fish
                 sops

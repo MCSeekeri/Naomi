@@ -67,7 +67,7 @@
       enable = true;
       flags = [ "--cmd cd" ];
     };
-    gnupg.agent ={
+    gnupg.agent = {
       enable = true;
       enableExtraSocket = true;
     };
