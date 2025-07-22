@@ -12,6 +12,7 @@
         ms-vscode.remote-explorer
         redhat.vscode-xml
         redhat.vscode-yaml
+        activitywatch.aw-watcher-vscode
       ];
     };
   };
