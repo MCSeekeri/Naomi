@@ -39,6 +39,7 @@
       parsec-bin
       nur.repos.xddxdd.dingtalk
       qbittorrent
+      krita
       # 主题
       lain-kde-splashscreen
       kora-icon-theme
@@ -54,6 +55,8 @@
       rustup
       gnumake
       musl
+      nixpkgs-review
+      lucky-commit
       # 终端增强
       mycli
       pgcli

@@ -1,14 +1,15 @@
-{ lib, ... }:
+{ lib, config, ... }:
 {
   # 设置软件源
   nix = {
+    channel.enable = false;
     gc = {
       automatic = true;
       dates = "weekly";
       options = "--delete-older-than 7d"; # 删除超过一周的垃圾文件，硬盘笑传之踩踩 Backup
     };
     settings = {
-      auto-optimise-store = true; # 会让 build 变慢，见仁见智吧
+      auto-optimise-store = lib.mkDefault (!config.boot.isContainer);
       substituters = lib.mkForce [
         "https://mirrors.ustc.edu.cn/nix-channels/store?priority=1"
         "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store?priority=2"
@@ -30,7 +31,10 @@
         "nix-command"
         "flakes"
       ];
-      trusted-users = [ "root" ];
+      trusted-users = [
+        "root"
+        "@wheel"
+      ];
       connect-timeout = 20;
       http-connections = 64;
       max-substitution-jobs = 32; # 加速下载
@@ -38,6 +42,9 @@
       min-free = 1024 * 1024 * 1024;
       builders-use-substitutes = true;
     };
+    daemonCPUSchedPolicy = lib.mkDefault "idle"; # 确保在桌面环境下不影响用户体验
+    daemonIOSchedClass = lib.mkDefault "idle";
+    daemonIOSchedPriority = lib.mkDefault 7;
   };
   # 允许非自由软件
   nixpkgs.config = {

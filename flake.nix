@@ -2,16 +2,10 @@
   description = "Naomi Flake Configuration";
 
   nixConfig = {
-    auto-optimise-store = true; # 会让 build 变慢，见仁见智吧
     experimental-features = [
       "nix-command"
       "flakes"
     ];
-    connect-timeout = 20;
-    http-connections = 64;
-    max-substitution-jobs = 32;
-    max-jobs = "auto";
-    builders-use-substitutes = true;
     extra-substituters = [
       "https://mirrors.ustc.edu.cn/nix-channels/store?priority=1"
       "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store?priority=2"

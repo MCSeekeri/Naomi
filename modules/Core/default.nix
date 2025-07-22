@@ -55,7 +55,10 @@
 
   networking = {
     networkmanager.enable = true;
+    useNetworkd = true; # 实验性启用
+    dhcpcd.enable = false;
   };
+
   hardware = {
     enableAllFirmware = true;
   };
@@ -70,5 +73,11 @@
       enable = true;
       execWheelOnly = true; # https://unix.stackexchange.com/questions/1262/where-did-the-wheel-group-get-its-name
     };
+  };
+
+  systemd.services.nix-gc.serviceConfig = {
+    CPUSchedulingPolicy = "batch";
+    IOSchedulingClass = "idle";
+    IOSchedulingPriority = 7;
   };
 }

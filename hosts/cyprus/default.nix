@@ -118,7 +118,7 @@
         ];
       };
       Games = {
-        spec = "PARTLABEL=Games";
+        spec = "LABEL=Games";
         hashTableSizeMB = 4096;
         verbosity = "crit";
         extraOptions = [
@@ -148,5 +148,4 @@
       };
     };
   };
-
 }
