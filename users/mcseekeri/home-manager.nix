@@ -16,6 +16,7 @@
     "${self}/modules/Home/browser/chromium.nix"
     "${self}/modules/Home/vscode.nix"
     "${self}/modules/Home/fish/tide.nix"
+    "${self}/modules/Home/activitywatch.nix"
   ];
   home = {
     username = "mcseekeri";
