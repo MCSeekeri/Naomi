@@ -20,10 +20,6 @@
       enable = true;
       capSysNice = true;
     };
-    obs-studio = {
-      enable = true;
-      enableVirtualCamera = true;
-    };
     gamemode = {
       enable = true;
       enableRenice = true;
