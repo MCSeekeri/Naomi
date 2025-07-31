@@ -1,5 +1,9 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 {
+  imports = with inputs.nix-gaming.nixosModules; [
+    pipewireLowLatency
+    platformOptimizations
+  ];
   programs = {
     steam = {
       enable = true;
@@ -35,4 +39,7 @@
     steam-run
     steamtinkerlaunch
   ];
+
+  services.pipewire.lowLatency.enable = true;
+  programs.steam.platformOptimizations.enable = true;
 }

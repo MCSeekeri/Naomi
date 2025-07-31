@@ -55,7 +55,7 @@
       luks.devices."root".device = "/dev/disk/by-partlabel/root";
     };
     kernelModules = [ "kvm-intel" ];
-    kernelPackages = pkgs.linuxKernel.packages.linux_zen;
+    kernelPackages = pkgs.linuxKernel.packages.linux_xanmod;
   };
 
   system = {
