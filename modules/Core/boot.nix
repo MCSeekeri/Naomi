@@ -1,3 +1,4 @@
+{ lib, ... }:
 {
   boot = {
     loader = {
@@ -13,9 +14,13 @@
       };
     };
     tmp.cleanOnBoot = true;
-    kernel.sysctl."kernel.sysrq" = 1;
-    # PrtSc 或者 Fn+S
-    # Alt+SysRq+f 触发 OOM Killer
-    # 如果还救不回来，那就 Reboot Even If System Utterly Broken
+    kernel.sysctl = lib.mkDefault {
+      "kernel.sysrq" = 1;
+      # PrtSc 或者 Fn+S
+      # Alt+SysRq+f 触发 OOM Killer
+      # 如果还救不回来，那就 Reboot Even If System Utterly Broken
+      "vm.max_map_count" = 2147483642;
+      "kernel.panic" = 15; # 内核恐慌 15 秒之后重启
+    };
   };
 }

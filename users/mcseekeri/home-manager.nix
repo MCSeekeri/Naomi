@@ -22,6 +22,9 @@
     username = "mcseekeri";
     homeDirectory = "/home/mcseekeri";
     stateVersion = "25.05";
+    sessionPath = [
+      "$HOME/.local/bin" # pipx
+    ];
 
     packages = with pkgs; [
       # 桌面应用
