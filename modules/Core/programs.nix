@@ -29,9 +29,11 @@
       enable = true;
       binfmt = true;
     };
-    vim = {
+    neovim = {
       enable = true;
       defaultEditor = true;
+      viAlias = true;
+      vimAlias = true;
     };
     appimage = {
       enable = true;

@@ -22,6 +22,9 @@
   environment.sessionVariables = rec {
     CUDA_PATH = pkgs.cudaPackages.cudatoolkit;
   };
+  # LD_LIBRARY_PATH=/run/opengl-driver/lib
+  # 这样可以确保使用 pip 安装的 pytorch 正确使用 CUDA
+  # 再不济，可以起一个 podman 容器
 
   nixpkgs.config.cudaSupport = true;
 }

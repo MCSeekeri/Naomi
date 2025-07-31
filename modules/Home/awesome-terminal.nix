@@ -22,6 +22,10 @@
       cava
       oha # 反向测速
     ];
+    shellAliases = {
+      ls = "eza";
+      ll = "eza  -lh --no-user --long";
+    };
   };
   programs = {
     tealdeer = {
@@ -30,11 +34,33 @@
     };
     btop = {
       enable = true;
+      package = pkgs.btop.override {
+        rocmSupport = true;
+        cudaSupport = true;
+      };
       settings = {
         show_battery = true;
         show_disks = true;
         io_mode = true;
       };
+    };
+    eza = {
+      enable = true;
+      icons = "auto";
+      enableBashIntegration = true;
+      enableZshIntegration = true;
+      enableFishIntegration = true;
+      git = true;
+
+      extraOptions = [
+        "--group-directories-first"
+        "--no-quotes" # 不使用符号包裹空格
+        "--header"
+        "--icons=always"
+        "--time-style=long-iso" # YYYY-MM-DD HH:MM 最美妙的表示时间的方式
+        "--classify"
+        "--hyperlink"
+      ];
     };
     fastfetch = {
       enable = true;
