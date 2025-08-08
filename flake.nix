@@ -165,6 +165,14 @@
         flake-parts.follows = "flake-parts";
       };
     };
+
+    kwin-effects-forceblur = {
+      url = "github:taj-ny/kwin-effects-forceblur/v1.3.6";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        utils.follows = "flake-utils";
+      };
+    };
   };
 
   outputs =
