@@ -21,6 +21,10 @@
       rsclock
       cava
       oha # 反向测速
+      hollywood
+      ipfetch
+      genact
+      neo-cowsay
     ];
     shellAliases = {
       ls = "eza";

@@ -85,6 +85,7 @@
     bandwhich.enable = true;
   };
   environment = {
+    localBinInPath = true;
     systemPackages = with pkgs; [
       # 基础必备
       curl

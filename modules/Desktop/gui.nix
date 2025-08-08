@@ -38,4 +38,6 @@
       cascadia-code
     ];
   };
+
+  environment.systemPackages = with pkgs; [ ocs-url ];
 }

@@ -22,9 +22,6 @@
     username = "mcseekeri";
     homeDirectory = "/home/mcseekeri";
     stateVersion = "25.05";
-    sessionPath = [
-      "$HOME/.local/bin" # pipx
-    ];
 
     packages = with pkgs; [
       # 桌面应用
@@ -43,13 +40,13 @@
       nur.repos.xddxdd.dingtalk
       qbittorrent
       krita
+      obsidian
       # 主题
       lain-kde-splashscreen
       kora-icon-theme
       dracula-icon-theme
       # 游戏娱乐
       moonlight-qt
-      go-musicfox
       vlc
       lutris
       bottles
@@ -60,6 +57,9 @@
       musl
       nixpkgs-review
       lucky-commit
+      pkg-config
+      fvm
+      android-studio
       # 终端增强
       mycli
       pgcli
