@@ -3,7 +3,7 @@
     serviceName = "peerbanhelper";
     settings = {
       services.peerbanhelper.service = {
-        image = "ghostchu/peerbanhelper:v7.4.15";
+        image = "ghostchu/peerbanhelper:v8.0.12";
         network_mode = "host";
         ports = [ "9898:9898" ];
         restart = "unless-stopped";
