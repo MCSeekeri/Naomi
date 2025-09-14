@@ -45,9 +45,9 @@ in
     "${modulesPath}/installer/cd-dvd/channel.nix"
     # 需要用 modulesPath 避免纯评估模式出错，大概
     inputs.stylix.nixosModules.stylix
+    "${self}/modules/Core/avahi.nix"
     "${self}/modules/Core/ssh.nix"
     "${self}/modules/Core/kmscon.nix"
-    "${self}/modules/Core/mDNS.nix"
   ];
   nixpkgs = {
     hostPlatform = "x86_64-linux"; # 目前只考虑 x86_64
