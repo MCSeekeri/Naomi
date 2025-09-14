@@ -39,5 +39,15 @@
     ];
   };
 
-  environment.systemPackages = with pkgs; [ ocs-url ];
+  environment.systemPackages = with pkgs; [
+    ocs-url
+    coppwr
+  ];
+
+  environment.sessionVariables = {
+    QT_AUTO_SCREEN_SCALE_FACTOR = "1";
+    MOZ_ENABLE_WAYLAND = "1";
+    MOZ_WEBRENDER = "1";
+    _JAVA_AWT_WM_NONREPARENTING = "1";
+  };
 }

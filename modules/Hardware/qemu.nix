@@ -2,7 +2,10 @@
 {
   imports = [ "${self}/modules/Hardware/acceleration.nix" ];
   hardware.graphics = {
-    extraPackages = with pkgs; [ virglrenderer ];
+    extraPackages = with pkgs; [
+      virglrenderer
+      virtualgl
+    ];
   };
   services = {
     qemuGuest.enable = true;
