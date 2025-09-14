@@ -1,17 +1,24 @@
-{ lib, ... }:
 {
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
+{
+  imports = [ inputs.lanzaboote.nixosModules.lanzaboote ];
+  environment.systemPackages = [ pkgs.sbctl ];
+
   boot = {
-    loader = {
-      # efi.canTouchEfiVariables = false;
-      # 在部分 EFI 分区不可修改的设备上需要这个选项
-      # efi.efiSysMountPoint = "/boot/EFI";
-      systemd-boot = {
-        enable = true;
-        editor = false;
-        # 启动的时候最多显示 20 个版本
-        # 如果跑了 20 个配置文件还没修好 Bug，我建议你反思下
-        configurationLimit = 20;
-      };
+    # efi.canTouchEfiVariables = false;
+    # 在部分 EFI 分区不可修改的设备上需要这个选项
+    # efi.efiSysMountPoint = "/boot/EFI";
+    lanzaboote = {
+      # 基本上和 systemd-boot 是一回事，不过添加了安全启动支持
+      enable = true;
+      pkiBundle = "/var/lib/sbctl";
+      # 启动的时候最多显示 20 个版本
+      # 如果跑了 20 个配置文件还没修好 Bug，我建议你反思下
+      configurationLimit = 20;
     };
     tmp.cleanOnBoot = true;
     kernel.sysctl = lib.mkDefault {

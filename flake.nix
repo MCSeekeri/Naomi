@@ -173,6 +173,16 @@
         utils.follows = "flake-utils";
       };
     };
+
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v0.4.2";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-compat.follows = "flake-compat";
+        flake-parts.follows = "flake-parts";
+        pre-commit-hooks-nix.follows = "pre-commit-hooks";
+      };
+    };
   };
 
   outputs =
