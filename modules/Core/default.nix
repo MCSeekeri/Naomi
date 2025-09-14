@@ -15,9 +15,7 @@
     ./apparmor.nix
     ./avahi.nix
     ./boot.nix
-    ./dae
     ./fonts.nix
-    ./geph5.nix
     ./i18n.nix
     ./kmscon.nix
     ./nix.nix
