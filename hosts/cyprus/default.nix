@@ -1,9 +1,4 @@
-{
-  pkgs,
-  lib,
-  self,
-  ...
-}:
+{ lib, self, ... }:
 {
   imports = [
     "${self}/modules/Core"
@@ -26,12 +21,12 @@
     "${self}/modules/Desktop/adb.nix"
     "${self}/modules/Desktop/waydroid.nix"
     "${self}/modules/Desktop/cups.nix"
+    "${self}/modules/Desktop/embedded.nix"
 
-    "${self}/modules/Services/searx.nix"
     "${self}/modules/Services/archisteamfarm.nix"
-    "${self}/modules/Services/adguardhome.nix"
 
     "${self}/modules/Games/retro.nix"
+    "${self}/modules/Games/minecraft.nix"
 
     "${self}/modules/Containers/peerbanhelper.nix"
 
@@ -74,7 +69,7 @@
       luks.devices."root".device = "/dev/disk/by-partlabel/root";
     };
     kernelModules = [ "kvm-intel" ];
-    kernelPackages = pkgs.linuxKernel.packages.linux_xanmod;
+    # kernelPackages = pkgs.linuxPackages_zen; # 编译失败
   };
 
   system = {
@@ -133,7 +128,7 @@
         verbosity = "crit";
         extraOptions = [
           "--loadavg-target"
-          "40.0"
+          "15.0"
         ];
       };
       Games = {
@@ -142,7 +137,7 @@
         verbosity = "crit";
         extraOptions = [
           "--loadavg-target"
-          "40.0"
+          "15.0"
         ];
       };
     };

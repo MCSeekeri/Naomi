@@ -22,7 +22,6 @@
 
     gcc-arm-embedded # arm-none-eabi-gcc
     openocd
-    segger-jlink
 
     stlink
     stlink-gui
@@ -33,10 +32,9 @@
     dfu-util
     dfu-programmer
 
-    pipx
     uv
-    python311
-    python311Packages.pip
+
+    # nur.repos.Emin017.lceda-pro # 用 flatpak
 
     # [TODO] 等待后续完善
   ];

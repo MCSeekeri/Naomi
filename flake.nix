@@ -237,10 +237,10 @@
                 statix
                 nix-melt
                 nix-tree
+                colmena
               ];
             };
             topology = {
-              nixosConfigurations = { };
               modules = [ { imports = [ ./topology.nix ]; } ];
             };
           };
