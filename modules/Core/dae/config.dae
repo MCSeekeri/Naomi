@@ -1,54 +1,52 @@
 global {
-  wan_interface: auto
-  log_level: info
-  allow_insecure: false
-  auto_config_kernel_parameter: true
+	wan_interface: auto
+	log_level: info
+	allow_insecure: false
+	auto_config_kernel_parameter: true
 }
 
 node {
-  'socks5://localhost:14514'
+	'socks5://localhost:14514'
 }
 
 # https://github.com/daeuniverse/dae/blob/main/docs/zh/configuration/dns.md
 dns {
-  ipversion_prefer: 4
-  upstream {
-    alidns: 'udp://223.5.5.5:53'
-    cloudflare: 'tcp+udp://1.1.1.1:53'
-  }
-  routing {
-    request {
-      fallback: alidns
-    }
-    response {
-      upstream(cloudflare) -> accept
-      ip(geoip:private) && !qname(geosite:cn) -> cloudflare
-      fallback: accept
-    }
-  }
+	ipversion_prefer: 4 # IPv6 在某些网络环境下是个悲剧
+	upstream {
+		alidns: 'udp://223.5.5.5:53'
+		cloudflare: 'tcp+udp://1.1.1.1:53'
+	}
+	routing {
+		request {
+			qname(geosite:category-ads) -> reject
+			qname(geosite:category-ads-all) -> reject
+			qname(geosite:google@cn) -> alidns
+			fallback: alidns
+		}
+		response {
+			upstream(cloudflare) -> accept
+			ip(geoip:private) && !qname(geosite:cn) -> cloudflare
+			fallback: accept
+		}
+	}
 }
 
 group {
-  proxy {
-    policy: min_moving_avg
-  }
+	proxy {
+		policy: min_moving_avg
+	}
 }
 
 # https://github.com/daeuniverse/dae/blob/main/docs/zh/configuration/routing.md
 routing {
-  pname(NetworkManager) -> direct
-  dip(224.0.0.0/3, 'ff00::/8') -> direct
-  dip(geoip:private) -> direct
+	domain(geosite:category-ads) -> block
+	pname(NetworkManager) -> direct
+	dip(224.0.0.0/3, 'ff00::/8', geoip:private) -> must_direct
+	pname(geph5-client, geph5-client-gui, gephgui-wry, tailscaled, localsend_app, qbittorrent, AdGuardHome) -> must_direct
 
-  pname(geph5-client-gui) -> must_direct
-  pname(geph5-client) -> must_direct
-  pname(tailscaled) -> must_direct
-  pname(localsend_app) -> must_direct
-  pname(qbittorrent) -> must_direct
-
-  l4proto(udp) && dport(443) -> block
-  dip(geoip:cn) -> direct
-  domain(geosite:cn) -> direct
-
-  fallback: proxy
+	l4proto(udp) && dport(443) -> block
+	dip(geoip:cn) -> direct
+	domain(geosite:cn) -> direct
+	
+	fallback: proxy
 }
