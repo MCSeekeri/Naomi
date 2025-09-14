@@ -25,6 +25,7 @@
       ipfetch
       genact
       neo-cowsay
+      hyperfine
     ];
     shellAliases = {
       ls = "eza";
@@ -46,6 +47,8 @@
         show_battery = true;
         show_disks = true;
         io_mode = true;
+        update_ms = 100;
+        theme_background = false; # 可能看不出来，但这是透明……
       };
     };
     eza = {
@@ -66,6 +69,13 @@
         "--hyperlink"
       ];
     };
+    # starship = {
+    #   enable = true;
+    #   enableBashIntegration = true;
+    #   enableFishIntegration = true;
+    #   enableZshIntegration = true;
+    #   enableTransience = true;
+    # };
     fastfetch = {
       enable = true;
       # 我完全看不出来有何意义，但 unixporn 上全是这种东西……

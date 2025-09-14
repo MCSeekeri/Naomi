@@ -46,9 +46,11 @@
   ];
 
   home-manager = {
+    # useUserPackages = true; # 系统级别的软件包安装，starship 之类的需要用到
+    # [TODO]: 整明白为什么开了之后用户登录就卡住
     useGlobalPkgs = true;
     extraSpecialArgs = { inherit self inputs outputs; };
-    sharedModules = [ inputs.plasma-manager.homeManagerModules.plasma-manager ];
+    sharedModules = [ inputs.plasma-manager.homeModules.plasma-manager ];
   };
 
   networking = {
@@ -68,14 +70,20 @@
 
   security = {
     sudo-rs = {
+      # 不是很支持 sudo -E
       enable = true;
       execWheelOnly = true; # https://unix.stackexchange.com/questions/1262/where-did-the-wheel-group-get-its-name
     };
   };
 
-  systemd.services.nix-gc.serviceConfig = {
-    CPUSchedulingPolicy = "batch";
-    IOSchedulingClass = "idle";
-    IOSchedulingPriority = 7;
+  systemd = {
+    coredump.enable = false; # 不需要转储
+    services.nix-gc.serviceConfig = {
+      CPUSchedulingPolicy = "batch";
+      IOSchedulingClass = "idle";
+      IOSchedulingPriority = 7;
+    };
   };
+
+  environment.enableAllTerminfo = true;
 }

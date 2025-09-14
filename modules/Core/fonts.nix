@@ -7,6 +7,7 @@
     fontconfig = {
       useEmbeddedBitmaps = true; # 啥
       cache32Bit = true;
+      hinting.enable = false;
       defaultFonts = {
         serif = [
           "Source Han Serif SC"

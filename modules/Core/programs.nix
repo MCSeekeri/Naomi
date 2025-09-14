@@ -4,13 +4,20 @@
     sysstat.enable = true;
     gvfs.enable = true;
     pcscd.enable = true;
+    envfs.enable = true;
   };
   programs = {
-    proxychains.proxies = {
-      geph5 = {
-        type = "socks5";
-        host = "127.0.0.1";
-        port = 14514;
+    proxychains = {
+      enable = true;
+      package = pkgs.proxychains-ng;
+      quietMode = true;
+      proxies = {
+        geph = {
+          enable = true;
+          type = "socks5";
+          host = "127.0.0.1";
+          port = 14514;
+        };
       };
     };
     nh = {
@@ -28,6 +35,7 @@
     java = {
       enable = true;
       binfmt = true;
+      package = pkgs.zulu.override { enableJavaFX = true; };
     };
     neovim = {
       enable = true;
@@ -41,6 +49,7 @@
     };
     git = {
       enable = true;
+      package = pkgs.gitFull;
       lfs.enable = true;
     };
     tmux = {
@@ -73,12 +82,19 @@
       enable = true;
       enableExtraSocket = true;
     };
+    nix-ld = {
+      enable = true;
+      libraries = with pkgs; [
+        ffmpeg-full
+        icu
+        stdenv.cc.cc
+      ];
+    };
     openvpn3.enable = true;
     bat.enable = true; # cat
     screen.enable = true;
     nix-index.enable = true;
     command-not-found.enable = false;
-    nix-ld.enable = true;
     iotop.enable = true;
     iftop.enable = true;
     mtr.enable = true; # traceroute
@@ -99,6 +115,10 @@
       jq
       progress
       hexyl
+      sbctl
+      mosh
+      # inetutils
+      busybox
       # 解压缩
       ouch # 一站式压缩解决方案
       unzip
@@ -125,6 +145,7 @@
       nix-du
       graphviz # nix-du -s=500MB | dot -Tsvg > store.svg
       nix-tree
+      colmena
       # 终端优化
       babelfish
       speedtest-cli
@@ -132,6 +153,7 @@
       fishPlugins.tide
       fishPlugins.done
       fishPlugins.autopair
+      fishPlugins.nvm
       bat
       fd
       yazi

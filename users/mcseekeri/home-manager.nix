@@ -25,7 +25,7 @@
 
     packages = with pkgs; [
       # 桌面应用
-      thunderbird
+      thunderbird-bin
       keepassxc
       qq
       wechat
@@ -41,6 +41,10 @@
       qbittorrent
       krita
       obsidian
+      kiwix
+      element-desktop
+      remmina
+      blender
       # 主题
       lain-kde-splashscreen
       kora-icon-theme
@@ -49,7 +53,7 @@
       moonlight-qt
       vlc
       lutris
-      bottles
+      (bottles.override { removeWarningPopup = true; })
       # 开发套件
       uv
       rustup
@@ -60,6 +64,8 @@
       pkg-config
       fvm
       android-studio
+      micromamba
+      gradle
       # 终端增强
       mycli
       pgcli
@@ -69,12 +75,16 @@
       btrfs-assistant
       nix-diff
       yt-dlp
-      ffmpeg
+      ffmpeg-full
       peazip
       localsend
+      rclone
+      httrack
+      nixos-anywhere
 
       vista-fonts
       vista-fonts-chs # 很好笑，很好笑……
+      babelstone-han # Noto!
     ];
   };
 
@@ -121,7 +131,6 @@
       ];
     };
     git = {
-      enable = true;
       userName = "MCSeekeri";
       userEmail = "mcseekeri@outlook.com";
       signing = {
