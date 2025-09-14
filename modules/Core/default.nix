@@ -15,13 +15,13 @@
     inputs.lix-module.nixosModules.default
     inputs.nur.modules.nixos.default
     ./apparmor.nix
+    ./avahi.nix
     ./boot.nix
     ./dae
     ./fonts.nix
     ./geph5.nix
     ./i18n.nix
     ./kmscon.nix
-    ./mDNS.nix
     ./nix.nix
     ./podman.nix
     ./programs.nix
