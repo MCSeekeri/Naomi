@@ -9,10 +9,8 @@
   imports = [
     inputs.home-manager.nixosModules.home-manager
     inputs.disko.nixosModules.disko
-    inputs.arion.nixosModules.arion
-    inputs.daeuniverse.nixosModules.dae
-    # inputs.daeuniverse.nixosModules.daed
     inputs.lix-module.nixosModules.default
+    #inputs.determinate.nixosModules.default
     inputs.nur.modules.nixos.default
     ./apparmor.nix
     ./avahi.nix

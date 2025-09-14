@@ -1,5 +1,12 @@
-{ config, pkgs, ... }:
 {
+  config,
+  pkgs,
+  inputs,
+  ...
+}:
+{
+  imports = [ inputs.arion.nixosModules.arion ];
+
   virtualisation = {
     oci-containers.backend = "podman";
     containers = {
