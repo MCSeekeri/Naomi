@@ -42,6 +42,24 @@
   networking = {
     hostName = "cyprus"; # 主机名，设置好之后最好不要修改
   };
+
+  nix.buildMachines = [
+    {
+      hostName = "ThinkStation2";
+      system = "x86_64-linux";
+      protocol = "ssh-ng";
+      maxJobs = 16;
+      speedFactor = 16;
+      supportedFeatures = [
+        "nixos-test"
+        "benchmark"
+        "big-parallel"
+        "kvm"
+      ];
+      mandatoryFeatures = [ ];
+    }
+  ];
+
   nixpkgs.hostPlatform = "x86_64-linux";
   hardware = {
     enableRedistributableFirmware = lib.mkDefault true;
