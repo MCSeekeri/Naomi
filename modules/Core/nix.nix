@@ -1,8 +1,8 @@
 { lib, config, ... }:
 {
-  # 设置软件源
   nix = {
     channel.enable = false;
+    distributedBuilds = true;
     gc = {
       automatic = true;
       dates = "weekly";
