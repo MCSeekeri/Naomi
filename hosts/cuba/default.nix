@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  modulesPath,
   inputs,
   self,
   ...
@@ -42,7 +41,7 @@ let
 in
 {
   imports = [
-    "${modulesPath}/installer/cd-dvd/channel.nix"
+    # "${modulesPath}/installer/cd-dvd/channel.nix"
     # 需要用 modulesPath 避免纯评估模式出错，大概
     inputs.stylix.nixosModules.stylix
     "${self}/modules/Core/avahi.nix"
