@@ -1,5 +1,9 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 {
+  imports = [
+    inputs.daeuniverse.nixosModules.dae
+    # inputs.daeuniverse.nixosModules.daed
+  ];
   services.dae = {
     enable = true;
     assets = with pkgs; [
@@ -10,10 +14,5 @@
     ];
     config = builtins.readFile ./config.dae;
     # disableTxChecksumIpGeneric = true;
-    openFirewall = {
-      # 纯本机分流，暂时不考虑给路由透明代理
-      enable = false;
-      port = 12345;
-    };
   };
 }
