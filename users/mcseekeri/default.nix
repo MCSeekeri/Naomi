@@ -24,6 +24,5 @@
   services.udev.extraRules = ''
     SUBSYSTEM=="kvmfr", OWNER="mcseekeri", GROUP="kvm", MODE="0660"
   '';
-  nixpkgs.config.permittedInsecurePackages = [ "openssl-1.1.1w" ]; # DingTalk
   home-manager.users.mcseekeri = import ./home-manager.nix;
 }

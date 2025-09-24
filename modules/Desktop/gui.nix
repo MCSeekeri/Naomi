@@ -1,5 +1,7 @@
-{ pkgs, ... }:
+{ pkgs, self, ... }:
 {
+  imports = [ "${self}/modules/Desktop/flatpak.nix" ];
+
   hardware = {
     graphics = {
       enable = true;
@@ -21,7 +23,6 @@
       pulse.enable = true;
       jack.enable = true;
     };
-    flatpak.enable = true; # 开启 flatpak 支持，有效解决 nixOS 桌面软件水土不服的问题
   };
   xdg.portal = {
     enable = true;
