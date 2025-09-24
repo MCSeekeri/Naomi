@@ -169,28 +169,6 @@
         "type": "github"
       }
     },
-    "firefox-addons": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "dir": "pkgs/firefox-addons",
-        "lastModified": 1758600213,
-        "narHash": "sha256-YP7+UxybMCzHPd5k93pulILnFvSisjgUAGUB/cxWbqU=",
-        "owner": "rycee",
-        "repo": "nur-expressions",
-        "rev": "8a0333bf11a0fab386c80fa018617bb050156ec5",
-        "type": "gitlab"
-      },
-      "original": {
-        "dir": "pkgs/firefox-addons",
-        "owner": "rycee",
-        "repo": "nur-expressions",
-        "type": "gitlab"
-      }
-    },
     "firefox-gnome-theme": {
       "flake": false,
       "locked": {
@@ -482,6 +460,22 @@
         "type": "github"
       }
     },
+    "nix-flatpak": {
+      "locked": {
+        "lastModified": 1739444422,
+        "narHash": "sha256-iAVVHi7X3kWORftY+LVbRiStRnQEob2TULWyjMS6dWg=",
+        "owner": "gmodena",
+        "repo": "nix-flatpak",
+        "rev": "5e54c3ca05a7c7d968ae1ddeabe01d2a9bc1e177",
+        "type": "github"
+      },
+      "original": {
+        "owner": "gmodena",
+        "ref": "latest",
+        "repo": "nix-flatpak",
+        "type": "github"
+      }
+    },
     "nix-gaming": {
       "inputs": {
         "flake-parts": [
@@ -668,11 +662,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1758699118,
-        "narHash": "sha256-QrZtVNpW0DEC80TyurvClVJieoktb9im+O0/1049Qtc=",
+        "lastModified": 1758712580,
+        "narHash": "sha256-0xmCEK2sIjE5ZcmMuJjbvl/Xo5AtB/OqE2oWjQzRefg=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "7320597dda817cbb2724454b71deb3366fae1486",
+        "rev": "7f3ecc7eeb5cdfc43c27126200220fc928883e68",
         "type": "github"
       },
       "original": {
@@ -736,7 +730,6 @@
         "daeuniverse": "daeuniverse",
         "devshell": "devshell",
         "disko": "disko",
-        "firefox-addons": "firefox-addons",
         "flake-compat": "flake-compat",
         "flake-parts": "flake-parts",
         "flake-utils": "flake-utils",
@@ -746,6 +739,7 @@
         "lanzaboote": "lanzaboote",
         "lix-module": "lix-module",
         "nix-alien": "nix-alien",
+        "nix-flatpak": "nix-flatpak",
         "nix-gaming": "nix-gaming",
         "nix-minecraft": "nix-minecraft",
         "nix-topology": "nix-topology",
