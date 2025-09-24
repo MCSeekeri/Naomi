@@ -26,6 +26,7 @@
     "${self}/modules/Services/archisteamfarm.nix"
     "${self}/modules/Services/dae"
     # "${self}/modules/Services/geph5.nix"
+    "${self}/modules/Services/localsend.nix"
 
     "${self}/modules/Games/retro.nix"
     "${self}/modules/Games/minecraft.nix"
