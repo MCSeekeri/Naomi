@@ -28,7 +28,6 @@
       enable = true; # 比 zsh 更好，可惜不兼容 bash
       useBabelfish = true; # 啥
       shellAliases = {
-        conda = "micromamba";
         proxy = "proxychains4 -q";
       };
     };

@@ -26,6 +26,7 @@
       genact
       neo-cowsay
       hyperfine
+      fuc # cpz rmz
     ];
     shellAliases = {
       ls = "eza";

@@ -34,6 +34,7 @@
       motrix
       kdePackages.kdenlive
       kdePackages.kleopatra
+      kdePackages.kcalc
       anki-bin
       discord
       ayugram-desktop
@@ -48,7 +49,7 @@
       blender
       # 主题
       lain-kde-splashscreen
-      kora-icon-theme
+      # kora-icon-theme
       dracula-icon-theme
       # 游戏娱乐
       moonlight-qt
@@ -86,6 +87,18 @@
       vista-fonts-chs # 很好笑，很好笑……
       babelstone-han # Noto!
     ];
+    # ++ (lib.pipe kdePackages.sources [
+    #   builtins.attrNames
+    #   (builtins.map (n: kdePackages.${n}))
+    #   (builtins.filter (pkg: !(pkg.meta.broken or false) && !(pkg.meta.insecure or false)))
+    #   (builtins.filter (pkg:
+    #     !(lib.elem pkg.pname [
+    #       "neochat"
+    #     ])
+    #   ))
+    # ]);
+    # 安装整个 kdePackages 包组
+    # 这个主意比看起来更糟糕……
   };
 
   programs = {
@@ -141,7 +154,6 @@
     fish = {
       enable = true; # 比 zsh 更好，可惜不兼容 bash
       shellAliases = {
-        conda = "micromamba";
         proxy = "proxychains4 -q";
       };
     };
