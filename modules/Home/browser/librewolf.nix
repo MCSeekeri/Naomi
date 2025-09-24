@@ -1,4 +1,4 @@
-{ inputs, pkgs, ... }:
+{ pkgs, ... }:
 {
   programs = {
     librewolf = {
@@ -20,7 +20,7 @@
             "privacy.resistFingerprinting.letterboxing" = true;
             "privacy.resistFingerprinting.autoDeclineNoUserInputCanvasPrompts" = true;
           };
-          extensions.packages = with inputs.firefox-addons.packages.${pkgs.system}; [
+          extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
             # https://discourse.nixos.org/t/firefox-extensions-with-home-manager/34108/4
             ublock-origin
             violentmonkey

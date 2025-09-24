@@ -1,6 +1,5 @@
 {
   pkgs,
-  inputs,
   self,
   ...
 }:
@@ -106,7 +105,7 @@
     librewolf = {
       profiles = {
         user = {
-          extensions.packages = with inputs.firefox-addons.packages.${pkgs.system}; [
+          extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
             # https://discourse.nixos.org/t/firefox-extensions-with-home-manager/34108/4
             kiss-translator
             # aw-watcher-web
