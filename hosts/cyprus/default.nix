@@ -11,7 +11,7 @@
     "${self}/modules/Server/clamav.nix"
     "${self}/modules/Server/failsafe.nix"
     "${self}/modules/Server/virt/libvirt.nix"
-    "${self}/modules/Server/virt/incus.nix"
+    "${self}/modules/Server/virt/virtualbox.nix"
     "${self}/modules/Desktop/plasma.nix"
     "${self}/modules/Desktop/sunshine.nix"
     "${self}/modules/Desktop/programs.nix"
@@ -68,6 +68,8 @@
         "xhci_pci"
         "nvme"
         "usbhid"
+        "usb_storage"
+        "sd_mod"
       ];
       luks.devices."root".device = "/dev/disk/by-partlabel/root";
     };

@@ -12,6 +12,7 @@
       "kvm"
       "libvirtd"
       "incus-admin"
+      "vboxusers"
     ];
     shell = pkgs.fish;
     openssh.authorizedKeys.keys = [

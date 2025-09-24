@@ -1,4 +1,5 @@
 {
+  boot.kernelParams = [ "kvm.enable_virt_at_load=0" ]; # https://github.com/NixOS/nixpkgs/issues/363887#issuecomment-2536693220
   virtualisation.virtualbox.host = {
     enable = true; # 添加用户到 vboxusers 用户组以使用
     # headless = true;
