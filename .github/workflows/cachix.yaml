@@ -1,0 +1,41 @@
+name: Cachix 缓存编译
+
+on:
+  check_suite:
+    types: [ completed ]
+  workflow_dispatch:
+
+jobs:
+  build-and-cache:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 拉取仓库
+        uses: actions/checkout@v5
+
+      - name: 安装 Nix
+        uses: cachix/install-nix-action@v31
+        with:
+          extra_nix_config: |
+            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+
+      - name: 推送到 Cachix
+        uses: cachix/cachix-action@v16
+        with:
+          name: naomi
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+
+      - name: 编译 NixOS 配置
+        run: |
+          nix flake show --json | \
+          jq -r '."nixosConfigurations" | keys[] | select(. != "cuba")' | \
+          while read config; do
+            nix build .#nixosConfigurations."$config".config.system.build.toplevel --accept-flake-config
+          done
+
+      - name: 编译自定义包
+        run: |
+          nix flake show --json | \
+          jq -r '."packages"."x86_64-linux" | keys[] | select(. != "topology")' | \
+          while read pkg; do
+            nix build .#packages.x86_64-linux."$pkg" --no-link --accept-flake-config
+          done
