@@ -42,6 +42,7 @@
   environment.systemPackages = with pkgs; [
     ocs-url
     coppwr
+    xorg.xhost # xhost +，非常懒狗，非常不安全
   ];
 
   environment.sessionVariables = {
