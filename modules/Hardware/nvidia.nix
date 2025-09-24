@@ -2,10 +2,13 @@
   pkgs,
   lib,
   self,
+  inputs,
   ...
 }:
 {
   imports = [ "${self}/modules/Hardware/acceleration.nix" ];
+  nixpkgs.overlays = [ inputs.nixgl.overlay ];
+
   services.xserver.videoDrivers = lib.mkDefault [ "nvidia" ];
   hardware = {
     nvidia-container-toolkit.enable = true;
@@ -32,6 +35,12 @@
       nvidia-vaapi-driver
       nv-codec-headers-12
       nvtopPackages.full
+
+      # nixgl.auto.nixGLNvidia
+      # nixgl.auto.nixVulkanNvidia
+
+      # 老黄笑传之 Closure Can’t Build
+      # https://github.com/nix-community/nixGL/issues/117#issuecomment-1277776942
     ];
   };
 }

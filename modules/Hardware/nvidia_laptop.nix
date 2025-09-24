@@ -1,6 +1,8 @@
 { lib, ... }:
 {
   imports = [ ./nvidia.nix ];
+  # environment.systemPackages = with pkgs; [ nixgl.nixGLNvidiaBumblebee ];
+
   hardware.nvidia = {
     prime = {
       sync.enable = true;
