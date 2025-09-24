@@ -1,11 +1,16 @@
+{ lib, ... }:
 {
   perSystem =
     { pkgs, ... }:
     {
-      packages = {
-        lain-kde-splashscreen = pkgs.callPackage ./lain-kde-splashscreen { };
-        aquanet = pkgs.callPackage ./aquanet { };
-        aquadx = pkgs.callPackage ./aquadx { };
-      };
+      packages = lib.filterAttrs (_name: value: value != null) (
+        builtins.mapAttrs (
+          name: _type:
+          if builtins.pathExists (./. + "/${name}/default.nix") then
+            pkgs.callPackage (./. + "/${name}") { }
+          else
+            null
+        ) (builtins.readDir ./.)
+      );
     };
 }
