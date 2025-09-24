@@ -6,7 +6,7 @@ global {
 }
 
 node {
-	'socks5://localhost:14514'
+	'socks5://localhost:9909'
 }
 
 # https://github.com/daeuniverse/dae/blob/main/docs/zh/configuration/dns.md
