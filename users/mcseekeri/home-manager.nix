@@ -78,7 +78,6 @@
       yt-dlp
       ffmpeg-full
       peazip
-      localsend
       rclone
       httrack
       nixos-anywhere
