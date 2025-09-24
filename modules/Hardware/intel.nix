@@ -2,10 +2,18 @@
   pkgs,
   lib,
   self,
+  inputs,
   ...
 }:
 {
   imports = [ "${self}/modules/Hardware/acceleration.nix" ];
+  nixpkgs.overlays = [ inputs.nixgl.overlay ];
+
+  environment.systemPackages = with pkgs; [
+    nixgl.nixGLIntel
+    nixgl.nixVulkanIntel
+  ];
+
   boot.kernelParams = [ "intel_iommu=on" ];
   hardware = {
     cpu.intel.updateMicrocode = true;

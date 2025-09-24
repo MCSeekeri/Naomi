@@ -184,6 +184,14 @@
         pre-commit-hooks-nix.follows = "pre-commit-hooks";
       };
     };
+
+    nixgl = {
+      url = "github:nix-community/nixGL";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-utils.follows = "flake-utils";
+      };
+    };
   };
 
   outputs =
