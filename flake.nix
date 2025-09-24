@@ -9,12 +9,13 @@
     extra-substituters = [
       "https://mirrors.ustc.edu.cn/nix-channels/store?priority=1"
       "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store?priority=2"
-      "https://cache.nixos.org/?priority=3"
+      "https://cache.nixos.org?priority=3"
       "https://nix-community.cachix.org?priority=4"
       "https://numtide.cachix.org?priority=5"
       "https://cache.garnix.io?priority=6"
       "https://cache.lix.systems?priority=7"
       "https://nix-gaming.cachix.org?priority=8"
+      "https://naomi.cachix.org?priority=9"
     ];
     extra-trusted-public-keys = [
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
@@ -22,6 +23,7 @@
       "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="
       "cache.lix.systems:aBnZUw8zA7H35Cz2RyKFVs3H4PlGTLawyY5KRbvJR8o="
       "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
+      "naomi.cachix.org-1:hxey2ZitN/9pXiP9hPiZfCI+jzd4jJiaTzJQZIfaj9o="
     ];
   };
 
