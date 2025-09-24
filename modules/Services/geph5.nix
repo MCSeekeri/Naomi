@@ -5,6 +5,9 @@
   ...
 }:
 {
+  # 命令行版本有严重的性能问题，暂时考虑使用 flatpak 打包
+  environment.systemPackages = [ pkgs.geph ];
+
   systemd = {
     tmpfiles.rules = [ "d /root/.config 0755 root root" ];
     services.geph = {
