@@ -34,8 +34,8 @@
 
     uv
 
-    # nur.repos.Emin017.lceda-pro # 用 flatpak
-
     # [TODO] 等待后续完善
   ];
+
+  services.flatpak.packages = [ "cn.lceda.LCEDAPro" ];
 }

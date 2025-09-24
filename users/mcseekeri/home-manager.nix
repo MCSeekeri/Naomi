@@ -1,8 +1,4 @@
-{
-  pkgs,
-  self,
-  ...
-}:
+{ pkgs, self, ... }:
 {
   imports = [
     "${self}/modules/Home/browser/librewolf.nix"
@@ -37,8 +33,6 @@
       anki-bin
       discord
       ayugram-desktop
-      parsec-bin
-      nur.repos.xddxdd.dingtalk
       qbittorrent
       krita
       obsidian
@@ -99,6 +93,12 @@
     # 安装整个 kdePackages 包组
     # 这个主意比看起来更糟糕……
   };
+
+  services.flatpak.packages = [
+    "com.parsecgaming.parsec"
+    "com.dingtalk.DingTalk"
+    "com.tencent.wemeet"
+  ];
 
   programs = {
     home-manager.enable = true;

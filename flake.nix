@@ -189,6 +189,7 @@
         flake-utils.follows = "flake-utils";
       };
     };
+    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
   };
 
   outputs =

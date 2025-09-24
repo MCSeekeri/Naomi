@@ -48,7 +48,10 @@
     # [TODO]: 整明白为什么开了之后用户登录就卡住
     useGlobalPkgs = true;
     extraSpecialArgs = { inherit self inputs outputs; };
-    sharedModules = [ inputs.plasma-manager.homeModules.plasma-manager ];
+    sharedModules = [
+      inputs.plasma-manager.homeModules.plasma-manager
+      inputs.nix-flatpak.homeManagerModules.nix-flatpak
+    ];
   };
 
   networking = {
