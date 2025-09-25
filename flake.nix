@@ -214,8 +214,6 @@
             ...
           }:
           {
-            overlayAttrs = { inherit (config.packages) lain-kde-splashscreen aquanet aquadx; };
-
             packages = {
               topology = self.topology.${system}.config.output;
             };

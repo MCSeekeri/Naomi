@@ -2,15 +2,13 @@
 {
   perSystem =
     { pkgs, ... }:
+    let
+      pkgSet = lib.genAttrs (builtins.filter (name: builtins.pathExists (./. + "/${name}/default.nix")) (
+        builtins.attrNames (builtins.readDir ./.)
+      )) (name: pkgs.callPackage (./. + "/${name}") { });
+    in
     {
-      packages = lib.filterAttrs (_name: value: value != null) (
-        builtins.mapAttrs (
-          name: _type:
-          if builtins.pathExists (./. + "/${name}/default.nix") then
-            pkgs.callPackage (./. + "/${name}") { }
-          else
-            null
-        ) (builtins.readDir ./.)
-      );
+      packages = pkgSet;
+      overlayAttrs = pkgSet;
     };
 }
