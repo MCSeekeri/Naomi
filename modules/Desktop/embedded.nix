@@ -21,7 +21,7 @@
     stm32cubemx
     stm32flash
     stm32loader
-    stm32cubeide
+    # stm32cubeide # 会导致 CI 全部失败，这事情得怪 ST
     # nix-store --add-fixed sha256 st-stm32cubeide_1.19.0_25607_20250703_0907_amd64.sh.zip
 
     gcc-arm-embedded # arm-none-eabi-gcc

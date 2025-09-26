@@ -2,6 +2,7 @@ builds:
   exclude:
     - "devShells.x86_64-linux.default"
     - "nixosConfigurations.cuba"
+    - "packages.x86_64-linux.stm32cubeide"
   include:
     - "*.x86_64-linux.*"
     - homeConfigurations.*
