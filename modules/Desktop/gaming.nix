@@ -34,6 +34,8 @@
     samrewritten
     steam-run
     steamtinkerlaunch
+    ludusavi
+    samrewritten
   ];
 
   services.pipewire.lowLatency.enable = true;

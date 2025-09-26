@@ -49,6 +49,7 @@
       vlc
       lutris
       (bottles.override { removeWarningPopup = true; })
+      ckan
       # 开发套件
       uv
       rustup
@@ -61,6 +62,7 @@
       android-studio
       micromamba
       gradle
+      dupeguru
       # 终端增强
       mycli
       pgcli
@@ -75,6 +77,7 @@
       rclone
       httrack
       nixos-anywhere
+      cachix
 
       vista-fonts
       vista-fonts-chs # 很好笑，很好笑……
@@ -385,6 +388,9 @@
     }; # https://www.deviantart.com/chasingartwork/art/ahh-a-snake-383715432
     polarity = "dark";
     base16Scheme = "${pkgs.base16-schemes}/share/themes/ayu-dark.yaml";
+    targets = {
+      kde.enable = false; # 会和 plasma-manager 的配置冲突
+    };
   };
 
   wayland.windowManager.hyprland.settings = {

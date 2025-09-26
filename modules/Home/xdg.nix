@@ -6,7 +6,6 @@
       enable = true;
       createDirectories = true;
     };
-    mimeApps.enable = true;
   };
   home.preferXdgDirectories = true;
 }
