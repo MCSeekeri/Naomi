@@ -63,6 +63,7 @@
       micromamba
       gradle
       dupeguru
+      reqable
       # 终端增强
       mycli
       pgcli
@@ -388,8 +389,29 @@
     }; # https://www.deviantart.com/chasingartwork/art/ahh-a-snake-383715432
     polarity = "dark";
     base16Scheme = "${pkgs.base16-schemes}/share/themes/ayu-dark.yaml";
-    targets = {
-      kde.enable = false; # 会和 plasma-manager 的配置冲突
+    fonts = {
+      sizes = {
+        applications = 16;
+        desktop = 16;
+        popups = 16;
+        terminal = 16;
+      };
+      sansSerif = {
+        package = pkgs.sarasa-gothic;
+        name = "Sarasa UI SC";
+      };
+      serif = {
+        package = pkgs.sarasa-gothic;
+        name = "Sarasa UI SC";
+      };
+      monospace = {
+        package = pkgs.maple-mono.Normal-NF-CN-unhinted;
+        name = "Maple Mono SC NF";
+      };
+      emoji = {
+        package = pkgs.noto-fonts-emoji;
+        name = "Noto Color Emoji";
+      };
     };
   };
 
