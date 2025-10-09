@@ -191,7 +191,6 @@ in
         "https://cache.garnix.io?priority=6"
         "https://cache.lix.systems?priority=7"
         "https://nix-gaming.cachix.org?priority=8"
-        "https://naomi.cachix.org?priority=9"
       ];
       trusted-public-keys = [
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
@@ -199,7 +198,6 @@ in
         "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="
         "cache.lix.systems:aBnZUw8zA7H35Cz2RyKFVs3H4PlGTLawyY5KRbvJR8o="
         "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
-        "naomi.cachix.org-1:hxey2ZitN/9pXiP9hPiZfCI+jzd4jJiaTzJQZIfaj9o="
       ];
       experimental-features = [
         "nix-command"
