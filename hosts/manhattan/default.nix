@@ -10,9 +10,7 @@
     "${modulesPath}/profiles/qemu-guest.nix"
 
     "${self}/modules/Core"
-
-    "${self}/modules/Hardware/intel.nix"
-    "${self}/modules/Hardware/qemu.nix"
+    "${self}/modules/Hardware"
 
     "${self}/modules/Server/firewall.nix"
     "${self}/modules/Server/clamav.nix"
@@ -52,6 +50,10 @@
     hostName = "manhattan"; # 主机名，设置好之后最好不要修改
   };
   nixpkgs.hostPlatform = "x86_64-linux";
+
+  hardware = {
+    cpu.type = "qemu";
+  };
 
   boot = {
     initrd.availableKernelModules = [

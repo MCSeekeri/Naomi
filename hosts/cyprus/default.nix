@@ -1,11 +1,8 @@
-{ lib, self, ... }:
+{ self, ... }:
 {
   imports = [
     "${self}/modules/Core"
-
-    "${self}/modules/Hardware/intel.nix"
-    "${self}/modules/Hardware/nvidia_laptop.nix"
-    "${self}/modules/Hardware/cuda.nix"
+    "${self}/modules/Hardware"
 
     "${self}/modules/Server/firewall.nix"
     "${self}/modules/Server/clamav.nix"
@@ -53,6 +50,9 @@
         "benchmark"
         "big-parallel"
         "kvm"
+        "gccarch-x86-64-v4"
+        "gccarch-x86-64-v3"
+        "gccarch-x86-64-v2"
       ];
       mandatoryFeatures = [ ];
     }
@@ -60,7 +60,11 @@
 
   nixpkgs.hostPlatform = "x86_64-linux";
   hardware = {
-    enableRedistributableFirmware = lib.mkDefault true;
+    cpu = {
+      type = "intel";
+      arch = "x86_64-v3";
+    };
+    gpu.type = "nvidia_laptop";
   };
   boot = {
     initrd = {
