@@ -177,6 +177,7 @@
         flake-compat.follows = "flake-compat";
         flake-parts.follows = "flake-parts";
         pre-commit-hooks-nix.follows = "pre-commit-hooks";
+        rust-overlay.follows = "rust-overlay";
       };
     };
 
@@ -187,7 +188,22 @@
         flake-utils.follows = "flake-utils";
       };
     };
+
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
+
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    chaotic = {
+      url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        home-manager.follows = "home-manager";
+        rust-overlay.follows = "rust-overlay";
+      };
+    };
   };
 
   outputs =
