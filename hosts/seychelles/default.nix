@@ -3,14 +3,13 @@
   imports = [
     ./disko-config.nix
     "${self}/modules/Core"
+    "${self}/modules/Hardware"
 
     "${self}/modules/Server/firewall.nix"
     "${self}/modules/Server/clamav.nix"
     "${self}/modules/Server/failsafe.nix"
     "${self}/modules/Desktop/plasma.nix"
     "${self}/modules/Desktop/programs.nix"
-
-    "${self}/modules/Hardware/nvidia.nix"
 
     "${self}/users/mcseekeri"
   ];
@@ -27,8 +26,11 @@
   };
 
   hardware = {
-    enableRedistributableFirmware = lib.mkDefault true;
-    cpu.intel.updateMicrocode = lib.mkDefault true;
+    cpu = {
+      type = "intel";
+      arch = "x86_64-v4";
+    };
+    gpu.type = "nvidia";
   };
   boot = {
     initrd.availableKernelModules = [
