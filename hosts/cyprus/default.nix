@@ -63,6 +63,8 @@
     cpu = {
       type = "intel";
       arch = "x86_64-v3";
+      tune = "raptorlake";
+      # optimized = true;
     };
     gpu.type = "nvidia_laptop";
   };
