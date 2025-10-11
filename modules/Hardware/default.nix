@@ -25,6 +25,12 @@ in
         description = "CPU 指令集兼容性，影响包和编译设置。";
       };
 
+      cpu.optimized = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+        description = "是否启用针对处理器指令集优化的编译。";
+      };
+
       cpu.type = lib.mkOption {
         type = lib.types.enum [
           "intel"
@@ -34,6 +40,12 @@ in
         ];
         default = "";
         description = "CPU 类型，影响特定于厂商的优化和驱动。";
+      };
+
+      cpu.tune = lib.mkOption {
+        type = lib.types.str;
+        default = "generic";
+        description = "处理器架构的代号，请参考 https://gcc.gnu.org/onlinedocs/gcc/x86-Options.html";
       };
 
       gpu.type = lib.mkOption {
@@ -62,6 +74,10 @@ in
         assertion = !(config.hardware.gpu.type != "" && config.hardware.cpu.type == "");
         message = "错误：已设置 hardware.gpu.type (${config.hardware.gpu.type}) 但未设置 hardware.cpu.type,必须同时设置两者或仅设置 cpu.type";
       }
+      {
+        assertion = !(config.hardware.cpu.optimized && config.hardware.cpu.type == "");
+        message = "错误：启用了 CPU 指令集优化但未设置 hardware.cpu.type,必须同时设置两者";
+      }
     ];
 
     nix.settings.system-features =
@@ -88,11 +104,11 @@ in
         cudaSupport = lib.mkIf isNvidia true;
         rocmSupport = lib.mkIf isAMD true;
       };
-      pkgs =
-        lib.mkIf (config.hardware.cpu.arch != "")
-          inputs.chaotic.legacyPackages.x86_64-linux."pkgs${
-            lib.replaceStrings [ "-" ] [ "_" ] config.hardware.cpu.arch
-          }";
+      hostPlatform = lib.mkIf config.hardware.cpu.optimized {
+        gcc.arch = lib.replaceStrings [ "_" ] [ "-" ] config.hardware.cpu.arch;
+        gcc.tune = config.hardware.cpu.tune;
+        system = "x86_64-linux";
+      };
     };
 
     hardware = {

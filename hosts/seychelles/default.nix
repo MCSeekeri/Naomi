@@ -18,7 +18,6 @@
   networking = {
     hostName = "seychelles"; # 主机名，设置好之后最好不要修改
   };
-  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
   system = {
     stateVersion = "24.11";

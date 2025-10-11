@@ -41,10 +41,13 @@
     rebuild.enableNg = true;
   };
 
-  nixpkgs.overlays = [
-    self.overlays.default
-    inputs.nix-vscode-extensions.overlays.default
-  ];
+  nixpkgs = {
+    overlays = [
+      self.overlays.default
+      inputs.nix-vscode-extensions.overlays.default
+    ];
+    hostPlatform = lib.mkDefault "x86_64-linux"; # 在我买得起果子设备之前，这个假设估计一直有效……
+  };
 
   home-manager = {
     # useUserPackages = true; # 系统级别的软件包安装，starship 之类的需要用到
