@@ -21,8 +21,8 @@
       distrobox
       distrobox-tui
       podman-tui
+      lazydocker
       podman-compose
-      # podman-desktop # Electron 34 EOL
       # 系统维护
       kdePackages.partitionmanager
       kdePackages.ksystemlog
