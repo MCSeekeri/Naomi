@@ -1,3 +1,4 @@
+{ pkgs, ... }:
 {
   services.clamav = {
     fangfrisch.enable = true;
@@ -13,7 +14,13 @@
       settings = {
         MaxThreads = 16;
         MaxDirectoryRecursion = 65535;
-        VirusEvent = "echo 'WARNING: Virus detected: %v' >> /etc/motd && wall 'WARNING: Virus detected: %v' ";
+        VirusEvent = ''
+          #!/usr/bin/env bash
+          for ADDRESS in /run/user/*; do
+            [ -d "$ADDRESS" ] && [ "$(${pkgs.coreutils}/bin/basename $ADDRESS)" -gt 0 ] 2>/dev/null && \
+              ${pkgs.sudo-rs}/bin/sudo -u "#$(${pkgs.coreutils}/bin/basename $ADDRESS)" DBUS_SESSION_BUS_ADDRESS="unix:path=$ADDRESS/bus" ${pkgs.libnotify}/bin/notify-send -i dialog-warning "ClamAV Alert" "ClamAV: $CLAM_VIRUSEVENT_VIRUSNAME in $CLAM_VIRUSEVENT_FILENAME"
+          done
+          echo "ClamAV: $CLAM_VIRUSEVENT_VIRUSNAME in $CLAM_VIRUSEVENT_FILENAME" | ${pkgs.systemd}/bin/systemd-cat -t clamav -p warning'';
       };
     };
   };
