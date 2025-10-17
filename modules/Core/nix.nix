@@ -10,7 +10,7 @@
     };
     settings = {
       auto-optimise-store = lib.mkDefault (!config.boot.isContainer);
-      substituters = lib.mkForce [
+      substituters = [
         "https://mirrors.ustc.edu.cn/nix-channels/store?priority=1"
         "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store?priority=2"
         "https://cache.nixos.org?priority=3"

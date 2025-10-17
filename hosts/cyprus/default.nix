@@ -1,4 +1,4 @@
-{ self, ... }:
+{ self, pkgs, ... }:
 {
   imports = [
     "${self}/modules/Core"
@@ -57,8 +57,6 @@
       mandatoryFeatures = [ ];
     }
   ];
-
-  nixpkgs.hostPlatform = "x86_64-linux";
   hardware = {
     cpu = {
       type = "intel";
@@ -80,7 +78,7 @@
       luks.devices."root".device = "/dev/disk/by-partlabel/root";
     };
     kernelModules = [ "kvm-intel" ];
-    # kernelPackages = pkgs.linuxPackages_zen; # 编译失败
+    kernelPackages = pkgs.linuxPackages_zen;
   };
 
   system = {

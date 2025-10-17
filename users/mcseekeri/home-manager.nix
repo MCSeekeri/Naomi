@@ -79,6 +79,7 @@
       gradle
       dupeguru
       reqable
+      flutter
       # 终端增强
       mycli
       pgcli
