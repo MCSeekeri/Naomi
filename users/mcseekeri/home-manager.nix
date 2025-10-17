@@ -1,4 +1,9 @@
-{ pkgs, self, ... }:
+{
+  pkgs,
+  self,
+  config,
+  ...
+}:
 {
   imports = [
     "${self}/modules/Home/browser/librewolf.nix"
@@ -11,9 +16,19 @@
     "${self}/modules/Home/direnv.nix"
     "${self}/modules/Home/git.nix"
     "${self}/modules/Home/kitty.nix"
+    "${self}/modules/Home/sops.nix"
+    "${self}/modules/Home/vibe-coding.nix"
     "${self}/modules/Home/vscode.nix"
     "${self}/modules/Home/xdg.nix"
   ];
+
+  sops.secrets.claude-settings = {
+    sopsFile = "${self}/secrets/users/claude.json";
+    format = "json";
+    key = "";
+    path = "${config.home.homeDirectory}/.claude/settings.json";
+  };
+
   home = {
     username = "mcseekeri";
     homeDirectory = "/home/mcseekeri";
