@@ -14,14 +14,36 @@
       settings = {
         MaxThreads = 16;
         MaxDirectoryRecursion = 65535;
-        VirusEvent = ''
-          #!/usr/bin/env bash
+        # https://wiki.archlinux.org/title/ClamAV#Creating_notification_popups_for_alerts
+        VirusEvent = "${pkgs.writeShellScript "clamav-virus-event" ''
+          ALERT="Signature detected by clamav: $CLAM_VIRUSEVENT_VIRUSNAME in $CLAM_VIRUSEVENT_FILENAME"
           for ADDRESS in /run/user/*; do
-            [ -d "$ADDRESS" ] && [ "$(${pkgs.coreutils}/bin/basename $ADDRESS)" -gt 0 ] 2>/dev/null && \
-              ${pkgs.sudo-rs}/bin/sudo -u "#$(${pkgs.coreutils}/bin/basename $ADDRESS)" DBUS_SESSION_BUS_ADDRESS="unix:path=$ADDRESS/bus" ${pkgs.libnotify}/bin/notify-send -i dialog-warning "ClamAV Alert" "ClamAV: $CLAM_VIRUSEVENT_VIRUSNAME in $CLAM_VIRUSEVENT_FILENAME"
+            USERID=''${ADDRESS#/run/user/}
+            if [ -d "$ADDRESS" ] && [ "$USERID" -gt 0 ] 2>/dev/null; then
+              /run/wrappers/bin/sudo -u "#$USERID" DBUS_SESSION_BUS_ADDRESS="unix:path=$ADDRESS/bus" ${pkgs.libnotify}/bin/notify-send -u critical -i dialog-warning "ClamAV Alert" "$ALERT"
+            fi
           done
-          echo "ClamAV: $CLAM_VIRUSEVENT_VIRUSNAME in $CLAM_VIRUSEVENT_FILENAME" | ${pkgs.systemd}/bin/systemd-cat -t clamav -p warning'';
+          echo "ClamAV: $CLAM_VIRUSEVENT_VIRUSNAME in $CLAM_VIRUSEVENT_FILENAME" | ${pkgs.systemd}/bin/systemd-cat -t clamav -p warning
+        ''}";
+        User = "clamav";
       };
     };
+  };
+  security.sudo-rs = {
+    execWheelOnly = false;
+    extraRules = [
+      {
+        users = [ "clamav" ];
+        commands = [
+          {
+            command = "${pkgs.libnotify}/bin/notify-send";
+            options = [
+              "NOPASSWD"
+              "SETENV"
+            ];
+          }
+        ];
+      }
+    ];
   };
 }
