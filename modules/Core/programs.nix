@@ -1,10 +1,9 @@
-{ pkgs, inputs, ... }:
+{ pkgs, ... }:
 {
   services = {
     sysstat.enable = true;
     gvfs.enable = true;
     pcscd.enable = true;
-    envfs.enable = true;
   };
   programs = {
     proxychains = {
@@ -42,10 +41,6 @@
       viAlias = true;
       vimAlias = true;
     };
-    appimage = {
-      enable = true;
-      binfmt = true;
-    };
     git = {
       enable = true;
       package = pkgs.gitFull;
@@ -80,14 +75,6 @@
     gnupg.agent = {
       enable = true;
       enableExtraSocket = true;
-    };
-    nix-ld = {
-      enable = true;
-      libraries = with pkgs; [
-        ffmpeg-full
-        icu
-        stdenv.cc.cc
-      ];
     };
     openvpn3.enable = true;
     bat.enable = true; # cat
@@ -138,8 +125,6 @@
       compsize
       # Nix 相关
       nixfmt-rfc-style
-      inputs.nix-alien.packages.${system}.nix-alien
-      inputs.home-manager.packages.${pkgs.system}.default
       nix-update
       nix-du
       graphviz # nix-du -s=500MB | dot -Tsvg > store.svg
