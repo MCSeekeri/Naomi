@@ -21,6 +21,7 @@
     ./fonts.nix
     ./i18n.nix
     ./kmscon.nix
+    ./nix-ld.nix
     ./nix.nix
     ./podman.nix
     ./programs.nix
@@ -79,7 +80,7 @@
     sudo-rs = {
       # 不是很支持 sudo -E
       enable = true;
-      execWheelOnly = true; # https://unix.stackexchange.com/questions/1262/where-did-the-wheel-group-get-its-name
+      execWheelOnly = lib.mkDefault true; # https://unix.stackexchange.com/questions/1262/where-did-the-wheel-group-get-its-name
     };
   };
 
