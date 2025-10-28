@@ -27,7 +27,6 @@
           attr
           bzip2
           curl
-          curlWithGnuTls
           dbus
           dbus-glib
           desktop-file-utils
@@ -44,6 +43,7 @@
           icu
           keyutils.lib
           libcap
+          libgbm
           libgcc
           libgcrypt
           libgpg-error
@@ -63,6 +63,7 @@
           libuuid
           libvorbis
           libvpx
+          libxcrypt
           libxcrypt-legacy
           libxml2
           libtool.lib
@@ -113,6 +114,7 @@
           libjpeg
           libpulseaudio
           librsvg
+          libva
           libvdpau
           libxkbcommon
           mesa
@@ -158,8 +160,8 @@
           xorg.xkeyboardconfig
           xorg.libxshmfence
         ];
-        # 笑点解析：用 itch.io 上面的黄油来测试配置之后对 Linux 二进制的兼容性
-        # 其实还是挺准确的，因为游戏吃的运行库又多又杂
+      # 笑点解析：用 itch.io 上面的黄油来测试配置之后对 Linux 二进制的兼容性
+      # 其实还是挺准确的，因为游戏吃的运行库又多又杂
     };
   };
 }

@@ -103,6 +103,7 @@
       hexyl
       sbctl
       mosh
+      zenity
       # inetutils
       busybox
       # 解压缩
