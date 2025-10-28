@@ -134,7 +134,6 @@
       url = "github:nix-community/nix-vscode-extensions";
       inputs = {
         nixpkgs.follows = "nixpkgs";
-        flake-utils.follows = "flake-utils";
       };
     };
 
@@ -162,14 +161,7 @@
       };
     };
 
-    kwin-effects-forceblur = {
-      url = "github:taj-ny/kwin-effects-forceblur/v1.3.6";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        utils.follows = "flake-utils";
-      };
-    };
-
+    # [TODO] 在 25.11 发布后移除
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v0.4.2";
       inputs = {
