@@ -8,11 +8,8 @@
         huacnlee.autocorrect
         mhutchie.git-graph
         ms-ceintl.vscode-language-pack-zh-hans
-        ms-vscode-remote.remote-ssh
-        ms-vscode.remote-explorer
         redhat.vscode-xml
         redhat.vscode-yaml
-        activitywatch.aw-watcher-vscode
       ];
     };
   };
