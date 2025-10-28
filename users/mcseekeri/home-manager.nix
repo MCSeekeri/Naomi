@@ -125,6 +125,12 @@
     librewolf = {
       profiles = {
         user = {
+          settings = {
+            "identity.fxaccounts.enabled" = true;
+            "privacy.clearOnShutdown_v2.browsingHistoryAndDownloads" = true; # 要留清白在人间……
+            "privacy.clearOnShutdown_v2.formdata" = true;
+            "places.history.enabled" = false;
+          };
           extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
             # https://discourse.nixos.org/t/firefox-extensions-with-home-manager/34108/4
             kiss-translator
@@ -221,7 +227,7 @@
                 launchers = [
                   "applications:org.kde.dolphin.desktop"
                   "applications:kitty.desktop"
-                  "applications:brave-browser.desktop"
+                  "applications:librewolf.desktop"
                 ];
               };
             }
