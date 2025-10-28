@@ -2,7 +2,6 @@
   pkgs,
   lib,
   self,
-  inputs,
   ...
 }:
 {
@@ -19,7 +18,4 @@
     extraPortals = with pkgs; [ kdePackages.xdg-desktop-portal-kde ];
     config.common.default = lib.mkDefault "kde";
   };
-  environment.systemPackages = [
-    inputs.kwin-effects-forceblur.packages.${pkgs.system}.default # Wayland
-  ];
 }
