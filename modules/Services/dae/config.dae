@@ -44,7 +44,8 @@ routing {
 	dip(224.0.0.0/3, 'ff00::/8', geoip:private) -> must_direct
 	l4proto(udp) && dport(443) -> block
 	dip(geoip:cn) -> direct
-	domain(geosite:cn) -> direct
+	domain(geosite:cn, geosite:geolocation-cn, geosite:category-games@cn, suffix: steamserver.net) -> direct
+	domain(suffix: steamstatic.com) -> proxy
 	
 	fallback: proxy
 }
