@@ -1,3 +1,4 @@
+{ pkgs, ... }:
 {
   security = {
     pam = {
@@ -17,6 +18,5 @@
   environment.systemPackages = with pkgs; [
     yubioath-flutter
     yubikey-manager
-    yubikey-manager-qt
   ];
 }

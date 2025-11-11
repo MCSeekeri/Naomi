@@ -9,7 +9,7 @@
 
   environment.systemPackages = with pkgs; [ nix-alien ];
 
-  services.envfs.enable = true;
+  # services.envfs.enable = true; # 会让 QQ 启动后无法渲染图标，无法理解
 
   programs = {
     appimage = {
@@ -104,11 +104,13 @@
           libGLU
           libappindicator-gtk2
           libappindicator-gtk3
+          libayatana-appindicator
           libcaca
           libcanberra
           libclang.lib
           libdbusmenu
           libdrm
+          libepoxy
           libglvnd
           libjack2
           libjpeg
@@ -118,6 +120,7 @@
           libvdpau
           libxkbcommon
           mesa
+          mpv # PiliPlus
           openal
           pango
           pciutils
@@ -149,6 +152,7 @@
           xorg.libXrender
           xorg.libXt
           xorg.libXtst
+          xorg.libxkbfile
           xorg.libXxf86vm
           xorg.libpciaccess
           xorg.libxcb
