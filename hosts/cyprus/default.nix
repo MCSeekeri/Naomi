@@ -9,6 +9,7 @@
     "${self}/modules/Server/failsafe.nix"
     "${self}/modules/Server/virt/libvirt.nix"
     "${self}/modules/Server/virt/virtualbox.nix"
+    "${self}/modules/Server/virt/k8s.nix"
     "${self}/modules/Desktop/plasma.nix"
     "${self}/modules/Desktop/sunshine.nix"
     "${self}/modules/Desktop/programs.nix"
