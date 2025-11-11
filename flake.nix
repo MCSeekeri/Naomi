@@ -85,15 +85,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nix-minecraft = {
-      url = "github:Infinidoge/nix-minecraft";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        flake-utils.follows = "flake-utils";
-        flake-compat.follows = "flake-compat";
-      };
-    };
-
     nix-topology = {
       url = "github:oddlama/nix-topology";
       inputs = {
