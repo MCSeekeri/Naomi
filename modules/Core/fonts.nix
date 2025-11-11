@@ -1,9 +1,26 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
+  system.fsPackages = [ pkgs.bindfs ];
+  fileSystems = {
+    "/usr/share/fonts" = {
+      device = "${
+        pkgs.buildEnv {
+          name = "system-fonts";
+          paths = config.fonts.packages;
+          pathsToLink = [ "/share/fonts" ];
+        }
+      }/share/fonts";
+      fsType = "fuse.bindfs";
+      options = [
+        "ro"
+        "resolve-symlinks"
+        "x-gvfs-hide"
+      ];
+    };
+  };
   fonts = {
     fontDir.enable = true;
     enableDefaultPackages = true; # 自动安装基本字体
-    enableGhostscriptFonts = true; # 啥
     fontconfig = {
       useEmbeddedBitmaps = true; # 啥
       cache32Bit = true;
