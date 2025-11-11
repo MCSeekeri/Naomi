@@ -72,11 +72,11 @@ in
     assertions = [
       {
         assertion = !(config.hardware.gpu.type != "" && config.hardware.cpu.type == "");
-        message = "错误：已设置 hardware.gpu.type (${config.hardware.gpu.type}) 但未设置 hardware.cpu.type,必须同时设置两者或仅设置 cpu.type";
+        message = "错误：已设置 hardware.gpu.type (${config.hardware.gpu.type}) 但未设置 hardware.cpu.type";
       }
       {
         assertion = !(config.hardware.cpu.optimized && config.hardware.cpu.type == "");
-        message = "错误：启用了 CPU 指令集优化但未设置 hardware.cpu.type,必须同时设置两者";
+        message = "错误：启用了 CPU 指令集优化但未设置 hardware.cpu.type";
       }
     ];
 
@@ -247,6 +247,17 @@ in
         })
         (lib.mkIf isNvidia { CUDA_PATH = "${pkgs.cudaPackages.cudatoolkit}"; })
       ];
+    };
+
+    specialisation = lib.mkIf (isNvidia && config.hardware.gpu.type == "nvidia_laptop") {
+      offload.configuration = {
+        system.nixos.tags = [ "offload" ];
+        hardware.nvidia.prime = {
+          offload.enable = lib.mkForce true;
+          offload.enableOffloadCmd = lib.mkForce true;
+          sync.enable = lib.mkForce false;
+        };
+      };
     };
   };
 }

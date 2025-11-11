@@ -85,6 +85,8 @@ in
       };
       client.enable = true;
     };
+    nscd.enableNsncd = true;
+    fwupd.enable = true;
   };
 
   # 网络配置
@@ -94,6 +96,7 @@ in
     useNetworkd = true;
     wireless = {
       enable = false;
+      userControlled.enable = true;
       iwd = {
         enable = true;
         settings = {
@@ -123,9 +126,12 @@ in
   };
 
   boot = {
+    tmp.cleanOnBoot = true;
     initrd.systemd.emergencyAccess = true;
     supportedFilesystems = [
       "ext4"
+      "exfat"
+      "ext2"
       "btrfs"
       "f2fs"
       "ntfs"
@@ -134,9 +140,9 @@ in
     ];
     kernelParams = [
       "nouveau.modeset=0"
-      "console=tty0"
       "console=ttyS0,115200" # 串口调试
       "zswap.zpool=zsmalloc"
+      "boot.shell_on_fail"
     ];
   };
   services.samba.enable = false;
@@ -154,6 +160,9 @@ in
     pkgs.progress
     pkgs.tmux
     pkgs.file
+    pkgs.kitty.terminfo
+    pkgs.nh
+    pkgs.sbctl
     network-status
   ];
 
@@ -204,11 +213,12 @@ in
         "flakes"
       ];
       trusted-users = [ "root" ];
-      connect-timeout = 20;
+      connect-timeout = 5;
       http-connections = 64;
       max-substitution-jobs = 32; # 加速下载
-      max-free = 5 * 1024 * 1024 * 1024;
-      min-free = 1024 * 1024 * 1024;
+      max-free = 3000 * 1024 * 1024;
+      min-free = 512 * 1024 * 1024;
+      log-lines = 25;
       builders-use-substitutes = true;
     };
   };
