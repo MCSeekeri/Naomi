@@ -10,7 +10,11 @@
     "${self}/modules/Desktop/programs.nix"
     "${self}/modules/Desktop/fcitx5.nix"
 
+    "${self}/modules/Hardware"
+
     "${self}/modules/Services/nginx.nix"
+    "${self}/modules/Services/dae"
+    "${self}/modules/Services/geph5.nix"
 
     "${self}/modules/Games/AquaDX"
 
@@ -26,5 +30,5 @@
     stateVersion = "24.11";
     autoUpgrade.enable = true;
   };
-  virtualisation.vmware.guest.enable = true;
+  hardware.cpu.type = "qemu";
 }

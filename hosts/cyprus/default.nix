@@ -19,6 +19,7 @@
     "${self}/modules/Desktop/waydroid.nix"
     "${self}/modules/Desktop/cups.nix"
     "${self}/modules/Desktop/embedded.nix"
+    "${self}/modules/Desktop/yubikey.nix"
 
     "${self}/modules/Services/archisteamfarm.nix"
     "${self}/modules/Services/dae"

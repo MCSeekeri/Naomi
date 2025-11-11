@@ -11,7 +11,6 @@
             ESP = {
               type = "EF00";
               size = "1G";
-              label = "ESP";
               content = {
                 type = "filesystem";
                 format = "vfat";
@@ -21,7 +20,6 @@
             };
             root = {
               size = "100%";
-              label = "root";
               content = {
                 type = "filesystem";
                 format = "ext4";
