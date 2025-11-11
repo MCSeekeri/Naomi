@@ -161,6 +161,9 @@
       btop
       conntrack-tools
       ncdu
+      s-tui
+      powerstat
+      stress
     ];
   };
 }

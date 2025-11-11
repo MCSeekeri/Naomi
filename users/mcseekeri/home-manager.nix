@@ -62,6 +62,7 @@
       # 游戏娱乐
       moonlight-qt
       vlc
+      svp
       lutris
       (bottles.override { removeWarningPopup = true; })
       ckan
@@ -184,6 +185,13 @@
     };
     obs-studio = {
       enable = true;
+    };
+    mpv = {
+      enable = true;
+      package = pkgs.mpv-unwrapped.wrapper {
+        mpv = pkgs.mpv-unwrapped.override { vapoursynthSupport = true; };
+        youtubeSupport = true;
+      };
     };
     plasma = {
       enable = true;

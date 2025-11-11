@@ -74,6 +74,7 @@
             "browser.sessionstore.resume_from_crash" = false;
             "browser.translations.automaticallyPopup" = false;
             "browser.urlbar.suggest.recentsearches" = false;
+            "browser.urlbar.suggest.bookmark" = true; # 真正意义上的历史记录
           };
           extensions = {
             packages = with pkgs.nur.repos.rycee.firefox-addons; [
