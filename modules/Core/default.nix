@@ -86,11 +86,6 @@
 
   systemd = {
     coredump.extraConfig = "Storage=none"; # 不需要转储
-    services.nix-gc.serviceConfig = {
-      CPUSchedulingPolicy = "batch";
-      IOSchedulingClass = "idle";
-      IOSchedulingPriority = 7;
-    };
   };
 
   environment.enableAllTerminfo = true;

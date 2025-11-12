@@ -66,7 +66,8 @@
       tune = "raptorlake";
       # optimized = true;
     };
-    gpu.type = "nvidia_laptop";
+    gpu.type = "nvidia";
+    deviceType = "laptop";
   };
   boot = {
     initrd = {

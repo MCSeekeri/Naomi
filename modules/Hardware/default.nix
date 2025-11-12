@@ -5,8 +5,10 @@
   inputs,
   ...
 }:
+# nixos-hardware 比这个配置完善多了，要不是动态 import 在技术上不可行我就直接弃用这个了
+# 也许未来可以通过 builtin 读取文件是否存在的方式来实现动态导入，但会有点怪……
 let
-  isNvidia = config.hardware.gpu.type == "nvidia" || config.hardware.gpu.type == "nvidia_laptop";
+  isNvidia = config.hardware.gpu.type == "nvidia";
   isIntel = config.hardware.gpu.type == "intel" || config.hardware.cpu.type == "intel";
   isAMD = config.hardware.gpu.type == "amd" || config.hardware.cpu.type == "amd";
   isQemu = config.hardware.cpu.type == "qemu";
@@ -51,7 +53,6 @@ in
       gpu.type = lib.mkOption {
         type = lib.types.enum [
           "nvidia"
-          "nvidia_laptop"
           "intel"
           "amd"
           ""
@@ -64,6 +65,16 @@ in
           else
             "";
         description = "GPU 类型，决定使用的图形驱动和相关配置。";
+      };
+
+      deviceType = lib.mkOption {
+        type = lib.types.enum [
+          "desktop"
+          "laptop"
+          "server"
+        ];
+        default = "desktop";
+        description = "设备类型，影响电源管理和相关配置。";
       };
     };
   };
@@ -80,22 +91,38 @@ in
       }
     ];
 
-    nix.settings.system-features =
-      let
-        levels = {
-          "x86_64-v2" = [ "gccarch-x86-64-v2" ];
-          "x86_64-v3" = [
-            "gccarch-x86-64-v3"
-            "gccarch-x86-64-v2"
-          ];
-          "x86_64-v4" = [
-            "gccarch-x86-64-v4"
-            "gccarch-x86-64-v3"
-            "gccarch-x86-64-v2"
-          ];
+    nix = lib.mkMerge [
+      {
+        settings = {
+          system-features =
+            let
+              levels = {
+                "x86_64-v2" = [ "gccarch-x86-64-v2" ];
+                "x86_64-v3" = [
+                  "gccarch-x86-64-v3"
+                  "gccarch-x86-64-v2"
+                ];
+                "x86_64-v4" = [
+                  "gccarch-x86-64-v4"
+                  "gccarch-x86-64-v3"
+                  "gccarch-x86-64-v2"
+                ];
+              };
+            in
+            lib.optionals (config.hardware.cpu.arch != "") levels.${config.hardware.cpu.arch};
         };
-      in
-      lib.optionals (config.hardware.cpu.arch != "") levels.${config.hardware.cpu.arch};
+      }
+      (lib.mkIf (config.hardware.deviceType == "server") {
+        daemonCPUSchedPolicy = "other";
+        daemonIOSchedClass = "best-effort";
+        daemonIOSchedPriority = 4;
+      })
+      (lib.mkIf (config.hardware.deviceType != "server") {
+        daemonCPUSchedPolicy = lib.mkDefault "idle";
+        daemonIOSchedClass = lib.mkDefault "idle";
+        daemonIOSchedPriority = lib.mkDefault 7;
+      })
+    ];
 
     # 从 Chaotic's Nyx 偷来的
     nixpkgs = {
@@ -117,6 +144,7 @@ in
         intel.updateMicrocode = lib.mkIf (config.hardware.cpu.type == "intel") true;
         amd.updateMicrocode = lib.mkIf (config.hardware.cpu.type == "amd") true;
       };
+      firmware = [ pkgs.linux-firmware ];
 
       graphics = {
         extraPackages =
@@ -129,7 +157,6 @@ in
               vpl-gpu-rt
             ]
             ++ lib.optionals isAMD [
-              rocmPackages.clr
               rocmPackages.rocm-runtime
               rocmPackages.rocm-opencl-runtime
             ]
@@ -165,23 +192,32 @@ in
           enable = lib.mkDefault false;
           finegrained = lib.mkDefault false;
         };
-        prime = lib.mkIf (config.hardware.gpu.type == "nvidia_laptop") {
+        prime = lib.mkIf (isNvidia && config.hardware.deviceType == "laptop") {
           offload = {
             enable = true;
             enableOffloadCmd = true;
           };
-          sync.enable = lib.mkDefault false;
-          intelBusId = lib.mkDefault "PCI:0:2:0";
-          nvidiaBusId = lib.mkDefault "PCI:1:0:0";
+          intelBusId = lib.mkIf (config.hardware.cpu.type == "intel") "PCI:0:2:0";
+          amdgpuBusId = lib.mkIf (config.hardware.cpu.type == "amd") "PCI:54:0:0";
+          nvidiaBusId = "PCI:1:0:0";
         };
       };
       nvidia-container-toolkit.enable = lib.mkIf isNvidia true;
-    };
 
-    boot.kernelParams = lib.flatten (
-      lib.optionals (config.hardware.cpu.type == "intel") [ "intel_iommu=on" ]
-      ++ lib.optionals (config.hardware.cpu.type == "amd") [ "amd_iommu=on" ]
-    );
+      amdgpu = lib.mkIf isAMD {
+        initrd.enable = true;
+        opencl.enable = true;
+      };
+    };
+    boot = {
+      kernelParams = lib.flatten (
+        lib.optionals (config.hardware.cpu.type == "intel") [ "intel_iommu=on" ]
+        ++ lib.optionals (config.hardware.cpu.type == "amd") [
+          "amd_iommu=on"
+          "amd_pstate=active"
+        ]
+      );
+    };
 
     services = lib.mkMerge [
       (lib.mkIf isQemu {
@@ -192,7 +228,24 @@ in
       })
       (lib.mkIf isNvidia { xserver.videoDrivers = [ "nvidia" ]; })
       (lib.mkIf isIntel { xserver.videoDrivers = [ "intel" ]; })
+      (lib.mkIf (config.hardware.deviceType == "laptop") {
+        tlp.enable = lib.mkDefault (!config.services.power-profiles-daemon.enable);
+      })
     ];
+
+    systemd.services.nix-gc.serviceConfig =
+      if config.hardware.deviceType == "server" then
+        {
+          CPUSchedulingPolicy = "other";
+          IOSchedulingClass = "best-effort";
+          IOSchedulingPriority = 4;
+        }
+      else
+        {
+          CPUSchedulingPolicy = "batch";
+          IOSchedulingClass = "idle";
+          IOSchedulingPriority = 7;
+        };
 
     environment = {
       systemPackages =
@@ -243,20 +296,25 @@ in
         (lib.mkIf isAMD {
           LIBVA_DRIVER_NAME = "radeonsi";
           VDPAU_DRIVER = "radeonsi";
+          RUSTICL_ENABLE = "radeonsi";
           ROC_ENABLE_PRE_VEGA = "1";
         })
         (lib.mkIf isNvidia { CUDA_PATH = "${pkgs.cudaPackages.cudatoolkit}"; })
       ];
     };
 
-    specialisation = lib.mkIf (isNvidia && config.hardware.gpu.type == "nvidia_laptop") {
-      offload.configuration = {
-        system.nixos.tags = [ "offload" ];
-        hardware.nvidia.prime = {
-          offload.enable = lib.mkForce true;
-          offload.enableOffloadCmd = lib.mkForce true;
-          sync.enable = lib.mkForce false;
-        };
+    specialisation = lib.mkIf (isNvidia && config.hardware.deviceType == "laptop") {
+      battery-saver.configuration = {
+        system.nixos.tags = [ "battery-saver" ];
+        hardware.gpu.type = lib.mkForce "";
+        services.xserver.videoDrivers = lib.mkForce (
+          if config.hardware.gpu.type == "intel" then
+            [ "intel" ]
+          else if config.hardware.gpu.type == "amd" then
+            [ "amdgpu" ]
+          else
+            [ ]
+        );
       };
     };
   };
