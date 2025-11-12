@@ -71,7 +71,6 @@ in
       ];
       extraConfig = lib.mkForce "font-size=12";
     };
-    openssh.settings.PermitRootLogin = lib.mkForce "yes";
     tor = {
       enable = true;
       relay.onionServices.hidden-ssh = {
@@ -132,11 +131,6 @@ in
       "ext4"
       "exfat"
       "ext2"
-      "btrfs"
-      "f2fs"
-      "ntfs"
-      "vfat"
-      "xfs"
     ];
     kernelParams = [
       "nouveau.modeset=0"
@@ -146,25 +140,26 @@ in
     ];
   };
   services.samba.enable = false;
-  environment.systemPackages = [
-    pkgs.jq
-    pkgs.disko
-    pkgs.bore-cli
-    pkgs.geph
-    pkgs.clash-rs
-    pkgs.proxychains-ng
-    pkgs.dae
-    pkgs.bind
-    pkgs.ripgrep
-    pkgs.btop
-    pkgs.progress
-    pkgs.tmux
-    pkgs.file
-    pkgs.kitty.terminfo
-    pkgs.nh
-    pkgs.sbctl
-    network-status
-  ];
+  environment = {
+    systemPackages = [
+      pkgs.disko
+      pkgs.bore-cli
+      pkgs.geph
+      pkgs.clash-rs
+      pkgs.proxychains-ng
+      pkgs.dae
+      pkgs.bind
+      pkgs.ripgrep
+      pkgs.btop
+      pkgs.progress
+      pkgs.tmux
+      pkgs.file
+      pkgs.nh
+      pkgs.sbctl
+      network-status
+    ];
+    enableAllTerminfo = true;
+  };
 
   stylix = {
     enable = true;
