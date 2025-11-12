@@ -27,7 +27,7 @@ disko-install -f github:MCSeekeri/Naomi#<设备代号> --disk main <设备文件
 极少数情况下，`disko-install` 会遇到一些无法预知的问题，此时需要分别运行`disko` 和 `nixos-install`
 
 ```nix
-disko -f github:MCSeekeri/Naomi#<设备代号>
+disko --mode destroy,format,mount -f github:MCSeekeri/Naomi#<设备代号>
 nixos-install --root /mnt --flake github:MCSeekeri/Naomi#<设备代号>
 ```
 
