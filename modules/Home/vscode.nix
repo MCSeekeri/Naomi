@@ -10,6 +10,7 @@
         ms-ceintl.vscode-language-pack-zh-hans
         redhat.vscode-xml
         redhat.vscode-yaml
+        kermanx.p2p-live-share
       ];
     };
   };
