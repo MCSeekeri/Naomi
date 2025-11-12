@@ -6,12 +6,12 @@
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "aquanet";
-  version = "0-unstable-2025-09-26";
+  version = "0-unstable-2025-10-24";
   src = fetchFromGitHub {
     owner = "MewoLab";
     repo = "AquaDX";
-    rev = "68820d5a8682bc59d0148d9ca2a341b6c337cd37";
-    hash = "sha256-tio6IzhQbwfWswDY49EZWz/xrC9q6oY4yUk00Bwjbyg=";
+    rev = "d2608472d82ccc01c38db5eb8ef56a0a93212ebd";
+    hash = "sha256-EZAGTnzbn8TA5D7rSe19ypFNu3/rfo/4NIScXu1g8Kg=";
   };
 
   nativeBuildInputs = with pkgs; [

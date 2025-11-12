@@ -65,7 +65,7 @@
         };
         tailscale0 = {
           network = "tailscale";
-          addresses = [ "100.100.6.6" ];
+          addresses = [ "100.100.20.1" ];
           virtual = true;
         };
       };
