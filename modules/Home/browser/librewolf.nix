@@ -83,6 +83,7 @@
               violentmonkey
               multi-account-containers
               temporary-containers-plus
+              bilisponsorblock
             ];
           };
         };
