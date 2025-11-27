@@ -5,8 +5,6 @@
     systemPackages = with pkgs; [
       # 桌面应用
       ungoogled-chromium
-      wineWowPackages.stable
-      winetricks
       # 开发环境
       gcc
       cmake
