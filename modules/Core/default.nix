@@ -15,6 +15,7 @@
     inputs.chaotic.nixosModules.nyx-registry
     #inputs.determinate.nixosModules.default
     inputs.nur.modules.nixos.default
+    inputs.nix-index-database.nixosModules.nix-index
     ./apparmor.nix
     ./avahi.nix
     ./boot.nix
@@ -58,6 +59,7 @@
     sharedModules = [
       inputs.plasma-manager.homeModules.plasma-manager
       inputs.nix-flatpak.homeManagerModules.nix-flatpak
+      inputs.nix-index-database.homeModules.nix-index
     ];
   };
 

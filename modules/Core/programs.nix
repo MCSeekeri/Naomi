@@ -79,7 +79,6 @@
     openvpn3.enable = true;
     bat.enable = true; # cat
     screen.enable = true;
-    nix-index.enable = true;
     command-not-found.enable = false;
     iotop.enable = true;
     iftop.enable = true;
