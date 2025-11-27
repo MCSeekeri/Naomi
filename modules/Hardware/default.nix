@@ -192,7 +192,8 @@ in
           enable = lib.mkDefault false;
           finegrained = lib.mkDefault false;
         };
-        prime = lib.mkIf (isNvidia && config.hardware.deviceType == "laptop") {
+        dynamicBoost = lib.mkIf (config.hardware.deviceType == "laptop") { enable = true; };
+        prime = lib.mkIf (config.hardware.deviceType == "laptop") {
           offload = {
             enable = true;
             enableOffloadCmd = true;
@@ -309,7 +310,7 @@ in
         hardware.gpu.type = lib.mkForce "";
         services.xserver.videoDrivers = lib.mkForce (
           if config.hardware.gpu.type == "intel" then
-            [ "intel" ]
+            [ "modesetting" ]
           else if config.hardware.gpu.type == "amd" then
             [ "amdgpu" ]
           else
