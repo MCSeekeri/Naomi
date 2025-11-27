@@ -36,9 +36,21 @@
 
   system = {
     autoUpgrade = {
-      flake = "github:MCSeekeri/Naomi";
+      enable = lib.mkDefault true;
+      flake = lib.mkDefault "github:MCSeekeri/Naomi";
       operation = lib.mkDefault "boot";
-      dates = lib.mkDefault "weekly";
+      allowReboot = lib.mkDefault true;
+      rebootWindow = {
+        # 凌晨更新，提神醒脑
+        lower = "01:00";
+        upper = "04:00";
+      };
+    };
+    nixos = {
+      # 设置此项以自研操作系统
+      # 至少，系统信息里面看着是自研的
+      # codeName = "";
+      # release = "";
     };
     rebuild.enableNg = true;
   };
@@ -88,6 +100,7 @@
 
   systemd = {
     coredump.extraConfig = "Storage=none"; # 不需要转储
+    enableStrictShellChecks = true;
   };
 
   environment.enableAllTerminfo = true;

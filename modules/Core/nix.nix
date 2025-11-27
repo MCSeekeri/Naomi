@@ -3,9 +3,10 @@
   nix = {
     channel.enable = false;
     distributedBuilds = true;
+    optimise.automatic = true;
     gc = {
       automatic = true;
-      dates = "weekly";
+      dates = "daily";
       options = "--delete-older-than 7d"; # 删除超过一周的垃圾文件，硬盘笑传之踩踩 Backup
     };
     settings = {
