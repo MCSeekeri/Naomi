@@ -27,6 +27,7 @@
   };
   hardware = {
     xpadneo.enable = true;
+    steam-hardware.enable = true;
   };
   environment.systemPackages = with pkgs; [
     mangohud
@@ -36,6 +37,7 @@
     steamtinkerlaunch
     ludusavi
     samrewritten
+    steam-tui
   ];
 
   services.pipewire.lowLatency.enable = true;
