@@ -13,6 +13,7 @@
       "libvirtd"
       "incus-admin"
       "vboxusers"
+      "gamemode"
     ];
     shell = pkgs.fish;
     openssh.authorizedKeys.keys = [
