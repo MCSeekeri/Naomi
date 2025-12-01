@@ -5,7 +5,6 @@
       kitty
       upx
       lazygit
-      delta # git diff
       git-ignore
       gitleaks # 查找文件或仓库中的敏感信息
       git-secrets

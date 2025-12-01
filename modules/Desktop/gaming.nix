@@ -1,9 +1,10 @@
 { pkgs, inputs, ... }:
 {
-  imports = with inputs.nix-gaming.nixosModules; [
-    pipewireLowLatency
-    platformOptimizations
+  imports = with inputs; [
+    nix-gaming.nixosModules.pipewireLowLatency
+    nix-gaming.nixosModules.platformOptimizations
   ];
+
   programs = {
     steam = {
       enable = true;
@@ -25,6 +26,7 @@
       enableRenice = true;
     };
   };
+
   hardware = {
     xpadneo.enable = true;
     steam-hardware.enable = true;
@@ -38,6 +40,7 @@
     ludusavi
     samrewritten
     steam-tui
+    steamcmd
   ];
 
   services.pipewire.lowLatency.enable = true;

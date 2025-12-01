@@ -124,7 +124,10 @@ in
   };
 
   boot = {
-    tmp.cleanOnBoot = true;
+    tmp = {
+      cleanOnBoot = true;
+      useZram = true;
+    };
     initrd.systemd.emergencyAccess = true;
     supportedFilesystems = [
       "ext4"

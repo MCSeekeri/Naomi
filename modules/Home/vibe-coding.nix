@@ -5,6 +5,8 @@
     packages = with pkgs; [
       claude-code
       gemini-cli
+      qwen-code
+
       warp-terminal
       crush
     ];

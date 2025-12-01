@@ -77,6 +77,7 @@
     networkmanager.enable = true;
     useNetworkd = true; # 实验性启用
     dhcpcd.enable = false;
+    nftables.enable = true;
   };
 
   hardware = {
@@ -86,6 +87,7 @@
   services = {
     power-profiles-daemon.enable = true;
     upower.enable = true;
+    fwupd.enable = true;
   };
 
   security = {
@@ -99,8 +101,11 @@
 
   systemd = {
     coredump.extraConfig = "Storage=none"; # 不需要转储
-    enableStrictShellChecks = true;
+    # enableStrictShellChecks = true;
+    # [TODO] 等我整明白如何给上游提交 PR 修复这些问题再说
   };
+
+  powerManagement.powertop.enable = true;
 
   environment.enableAllTerminfo = true;
 }
