@@ -129,14 +129,6 @@
       };
     };
 
-    lix-module = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.3-2.tar.gz";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        flake-utils.follows = "flake-utils";
-      };
-    };
-
     nur = {
       url = "github:nix-community/NUR";
       inputs = {
@@ -153,45 +145,23 @@
       };
     };
 
-    # [TODO] 在 25.11 发布后移除
-    lanzaboote = {
-      url = "github:nix-community/lanzaboote/v0.4.2";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        flake-compat.follows = "flake-compat";
-        flake-parts.follows = "flake-parts";
-        pre-commit-hooks-nix.follows = "pre-commit-hooks";
-        rust-overlay.follows = "rust-overlay";
-      };
-    };
-
-    nixgl = {
-      url = "github:nix-community/nixGL";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        flake-utils.follows = "flake-utils";
-      };
-    };
-
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
-
-    rust-overlay = {
-      url = "github:oxalica/rust-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     chaotic = {
       url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         home-manager.follows = "home-manager";
-        rust-overlay.follows = "rust-overlay";
       };
     };
 
     winapps = {
       url = "github:winapps-org/winapps";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-compat.follows = "flake-compat";
+        flake-utils.follows = "flake-utils";
+      };
     };
 
     nix-index-database = {
@@ -215,12 +185,7 @@
         systems = [ "x86_64-linux" ];
 
         perSystem =
-          {
-            config,
-            pkgs,
-            system,
-            ...
-          }:
+          { pkgs, system, ... }:
           {
             packages = {
               topology = self.topology.${system}.config.output;
@@ -228,7 +193,6 @@
 
             _module.args.pkgs = import inputs.nixpkgs {
               inherit system;
-              overlays = [ inputs.nix-vscode-extensions.overlays.default ];
               config.allowUnfree = true;
             };
 
