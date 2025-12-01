@@ -79,7 +79,14 @@
         "usb_storage"
         "sd_mod"
       ];
-      luks.devices."root".device = "/dev/disk/by-partlabel/root";
+      luks = {
+        devices."root" = {
+          device = "/dev/disk/by-partlabel/root";
+          crypttabExtraOpts = [ "fido2-device=auto" ];
+          # https://www.freedesktop.org/software/systemd/man/251/systemd-cryptenroll.html
+          # systemd-cryptenroll --fido2-device=auto
+        };
+      };
     };
     kernelModules = [ "kvm-intel" ];
     kernelPackages = pkgs.linuxPackages_zen;
@@ -172,6 +179,15 @@
         TIMELINE_LIMIT_DAILY = 7;
         TIMELINE_LIMIT_MONTHLY = 0;
         TIMELINE_LIMIT_YEARLY = 0;
+      };
+    };
+  };
+
+  security = {
+    pam = {
+      yubico = {
+        enable = true;
+        id = [ "23392590" ];
       };
     };
   };

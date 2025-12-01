@@ -23,5 +23,8 @@
       "kernel.panic" = 15; # 内核恐慌 15 秒之后重启
     };
     kernelParams = [ "boot.shell_on_fail" ];
+    initrd = {
+      systemd.enable = true;
+    };
   };
 }

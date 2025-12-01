@@ -94,6 +94,7 @@
       enable = true;
       execWheelOnly = lib.mkDefault true; # https://unix.stackexchange.com/questions/1262/where-did-the-wheel-group-get-its-name
     };
+    tpm2.enable = true;
   };
 
   systemd = {

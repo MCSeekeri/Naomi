@@ -3,10 +3,11 @@
   security = {
     pam = {
       yubico = {
-        enable = true;
+        # enable = true;
         debug = false;
         mode = "challenge-response";
-        # id = [ "11451419" ]; # 务必正确设置
+        # id = [ "11451419" ];
+        # S/N 号，不设置会有安全漏洞
       };
       services = {
         login.u2fAuth = true;
@@ -20,7 +21,6 @@
   };
 
   hardware.gpgSmartcards.enable = true;
-  boot.initrd.luks.yubikeySupport = true; # [TODO] 测试能否使用 YubiKey 解锁 LUKS，而不是模拟键盘输入密码……
   programs.yubikey-touch-detector.enable = true;
   environment.systemPackages = with pkgs; [
     yubioath-flutter
