@@ -1,23 +1,5 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 {
-  system.fsPackages = [ pkgs.bindfs ];
-  fileSystems = {
-    "/usr/share/fonts" = {
-      device = "${
-        pkgs.buildEnv {
-          name = "system-fonts";
-          paths = config.fonts.packages;
-          pathsToLink = [ "/share/fonts" ];
-        }
-      }/share/fonts";
-      fsType = "fuse.bindfs";
-      options = [
-        "ro"
-        "resolve-symlinks"
-        "x-gvfs-hide"
-      ];
-    };
-  };
   fonts = {
     fontDir.enable = true;
     enableDefaultPackages = true; # 自动安装基本字体
@@ -46,7 +28,7 @@
       source-serif
       source-han-sans
       source-han-serif
-      noto-fonts-emoji
+      noto-fonts-color-emoji
       maple-mono.Normal-NF-CN-unhinted
       unifont
 

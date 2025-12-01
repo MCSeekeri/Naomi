@@ -170,11 +170,15 @@
       ];
     };
     git = {
-      userName = "MCSeekeri";
-      userEmail = "mcseekeri@outlook.com";
-      signing = {
-        key = "3276666666666666!";
-        signByDefault = true;
+      settings = {
+        user = {
+          name = "MCSeekeri";
+          email = "mcseekeri@outlook.com";
+        };
+        signing = {
+          key = "3276666666666666!";
+          signByDefault = true;
+        };
       };
     };
     fish = {
@@ -439,7 +443,7 @@
         name = "Maple Mono SC NF";
       };
       emoji = {
-        package = pkgs.noto-fonts-emoji;
+        package = pkgs.noto-fonts-color-emoji;
         name = "Noto Color Emoji";
       };
     };

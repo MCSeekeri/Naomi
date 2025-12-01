@@ -124,7 +124,7 @@
       ntfs3g
       compsize
       # Nix 相关
-      nixfmt-rfc-style
+      nixfmt
       nix-update
       nix-du
       graphviz # nix-du -s=500MB | dot -Tsvg > store.svg

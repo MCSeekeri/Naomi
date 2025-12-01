@@ -36,7 +36,7 @@
         name = lib.mkDefault "Maple Mono SC NF";
       };
       emoji = {
-        package = lib.mkDefault pkgs.noto-fonts-emoji;
+        package = lib.mkDefault pkgs.noto-fonts-color-emoji;
         name = lib.mkDefault "Noto Color Emoji";
       };
     };

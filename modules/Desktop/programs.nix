@@ -12,7 +12,7 @@
       vscodium-fhs
       go
       jdk
-      python3Full
+      python3
       python3Packages.pip
       pipx
       # 虚拟化

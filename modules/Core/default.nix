@@ -52,7 +52,6 @@
       # codeName = "";
       # release = "";
     };
-    rebuild.enableNg = true;
   };
 
   nixpkgs = {

@@ -32,7 +32,7 @@
     packages = with pkgs; [
       material-design-icons
       font-awesome
-      noto-fonts-emoji
+      noto-fonts-color-emoji
       fira-code
       jetbrains-mono
       sarasa-gothic

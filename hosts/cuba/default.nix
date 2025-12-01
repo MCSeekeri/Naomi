@@ -115,7 +115,6 @@ in
       cat /dev/urandom | tr -dc 'A-HJ-KMNP-Y3-9' | fold -w 4 | head -n 4 | paste -sd "-" - > /var/shared/root-password
       echo "root:$(cat /var/shared/root-password)" | chpasswd
     '';
-    rebuild.enableNg = true;
   };
 
   zramSwap = {
