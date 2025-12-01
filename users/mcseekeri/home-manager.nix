@@ -55,6 +55,7 @@
       element-desktop
       remmina
       blender
+      piliplus
       # 主题
       lain-kde-splashscreen
       # kora-icon-theme
@@ -76,7 +77,7 @@
       pkg-config
       fvm
       android-studio
-      micromamba
+      # micromamba
       gradle
       dupeguru
       reqable
@@ -245,11 +246,12 @@
             }
             {
               systemMonitor = {
+                title = "总 CPU 使用率";
                 displayStyle = "org.kde.ksysguard.piechart";
                 sensors = [
                   {
                     name = "cpu/all/usage";
-                    color = "61,174,233";
+                    color = "89,194,255";
                     label = "总 CPU 使用情况";
                   }
                 ];
@@ -265,11 +267,12 @@
             }
             {
               systemMonitor = {
+                title = "内存使用率";
                 displayStyle = "org.kde.ksysguard.piechart";
                 sensors = [
                   {
                     name = "memory/physical/used";
-                    color = "61,174,233";
+                    color = "89,194,255";
                     label = "内存使用情况";
                   }
                 ];
@@ -281,17 +284,18 @@
             }
             {
               systemMonitor = {
+                title = "网络速度";
                 displayStyle = "org.kde.ksysguard.textonly";
                 sensors = [
                   {
-                    name = "disk/all/write";
-                    color = "61,174,233";
-                    label = "写入速率";
+                    name = "network/all/download";
+                    color = "89,194,255";
+                    label = "下载速率";
                   }
                   {
-                    name = "disk/all/read";
-                    color = "233,120,61";
-                    label = "读取速率";
+                    name = "network/all/upload";
+                    color = "255,150,89";
+                    label = "上传速率";
                   }
                 ];
                 settings = {
@@ -301,17 +305,18 @@
             }
             {
               systemMonitor = {
+                title = "磁盘活动";
                 displayStyle = "org.kde.ksysguard.textonly";
                 sensors = [
                   {
-                    name = "network/all/download";
-                    color = "61,174,233";
-                    label = "下载速率";
+                    name = "disk/all/write";
+                    color = "89,194,255";
+                    label = "写入速率";
                   }
                   {
-                    name = "network/all/upload";
-                    color = "233,120,61";
-                    label = "上传速率";
+                    name = "disk/all/read";
+                    color = "255,150,89";
+                    label = "读取速率";
                   }
                 ];
                 settings = {
@@ -364,47 +369,39 @@
         timeout = 2;
       };
       configFile = {
-        "kcminputrc"."Mouse"."X11LibInputXAccelProfileFlat" = true;
-        "kcminputrc"."Mouse"."XLbInptPointerAcceleration" = 0.4;
-        "kdeglobals"."KDE"."AnimationDurationFactor" = 0.25;
-        "kdeglobals"."DialogIcons"."Size" = 48;
-        "kdeglobals"."DirSelect Dialog"."DirSelectDialog Size" = "1292,596";
-        "kdeglobals"."General"."TerminalApplication" = "kitty";
-        "kdeglobals"."General"."TerminalService" = "kitty.desktop";
-        "kdeglobals"."General"."XftAntialias" = true;
-        "kdeglobals"."General"."XftHintStyle" = "hintfull";
-        "kdeglobals"."General"."XftSubPixel" = "rgb";
-        "kdeglobals"."KFileDialog Settings"."Allow Expansion" = true;
-        "kdeglobals"."KFileDialog Settings"."Show Inline Previews" = false;
-        "kdeglobals"."KFileDialog Settings"."Show Preview" = true;
-        "kdeglobals"."KFileDialog Settings"."Show Speedbar" = true;
-        "kdeglobals"."KFileDialog Settings"."Show hidden files" = true;
-        "kdeglobals"."KFileDialog Settings"."Sort by" = "Date";
-        "kdeglobals"."KFileDialog Settings"."Sort directories first" = true;
-        "kdeglobals"."KFileDialog Settings"."Sort hidden files last" = false;
-        "kdeglobals"."KFileDialog Settings"."Sort reversed" = true;
-        "kdeglobals"."KFileDialog Settings"."View Style" = "DetailTree";
-        "kiorc"."Confirmations"."ConfirmDelete" = true;
-        "kiorc"."Confirmations"."ConfirmEmptyTrash" = true;
-        "kiorc"."Executable scripts"."behaviourOnLaunch" = "execute";
-        "klipperrc"."General"."IgnoreImages" = false; # 剪切板，伟大，无需多言
-        "klipperrc"."General"."MaxClipItems" = 150;
-        "krunnerrc"."PlasmaRunnerManager"."migrated" = true;
-        "krunnerrc"."Plugins"."baloosearchEnabled" = true;
-        "kwinrc"."Xwayland"."Scale" = 1.25; # 适合这年头常见的 2560x1440 屏幕
-        "kwinrc"."Xwayland"."XwaylandEavesdrops" = "Modifiers";
-        # "kxkbrc"."Layout"."Options" = "terminate:ctrl_alt_bksp"; # Nuclear
-        "plasma-localerc"."Formats"."LANG" = "zh_CN.UTF-8";
-        "plasma-localerc"."Translations"."LANGUAGE" = "zh_CN";
-        "plasmaparc"."General"."RaiseMaximumVolume" = true;
-      };
-      dataFile = {
-        "dolphin/view_properties/global/.directory"."Dolphin"."SortOrder" = 1;
-        "dolphin/view_properties/global/.directory"."Dolphin"."SortRole" = "modificationtime";
-        "dolphin/view_properties/global/.directory"."Dolphin"."ViewMode" = 1;
-        "dolphin/view_properties/global/.directory"."Dolphin"."VisibleRoles" =
-          "Icons_text,Icons_size,Icons_modificationtime,Icons_type,CustomizedDetails,Details_text,Details_type,Details_size,Details_modificationtime,Details_creationtime,Details_destination";
-        "dolphin/view_properties/global/.directory"."Settings"."HiddenFilesShown" = true;
+        kcminputrc."Mouse"."X11LibInputXAccelProfileFlat" = true;
+        kcminputrc."Mouse"."XLbInptPointerAcceleration" = 0.4;
+        kdeglobals."KDE"."AnimationDurationFactor" = 0.25;
+        kdeglobals."DialogIcons"."Size" = 48;
+        kdeglobals."DirSelect Dialog"."DirSelectDialog Size" = "1292,596";
+        kdeglobals."General"."TerminalApplication" = "kitty";
+        kdeglobals."General"."TerminalService" = "kitty.desktop";
+        kdeglobals."General"."XftAntialias" = true;
+        kdeglobals."General"."XftHintStyle" = "hintfull";
+        kdeglobals."GeileDialog Settings"."Sort directories first" = true;
+        kdeglobals."KFileDialog Settings"."Sort hidden files last" = false;
+        kdeglobals."KFileDialog Settings"."Sort reversed" = true;
+        kdeglobals."KFileDialog Settings"."View Style" = "DetailTree";
+        kiorc."Confirmations"."ConfirmDelete" = true;
+        kiorc."Confirmations"."ConfirmEmptyTrash" = true;
+        kiorc."Executable scripts"."behaviourOnLaunch" = "execute";
+        klipperrc."General"."IgnoreImages" = false; # 剪切板，伟大，无需多言
+        klipperrc."General"."MaxClipItems" = 150;
+        krunnerrc."PlasmaRunnerManager"."migrated" = true;
+        krunnerrc."Pluneral"."XftSubPixel" = "rgb";
+        kdeglobals."KFileDialog Settings"."Allow Expansion" = true;
+        kdeglobals."KFileDialog Settings"."Show Inline Previews" = false;
+        kdeglobals."KFileDialog Settings"."Show Preview" = true;
+        kdeglobals."KFileDialog Settings"."Show Speedbar" = true;
+        kdeglobals."KFileDialog Settings"."Show hidden files" = true;
+        kdeglobals."KFileDialog Settings"."Sort by" = "Date";
+        kdeglobals."KFgins"."baloosearchEnabled" = true;
+        kwinrc."Xwayland"."Scale" = 1.25; # 适合这年头常见的 2560x1440 屏幕
+        kwinrc."Xwayland"."XwaylandEavesdrops" = "Modifiers";
+        # kxkbrc."Layout"."Options" = "terminate:ctrl_alt_bksp"; # Nuclear
+        plasma-localerc."Formats"."LANG" = "zh_CN.UTF-8";
+        plasma-localerc."Translations"."LANGUAGE" = "zh_CN";
+        plasmaparc."General"."RaiseMaximumVolume" = true;
       };
     };
   };

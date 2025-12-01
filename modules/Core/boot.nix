@@ -13,7 +13,10 @@
       # 如果跑了 20 个配置文件还没修好 Bug，我建议你反思下
       maxGenerations = 20;
     };
-    tmp.cleanOnBoot = true;
+    tmp = {
+      cleanOnBoot = true;
+      useZram = true;
+    };
     kernel.sysctl = lib.mkDefault {
       "kernel.sysrq" = 1;
       # PrtSc 或者 Fn+S

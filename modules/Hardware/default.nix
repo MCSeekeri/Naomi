@@ -226,7 +226,7 @@ in
         spice-webdavd.enable = true;
       })
       (lib.mkIf isNvidia { xserver.videoDrivers = [ "nvidia" ]; })
-      (lib.mkIf isIntel { xserver.videoDrivers = [ "intel" ]; })
+      (lib.mkIf isIntel { xserver.videoDrivers = [ "modesetting" ]; })
       (lib.mkIf (config.hardware.deviceType == "laptop") {
         tlp.enable = lib.mkDefault (!config.services.power-profiles-daemon.enable);
       })
@@ -301,15 +301,7 @@ in
     specialisation = lib.mkIf (isNvidia && config.hardware.deviceType == "laptop") {
       battery-saver.configuration = {
         system.nixos.tags = [ "battery-saver" ];
-        hardware.gpu.type = lib.mkForce "";
-        services.xserver.videoDrivers = lib.mkForce (
-          if config.hardware.gpu.type == "intel" then
-            [ "modesetting" ]
-          else if config.hardware.gpu.type == "amd" then
-            [ "amdgpu" ]
-          else
-            [ ]
-        );
+        hardware.gpu.type = lib.mkForce config.hardware.cpu.type;
       };
     };
   };

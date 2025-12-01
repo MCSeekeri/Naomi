@@ -11,13 +11,15 @@
 
   # services.envfs.enable = true; # 会让 QQ 启动后无法渲染图标，无法理解
 
+  # 只是提醒一下……启动 nix-ld 相关配置之后会允许 NixOS 执行标准 Linux 二进制，包括病毒
+  # 所以，谨慎考虑
   programs = {
-    appimage = {
-      enable = true;
-      binfmt = true;
-    };
+    # appimage = {
+    #   enable = true;
+    #   binfmt = true;
+    # };
     nix-ld = {
-      enable = true;
+      # enable = true;
       libraries =
         # https://github.com/Alper-Celik/MyConfig/blob/main/Configs/nix-ld.os.nix
         # 这哥们为什么要写好几遍……
