@@ -1,6 +1,12 @@
-{ lib, config, ... }:
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
 {
   nix = {
+    package = pkgs.lixPackageSets.stable.lix;
     channel.enable = false;
     distributedBuilds = true;
     optimise.automatic = true;

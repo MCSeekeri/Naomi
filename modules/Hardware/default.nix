@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  inputs,
   ...
 }:
 # nixos-hardware 比这个配置完善多了，要不是动态 import 在技术上不可行我就直接弃用这个了
@@ -126,7 +125,6 @@ in
 
     # 从 Chaotic's Nyx 偷来的
     nixpkgs = {
-      overlays = [ inputs.nixgl.overlay ];
       config = {
         cudaSupport = lib.mkIf isNvidia true;
         rocmSupport = lib.mkIf isAMD true;
@@ -261,11 +259,7 @@ in
               mesa-demos
             ])
           ]
-          ++ lib.optionals isIntel [
-            nixgl.nixGLIntel
-            nixgl.nixVulkanIntel
-            intel-gpu-tools
-          ]
+          ++ lib.optionals isIntel [ intel-gpu-tools ]
           ++ lib.optionals isAMD [
             rocmPackages.rocm-smi
             rocmPackages.amdgpu_top
