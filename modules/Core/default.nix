@@ -62,7 +62,7 @@
   };
 
   home-manager = {
-    # useUserPackages = true; # 系统级别的软件包安装，starship 之类的需要用到
+    useUserPackages = true; # 系统级别的软件包安装，starship 之类的需要用到
     # [TODO]: 整明白为什么开了之后用户登录就卡住
     useGlobalPkgs = true;
     extraSpecialArgs = { inherit self inputs outputs; };

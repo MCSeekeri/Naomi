@@ -408,12 +408,6 @@
       };
     };
   };
-  services = {
-    kdeconnect = {
-      enable = true;
-      package = pkgs.kdePackages.kdeconnect-kde;
-    };
-  };
   stylix = {
     enable = true;
     autoEnable = true;
