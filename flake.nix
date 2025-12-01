@@ -26,7 +26,7 @@
   };
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05"; # 官方源
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11"; # 官方源
     # unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-compat.url = "github:edolstra/flake-compat";
@@ -55,7 +55,7 @@
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -97,7 +97,7 @@
     };
 
     stylix = {
-      url = "github:danth/stylix/release-25.05";
+      url = "github:danth/stylix/release-25.11";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-parts.follows = "flake-parts";
@@ -242,7 +242,7 @@
                 home-manager
                 nix-init
                 nh
-                nixfmt-rfc-style
+                nixfmt
                 fh
                 libressl # openssl rand -hex 64
                 deadnix

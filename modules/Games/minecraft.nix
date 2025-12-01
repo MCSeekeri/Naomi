@@ -4,7 +4,7 @@
     systemPackages = with pkgs; [
       hmcl
       prismlauncher
-      # mcaselector # [TODO] 等待 Gradle 完全弃用
+      mcaselector
       packwiz
       jdk
       zulu8

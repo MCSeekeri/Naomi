@@ -8,10 +8,10 @@
   };
   systemd = {
     enableEmergencyMode = false;
-    watchdog = {
-      runtimeTime = "20s";
-      rebootTime = "5m";
-      kexecTime = "5m";
+    settings.Manager = {
+      RuntimeWatchdogSec = "20s";
+      RebootWatchdogSec = "5m";
+      KExecWatchdogSec = "5m";
     };
     sleep.extraConfig = ''
       AllowSuspend=no

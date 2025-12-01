@@ -22,7 +22,8 @@ stdenv.mkDerivation (finalAttrs: {
   pnpmDeps = pkgs.pnpm.fetchDeps {
     inherit (finalAttrs) pname version src;
     sourceRoot = "${finalAttrs.src.name}/AquaNet";
-    hash = "sha256-oVDqrAxcjTKLL042pNIBdNaNQHpydSYQjbYBcc5I6Ec=";
+    hash = "sha256-wHWYbn0Xe1SSXl7W/BxvW1sKdOu+CtAsX3fO7mgBlXc=";
+    fetcherVersion = 2;
   };
   pnpmRoot = "AquaNet";
 

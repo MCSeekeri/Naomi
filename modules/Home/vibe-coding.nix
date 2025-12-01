@@ -6,7 +6,7 @@
       claude-code
       gemini-cli
       warp-terminal
-      # crush # [TODO] 等待 25.11
+      crush
     ];
   };
 }
