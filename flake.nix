@@ -106,22 +106,6 @@
       };
     };
 
-    arion = {
-      url = "github:hercules-ci/arion";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        flake-parts.follows = "flake-parts";
-      };
-    };
-
-    daeuniverse = {
-      url = "github:daeuniverse/flake.nix";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        flake-parts.follows = "flake-parts";
-      };
-    };
-
     nix-vscode-extensions = {
       url = "github:nix-community/nix-vscode-extensions";
       inputs = {

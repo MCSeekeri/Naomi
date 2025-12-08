@@ -19,5 +19,5 @@ Naomi 设计之初就考虑了最终用户自定义的情况，因此大部分�
 - `Services` 服务配置，比如 nginx，Ollama，AdGuard Home 等，受限于作者水准，只预置了最入门的一些配置。
 - `Games` 游戏服务器配置，比如 Minecraft，某个八按钮音乐游戏等，这部分基本难以做到开箱即用，需要手工处理很多东西，仅供思路参考。
 - `Home` Home-Manager 独占内容，需要在`users/`下的用户配置中引用，包含浏览器，用户界面，Shell 设置等，仅作基础配置，仍然需要用户来自定义个性化配置。
-- `Containers` Docker Compose on Nix，目前选择的解决方案是 Arion，也许未来会换成别的，但至少现在仍然能凑合用。
+- `Containers` 使用 OCI 的容器配置，底层是 Podman。
 - `Hardware` 一个大而全的配置文件，受限于 Nix 对环境的限制，目前需要用户手工配置 CPU 和 GPU 品牌。
