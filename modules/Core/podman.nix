@@ -5,8 +5,6 @@
   ...
 }:
 {
-  imports = [ inputs.arion.nixosModules.arion ];
-
   virtualisation = {
     oci-containers.backend = "podman";
     containers = {
@@ -29,12 +27,8 @@
     };
   };
   environment.systemPackages = [
-    pkgs.arion
     pkgs.docker-client
   ];
-  virtualisation.arion = {
-    backend = "podman-socket";
-  };
   networking.firewall.interfaces =
     let
       matchAll = if !config.networking.nftables.enable then "podman+" else "podman*";
