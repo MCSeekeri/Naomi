@@ -1,9 +1,4 @@
-{
-  config,
-  pkgs,
-  inputs,
-  ...
-}:
+{ config, pkgs, ... }:
 {
   virtualisation = {
     oci-containers.backend = "podman";
@@ -26,9 +21,7 @@
       defaultNetwork.settings.dns_enabled = true;
     };
   };
-  environment.systemPackages = [
-    pkgs.docker-client
-  ];
+  environment.systemPackages = [ pkgs.docker-client ];
   networking.firewall.interfaces =
     let
       matchAll = if !config.networking.nftables.enable then "podman+" else "podman*";
