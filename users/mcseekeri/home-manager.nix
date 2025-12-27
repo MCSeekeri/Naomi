@@ -67,6 +67,7 @@
       lutris
       (bottles.override { removeWarningPopup = true; })
       ckan
+      r2modman
       # 开发套件
       uv
       rustup
@@ -168,6 +169,8 @@
         pinage404.nix-extension-pack
         usernamehw.errorlens
         vivaxy.vscode-conventional-commits
+        github.copilot
+        github.copilot-chat
       ];
     };
     git = {

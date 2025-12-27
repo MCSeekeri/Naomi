@@ -6,6 +6,7 @@
       claude-code
       gemini-cli
       qwen-code
+      github-copilot-cli
 
       warp-terminal
       crush
