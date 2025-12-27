@@ -9,9 +9,6 @@
   imports = [
     inputs.home-manager.nixosModules.home-manager
     inputs.disko.nixosModules.disko
-    inputs.chaotic.nixosModules.nyx-cache
-    inputs.chaotic.nixosModules.nyx-overlay
-    inputs.chaotic.nixosModules.nyx-registry
     #inputs.determinate.nixosModules.default
     inputs.nur.modules.nixos.default
     inputs.nix-index-database.nixosModules.nix-index
