@@ -3,7 +3,7 @@
   programs = {
     librewolf = {
       enable = true;
-      package = pkgs.librewolf-bin;
+      package = pkgs.librewolf;
       languagePacks = [ "zh-CN" ];
       policies = {
         RequestedLocales = [ "zh-CN" ];

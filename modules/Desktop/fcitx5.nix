@@ -11,6 +11,7 @@
         qt6Packages.fcitx5-chinese-addons
         fcitx5-pinyin-moegirl
         fcitx5-pinyin-zhwiki
+        fcitx5-pinyin-minecraft
         fcitx5-fluent
       ];
     };
