@@ -4,6 +4,8 @@
     ./powerdevil.nix
   ];
 
+  gtk.gtk2.force = true;
+
   programs = {
     plasma = {
       input.keyboard.numlockOnStartup = "on";
@@ -33,6 +35,10 @@
         kitty = {
           command = "kitty";
           key = "Ctrl+Alt+T";
+        };
+        quake = {
+          command = "kitten quick-access-terminal";
+          key = "Shift+F12";
         };
       };
       workspace = {

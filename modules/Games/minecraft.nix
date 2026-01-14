@@ -10,6 +10,7 @@
       zulu8
       zulu11
       zulu17
+      zulu25
     ];
   };
 }

@@ -86,6 +86,9 @@
           # https://www.freedesktop.org/software/systemd/man/251/systemd-cryptenroll.html
           # systemd-cryptenroll --fido2-device=auto
         };
+        devices."Games" = {
+          device = "/dev/disk/by-partlabel/Games";
+        };
       };
     };
     kernelModules = [ "kvm-intel" ];
@@ -134,6 +137,15 @@
         "subvol=@nix"
       ];
     };
+
+    "/run/media/mcseekeri/Games" = {
+      device = "/dev/mapper/Games";
+      fsType = "btrfs";
+      options = [
+        "compress=zstd"
+        "noatime"
+      ];
+    };
   };
 
   services = {
@@ -144,7 +156,7 @@
     beesd.filesystems = {
       root = {
         spec = "LABEL=btrfs-root";
-        hashTableSizeMB = 4096;
+        hashTableSizeMB = 1024;
         verbosity = "crit";
         extraOptions = [
           "--loadavg-target"
@@ -153,7 +165,7 @@
       };
       Games = {
         spec = "LABEL=Games";
-        hashTableSizeMB = 4096;
+        hashTableSizeMB = 1024;
         verbosity = "crit";
         extraOptions = [
           "--loadavg-target"
@@ -162,15 +174,6 @@
       };
     };
     snapper.configs = {
-      root = {
-        SUBVOLUME = "/";
-        TIMELINE_CREATE = true;
-        TIMELINE_CLEANUP = true;
-        TIMELINE_LIMIT_HOURLY = 5;
-        TIMELINE_LIMIT_DAILY = 7;
-        TIMELINE_LIMIT_MONTHLY = 0;
-        TIMELINE_LIMIT_YEARLY = 0;
-      };
       home = {
         SUBVOLUME = "/home";
         TIMELINE_CREATE = true;
