@@ -59,11 +59,11 @@
       # 主题
       lain-kde-splashscreen
       # kora-icon-theme
-      dracula-icon-theme
+      # dracula-icon-theme
+      plasma-overdose-kde-theme
       # 游戏娱乐
       moonlight-qt
       vlc
-      svp
       lutris
       (bottles.override { removeWarningPopup = true; })
       ckan
@@ -78,6 +78,9 @@
       pkg-config
       fvm
       android-studio
+      nodejs
+      pnpm
+      yarn-berry
       # micromamba
       gradle
       dupeguru
@@ -98,10 +101,6 @@
       httrack
       nixos-anywhere
       cachix
-
-      vista-fonts
-      vista-fonts-chs # 很好笑，很好笑……
-      babelstone-han # Noto!
     ];
     # ++ (lib.pipe kdePackages.sources [
     #   builtins.attrNames
@@ -146,7 +145,7 @@
       };
     };
     chromium = {
-      package = pkgs.brave;
+      package = pkgs.ungoogled-chromium;
       extensions = [
         { id = "fpeoodllldobpkbkabpblcfaogecpndd"; } # Webrecoder
         { id = "pfnededegaaopdmhkdmcofjmoldfiped"; } # ZeroOmega
@@ -196,10 +195,6 @@
     };
     mpv = {
       enable = true;
-      package = pkgs.mpv-unwrapped.wrapper {
-        mpv = pkgs.mpv-unwrapped.override { vapoursynthSupport = true; };
-        youtubeSupport = true;
-      };
     };
     plasma = {
       enable = true;
@@ -219,7 +214,11 @@
         ];
       };
       workspace = {
-        # lookAndFeel = "Plasma-Overdose";
+        lookAndFeel = "org.kde.breezedark.desktop";
+        wallpaper = pkgs.fetchurl {
+          url = "https://github.com/MCSeekeri/storage/raw/main/wallpaper/ahh_a_snake.jpg";
+          sha256 = "1gifgvnp5dr0hzj1nif5448jd4vclppnfw1msvxyicb4m1k1hibm";
+        };
         cursor.size = 36;
         splashScreen.theme = "Lain"; # I am falling, I am fading, I have lost it all
       };
@@ -248,82 +247,56 @@
               };
             }
             {
-              systemMonitor = {
-                title = "总 CPU 使用率";
-                displayStyle = "org.kde.ksysguard.piechart";
-                sensors = [
-                  {
-                    name = "cpu/all/usage";
-                    color = "89,194,255";
-                    label = "总 CPU 使用情况";
-                  }
+              name = "org.kde.plasma.systemmonitor.cpu";
+              config = {
+                Appearance.title = "总 CPU 使用率";
+                Appearance.chartFace = "org.kde.ksysguard.piechart";
+                Sensors = {
+                  highPrioritySensorIds = [ "cpu/all/usage" ];
+                  totalSensors = [ "cpu/all/usage" ];
+                };
+                SensorColors."cpu/all/usage" = "89,194,255";
+              };
+            }
+            {
+              name = "org.kde.plasma.systemmonitor.memory";
+              config = {
+                Appearance.title = "内存使用率";
+                Appearance.chartFace = "org.kde.ksysguard.piechart";
+                Sensors = {
+                  highPrioritySensorIds = [ "memory/physical/used" ];
+                  totalSensors = [ "memory/physical/usedPercent" ];
+                };
+                SensorColors."memory/physical/used" = "89,194,255";
+              };
+            }
+            {
+              name = "org.kde.plasma.systemmonitor.diskactivity";
+              config = {
+                Appearance.title = "磁盘活动";
+                Appearance.chartFace = "org.kde.ksysguard.textonly";
+                Sensors.highPrioritySensorIds = [
+                  "disk/all/write"
+                  "disk/all/read"
                 ];
-                totalSensors = [ "cpu/all/usage" ];
-                textOnlySensors = [
-                  "cpu/all/cpuCount"
-                  "cpu/all/coreCount"
-                ];
-                settings = {
-                  refreshInterval = 1000;
+                SensorColors = {
+                  "disk/all/write" = "89,194,255";
+                  "disk/all/read" = "255,150,89";
                 };
               };
             }
             {
-              systemMonitor = {
-                title = "内存使用率";
-                displayStyle = "org.kde.ksysguard.piechart";
-                sensors = [
-                  {
-                    name = "memory/physical/used";
-                    color = "89,194,255";
-                    label = "内存使用情况";
-                  }
+              name = "org.kde.plasma.systemmonitor.net";
+              config = {
+                Appearance.title = "网络速度";
+                Appearance.chartFace = "org.kde.ksysguard.textonly";
+                Sensors.highPrioritySensorIds = [
+                  "network/all/download"
+                  "network/all/upload"
                 ];
-                totalSensors = [ "memory/physical/applicationPercent" ];
-                settings = {
-                  refreshInterval = 1000;
-                };
-              };
-            }
-            {
-              systemMonitor = {
-                title = "网络速度";
-                displayStyle = "org.kde.ksysguard.textonly";
-                sensors = [
-                  {
-                    name = "network/all/download";
-                    color = "89,194,255";
-                    label = "下载速率";
-                  }
-                  {
-                    name = "network/all/upload";
-                    color = "255,150,89";
-                    label = "上传速率";
-                  }
-                ];
-                settings = {
-                  refreshInterval = 1000;
-                };
-              };
-            }
-            {
-              systemMonitor = {
-                title = "磁盘活动";
-                displayStyle = "org.kde.ksysguard.textonly";
-                sensors = [
-                  {
-                    name = "disk/all/write";
-                    color = "89,194,255";
-                    label = "写入速率";
-                  }
-                  {
-                    name = "disk/all/read";
-                    color = "255,150,89";
-                    label = "读取速率";
-                  }
-                ];
-                settings = {
-                  refreshInterval = 1000;
+                SensorColors = {
+                  "network/all/download" = "89,194,255";
+                  "network/all/upload" = "255,150,89";
                 };
               };
             }
@@ -337,7 +310,6 @@
                   "org.kde.plasma.networkmanagement"
                   "org.kde.plasma.notifications"
                 ];
-                hidden = [ ];
               };
             }
             {
@@ -372,38 +344,55 @@
         timeout = 2;
       };
       configFile = {
-        kcminputrc."Mouse"."X11LibInputXAccelProfileFlat" = true;
-        kcminputrc."Mouse"."XLbInptPointerAcceleration" = 0.4;
-        kdeglobals."KDE"."AnimationDurationFactor" = 0.25;
-        kdeglobals."DialogIcons"."Size" = 48;
-        kdeglobals."DirSelect Dialog"."DirSelectDialog Size" = "1292,596";
-        kdeglobals."General"."TerminalApplication" = "kitty";
-        kdeglobals."General"."TerminalService" = "kitty.desktop";
-        kdeglobals."General"."XftAntialias" = true;
-        kdeglobals."General"."XftHintStyle" = "hintfull";
-        kdeglobals."GeileDialog Settings"."Sort directories first" = true;
-        kdeglobals."KFileDialog Settings"."Sort hidden files last" = false;
-        kdeglobals."KFileDialog Settings"."Sort reversed" = true;
-        kdeglobals."KFileDialog Settings"."View Style" = "DetailTree";
-        kiorc."Confirmations"."ConfirmDelete" = true;
-        kiorc."Confirmations"."ConfirmEmptyTrash" = true;
+        kcminputrc."Mouse" = {
+          "X11LibInputXAccelProfileFlat" = true;
+          "XLbInptPointerAcceleration" = 0.4;
+        };
+        kdeglobals = {
+          "KDE"."AnimationDurationFactor" = 0.25;
+          "DialogIcons"."Size" = 48;
+          "DirSelect Dialog"."DirSelectDialog Size" = "1292,596";
+          "General" = {
+            "TerminalApplication" = "kitty";
+            "TerminalService" = "kitty.desktop";
+            "XftAntialias" = true;
+            "XftHintStyle" = "hintfull";
+          };
+          "GeileDialog Settings"."Sort directories first" = true;
+          "KFileDialog Settings" = {
+            "Sort hidden files last" = false;
+            "Sort reversed" = true;
+            "View Style" = "DetailTree";
+            "Allow Expansion" = true;
+            "Show Inline Previews" = false;
+            "Show Preview" = true;
+            "Show Speedbar" = true;
+            "Show hidden files" = true;
+            "Sort by" = "Date";
+          };
+          "KFgins"."baloosearchEnabled" = true;
+        };
+        kiorc."Confirmations" = {
+          "ConfirmDelete" = true;
+          "ConfirmEmptyTrash" = true;
+        };
         kiorc."Executable scripts"."behaviourOnLaunch" = "execute";
-        klipperrc."General"."IgnoreImages" = false; # 剪切板，伟大，无需多言
-        klipperrc."General"."MaxClipItems" = 150;
-        krunnerrc."PlasmaRunnerManager"."migrated" = true;
-        krunnerrc."Pluneral"."XftSubPixel" = "rgb";
-        kdeglobals."KFileDialog Settings"."Allow Expansion" = true;
-        kdeglobals."KFileDialog Settings"."Show Inline Previews" = false;
-        kdeglobals."KFileDialog Settings"."Show Preview" = true;
-        kdeglobals."KFileDialog Settings"."Show Speedbar" = true;
-        kdeglobals."KFileDialog Settings"."Show hidden files" = true;
-        kdeglobals."KFileDialog Settings"."Sort by" = "Date";
-        kdeglobals."KFgins"."baloosearchEnabled" = true;
-        kwinrc."Xwayland"."Scale" = 1.25; # 适合这年头常见的 2560x1440 屏幕
-        kwinrc."Xwayland"."XwaylandEavesdrops" = "Modifiers";
-        # kxkbrc."Layout"."Options" = "terminate:ctrl_alt_bksp"; # Nuclear
-        plasma-localerc."Formats"."LANG" = "zh_CN.UTF-8";
-        plasma-localerc."Translations"."LANGUAGE" = "zh_CN";
+        klipperrc."General" = {
+          "IgnoreImages" = false;
+          "MaxClipItems" = 150;
+        };
+        krunnerrc = {
+          "PlasmaRunnerManager"."migrated" = true;
+          "Pluneral"."XftSubPixel" = "rgb";
+        };
+        kwinrc."Xwayland" = {
+          "Scale" = 1.25;
+          "XwaylandEavesdrops" = "Modifiers";
+        };
+        plasma-localerc = {
+          "Formats"."LANG" = "zh_CN.UTF-8";
+          "Translations"."LANGUAGE" = "zh_CN";
+        };
         plasmaparc."General"."RaiseMaximumVolume" = true;
       };
     };
@@ -441,6 +430,7 @@
         name = "Noto Color Emoji";
       };
     };
+    targets.kde.enable = false;
   };
 
   wayland.windowManager.hyprland.settings = {
