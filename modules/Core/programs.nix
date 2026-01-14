@@ -137,7 +137,6 @@
       fishPlugins.tide
       fishPlugins.done
       fishPlugins.autopair
-      fishPlugins.nvm
       bat
       fd
       yazi

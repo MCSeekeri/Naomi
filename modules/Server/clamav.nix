@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
   services.clamav = {
-    fangfrisch.enable = true;
+    # fangfrisch.enable = true; # 误报率太吓人了
     scanner = {
       enable = true;
       interval = "Mon *-*-* 01:00:00"; # 月曜日の……

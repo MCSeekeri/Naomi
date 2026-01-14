@@ -48,6 +48,7 @@
       # codeName = "";
       # release = "";
     };
+    etc.overlay.enable = true;
   };
 
   nixpkgs = {
@@ -85,6 +86,7 @@
     power-profiles-daemon.enable = true;
     upower.enable = true;
     fwupd.enable = true;
+    userborn.enable = true;
   };
 
   security = {
@@ -96,10 +98,13 @@
     tpm2.enable = true;
   };
 
+  system.nixos-init.enable = true;
+
   systemd = {
     coredump.extraConfig = "Storage=none"; # 不需要转储
     # enableStrictShellChecks = true;
     # [TODO] 等我整明白如何给上游提交 PR 修复这些问题再说
+    network.wait-online.enable = false;
   };
 
   powerManagement.powertop.enable = true;
