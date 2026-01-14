@@ -22,6 +22,7 @@
     "${self}/modules/Desktop/embedded.nix"
     "${self}/modules/Desktop/yubikey.nix"
     "${self}/modules/Desktop/wine.nix"
+    "${self}/modules/Desktop/extra-fonts.nix"
 
     "${self}/modules/Services/archisteamfarm.nix"
     "${self}/modules/Services/dae"

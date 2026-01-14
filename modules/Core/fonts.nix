@@ -32,8 +32,8 @@
       maple-mono.Normal-NF-CN-unhinted
       unifont
 
-      # 诸如微软雅黑或者苹方什么的……为了避免版权炮，自行添加到
-      # $HOME/.local/share/fonts
+      # 此处仅提供了最基础的中英文字体和必要的兜底字体
+      # 如果需要更多常用字体，请参考 modules/Desktop/extra-fonts.nix
     ];
   };
 }
