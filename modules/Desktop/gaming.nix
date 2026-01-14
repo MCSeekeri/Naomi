@@ -43,6 +43,18 @@
     steamcmd
   ];
 
-  services.pipewire.lowLatency.enable = true;
+  services = {
+    pipewire.lowLatency.enable = true;
+    udev.extraRules = ''
+      # DualShock 4 (PS4)
+      ATTRS{name}=="Sony Interactive Entertainment Wireless Controller Touchpad", ENV{LIBINPUT_IGNORE_DEVICE}="1"
+      ATTRS{name}=="Wireless Controller Touchpad", ENV{LIBINPUT_IGNORE_DEVICE}="1"
+
+      # DualSense (PS5)
+      ATTRS{name}=="Sony Interactive Entertainment DualSense Wireless Controller Touchpad", ENV{LIBINPUT_IGNORE_DEVICE}="1"
+      ATTRS{name}=="DualSense Wireless Controller Touchpad", ENV{LIBINPUT_IGNORE_DEVICE}="1"
+    '';
+  };
+
   programs.steam.platformOptimizations.enable = true;
 }
