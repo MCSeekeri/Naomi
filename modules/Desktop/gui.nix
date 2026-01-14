@@ -33,10 +33,8 @@
       material-design-icons
       font-awesome
       noto-fonts-color-emoji
-      fira-code
       jetbrains-mono
       sarasa-gothic
-      cascadia-code
     ];
   };
 

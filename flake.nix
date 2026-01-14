@@ -88,9 +88,7 @@
       url = "github:oddlama/nix-topology";
       inputs = {
         nixpkgs.follows = "nixpkgs";
-        flake-utils.follows = "flake-utils";
-        devshell.follows = "devshell";
-        pre-commit-hooks.follows = "pre-commit-hooks";
+        flake-parts.follows = "flake-parts";
       };
     };
 
@@ -140,6 +138,11 @@
 
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    chinese-fonts-overlay = {
+      url = "github:brsvh/chinese-fonts-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
