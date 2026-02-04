@@ -13,17 +13,17 @@ node {
 dns {
 	ipversion_prefer: 4 # IPv6 在某些网络环境下是个悲剧
 	upstream {
+		adguard: 'udp://127.0.0.1:53'
 		alidns: 'udp://dns.alidns.com:53'
 		googledns: 'tcp+udp://dns.google:53'
 	}
 	routing {
 		request {
-			qname(geosite:category-ads) -> reject
-			qname(geosite:category-ads-all) -> reject
-			fallback: alidns
+			qname(geosite:category-ads, geosite:category-ads-all) -> reject
+			qname(geosite:cn) -> adguard
+			fallback: googledns
 		}
 		response {
-			upstream(googledns) -> accept
 			ip(geoip:private) && !qname(geosite:cn) -> googledns
 			fallback: accept
 		}
