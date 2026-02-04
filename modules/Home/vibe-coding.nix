@@ -10,6 +10,8 @@
 
       warp-terminal
       crush
+
+      antigravity-fhs
     ];
   };
 }

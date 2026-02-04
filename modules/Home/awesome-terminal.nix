@@ -26,10 +26,16 @@
       neo-cowsay
       hyperfine
       fuc # cpz rmz
+      doggo # dig
     ];
     shellAliases = {
       ls = "eza";
       ll = "eza  -lh --no-user --long";
+      df = "duf";
+      ping = "gping";
+      curl = "xh";
+      wget = "xh --download";
+      dig = "doggo";
     };
   };
   programs = {
@@ -49,6 +55,7 @@
         io_mode = true;
         update_ms = 100;
         theme_background = false; # 可能看不出来，但这是透明……
+        check_temp = true;
       };
     };
     eza = {

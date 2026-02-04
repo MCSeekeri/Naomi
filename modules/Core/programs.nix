@@ -137,17 +137,19 @@
       fishPlugins.tide
       fishPlugins.done
       fishPlugins.autopair
-      bat
       fd
       yazi
       zellij # tmux
       gping # ping
       tlrc # tldr
+      fastfetch
       # 网络工具
       nmap
       socat
       libressl
       dnsutils
+      nethogs
+      iproute2
       # 系统维护
       lm_sensors
       ethtool

@@ -68,6 +68,7 @@
       (bottles.override { removeWarningPopup = true; })
       ckan
       r2modman
+      musikcube
       # 开发套件
       uv
       rustup
@@ -81,6 +82,7 @@
       nodejs
       pnpm
       yarn-berry
+      unityhub
       # micromamba
       gradle
       dupeguru
@@ -182,6 +184,12 @@
           key = "3276666666666666!";
           signByDefault = true;
         };
+        commit = {
+          gpgsign = true;
+        };
+        tag = {
+          gpgsign = true;
+        };
       };
     };
     fish = {
@@ -195,6 +203,32 @@
     };
     mpv = {
       enable = true;
+
+      package = pkgs.mpv.override {
+        scripts = with pkgs.mpvScripts; [
+          modernz
+          evafast
+          thumbfast
+          mpris
+        ];
+      };
+
+      config = {
+        osc = "no";
+        osd-bar = "no";
+
+        vo = "gpu-next";
+        profile = "high-quality";
+
+        slang = "zh,chi,zho,en";
+        alang = "zh,chi,zho,en";
+        sub-auto = "fuzzy";
+
+        keep-open = "yes";
+        #osd-bar = "no";
+        #border = "no";
+        #cursor-autohide = 1000;
+      };
     };
     plasma = {
       enable = true;
@@ -214,7 +248,7 @@
         ];
       };
       workspace = {
-        lookAndFeel = "org.kde.breezedark.desktop";
+        colorScheme = "BreezeDark";
         wallpaper = pkgs.fetchurl {
           url = "https://github.com/MCSeekeri/storage/raw/main/wallpaper/ahh_a_snake.jpg";
           sha256 = "1gifgvnp5dr0hzj1nif5448jd4vclppnfw1msvxyicb4m1k1hibm";
