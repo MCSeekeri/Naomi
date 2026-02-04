@@ -5,22 +5,65 @@
   ...
 }:
 {
-  # 命令行版本有严重的性能问题，暂时考虑使用 flatpak 打包
-  environment.systemPackages = [ pkgs.geph ];
+  environment.systemPackages = [
+    pkgs.geph
+    pkgs.gephgui-wry
+  ];
 
   systemd = {
-    tmpfiles.rules = [ "d /root/.config 0755 root root" ];
     services.geph = {
-      description = "geph";
+      description = "geph Service";
       after = [ "network.target" ];
       wantedBy = [ "multi-user.target" ];
 
       serviceConfig = {
-        TimeoutStartSec = 0;
         Type = "simple";
-        ExecStart = "${pkgs.geph}/bin/geph5-client --config ${config.sops.secrets.geph5-config.path}";
+        ExecStart = "${pkgs.geph}/bin/geph5-client --config /run/credentials/geph.service/config";
         Restart = "on-failure";
         RestartSec = "5s";
+
+        Environment = [ "XDG_CONFIG_HOME=/var/cache/geph" ];
+        LoadCredential = [ "config:${config.sops.secrets.geph5-config.path}" ];
+
+        ProtectHome = true;
+        PrivateTmp = true;
+        ReadWritePaths = [ "/var/cache/geph" ];
+        ProtectClock = true;
+        ProtectKernelLogs = true;
+        ProtectKernelModules = true;
+        ProtectControlGroups = true;
+        LockPersonality = true;
+        RestrictRealtime = true;
+        RestrictSUIDSGID = true;
+        RemoveIPC = true;
+        AmbientCapabilities = [
+          "CAP_NET_ADMIN"
+          "CAP_NET_RAW"
+          "CAP_NET_BIND_SERVICE"
+        ];
+        CapabilityBoundingSet = [
+          "CAP_NET_ADMIN"
+          "CAP_NET_RAW"
+          "CAP_NET_BIND_SERVICE"
+        ];
+        # RestrictNamespaces = true;
+        RestrictAddressFamilies = [
+          "AF_INET"
+          "AF_INET6"
+          "AF_UNIX"
+          "AF_NETLINK"
+        ];
+        SystemCallFilter = [
+          "@system-service"
+          "@network-io"
+          "ioctl"
+          "socket"
+          "bind"
+          "connect"
+        ];
+        SystemCallArchitectures = "native";
+
+        UMask = "0077";
         LimitNOFILE = 65535;
       };
     };

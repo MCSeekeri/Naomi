@@ -26,6 +26,7 @@
 
     "${self}/modules/Services/archisteamfarm.nix"
     "${self}/modules/Services/dae"
+    "${self}/modules/Services/adguardhome.nix"
     "${self}/modules/Services/geph5.nix"
     "${self}/modules/Services/localsend.nix"
 
@@ -47,7 +48,7 @@
       hostName = "ThinkStation2";
       system = "x86_64-linux";
       protocol = "ssh-ng";
-      maxJobs = 16;
+      maxJobs = 128; # 相信我，这是切合实际的……
       speedFactor = 16;
       supportedFeatures = [
         "nixos-test"
