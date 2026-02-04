@@ -10,13 +10,13 @@
   imports = [
     inputs.home-manager.nixosModules.home-manager
     inputs.disko.nixosModules.disko
-    #inputs.determinate.nixosModules.default
     inputs.nur.modules.nixos.default
     inputs.nix-index-database.nixosModules.nix-index
     ./apparmor.nix
     ./avahi.nix
     ./boot.nix
     ./fonts.nix
+    ./hardened.nix
     ./i18n.nix
     ./kmscon.nix
     ./nix-ld.nix
