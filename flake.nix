@@ -29,7 +29,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11"; # 官方源
     # unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
-    flake-compat.url = "github:edolstra/flake-compat";
+    flake-compat.url = "github:NixOS/flake-compat";
     systems.url = "github:nix-systems/default"; # 两年没更新，都不知道为什么有 Flake 引用这个……
     gitignore = {
       url = "github:hercules-ci/gitignore.nix";
@@ -148,6 +148,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     jovian = {
       url = "github:Jovian-Experiments/Jovian-NixOS";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -178,14 +183,23 @@
           inputs.devshell.flakeModule
           inputs.nix-topology.flakeModule
           inputs.flake-parts.flakeModules.easyOverlay
+          inputs.treefmt-nix.flakeModule
           ./hosts/flake-module.nix
           ./pkgs/flake-module.nix
         ];
         systems = [ "x86_64-linux" ];
 
         perSystem =
-          { pkgs, system, ... }:
           {
+            pkgs,
+            system,
+            config,
+            ...
+          }:
+          {
+            treefmt.config = import ./treefmt.nix;
+            formatter = config.treefmt.build.wrapper;
+
             packages = {
               topology = self.topology.${system}.config.output;
             };
@@ -208,12 +222,10 @@
                 nixfmt
                 fh
                 libressl # openssl rand -hex 64
-                deadnix
-                alejandra
-                statix
                 nix-melt
                 nix-tree
                 colmena
+                config.treefmt.build.wrapper
               ];
             };
             topology = {

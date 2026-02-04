@@ -3,10 +3,11 @@
 NAOMI: Aggregate Online Modular Infrastructure，简称 Naomi，是基于 NixOS 的“定制系统”。
 
 [![built with garnix](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fgarnix.io%2Fapi%2Fbadges%2FMCSeekeri%2FNaomi&style=for-the-badge)](https://garnix.io/repo/MCSeekeri/Naomi)
-![](https://img.shields.io/github/repo-size/MCSeekeri/Naomi?style=for-the-badge)
+![Repo Size](https://img.shields.io/github/repo-size/MCSeekeri/Naomi?style=for-the-badge)
 [![built with nix](https://builtwithnix.org/badge.svg)](https://builtwithnix.org)
 
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/MCSeekeri/Naomi)
+
 ## 简明安装指南
 
 主要的安装方法有三种，使用修改后的镜像，使用官方镜像或使用 nixos-anywhere.\
@@ -22,15 +23,15 @@ NAOMI: Aggregate Online Modular Infrastructure，简称 Naomi，是基于 NixOS 
 
 ### 使用官方安装镜像
 
-```
-nix run --experimental-features "nix-command flakes" 'github:nix-community/disko/latest#disko-install' -- --flake github:MCSeekeri/Naomi#<设备代号> --disk main <设备文件位置>
+```sh
+nix run 'github:nix-community/disko/latest#disko-install' -- --flake github:MCSeekeri/Naomi#<设备代号> --disk main <设备文件位置>
 ```
 
 官方安装镜像需手工配置`substituters`以加快在部分地区的下载速度，参见 [MirrorZ](https://help.mirrorz.org/nix-channels/) 的文档。
 
 ### 使用 nixos-anywhere
 
-```
+```sh
 nix run github:nix-community/nixos-anywhere -- --build-on-remote --flake github:MCSeekeri/Naomi#<设备代号> --target-host root@<主机名>
 ```
 
@@ -43,8 +44,9 @@ nix run github:nix-community/nixos-anywhere -- --build-on-remote --flake github:
 ## 参考资料
 
 - [NixOS 官方文档](https://nixos.org/manual/)
+
 - [Flake 非官方文档](https://nixos-and-flakes.thiscute.world/zh/)
-- [一份适用于新手的参考配置](https://github.com/Misterio77/nix-starter-configs/)
-- [比较完善的各类工具配置](https://gitlab.com/Zaney/zaneyos/)
+
 - [Awesome Nix](https://github.com/nix-community/awesome-nix)
+
 - [适合调试时聆听的放松音乐](https://www.youtube.com/watch?v=xxLpuXfnwkE)
