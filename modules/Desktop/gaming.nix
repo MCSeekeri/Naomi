@@ -3,7 +3,12 @@
   imports = with inputs; [
     nix-gaming.nixosModules.pipewireLowLatency
     nix-gaming.nixosModules.platformOptimizations
+    jovian.nixosModules.default
   ];
+
+  jovian.decky-loader = {
+    enable = true;
+  };
 
   programs = {
     steam = {

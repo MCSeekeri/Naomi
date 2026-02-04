@@ -148,6 +148,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    jovian = {
+      url = "github:Jovian-Experiments/Jovian-NixOS";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     ndg = {
       url = "github:feel-co/ndg/v2.6.0";
       inputs.nixpkgs.follows = "nixpkgs";
