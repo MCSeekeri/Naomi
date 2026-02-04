@@ -126,6 +126,7 @@ in
     # 从 Chaotic's Nyx 偷来的
     nixpkgs = {
       config = {
+        cudaForwardCompat = lib.mkIf isNvidia true;
         cudaSupport = lib.mkIf isNvidia true;
         rocmSupport = lib.mkIf isAMD true;
       };
