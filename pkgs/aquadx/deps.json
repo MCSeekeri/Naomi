@@ -106,14 +106,6 @@
   "com/sun/xml/bind/mvn#jaxb-txw-parent/4.0.2": {
    "pom": "sha256-NouOjMgRbYsOMTQVDrf4cdDpkWJYGoWfqo1L57zCvnc="
   },
-  "io/freefair/gradle#lombok-plugin/8.6": {
-   "jar": "sha256-S3x9KpgSlOgD91rrWJ8RDzafZHqjT+tQo7/N9VyPAOY=",
-   "module": "sha256-B76wDGgbt8x1QUdHouN6PViqqFvaBWqDgstPhg6bUnI=",
-   "pom": "sha256-Emq1f2XyTFxsEgPrG/WkOa3ySTzNIi9gZ1F7UCFe8GM="
-  },
-  "io/freefair/lombok#io.freefair.lombok.gradle.plugin/8.6": {
-   "pom": "sha256-6aJp5WqXIJKYe4MCMSDHlg6P2uisdzDH8dAr1LG/unk="
-  },
   "io/smallrye#jandex-parent/3.1.2": {
    "pom": "sha256-fkYFO0xKyz2eo+8LDLLRqWvriSRanlsriuSEzXX4Its="
   },
@@ -333,13 +325,6 @@
    "jar": "sha256-G+wqyVJiA0voFoeToFQU7lYozB4oxIeyXV+XSc5y2ls=",
    "pom": "sha256-+k+PHiJyweeF4c2eVOiyLq00B4a8x0uKx2C2MzUDVrY="
   },
-  "org/jetbrains/kotlin#kotlin-lombok/2.1.10": {
-   "module": "sha256-mcqiHtX6NSwJqIo1DuC99he9tIqNJCDOk2m9A4+o+YE=",
-   "pom": "sha256-z7MbFcKQf2hYaAuqOj1T5ZQZ5WMgXPSBMFUyyFRhuyM="
-  },
-  "org/jetbrains/kotlin#kotlin-lombok/2.1.10/gradle85": {
-   "jar": "sha256-MQS3uSDXea12CNbNJ8PtNbe4SJ+J/DvZsl0EjVxzWJY="
-  },
   "org/jetbrains/kotlin#kotlin-native-utils/2.1.10": {
    "jar": "sha256-L8Behn3ERw9lhR0WJjSY+xfdyxglErg9FeF4gVngomo=",
    "pom": "sha256-lhBo1LVVnBlUAEVoCRoJUJdsZVz391Fh9v4kIqy12rQ="
@@ -406,9 +391,6 @@
   },
   "org/jetbrains/kotlin/plugin/jpa#org.jetbrains.kotlin.plugin.jpa.gradle.plugin/2.1.10": {
    "pom": "sha256-ZXbf5l8XspevioueFeZI4FHhVwbVMmOC/RgQAbXxucQ="
-  },
-  "org/jetbrains/kotlin/plugin/lombok#org.jetbrains.kotlin.plugin.lombok.gradle.plugin/2.1.10": {
-   "pom": "sha256-uFxaJJoisRMEuIWqFT9uT+x8niHuJ9txOT9KJirrZIc="
   },
   "org/jetbrains/kotlin/plugin/serialization#org.jetbrains.kotlin.plugin.serialization.gradle.plugin/2.1.10": {
    "pom": "sha256-SSLzw75T148hRtYUcohJ2EMEk8mmzHQKyAlXFjECWOE="
@@ -1809,10 +1791,6 @@
    "jar": "sha256-0zJ6QnAZhNmS+/JavXKNlE3LLj8TL1wyU5+ccabPkNs=",
    "pom": "sha256-zAYLn8Rzs74lFPsNeEu46al6zLHFXe8f4i7UPPUHArE="
   },
-  "org/jetbrains/kotlin#kotlin-lombok-compiler-plugin-embeddable/2.1.10": {
-   "jar": "sha256-mn4Z8ACsPqDWmRk/AnSmYuS4YohnUv+6OvLGOrQakjc=",
-   "pom": "sha256-+QAhNftWw/qpoe6jqAlbl1mt6mC0mAWJtnhVWYVD23I="
-  },
   "org/jetbrains/kotlin#kotlin-noarg-compiler-plugin-embeddable/2.1.10": {
    "jar": "sha256-GGzFip3YJkmxngGIIMdVHr4JLTOTvOObqoUVDZD9X3k=",
    "pom": "sha256-TjRcQCF/BdCPvImnWHepnqLa/TL0eP4bvjGnNmn2L9w="
@@ -2118,10 +2096,6 @@
   "org/ow2/asm#asm/9.6": {
    "jar": "sha256-PG+sJCTbPUqFO2afTj0dnDxVIjXhmjGWc/iHCDwjA6E=",
    "pom": "sha256-ku7iS8PIQ+SIHUbB3WUFRx7jFC+s+0ZrQoz+paVsa2A="
-  },
-  "org/projectlombok#lombok/1.18.30": {
-   "jar": "sha256-FBUbR1gtVwtN4WoUfs4729GazkruW946VXjIfbnsuZg=",
-   "pom": "sha256-ZQAfOC9dHORWkjEbsbp8JDyFYZXUkkc9cv+afRzHdpk="
   },
   "org/reactivestreams#reactive-streams/1.0.4": {
    "jar": "sha256-91yll3ibPaxY9hhXuawuEDSmj6Zy2zUFWo+0UJ4yXyg=",
