@@ -10,13 +10,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 拉取仓库
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: 安装 Nix
         uses: cachix/install-nix-action@v31
         with:
           extra_nix_config: |
             access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+            extra-substituters = https://cache.garnix.io?priority=1 https://nix-community.cachix.org?priority=2 https://numtide.cachix.org?priority=3 https://nix-gaming.cachix.org?priority=4 https://cache.nixos-cuda.org?priority=5
+            extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g= numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE= nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4= cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M=
 
       - name: 推送到 Cachix
         uses: cachix/cachix-action@v16
@@ -28,7 +30,7 @@ jobs:
         run: |
           nix flake show --json | \
           jq -r '."nixosConfigurations" | keys[] | select(. != "cuba")' | \
-          while read config; do
+          while read -r config; do
             nix build .#nixosConfigurations."$config".config.system.build.toplevel --accept-flake-config
           done
 
@@ -36,6 +38,6 @@ jobs:
         run: |
           nix flake show --json | \
           jq -r '."packages"."x86_64-linux" | keys[] | select(. != "topology")' | \
-          while read pkg; do
+          while read -r pkg; do
             nix build .#packages.x86_64-linux."$pkg" --no-link --accept-flake-config
           done
