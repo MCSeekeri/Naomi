@@ -7,6 +7,8 @@
       gemini-cli
       qwen-code
       github-copilot-cli
+      codex
+      opencode
 
       warp-terminal
       crush
