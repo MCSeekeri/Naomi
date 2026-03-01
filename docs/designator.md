@@ -5,6 +5,7 @@
 - `seychelles`: Lenovo ThinkStation PX，用于模型训练的工作站。
 - `costarica`: VMware 虚拟机，用于搭建各类游戏服务器。
 - `cuba`: 用于生成 Live CD 的配置，目前仅用于测试。
+- `galzburg`: VPS 服务器，用来运行一些云服务。
 
 # 自定义
 
