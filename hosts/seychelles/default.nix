@@ -5,7 +5,6 @@
     "${self}/modules/Core"
     "${self}/modules/Hardware"
 
-    "${self}/modules/Server/firewall.nix"
     "${self}/modules/Server/clamav.nix"
     "${self}/modules/Server/failsafe.nix"
     "${self}/modules/Desktop/plasma.nix"

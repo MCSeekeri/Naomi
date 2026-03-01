@@ -22,13 +22,6 @@
     "${self}/modules/Home/xdg.nix"
   ];
 
-  sops.secrets.claude-settings = {
-    sopsFile = "${self}/secrets/users/claude.json";
-    format = "json";
-    key = "";
-    path = "${config.home.homeDirectory}/.claude/settings.json";
-  };
-
   home = {
     username = "mcseekeri";
     homeDirectory = "/home/mcseekeri";

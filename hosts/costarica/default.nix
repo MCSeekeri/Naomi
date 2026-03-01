@@ -5,7 +5,6 @@
 
     "${self}/modules/Core"
 
-    "${self}/modules/Server/firewall.nix"
     "${self}/modules/Desktop/plasma.nix"
     "${self}/modules/Desktop/programs.nix"
     "${self}/modules/Desktop/fcitx5.nix"

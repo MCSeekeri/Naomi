@@ -86,14 +86,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nix-topology = {
-      url = "github:oddlama/nix-topology";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        flake-parts.follows = "flake-parts";
-      };
-    };
-
     stylix = {
       url = "github:danth/stylix/release-25.11";
       inputs = {
@@ -177,11 +169,10 @@
   outputs =
     inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } (
-      { self, ... }:
+      { ... }:
       {
         imports = [
           inputs.devshell.flakeModule
-          inputs.nix-topology.flakeModule
           inputs.flake-parts.flakeModules.easyOverlay
           inputs.treefmt-nix.flakeModule
           ./hosts/flake-module.nix
@@ -199,10 +190,6 @@
           {
             treefmt.config = import ./treefmt.nix;
             formatter = config.treefmt.build.wrapper;
-
-            packages = {
-              topology = self.topology.${system}.config.output;
-            };
 
             _module.args.pkgs = import inputs.nixpkgs {
               inherit system;
@@ -227,9 +214,6 @@
                 colmena
                 config.treefmt.build.wrapper
               ];
-            };
-            topology = {
-              modules = [ { imports = [ ./topology.nix ]; } ];
             };
           };
       }

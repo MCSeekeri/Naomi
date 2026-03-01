@@ -84,6 +84,10 @@
     iftop.enable = true;
     mtr.enable = true; # traceroute
     bandwhich.enable = true;
+    mosh = {
+      enable = true;
+      openFirewall = false;
+    };
   };
   environment = {
     localBinInPath = true;

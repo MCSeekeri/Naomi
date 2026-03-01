@@ -4,7 +4,6 @@
     "${self}/modules/Core"
     "${self}/modules/Hardware"
 
-    "${self}/modules/Server/firewall.nix"
     "${self}/modules/Server/clamav.nix"
     "${self}/modules/Server/failsafe.nix"
     "${self}/modules/Server/virt/libvirt.nix"
