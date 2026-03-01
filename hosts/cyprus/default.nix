@@ -157,11 +157,11 @@
     beesd.filesystems = {
       root = {
         spec = "LABEL=btrfs-root";
-        hashTableSizeMB = 1024;
+        hashTableSizeMB = 4096; # 周转率拉爆了，显然需要更大的哈希表
         verbosity = "crit";
         extraOptions = [
           "--loadavg-target"
-          "15.0"
+          "30.0"
         ];
       };
       Games = {

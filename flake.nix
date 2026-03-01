@@ -1,30 +1,6 @@
 {
   description = "Naomi Flake Configuration";
 
-  nixConfig = {
-    experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
-    extra-substituters = [
-      "https://mirrors.cernet.edu.cn/nix-channels/store?priority=1"
-      "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store?priority=2"
-      "https://mirror.sjtu.edu.cn/nix-channels/store?priority=3"
-      "https://nix-community.cachix.org?priority=4"
-      "https://numtide.cachix.org?priority=5"
-      "https://cache.garnix.io?priority=6"
-      "https://nix-gaming.cachix.org?priority=7"
-      "https://cache.nixos-cuda.org?priority=8"
-    ];
-    extra-trusted-public-keys = [
-      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-      "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
-      "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="
-      "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
-      "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
-    ];
-  };
-
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11"; # 官方源
     # unstable.url = "github:NixOS/nixpkgs/nixos-unstable";

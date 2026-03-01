@@ -16,7 +16,7 @@
     ./avahi.nix
     ./boot.nix
     ./fonts.nix
-    ./hardened.nix
+    #./hardened.nix
     ./i18n.nix
     ./kmscon.nix
     ./nix-ld.nix
@@ -50,6 +50,7 @@
       # release = "";
     };
     etc.overlay.enable = true;
+    nixos-init.enable = true;
   };
 
   nixpkgs = {
@@ -61,8 +62,7 @@
   };
 
   home-manager = {
-    useUserPackages = true; # 系统级别的软件包安装，starship 之类的需要用到
-    # [TODO]: 整明白为什么开了之后用户登录就卡住
+    useUserPackages = true;
     useGlobalPkgs = true;
     extraSpecialArgs = { inherit self inputs outputs; };
     sharedModules = [
@@ -128,10 +128,8 @@
       enable = true;
       execWheelOnly = lib.mkDefault true; # https://unix.stackexchange.com/questions/1262/where-did-the-wheel-group-get-its-name
     };
-    tpm2.enable = true;
+    tpm2.enable = lib.mkDefault true;
   };
-
-  system.nixos-init.enable = true;
 
   systemd = {
     coredump.extraConfig = "Storage=none"; # 不需要转储

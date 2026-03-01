@@ -3,12 +3,7 @@
   imports = with inputs; [
     nix-gaming.nixosModules.pipewireLowLatency
     nix-gaming.nixosModules.platformOptimizations
-    jovian.nixosModules.default
   ];
-
-  jovian.decky-loader = {
-    enable = true;
-  };
 
   programs = {
     steam = {
@@ -46,6 +41,7 @@
     samrewritten
     steam-tui
     steamcmd
+    gamemode
   ];
 
   services = {
@@ -60,6 +56,4 @@
       ATTRS{name}=="DualSense Wireless Controller Touchpad", ENV{LIBINPUT_IGNORE_DEVICE}="1"
     '';
   };
-
-  programs.steam.platformOptimizations.enable = true;
 }
