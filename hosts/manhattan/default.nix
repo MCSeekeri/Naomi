@@ -37,7 +37,7 @@
 
     "${self}/modules/Games/retro.nix"
 
-    "${self}/modules/Containers/peerbanhelper.nix"
+    "${self}/modules/Services/peerbanhelper.nix"
 
     "${self}/users/mcseekeri"
     "${self}/users/mihomo"
