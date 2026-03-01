@@ -4,14 +4,14 @@
     channel.enable = false;
     distributedBuilds = true;
     optimise.automatic = true;
-    gc = {
+    gc = lib.mkDefault {
       automatic = true;
       dates = "daily";
       options = "--delete-older-than 7d"; # 删除超过一周的垃圾文件，硬盘笑传之踩踩 Backup
     };
     settings = {
       auto-optimise-store = lib.mkDefault (!config.boot.isContainer);
-      extra-substituters = [
+      extra-substituters = lib.mkDefault [
         "https://mirrors.cernet.edu.cn/nix-channels/store?priority=1"
         "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store?priority=2"
         "https://mirror.sjtu.edu.cn/nix-channels/store?priority=3"
@@ -21,7 +21,7 @@
         "https://nix-gaming.cachix.org?priority=7"
         "https://cache.nixos-cuda.org?priority=8"
       ];
-      extra-trusted-public-keys = [
+      extra-trusted-public-keys = lib.mkDefault [
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
         "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="

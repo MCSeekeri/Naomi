@@ -1,9 +1,4 @@
-{
-  pkgs,
-  self,
-  config,
-  ...
-}:
+{ pkgs, self, ... }:
 {
   imports = [
     "${self}/modules/Home/browser/librewolf.nix"
@@ -32,9 +27,8 @@
       thunderbird-bin
       keepassxc
       qq
-      wechat
       wpsoffice-cn
-      motrix
+      gopeed
       kdePackages.kdenlive
       kdePackages.kleopatra
       kdePackages.kcalc
@@ -96,6 +90,7 @@
       httrack
       nixos-anywhere
       cachix
+      bitwarden-desktop
     ];
     # ++ (lib.pipe kdePackages.sources [
     #   builtins.attrNames
@@ -382,13 +377,11 @@
           "General" = {
             "TerminalApplication" = "kitty";
             "TerminalService" = "kitty.desktop";
-            "XftAntialias" = true;
-            "XftHintStyle" = "hintfull";
           };
           "GeileDialog Settings"."Sort directories first" = true;
           "KFileDialog Settings" = {
             "Sort hidden files last" = false;
-            "Sort reversed" = true;
+            "Sort reversed" = false;
             "View Style" = "DetailTree";
             "Allow Expansion" = true;
             "Show Inline Previews" = false;

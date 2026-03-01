@@ -1,5 +1,7 @@
 { pkgs, lib, ... }:
 {
+  home.packages = [ pkgs.fish ]; # fish
+
   programs.kitty = {
     enable = true;
     enableGitIntegration = true;
@@ -9,6 +11,7 @@
       update_check_interval = 0;
       confirm_os_window_close = 0; # 我知道我在做什么
       hide_window_decorations = "titlebar-and-corners";
+      shell = "fish"; # 俩 fish
     };
     extraConfig = ''
       globinclude kitty.d/**/*.conf # 允许用户自定义
