@@ -6,6 +6,7 @@
     recommendedOptimisation = true;
     recommendedProxySettings = true;
     recommendedTlsSettings = true;
+    recommendedUwsgiSettings = true;
     # 真是令人舒畅的配置
   };
 }
