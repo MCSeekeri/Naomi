@@ -1,6 +1,20 @@
-{ pkgs, self, ... }:
 {
-  imports = [ "${self}/modules/Desktop/flatpak.nix" ];
+  inputs,
+  lib,
+  pkgs,
+  self,
+  ...
+}:
+{
+  imports = [
+    "${self}/modules/Desktop/flatpak.nix"
+    inputs.stylix.nixosModules.stylix
+  ];
+
+  home-manager.sharedModules = [
+    inputs.stylix.homeModules.stylix
+    { stylix.overlays.enable = false; }
+  ];
 
   hardware = {
     graphics = {
@@ -16,6 +30,7 @@
     xserver = {
       enable = true;
     };
+    power-profiles-daemon.enable = lib.mkDefault true;
     pipewire = {
       enable = true;
       alsa.enable = true;
@@ -23,7 +38,10 @@
       pulse.enable = true;
       jack.enable = true;
     };
+    upower.enable = lib.mkDefault true;
   };
+  powerManagement.powertop.enable = lib.mkDefault true;
+
   xdg.portal = {
     enable = true;
   };
@@ -41,7 +59,6 @@
   environment.systemPackages = with pkgs; [
     ocs-url
     coppwr
-    xorg.xhost # xhost +，非常懒狗，非常不安全
   ];
 
   environment.sessionVariables = {

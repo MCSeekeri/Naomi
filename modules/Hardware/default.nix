@@ -139,12 +139,12 @@ in
     };
 
     hardware = {
+      enableAllFirmware = lib.mkDefault true;
       intel-gpu-tools.enable = lib.mkIf isIntel true;
       cpu = {
         intel.updateMicrocode = lib.mkIf (config.hardware.cpu.type == "intel") true;
         amd.updateMicrocode = lib.mkIf (config.hardware.cpu.type == "amd") true;
       };
-      firmware = [ pkgs.linux-firmware ];
 
       graphics = {
         extraPackages =
@@ -161,10 +161,6 @@ in
               rocmPackages.rocm-opencl-runtime
             ]
             ++ lib.optionals isNvidia [ nvidia-vaapi-driver ]
-            ++ lib.optionals isQemu [
-              virglrenderer
-              virtualgl
-            ]
           );
 
         extraPackages32 =
@@ -221,12 +217,7 @@ in
     };
 
     services = lib.mkMerge [
-      (lib.mkIf isQemu {
-        qemuGuest.enable = true;
-        spice-vdagentd.enable = true;
-        spice-autorandr.enable = true;
-        spice-webdavd.enable = true;
-      })
+      (lib.mkIf (!isQemu) { fwupd.enable = lib.mkDefault true; })
       (lib.mkIf isNvidia { xserver.videoDrivers = [ "nvidia" ]; })
       (lib.mkIf isIntel { xserver.videoDrivers = [ "modesetting" ]; })
       (lib.mkIf (config.hardware.deviceType == "laptop") {
@@ -253,8 +244,17 @@ in
         with pkgs;
         lib.flatten (
           [
-            mpv
-            (lib.optionals (!isQemu) [
+            ethtool
+            (lib.optionals (config.hardware.deviceType != "server") [
+              mpv
+              lm_sensors
+            ])
+            (lib.optionals (config.hardware.deviceType == "laptop") [
+              s-tui
+              powerstat
+              stress
+            ])
+            (lib.optionals (config.hardware.deviceType != "server" && !isQemu) [
               vulkan-tools
               libva-utils
               nvtopPackages.full
@@ -278,10 +278,6 @@ in
             libGLU
             libGL
             freeglut
-          ]
-          ++ lib.optionals isQemu [
-            virglrenderer
-            virtualgl
           ]
         );
 
