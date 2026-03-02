@@ -46,7 +46,7 @@ in
     inputs.stylix.nixosModules.stylix
     "${self}/modules/Core/avahi.nix"
     "${self}/modules/Core/ssh.nix"
-    "${self}/modules/Core/kmscon.nix"
+    "${self}/modules/Desktop/kmscon.nix"
   ];
   nixpkgs = {
     hostPlatform = "x86_64-linux"; # 目前只考虑 x86_64

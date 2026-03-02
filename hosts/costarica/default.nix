@@ -8,6 +8,7 @@
     "${self}/modules/Desktop/plasma.nix"
     "${self}/modules/Desktop/programs.nix"
     "${self}/modules/Desktop/fcitx5.nix"
+    "${self}/modules/Server/podman.nix"
 
     "${self}/modules/Hardware"
 

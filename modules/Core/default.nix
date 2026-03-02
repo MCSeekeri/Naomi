@@ -18,14 +18,10 @@
     ./fonts.nix
     #./hardened.nix
     ./i18n.nix
-    ./kmscon.nix
-    ./nix-ld.nix
     ./nix.nix
-    ./podman.nix
     ./programs.nix
     ./sops.nix
     ./ssh.nix
-    ./stylix.nix
     ./tailscale.nix
     ./users.nix
     ./zram.nix
