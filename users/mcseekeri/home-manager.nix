@@ -75,11 +75,6 @@
       dupeguru
       reqable
       flutter
-      # 终端增强
-      mycli
-      pgcli
-      iredis
-      usql
       # 常用工具
       btrfs-assistant
       nix-diff

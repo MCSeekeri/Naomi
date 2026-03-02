@@ -1,4 +1,9 @@
-{ pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
   users.users.mihomo = {
     isNormalUser = true;
@@ -7,9 +12,12 @@
       "networkmanager"
       "wheel"
       "video"
-      "podman"
-    ];
-    shell = pkgs.fish;
+    ]
+    ++ lib.optionals config.virtualisation.podman.enable [ "podman" ]
+    ++ lib.optionals (
+      config.virtualisation.podman.enable && config.virtualisation.podman.dockerCompat
+    ) [ "docker" ];
+    shell = pkgs.bash;
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOTidxwTS5kyQENgBQ1n4FukaocS1CHhBZ0uaEDifLA0 mihomo@outlook.com"
     ];

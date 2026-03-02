@@ -1,11 +1,16 @@
-{ pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
-  environment.systemPackages = [ pkgs.mycli ];
+  environment.systemPackages = lib.optionals config.services.mysql.enable [ pkgs.mycli ];
 
   services = {
     mysql = {
-      enable = true;
+      enable = lib.mkDefault true;
       package = pkgs.mariadb;
       settings = lib.mkDefault {
         mysqld = {
@@ -17,7 +22,7 @@
       };
     };
 
-    mysqlBackup = {
+    mysqlBackup = lib.mkIf config.services.mysql.enable {
       enable = true;
       location = "/var/backup/mysql";
       calendar = "03:00:00";

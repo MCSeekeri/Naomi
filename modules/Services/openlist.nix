@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   self,
   pkgs,
   ...
@@ -11,9 +12,14 @@
     description = "OpenList Service";
     after = [
       "network-online.target"
-      "mysql.service"
-    ];
-    wants = [ "network-online.target" ];
+    ]
+    ++ lib.optional config.services.mysql.enable "mysql.service"
+    ++ lib.optional config.services.meilisearch.enable "meilisearch.service";
+    wants = [
+      "network-online.target"
+    ]
+    ++ lib.optional config.services.mysql.enable "mysql.service"
+    ++ lib.optional config.services.meilisearch.enable "meilisearch.service";
     wantedBy = [ "multi-user.target" ];
 
     serviceConfig = {
@@ -29,7 +35,7 @@
 
       ProtectSystem = "strict";
       ReadWritePaths = [ "/var/lib/openlist" ];
-      BindReadOnlyPaths = [ "/run/mysqld" ];
+      BindReadOnlyPaths = lib.optionals config.services.mysql.enable [ "/run/mysqld" ];
 
       MountAPIVFS = true;
 
@@ -75,10 +81,10 @@
 
   services = {
     meilisearch = {
-      enable = true;
+      enable = lib.mkDefault true;
       masterKeyFile = config.sops.secrets.masterKey.path;
     };
-    mysql = {
+    mysql = lib.mkIf config.services.mysql.enable {
       ensureDatabases = [ "openlist" ];
       ensureUsers = [
         # 用 Unix Socket 的好处是不需要设置密码，坏处是没有密码……
@@ -90,8 +96,9 @@
         }
       ];
     };
+    nginx.enable = lib.mkDefault true;
     nginx = {
-      virtualHosts = {
+      virtualHosts = lib.mkIf config.services.nginx.enable {
         "pan.mcseekeri.com" = {
           forceSSL = true;
           enableACME = true;
