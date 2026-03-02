@@ -1,4 +1,9 @@
-{ pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
   users.users.remote = {
     isNormalUser = true;
@@ -7,9 +12,8 @@
       "networkmanager"
       "wheel"
       "video"
-      "podman"
-      "docker"
-    ];
+    ]
+    ++ lib.optionals config.virtualisation.podman.enable [ "podman" ];
     shell = pkgs.bash;
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOTidxwTS5kyQENgBQ1n4FukaocS1CHhBZ0uaEDifLA0 mcseekeri@outlook.com"

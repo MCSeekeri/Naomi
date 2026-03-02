@@ -29,6 +29,12 @@
     ];
   };
 
+  hardware = {
+    cpu.type = "qemu";
+    deviceType = "server";
+    enableAllFirmware = false;
+  };
+
   boot = {
     loader = {
       grub = {
@@ -123,5 +129,6 @@
         TIMELINE_LIMIT_YEARLY = 0;
       };
     };
+    avahi.enable = false;
   };
 }
