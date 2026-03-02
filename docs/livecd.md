@@ -5,7 +5,7 @@
 首先，你需要一个 Nix 环境，并且安装了 nixos-rebuild，安装步骤在此不再赘述。
 
 ```nix
-nixos-rebuild build-image --flake .#cuba --image-variant iso-installer
+nix build .#nixosConfigurations.cuba.config.system.build.isoImage
 ```
 
 如果一切正常，终端会提示输出的 ISO 路径，将其中的 ISO 复制到启动介质中，在此推荐使用 [Ventoy](https://www.ventoy.net) 启动。
