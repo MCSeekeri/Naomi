@@ -4,6 +4,7 @@
   pkgs,
   inputs,
   self,
+  modulesPath,
   ...
 }:
 let
@@ -41,8 +42,7 @@ let
 in
 {
   imports = [
-    # "${modulesPath}/installer/cd-dvd/channel.nix"
-    # 需要用 modulesPath 避免纯评估模式出错，大概
+    (modulesPath + "/installer/cd-dvd/installation-cd-minimal.nix")
     inputs.stylix.nixosModules.stylix
     "${self}/modules/Core/avahi.nix"
     "${self}/modules/Core/ssh.nix"
@@ -220,7 +220,7 @@ in
   };
 
   systemd = {
-    tmpfiles.rules = [ "d /var/shared 0777 root root - -" ];
+    tmpfiles.rules = [ "d /var/shared 0700 root root - -" ];
     services = {
       bore-tunnel = {
         description = "Bore tunnel service";
