@@ -1,5 +1,9 @@
 { pkgs, ... }:
 {
+  services = {
+    pcscd.enable = true;
+  };
+
   security = {
     pam = {
       yubico = {

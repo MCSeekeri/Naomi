@@ -12,7 +12,6 @@
     "${self}/modules/Server/podman.nix"
     "${self}/modules/Desktop/plasma.nix"
     "${self}/modules/Desktop/sunshine.nix"
-    "${self}/modules/Desktop/programs.nix"
     "${self}/modules/Desktop/gaming.nix"
     "${self}/modules/Desktop/obs.nix"
     "${self}/modules/Desktop/fcitx5.nix"

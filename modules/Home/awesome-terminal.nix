@@ -1,33 +1,44 @@
-{ pkgs, ... }:
+{
+  lib,
+  osConfig,
+  pkgs,
+  ...
+}:
 {
   home = {
-    packages = with pkgs; [
-      kitty
-      upx
-      lazygit
-      git-ignore
-      gitleaks # 查找文件或仓库中的敏感信息
-      git-secrets
-      xh # curl
-      # noti # fish done
-      magic-wormhole-rs
-      sd
-      duf # df -h
-      gh
-      trash-cli
-      pandoc
-      chafa
-      rsclock
-      cava
-      oha # 反向测速
-      hollywood
-      ipfetch
-      genact
-      neo-cowsay
-      hyperfine
-      fuc # cpz rmz
-      doggo # dig
-    ];
+    packages =
+      with pkgs;
+      [
+        upx
+        lazygit
+        git-ignore
+        gitleaks # 查找文件或仓库中的敏感信息
+        git-secrets
+        xh # curl
+        # noti # fish done
+        magic-wormhole-rs
+        sd
+        duf # df -h
+        gh
+        trash-cli
+        pandoc
+        rsclock
+        oha # 反向测速
+        ipfetch
+        genact
+        neo-cowsay
+        hyperfine
+        fuc # cpz rmz
+        doggo # dig
+      ]
+      ++
+        lib.optionals
+          (osConfig.services.xserver.enable or false || osConfig.programs.hyprland.enable or false)
+          [
+            chafa
+            cava
+            hollywood
+          ];
     shellAliases = {
       ls = "eza";
       ll = "eza  -lh --no-user --long";

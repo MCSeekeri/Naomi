@@ -61,28 +61,17 @@
     useUserPackages = true;
     useGlobalPkgs = true;
     extraSpecialArgs = { inherit self inputs outputs; };
-    sharedModules = [
-      inputs.plasma-manager.homeModules.plasma-manager
-      inputs.nix-flatpak.homeManagerModules.nix-flatpak
-      inputs.nix-index-database.homeModules.nix-index
-    ];
+    sharedModules = [ inputs.nix-index-database.homeModules.nix-index ];
   };
 
   networking = {
-    networkmanager.enable = true;
+    networkmanager.enable = lib.mkDefault false;
     useNetworkd = true; # 实验性启用
     dhcpcd.enable = false;
     nftables.enable = true;
   };
 
-  hardware = {
-    enableAllFirmware = true;
-  };
-
   services = {
-    power-profiles-daemon.enable = true;
-    upower.enable = true;
-    fwupd.enable = true;
     userborn.enable = true;
   };
 
@@ -134,7 +123,4 @@
     network.wait-online.enable = false;
   };
 
-  powerManagement.powertop.enable = true;
-
-  environment.enableAllTerminfo = true;
 }

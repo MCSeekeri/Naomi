@@ -2,10 +2,18 @@
   pkgs,
   lib,
   self,
+  inputs,
   ...
 }:
 {
   imports = [ "${self}/modules/Desktop/gui.nix" ];
+
+  home-manager.sharedModules = [ inputs.plasma-manager.homeModules.plasma-manager ];
+
+  networking = {
+    networkmanager.enable = true;
+  };
+
   services = {
     desktopManager.plasma6.enable = true;
     displayManager.sddm = {
