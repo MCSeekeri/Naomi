@@ -12,14 +12,10 @@
     mysql = {
       enable = lib.mkDefault true;
       package = pkgs.mariadb;
-      settings = lib.mkDefault {
-        mysqld = {
-          bind-address = [
-            "127.0.0.1"
-            "172.17.0.1" # [TODO] 检查容器是否能访问到
-          ];
-        };
-      };
+      settings.mysqld.bind-address = lib.mkDefault [
+        "127.0.0.1"
+        "172.17.0.1" # [TODO] 检查容器是否能访问到
+      ];
     };
 
     mysqlBackup = lib.mkIf config.services.mysql.enable {
