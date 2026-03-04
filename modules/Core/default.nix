@@ -21,6 +21,7 @@
     ./nix.nix
     ./programs.nix
     ./sops.nix
+    ./stylix.nix
     ./ssh.nix
     ./tailscale.nix
     ./users.nix
