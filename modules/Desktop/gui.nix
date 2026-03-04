@@ -1,20 +1,11 @@
 {
-  inputs,
   lib,
   pkgs,
   self,
   ...
 }:
 {
-  imports = [
-    "${self}/modules/Desktop/flatpak.nix"
-    inputs.stylix.nixosModules.stylix
-  ];
-
-  home-manager.sharedModules = [
-    inputs.stylix.homeModules.stylix
-    { stylix.overlays.enable = false; }
-  ];
+  imports = [ "${self}/modules/Desktop/flatpak.nix" ];
 
   hardware = {
     graphics = {
