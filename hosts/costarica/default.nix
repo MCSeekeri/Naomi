@@ -15,8 +15,6 @@
     "${self}/modules/Services/dae"
     "${self}/modules/Services/geph5.nix"
 
-    "${self}/modules/Games/AquaDX"
-
     "${self}/users/mihomo"
   ];
 
