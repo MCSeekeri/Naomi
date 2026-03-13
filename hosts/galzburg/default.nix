@@ -17,6 +17,7 @@
     "${self}/modules/Services/archisteamfarm.nix"
     "${self}/modules/Services/openlist.nix"
     "${self}/modules/Services/nginx.nix"
+    "${self}/modules/Services/xray.nix"
 
     "${self}/users/remote"
   ];
@@ -113,7 +114,83 @@
     };
   };
 
+  sops.templates."xray-${config.networking.hostName}-config.json" = {
+    content = builtins.toJSON {
+      log = {
+        loglevel = "warning";
+      };
+      inbounds = [
+        {
+          tag = "vless-xhttp";
+          listen = "127.0.0.1";
+          port = 30101;
+          protocol = "vless";
+          settings = {
+            clients = [
+              {
+                id = config.sops.placeholder."xray-${config.networking.hostName}-uuid";
+                email = "galzburg@xhttp";
+                flow = "xtls-rprx-vision";
+              }
+            ];
+            decryption = config.sops.placeholder."xray-${config.networking.hostName}-vless-decryption";
+          };
+          streamSettings = {
+            network = "xhttp";
+            xhttpSettings = {
+              path = "/static";
+            };
+          };
+        }
+      ];
+      outbounds = [
+        {
+          protocol = "freedom";
+          tag = "direct";
+        }
+        {
+          protocol = "blackhole";
+          tag = "block";
+        }
+      ];
+    };
+    restartUnits = [ "xray.service" ];
+  };
+
   services = {
+    # vless://{UUID}@pan.mcseekeri.com:443?encryption={ENCRYPTION}&flow=xtls-rprx-vision&security=tls&sni=pan.mcseekeri.com&alpn=h2&fp=chrome&type=xhttp&host=pan.mcseekeri.com&path=%2Fstatic#galzburg-h2
+    # vless://{UUID}@pan.mcseekeri.com:443?encryption={ENCRYPTION}&flow=xtls-rprx-vision&security=tls&sni=pan.mcseekeri.com&alpn=h3&fp=chrome&type=xhttp&mode=packet-up&host=pan.mcseekeri.com&path=%2Fstatic#galzburg-h3
+    # H2 限速多，H3 多限速
+    # QUIC 和 IPv6 全面普及的世界，你在哪……
+
+    nginx = {
+      upstreams.xray-xhttp = {
+        servers."127.0.0.1:30101" = { };
+        extraConfig = ''
+          keepalive 32;
+        '';
+      };
+      virtualHosts."pan.mcseekeri.com" = {
+        http2 = true;
+        locations."^~ /static" = {
+          extraConfig = ''
+            access_log off;
+            log_not_found off;
+
+            grpc_pass grpc://xray-xhttp;
+            client_body_timeout 1d;
+            grpc_read_timeout 1d;
+            grpc_send_timeout 1d;
+            grpc_socket_keepalive on;
+            client_max_body_size 0;
+
+            grpc_set_header Host $host;
+            grpc_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            grpc_set_header X-Forwarded-Proto $scheme;
+          '';
+        };
+      };
+    };
     btrfs.autoScrub = {
       enable = true;
       interval = "monthly";
