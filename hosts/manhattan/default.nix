@@ -25,10 +25,8 @@
     "${self}/modules/Desktop/hyprland.nix"
 
     "${self}/modules/Services/cockpit.nix"
-    "${self}/modules/Services/uptime-kuma.nix"
     "${self}/modules/Services/cloudflared.nix"
     "${self}/modules/Services/ollama.nix"
-    "${self}/modules/Services/searx.nix"
     "${self}/modules/Services/archisteamfarm.nix"
     # "${self}/modules/Services/privatebin.nix"
     "${self}/modules/Services/misskey.nix"
