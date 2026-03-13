@@ -34,7 +34,7 @@
       kdePackages.kcalc
       anki-bin
       discord
-      ayugram-desktop
+      # ayugram-desktop
       qbittorrent
       krita
       obsidian
