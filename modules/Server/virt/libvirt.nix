@@ -19,5 +19,17 @@
       };
     };
   };
+
+  networking.firewall = {
+    trustedInterfaces = [ "virbr0" ];
+    interfaces.virbr0 = {
+      allowedTCPPorts = [ 53 ];
+      allowedUDPPorts = [
+        53
+        67
+      ];
+    };
+  };
+
   programs.virt-manager.enable = true;
 }

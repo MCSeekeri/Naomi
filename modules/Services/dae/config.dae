@@ -11,7 +11,7 @@ node {
 
 # https://github.com/daeuniverse/dae/blob/main/docs/zh/configuration/dns.md
 dns {
-	ipversion_prefer: 4 # IPv6 在某些网络环境下是个悲剧
+	# ipversion_prefer: 4 # IPv6 在某些网络环境下是个悲剧
 	upstream {
 		adguard: 'udp://127.0.0.1:53'
 		alidns: 'udp://dns.alidns.com:53'
