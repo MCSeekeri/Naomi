@@ -9,7 +9,6 @@
 
   environment = {
     systemPackages = with pkgs; [ nix-alien ];
-    stub-ld.enable = false;
   };
 
   # services.envfs.enable = true; # 会让 QQ 启动后无法渲染图标，无法理解
