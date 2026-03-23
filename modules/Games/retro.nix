@@ -25,7 +25,6 @@
 
     ryubing
 
-    duckstation
     pcsx2
     ppsspp
     rpcs3

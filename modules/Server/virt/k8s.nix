@@ -5,7 +5,6 @@
     kind
     kubectl
     kubernetes
-    docker-machine-kvm2 # https://github.com/kubernetes/minikube/issues/6023
     k9s
     kubetui
 

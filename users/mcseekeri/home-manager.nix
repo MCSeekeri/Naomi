@@ -72,7 +72,6 @@
       unityhub
       # micromamba
       gradle
-      dupeguru
       reqable
       flutter
       # 常用工具
