@@ -12,7 +12,6 @@
       "networkmanager"
       "wheel"
       "video"
-      "minecraft" # 访问套接字需要位于这个组……或者 sudo
       "kvm"
       "libvirtd"
       "incus-admin"
