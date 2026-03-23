@@ -83,7 +83,11 @@
       luks = {
         devices."root" = {
           device = "/dev/disk/by-partlabel/root";
-          crypttabExtraOpts = [ "fido2-device=auto" ];
+          crypttabExtraOpts = [
+            "fido2-device=auto"
+            "tpm2-device=auto"
+            "token-timeout=15s"
+          ];
           # https://www.freedesktop.org/software/systemd/man/251/systemd-cryptenroll.html
           # systemd-cryptenroll --fido2-device=auto
         };
