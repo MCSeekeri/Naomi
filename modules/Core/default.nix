@@ -78,6 +78,9 @@
   };
 
   environment = {
+    shellAliases.sudo = "run0";
+    # 基于 systemd-run 的 sudo 替代品，除了每次都要输密码之外没什么缺点
+
     stub-ld.enable = lib.mkForce false;
 
     # userborn 不支持分配 uid/gid 范围
