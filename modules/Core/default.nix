@@ -78,8 +78,11 @@
   };
 
   environment = {
-    shellAliases.sudo = "run0";
+    shellAliases = {
+      sudo = "run0 --background=";
+    };
     # 基于 systemd-run 的 sudo 替代品，除了每次都要输密码之外没什么缺点
+    # [TODO] 等 26.05 发布之后看看新版本是否修复
 
     stub-ld.enable = lib.mkForce false;
 
@@ -117,11 +120,8 @@
   };
 
   security = {
-    sudo-rs = {
-      # 不是很支持 sudo -E
-      enable = true;
-      execWheelOnly = lib.mkDefault true; # https://unix.stackexchange.com/questions/1262/where-did-the-wheel-group-get-its-name
-    };
+    polkit.enable = true;
+    sudo.enable = false;
     tpm2.enable = lib.mkDefault true;
   };
 

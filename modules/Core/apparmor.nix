@@ -12,7 +12,6 @@
     pam.services = {
       login.enableAppArmor = true;
       sshd.enableAppArmor = true;
-      sudo-rs.enableAppArmor = true;
       su.enableAppArmor = true;
       u2f.enableAppArmor = true;
     };
