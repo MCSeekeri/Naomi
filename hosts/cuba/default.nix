@@ -94,7 +94,7 @@ in
     tempAddresses = "disabled";
     useNetworkd = true;
     wireless = {
-      enable = false;
+      enable = lib.mkForce false;
       userControlled.enable = true;
       iwd = {
         enable = true;

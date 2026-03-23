@@ -124,4 +124,25 @@
     network.wait-online.enable = false;
   };
 
+  virtualisation.vmVariant = {
+    imports = [ "${modulesPath}/profiles/qemu-guest.nix" ];
+    virtualisation = {
+      cores = lib.mkDefault 4;
+      memorySize = lib.mkDefault 4096;
+      diskSize = lib.mkDefault 16384;
+      graphics = lib.mkDefault true;
+    };
+
+    system.nixos-init.enable = lib.mkForce false;
+    hardware = {
+      cpu.type = lib.mkForce "qemu";
+      gpu.type = lib.mkForce "";
+    };
+    services = {
+      btrfs.autoScrub.enable = lib.mkForce false;
+      beesd.filesystems = lib.mkForce { };
+      snapper.configs = lib.mkForce { };
+    };
+  };
+
 }
