@@ -216,12 +216,19 @@ in
       );
     };
 
+    networking.networkmanager.wifi.powersave = lib.mkIf (config.hardware.deviceType == "laptop") (
+      lib.mkDefault true
+    );
+
     services = lib.mkMerge [
       (lib.mkIf (!isQemu) { fwupd.enable = lib.mkDefault true; })
       (lib.mkIf isNvidia { xserver.videoDrivers = [ "nvidia" ]; })
       (lib.mkIf isIntel { xserver.videoDrivers = [ "modesetting" ]; })
       (lib.mkIf (config.hardware.deviceType == "laptop") {
         tlp.enable = lib.mkDefault (!config.services.power-profiles-daemon.enable);
+      })
+      (lib.mkIf (config.hardware.deviceType == "laptop" && config.hardware.cpu.type == "intel") {
+        thermald.enable = lib.mkDefault true;
       })
     ];
 
@@ -296,7 +303,7 @@ in
       ];
     };
 
-    specialisation = lib.mkIf (isNvidia && config.hardware.deviceType == "laptop") {
+    specialisation = lib.mkIf (config.hardware.deviceType == "laptop") {
       battery-saver.configuration = {
         system.nixos.tags = [ "battery-saver" ];
         hardware.gpu.type = lib.mkForce config.hardware.cpu.type;
