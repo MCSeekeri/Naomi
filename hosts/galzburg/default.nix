@@ -28,6 +28,7 @@
       80
       443
     ];
+    firewall.allowedUDPPorts = [ 443 ];
   };
 
   hardware = {
@@ -172,6 +173,13 @@
       };
       virtualHosts."pan.mcseekeri.com" = {
         http2 = true;
+        http3 = true;
+        quic = true;
+        reuseport = true;
+        extraConfig = ''
+          add_header Alt-Svc 'h3=":443"; ma=86400' always;
+          add_header Strict-Transport-Security "max-age=31536000" always;
+        '';
         locations."^~ /static" = {
           extraConfig = ''
             access_log off;
