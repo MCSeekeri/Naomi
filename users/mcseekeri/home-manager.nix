@@ -34,7 +34,7 @@
       kdePackages.kcalc
       anki-bin
       discord
-      # ayugram-desktop
+      ayugram-desktop
       qbittorrent
       krita
       obsidian
@@ -152,8 +152,6 @@
         pinage404.nix-extension-pack
         usernamehw.errorlens
         vivaxy.vscode-conventional-commits
-        github.copilot
-        github.copilot-chat
       ];
     };
     git = {
