@@ -105,8 +105,6 @@
           gtk2
           gtk3
           harfbuzz
-          libGL
-          libGLU
           libappindicator-gtk2
           libappindicator-gtk3
           libayatana-appindicator
@@ -116,14 +114,41 @@
           libdbusmenu
           libdrm
           libepoxy
+          libGL
+          libGLU
           libglvnd
+          libice
           libjack2
           libjpeg
           libpulseaudio
           librsvg
+          libsm
           libva
           libvdpau
+          libx11
+          libxcb-keysyms
+          libxcb-render-util
+          libxcb-wm
+          libxcomposite
+          libxcursor
+          libxdamage
+          libxext
+          libxfixes
+          libxft
+          libxi
+          libxinerama
+          libxmu
+          libxrandr
+          libxrender
+          libxscrnsaver
+          libxshmfence
+          libxt
+          libxtst
           libxkbcommon
+          libxkbfile
+          libxxf86vm
+          libpciaccess
+          libxcb
           mesa
           mpv # PiliPlus
           openal
@@ -140,34 +165,9 @@
           SDL_ttf
           vulkan-loader
           wayland
-          xorg.libICE
-          xorg.libSM
-          xorg.libX11
-          xorg.libXScrnSaver
-          xorg.libXcomposite
-          xorg.libXcursor
-          xorg.libXdamage
-          xorg.libXext
-          xorg.libXfixes
-          xorg.libXft
-          xorg.libXi
-          xorg.libXinerama
-          xorg.libXmu
-          xorg.libXrandr
-          xorg.libXrender
-          xorg.libXt
-          xorg.libXtst
-          xorg.libxkbfile
-          xorg.libXxf86vm
-          xorg.libpciaccess
-          xorg.libxcb
-          xorg.xcbutil
-          xorg.xcbutilimage
-          xorg.xcbutilkeysyms
-          xorg.xcbutilrenderutil
-          xorg.xcbutilwm
-          xorg.xkeyboardconfig
-          xorg.libxshmfence
+          xcbutilxrm
+          xcbutilxrm
+          xkeyboard-config
         ];
       # 笑点解析：用 itch.io 上面的黄油来测试配置之后对 Linux 二进制的兼容性
       # 其实还是挺准确的，因为游戏吃的运行库又多又杂

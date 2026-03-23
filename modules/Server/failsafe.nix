@@ -13,9 +13,5 @@
       RebootWatchdogSec = "5m";
       KExecWatchdogSec = "5m";
     };
-    sleep.extraConfig = ''
-      AllowSuspend=no
-      AllowHibernation=no
-    '';
   };
 }
