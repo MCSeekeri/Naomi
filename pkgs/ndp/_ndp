@@ -1,0 +1,35 @@
+#compdef ndp
+
+_ndp() {
+  local project_root
+  local -a configs
+  local configs_list
+
+  if [[ -n ${PRJ_ROOT:-} && -d ${PRJ_ROOT}/hosts ]]; then
+    project_root=$PRJ_ROOT
+  elif [[ -d $PWD/hosts ]]; then
+    project_root=$PWD
+  else
+    project_root=
+  fi
+
+  if [[ -n $project_root ]]; then
+    configs=(${project_root}/hosts/*(/N:t))
+  else
+    configs=()
+  fi
+
+  configs_list="${(j: :)configs}"
+
+  _arguments -s \
+    "1:配置名:(${configs_list})" \
+    '2:user@host:_ssh' \
+    '3:动作:(build push dry-activate test switch boot)' \
+    '(-p --port)'{-p,--port}'[SSH 端口]:端口号:' \
+    '(-S --ask-sudo-password)'{-S,--ask-sudo-password}'[激活前先验证 sudo]' \
+    '--no-substitutes[执行 nix copy 时禁用替代源]' \
+    '--show-trace[将 --show-trace 传递给 nix build]' \
+    '--impure[将 --impure 传递给 nix build]'
+}
+
+_ndp "$@"

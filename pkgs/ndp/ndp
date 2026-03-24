@@ -1,0 +1,121 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+usage() {
+  cat >&2 <<'EOF'
+用法: ndp <config-name> <user@host> [build|push|dry-activate|test|switch|boot] [options]
+
+选项:
+  -p, --port PORT           指定 SSH 端口
+  -S, --ask-sudo-password   激活前先验证 sudo
+  --no-substitutes          执行 nix copy 时禁用替代源
+  --show-trace
+  --impure
+  -h, --help                显示帮助
+EOF
+}
+
+if [ "$#" -gt 0 ]; then
+  case "$1" in
+    -h|--help)
+      usage
+      exit 0
+      ;;
+  esac
+fi
+
+if [ "$#" -lt 2 ]; then
+  usage
+  exit 1
+fi
+
+config_name="$1"
+target_host="$2"
+shift 2
+
+port=""
+action="switch"
+ask_sudo_password=0
+nix_build_args=()
+nix_copy_args=(--substitute-on-destination)
+
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    test|switch|boot)
+      action="$1"
+      shift
+      ;;
+    build|push|dry-activate)
+      action="$1"
+      shift
+      ;;
+    -p|--port)
+      if [ "$#" -lt 2 ]; then
+        echo "$1 缺少参数值" >&2
+        usage
+        exit 1
+      fi
+      port="$2"
+      shift 2
+      ;;
+    -S|--ask-sudo-password)
+      ask_sudo_password=1
+      shift
+      ;;
+    --no-substitutes)
+      nix_copy_args=()
+      shift
+      ;;
+    --show-trace|--impure)
+      nix_build_args+=("$1")
+      shift
+      ;;
+    *)
+      echo "未知参数: $1" >&2
+      usage
+      exit 1
+      ;;
+  esac
+done
+
+control_path="/tmp/ndp-${config_name}-${target_host//@/_}"
+
+ssh_opts=(
+  -o ControlMaster=auto
+  -o ControlPersist=10m
+  -o "ControlPath=$control_path"
+)
+
+if [ -n "$port" ]; then
+  ssh_opts+=(-p "$port")
+fi
+
+out="$(nix build "${nix_build_args[@]}" ".#nixosConfigurations.${config_name}.config.system.build.toplevel" --print-out-paths)"
+
+if [ "$action" = "build" ]; then
+  printf '%s\n' "$out"
+  exit 0
+fi
+
+ssh "${ssh_opts[@]}" -MNf "$target_host"
+trap 'ssh "${ssh_opts[@]}" -O exit "$target_host" >/dev/null 2>&1 || true' EXIT
+
+activate_prefix="$(ssh "${ssh_opts[@]}" "$target_host" 'if command -v run0 >/dev/null 2>&1; then printf "%s" "run0 --background="; else printf "%s" "sudo"; fi')"
+
+if [ "$ask_sudo_password" -eq 1 ] && [ "$activate_prefix" = "sudo" ]; then
+  ssh -t "${ssh_opts[@]}" "$target_host" "sudo -v"
+fi
+
+NIX_SSHOPTS="$(printf '%q ' "${ssh_opts[@]}")" nix copy "${nix_copy_args[@]}" --to "ssh://$target_host" "$out"
+
+if [ "$action" = "push" ]; then
+  exit 0
+fi
+
+if [ "$action" = "dry-activate" ]; then
+  ssh -t "${ssh_opts[@]}" "$target_host" "${activate_prefix} $out/bin/switch-to-configuration dry-activate"
+  exit 0
+fi
+
+ssh -t "${ssh_opts[@]}" "$target_host" "${activate_prefix} nix-env -p /nix/var/nix/profiles/system --set $out && ${activate_prefix} $out/bin/switch-to-configuration $action"

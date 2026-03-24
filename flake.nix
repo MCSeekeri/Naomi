@@ -175,6 +175,13 @@
             };
 
             devshells.default = {
+              env = [
+                {
+                  name = "fish_complete_path";
+                  eval = ''"$DEVSHELL_DIR/share/fish/vendor_completions.d"'';
+                }
+              ];
+
               packages = with pkgs; [
                 nix
                 git
@@ -190,6 +197,7 @@
                 nix-melt
                 nix-tree
                 colmena
+                config.packages.ndp
                 config.treefmt.build.wrapper
               ];
             };
