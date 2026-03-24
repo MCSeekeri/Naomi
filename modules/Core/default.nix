@@ -73,6 +73,13 @@
     nftables.enable = true;
   };
 
+  boot.kernel.sysctl = {
+    "net.core.default_qdisc" = lib.mkDefault "fq";
+    "net.ipv4.tcp_congestion_control" = lib.mkDefault "bbr";
+    "net.ipv4.tcp_fastopen" = lib.mkDefault 3;
+    "net.ipv4.tcp_mtu_probing" = lib.mkDefault 1;
+  };
+
   services = {
     userborn.enable = true;
   };

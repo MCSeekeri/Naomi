@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   self,
   modulesPath,
   ...
@@ -38,6 +39,20 @@
   };
 
   boot = {
+    kernel.sysctl = {
+      "net.core.netdev_max_backlog" = lib.mkForce 32768;
+      "net.core.optmem_max" = lib.mkForce 131072;
+      "net.core.rmem_max" = lib.mkForce 134217728;
+      "net.core.somaxconn" = lib.mkForce 16384;
+      "net.core.wmem_max" = lib.mkForce 134217728;
+      "fs.file-max" = 2097152;
+      "net.ipv4.tcp_max_syn_backlog" = 16384;
+      "net.ipv4.udp_rmem_min" = lib.mkForce 32768;
+      "net.ipv4.udp_wmem_min" = lib.mkForce 32768;
+      "net.ipv4.tcp_rmem" = lib.mkForce "4096 262144 134217728";
+      "net.ipv4.tcp_wmem" = lib.mkForce "4096 262144 134217728";
+      "net.netfilter.nf_conntrack_max" = 262144;
+    };
     loader = {
       grub = {
         enable = true;
@@ -165,6 +180,21 @@
     # QUIC 和 IPv6 全面普及的世界，你在哪……
 
     nginx = {
+      appendConfig = ''
+        worker_processes auto;
+        worker_rlimit_nofile 131072;
+      '';
+      appendHttpConfig = ''
+        keepalive_requests 1000;
+        open_file_cache max=200000 inactive=20s;
+        open_file_cache_valid 30s;
+        open_file_cache_min_uses 2;
+        open_file_cache_errors on;
+      '';
+      eventsConfig = ''
+        worker_connections 8192;
+        use epoll;
+      '';
       upstreams.xray-xhttp = {
         servers."127.0.0.1:30101" = { };
         extraConfig = ''
@@ -215,5 +245,9 @@
       };
     };
     avahi.enable = false;
+  };
+
+  systemd = {
+    settings.Manager.DefaultLimitNOFILE = "1048576";
   };
 }
