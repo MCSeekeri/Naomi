@@ -1,0 +1,56 @@
+name: 严格格式检查
+
+on:
+  pull_request:
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  nixfmt:
+    name: nix fmt 检查
+    runs-on: codeberg-medium-lazy
+
+    steps:
+      - name: 拉取仓库
+        uses: https://data.forgejo.org/actions/checkout@v6
+        with:
+          ref: ${{ forgejo.event.pull_request.head.sha }}
+          fetch-depth: 1
+
+      - name: 恢复 Nix 缓存
+        uses: https://data.forgejo.org/actions/cache@v5
+        with:
+          path: |
+            ~/.cache/nix
+            ~/.local/state/nix
+          key: nix-user-cache-${{ runner.os }}-${{ hashFiles('flake.lock') }}
+          restore-keys: |
+            nix-user-cache-${{ runner.os }}-
+
+      - name: 安装 Lix
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --proto '=https' --tlsv1.2 -fsSL https://install.lix.systems/lix | bash -s -- install linux \
+            --extra-conf "sandbox = false" \
+            --init none \
+            --no-confirm
+
+          . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+
+          mkdir -p "$HOME/.config/nix"
+
+          cat > "$HOME/.config/nix/nix.conf" <<'EOF'
+          experimental-features = nix-command flakes
+          extra-substituters = https://cache.garnix.io?priority=1 https://nix-community.cachix.org?priority=2 https://numtide.cachix.org?priority=3 https://nix-gaming.cachix.org?priority=4 https://cache.nixos-cuda.org?priority=5
+          extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g= numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE= nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4= cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M=
+          EOF
+
+      - name: 执行 treefmt 检查
+        shell: bash
+        run: |
+          set -euo pipefail
+          . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+          nix build .#checks.x86_64-linux.treefmt --accept-flake-config

@@ -1,0 +1,58 @@
+name: PR 模板检查
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - edited
+      - reopened
+      - ready_for_review
+      - synchronize
+
+jobs:
+  pr-template:
+    name: PR 内容检查
+    runs-on: codeberg-tiny-lazy
+    env:
+      BODY: ${{ forgejo.event.pull_request.body }}
+    steps:
+      - name: 检查 PR 模板
+        run: |
+          set -euo pipefail
+          BODY_NORMALIZED="$(printf '%s' "${BODY:-}" | tr -d '\r')"
+
+          require_heading() {
+            if ! printf '%s\n' "$BODY_NORMALIZED" | grep -Fqx -- "$1"; then
+              echo "缺少段落：$1"
+              exit 1
+            fi
+          }
+
+          require_summary_content() {
+            if ! awk '
+              $0 == "## 摘要" { in_section = 1; next }
+              in_section && /^## / { exit found ? 0 : 1 }
+              in_section && $0 ~ /^- [^[:space:]].+/ { found = 1 }
+              END { exit found ? 0 : 1 }
+            ' <<<"$BODY_NORMALIZED"; then
+              echo "摘要必须填写实际内容。"
+              exit 1
+            fi
+          }
+
+          require_checked_item() {
+            if ! printf '%s\n' "$BODY_NORMALIZED" | grep -Eiq '^- \[[xX]\] '; then
+              echo "完成情况至少需要勾选一项。"
+              exit 1
+            fi
+          }
+
+          if [ -z "$(printf '%s' "$BODY_NORMALIZED" | tr -d '[:space:]')" ]; then
+            echo "PR 描述不能为空。"
+            exit 1
+          fi
+
+          require_heading "## 摘要"
+          require_heading "## 完成情况"
+          require_summary_content
+          require_checked_item
