@@ -109,7 +109,7 @@
     defaults = {
       email = "mcseekeri@outlook.com";
       dnsProvider = "cloudflare";
-      credentialsFile = config.sops.secrets.acme.path;
+      environmentFile = config.sops.secrets.acme.path;
     };
   };
 
@@ -174,6 +174,22 @@
   };
 
   services = {
+    openlist = {
+      enable = true;
+      instances = {
+        openlist = {
+          domain = "pan.mcseekeri.com";
+          port = 25478;
+        };
+        openlist-sciadv = {
+          domain = "drive.sci-adv.cc";
+          port = 25479;
+          dbTablePrefix = "openlist_sciadv_";
+          meilisearchIndex = "openlist_sciadv";
+        };
+      };
+    };
+
     # vless://{UUID}@pan.mcseekeri.com:443?encryption={ENCRYPTION}&flow=xtls-rprx-vision&security=tls&sni=pan.mcseekeri.com&alpn=h2&fp=chrome&type=xhttp&host=pan.mcseekeri.com&path=%2Fstatic#galzburg-h2
     # vless://{UUID}@pan.mcseekeri.com:443?encryption={ENCRYPTION}&flow=xtls-rprx-vision&security=tls&sni=pan.mcseekeri.com&alpn=h3&fp=chrome&type=xhttp&mode=packet-up&host=pan.mcseekeri.com&path=%2Fstatic#galzburg-h3
     # H2 限速多，H3 多限速
