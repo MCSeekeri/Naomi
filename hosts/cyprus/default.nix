@@ -86,7 +86,9 @@
           crypttabExtraOpts = [
             "fido2-device=auto"
             "tpm2-device=auto"
-            "token-timeout=15s"
+            "token-timeout=10s"
+            "password-cache=no"
+            "tries=3"
           ];
           # https://www.freedesktop.org/software/systemd/man/251/systemd-cryptenroll.html
           # systemd-cryptenroll --fido2-device=auto
