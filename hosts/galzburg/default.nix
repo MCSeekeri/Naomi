@@ -14,6 +14,7 @@
     "${self}/modules/Hardware"
 
     "${self}/modules/Server/failsafe.nix"
+    "${self}/modules/Server/podman.nix"
 
     "${self}/modules/Services/archisteamfarm.nix"
     "${self}/modules/Services/openlist.nix"
@@ -25,11 +26,14 @@
 
   networking = {
     hostName = "galzburg";
-    firewall.allowedTCPPorts = [
-      80
-      443
-    ];
-    firewall.allowedUDPPorts = [ 443 ];
+    firewall = {
+      allowedTCPPorts = [
+        80
+        443
+      ];
+      allowedUDPPorts = [ 443 ];
+      logRefusedConnections = false;
+    };
   };
 
   hardware = {
@@ -174,6 +178,24 @@
   };
 
   services = {
+    journald.extraConfig = ''
+      SystemMaxUse=64M
+      SystemMaxFileSize=8M
+      SystemMaxFiles=8
+      MaxRetentionSec=14day
+      RateLimitIntervalSec=30s
+      RateLimitBurst=2000
+    '';
+
+    fail2ban = {
+      maxretry = lib.mkForce 3;
+      bantime = "12h";
+      bantime-increment = {
+        enable = true;
+        maxtime = "7d";
+      };
+    };
+
     openlist = {
       enable = true;
       instances = {
@@ -249,21 +271,11 @@
       enable = true;
       interval = "monthly";
     };
-    snapper.configs = {
-      home = {
-        SUBVOLUME = "/home";
-        TIMELINE_CREATE = true;
-        TIMELINE_CLEANUP = true;
-        TIMELINE_LIMIT_HOURLY = 5;
-        TIMELINE_LIMIT_DAILY = 7;
-        TIMELINE_LIMIT_MONTHLY = 0;
-        TIMELINE_LIMIT_YEARLY = 0;
-      };
-    };
     avahi.enable = false;
   };
 
   systemd = {
     settings.Manager.DefaultLimitNOFILE = "1048576";
+    services.tailscaled.serviceConfig.LogLevelMax = "notice";
   };
 }
