@@ -32,6 +32,7 @@
       dedicatedServer.openFirewall = true;
       localNetworkGameTransfers.openFirewall = true;
       remotePlay.openFirewall = true;
+      platformOptimizations.enable = true;
       protontricks.enable = true;
       gamescopeSession.enable = true;
       # fontPackages = with pkgs; [ source-han-sans ];
