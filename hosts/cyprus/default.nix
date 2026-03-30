@@ -2,6 +2,8 @@
 {
   imports = [
     "${self}/modules/Core"
+    "${self}/modules/Core/prc.nix"
+
     "${self}/modules/Hardware"
 
     "${self}/modules/Server/clamav.nix"

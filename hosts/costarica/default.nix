@@ -4,6 +4,7 @@
     ./disko-config.nix
 
     "${self}/modules/Core"
+    "${self}/modules/Core/prc.nix"
 
     "${self}/modules/Desktop/plasma.nix"
     "${self}/modules/Desktop/fcitx5.nix"

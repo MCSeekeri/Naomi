@@ -11,10 +11,7 @@
     };
     settings = {
       auto-optimise-store = lib.mkDefault (!config.boot.isContainer);
-      extra-substituters = lib.mkDefault [
-        "https://mirrors.cernet.edu.cn/nix-channels/store?priority=1"
-        "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store?priority=2"
-        "https://mirror.sjtu.edu.cn/nix-channels/store?priority=3"
+      extra-substituters = [
         "https://nix-community.cachix.org?priority=4"
         "https://numtide.cachix.org?priority=5"
         "https://cache.garnix.io?priority=6"

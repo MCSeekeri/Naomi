@@ -4,10 +4,6 @@
     librewolf = {
       enable = true;
       package = pkgs.librewolf;
-      languagePacks = [ "zh-CN" ];
-      policies = {
-        RequestedLocales = [ "zh-CN" ];
-      };
       profiles = {
         user = {
           settings = {
