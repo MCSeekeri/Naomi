@@ -1,16 +1,17 @@
+{ lib, ... }:
 {
   programs = {
     plasma = {
       powerdevil = {
         battery = {
-          powerButtonAction = "shutDown";
-          powerProfile = "balanced";
+          powerButtonAction = lib.mkDefault "shutDown";
+          powerProfile = lib.mkDefault "balanced";
         };
         AC = {
-          powerButtonAction = "shutDown";
+          powerButtonAction = lib.mkDefault "shutDown";
         };
         lowBattery = {
-          powerButtonAction = "shutDown";
+          powerButtonAction = lib.mkDefault "shutDown";
         };
       };
     };

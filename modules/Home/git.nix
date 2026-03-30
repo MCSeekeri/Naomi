@@ -1,20 +1,21 @@
+{ lib, ... }:
 {
   programs = {
     git = {
-      enable = true;
+      enable = lib.mkDefault true;
       settings = {
-        push.autoSetupRemote = true;
-        pull.rebase = true;
-        log.date = "iso"; # 显而易见
-        submodule.recurse = true; # 自动拉取子模块
+        push.autoSetupRemote = lib.mkDefault true;
+        pull.rebase = lib.mkDefault true;
+        log.date = lib.mkDefault "iso"; # 显而易见
+        submodule.recurse = lib.mkDefault true; # 自动拉取子模块
       };
     };
     delta = {
-      enable = true;
+      enable = lib.mkDefault true;
       options = {
-        diff-so-fancy = true;
-        line-numbers = true;
-        true-color = "always";
+        diff-so-fancy = lib.mkDefault true;
+        line-numbers = lib.mkDefault true;
+        true-color = lib.mkDefault "always";
       };
     };
   };

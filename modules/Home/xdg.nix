@@ -1,11 +1,12 @@
+{ lib, ... }:
 {
   # 设置 XDG 用户目录为英文，避免一些不必要的终端悲剧。
   xdg = {
-    enable = true;
+    enable = lib.mkDefault true;
     userDirs = {
-      enable = true;
-      createDirectories = true;
+      enable = lib.mkDefault true;
+      createDirectories = lib.mkDefault true;
     };
   };
-  home.preferXdgDirectories = true;
+  home.preferXdgDirectories = lib.mkDefault true;
 }

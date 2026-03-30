@@ -8,7 +8,10 @@
 {
   imports = [ "${self}/modules/Desktop/gui.nix" ];
 
-  home-manager.sharedModules = [ inputs.plasma-manager.homeModules.plasma-manager ];
+  home-manager.sharedModules = [
+    inputs.plasma-manager.homeModules.plasma-manager
+    "${self}/modules/Home/plasma-manager"
+  ];
 
   networking = {
     networkmanager.enable = true;

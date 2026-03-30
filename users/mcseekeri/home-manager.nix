@@ -5,16 +5,11 @@
     "${self}/modules/Home/browser/chromium.nix"
     "${self}/modules/Home/fcitx5"
     "${self}/modules/Home/fish/tide.nix"
-    "${self}/modules/Home/plasma-manager"
     "${self}/modules/Home/activitywatch.nix"
     "${self}/modules/Home/awesome-terminal.nix"
     "${self}/modules/Home/direnv.nix"
-    "${self}/modules/Home/git.nix"
     "${self}/modules/Home/kitty.nix"
-    "${self}/modules/Home/sops.nix"
-    "${self}/modules/Home/vibe-coding.nix"
     "${self}/modules/Home/vscode.nix"
-    "${self}/modules/Home/xdg.nix"
   ];
 
   home = {
