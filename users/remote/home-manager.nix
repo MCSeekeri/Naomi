@@ -3,9 +3,6 @@
   imports = [
     "${self}/modules/Home/fish/tide.nix"
     "${self}/modules/Home/direnv.nix"
-    "${self}/modules/Home/git.nix"
-    "${self}/modules/Home/sops.nix"
-    "${self}/modules/Home/xdg.nix"
   ];
 
   home = {

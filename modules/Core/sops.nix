@@ -1,6 +1,11 @@
 { inputs, ... }:
 {
   imports = [ inputs.sops-nix.nixosModules.sops ];
+
+  home-manager = {
+    sharedModules = [ inputs.sops-nix.homeManagerModules.sops ];
+  };
+
   sops.age = {
     # 设备部署之后，反过来复制密钥，然后添加到 Github Repo
     # [TODO]: 未来优化一下这个流程

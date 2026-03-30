@@ -2,9 +2,14 @@
   config,
   lib,
   pkgs,
+  self,
   ...
 }:
 {
+  home-manager = {
+    sharedModules = [ "${self}/modules/Home/git.nix" ];
+  };
+
   services = {
     sysstat.enable = true;
     # gvfs.enable = true;

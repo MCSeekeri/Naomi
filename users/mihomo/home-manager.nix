@@ -2,8 +2,6 @@
 {
   imports = [
     "${self}/modules/Home/fcitx5"
-    "${self}/modules/Home/xdg.nix"
-    "${self}/modules/Home/plasma-manager"
     "${self}/modules/Home/hyprland"
     "${self}/modules/Home/browser/chromium.nix"
     "${self}/modules/Home/vscode.nix"

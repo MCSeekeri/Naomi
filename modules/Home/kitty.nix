@@ -13,9 +13,6 @@
       hide_window_decorations = "titlebar-and-corners";
       shell = "fish"; # 俩 fish
     };
-    extraConfig = ''
-      globinclude kitty.d/**/*.conf # 允许用户自定义
-    '';
 
     font = {
       name = lib.mkForce "Maple Mono Normal CN";

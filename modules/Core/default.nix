@@ -63,7 +63,10 @@
     useUserPackages = true;
     useGlobalPkgs = true;
     extraSpecialArgs = { inherit self inputs outputs; };
-    sharedModules = [ inputs.nix-index-database.homeModules.nix-index ];
+    sharedModules = [
+      inputs.nix-index-database.homeModules.nix-index
+      "${self}/modules/Home/xdg.nix"
+    ];
   };
 
   networking = {
