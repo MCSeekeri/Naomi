@@ -16,10 +16,6 @@
   # 只是提醒一下……启动 nix-ld 相关配置之后会允许 NixOS 执行标准 Linux 二进制，包括病毒
   # 所以，谨慎考虑
   programs = {
-    appimage = {
-      enable = true;
-      binfmt = true;
-    };
     nix-ld = {
       # enable = true;
       libraries =

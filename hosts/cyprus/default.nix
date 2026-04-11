@@ -25,6 +25,7 @@
     "${self}/modules/Desktop/yubikey.nix"
     "${self}/modules/Desktop/wine.nix"
     "${self}/modules/Desktop/extra-fonts.nix"
+    "${self}/modules/Desktop/appimage.nix"
 
     "${self}/modules/Services/archisteamfarm.nix"
     "${self}/modules/Services/dae"
