@@ -9,9 +9,10 @@
     "${self}/modules/Server/clamav.nix"
     "${self}/modules/Server/failsafe.nix"
     "${self}/modules/Server/virt/libvirt.nix"
-    "${self}/modules/Server/virt/virtualbox.nix"
+    # "${self}/modules/Server/virt/virtualbox.nix"
     "${self}/modules/Server/virt/k8s.nix"
     "${self}/modules/Server/podman.nix"
+
     "${self}/modules/Desktop/plasma.nix"
     "${self}/modules/Desktop/sunshine.nix"
     "${self}/modules/Desktop/gaming.nix"
@@ -193,6 +194,18 @@
         TIMELINE_LIMIT_YEARLY = 0;
       };
     };
+    wivrn = {
+      enable = true;
+      highPriority = true;
+      config.enable = true;
+      steam.importOXRRuntimes = true;
+      autoStart = true;
+      openFirewall = true;
+    };
+  };
+
+  environment = {
+    systemPackages = [ pkgs.wayvr ];
   };
 
   security = {
@@ -201,6 +214,15 @@
         enable = true;
         id = [ "23392590" ];
       };
+    };
+  };
+
+  programs = {
+    wireshark = {
+      enable = true;
+      package = pkgs.wireshark;
+      usbmon.enable = true;
+      dumpcap.enable = true;
     };
   };
 }

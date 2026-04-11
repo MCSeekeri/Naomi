@@ -17,6 +17,7 @@
       "incus-admin"
       "vboxusers"
       "gamemode"
+      "wireshark"
     ]
     ++ lib.optionals config.virtualisation.podman.enable [ "podman" ];
     shell = pkgs.bash;
