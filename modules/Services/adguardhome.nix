@@ -8,7 +8,7 @@
         bind_hosts = [ "127.0.0.1" ];
         port = 53;
         upstream_dns = [
-          "tls://dot.pub"
+          "https://dns.alidns.com/dns-query"
           "https://doh.pub/dns-query"
           "[/uc.cn/]quic://223.5.5.5 quic://223.6.6.6 h3://223.5.5.5/dns-query h3://223.6.6.6/dns-query"
           "[/alibaba.com/]quic://223.5.5.5 quic://223.6.6.6 h3://223.5.5.5/dns-query h3://223.6.6.6/dns-query"
@@ -317,6 +317,7 @@
           "2400:3200::1"
           "2606:4700:4700::1111"
         ];
+        fallback_dns = [ ];
         cache_size = 4194304;
         cache_ttl_min = 600;
         cache_ttl_max = 86400;
@@ -345,7 +346,10 @@
     };
   };
 
-  networking.nameservers = [ "127.0.0.1" ];
+  networking = {
+    nameservers = [ "127.0.0.1" ];
+    # networkmanager.dns = lib.mkForce "none";
+  };
 
   systemd.services.adguardhome = lib.mkIf config.services.adguardhome.enable {
     before = lib.optional (config.services.dae.enable or false) "dae.service";
