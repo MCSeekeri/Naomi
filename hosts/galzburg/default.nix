@@ -167,6 +167,15 @@
             ];
             decryption = config.sops.placeholder."xray-${config.networking.hostName}-vless-decryption";
           };
+          sniffing = {
+            enabled = true;
+            destOverride = [
+              "http"
+              "tls"
+              "quic"
+            ];
+            routeOnly = true;
+          };
           streamSettings = {
             network = "xhttp";
             xhttpSettings = {
@@ -175,6 +184,27 @@
           };
         }
       ];
+      routing = {
+        domainStrategy = "IPIfNonMatch";
+        rules = [
+          {
+            # 容易被大公司用 DMCA 击落
+            type = "field";
+            protocol = [ "bittorrent" ];
+            outboundTag = "block";
+          }
+          {
+            type = "field";
+            domain = [ "geosite:private" ];
+            outboundTag = "block";
+          }
+          {
+            type = "field";
+            ip = [ "geoip:private" ];
+            outboundTag = "block";
+          }
+        ];
+      };
       outbounds = [
         {
           protocol = "freedom";
@@ -228,8 +258,7 @@
       };
     };
 
-    # vless://{UUID}@pan.mcseekeri.com:443?encryption={ENCRYPTION}&flow=xtls-rprx-vision&security=tls&sni=pan.mcseekeri.com&alpn=h2&fp=chrome&type=xhttp&host=pan.mcseekeri.com&path=%2Fstatic#galzburg-h2
-    # vless://{UUID}@pan.mcseekeri.com:443?encryption={ENCRYPTION}&flow=xtls-rprx-vision&security=tls&sni=pan.mcseekeri.com&alpn=h3&fp=chrome&type=xhttp&mode=packet-up&host=pan.mcseekeri.com&path=%2Fstatic#galzburg-h3
+    # vless://{UUID}@ea-app.mcseekeri.com:443?alpn=h2&fp=chrome&ech=ea-app.mcseekeri.com%2Bhttps%3A%2F%2Fdns.alidns.com%2Fdns-query&type=xhttp&sni=ea-app.mcseekeri.com&mode=auto&path=%2Fstatic&security=tls&encryption={ENCRYPTION}&extra=%7B%0A%20%20%22downloadSettings%22%3A%20%7B%0A%20%20%20%20%22address%22%3A%20%22pan.mcseekeri.com%22%2C%0A%20%20%20%20%22port%22%3A%20443%2C%0A%20%20%20%20%22network%22%3A%20%22xhttp%22%2C%0A%20%20%20%20%22security%22%3A%20%22tls%22%2C%0A%20%20%20%20%22tlsSettings%22%3A%20%7B%0A%20%20%20%20%20%20%22serverName%22%3A%20%22pan.mcseekeri.com%22%2C%0A%20%20%20%20%20%20%22alpn%22%3A%20%5B%0A%20%20%20%20%20%20%20%20%22h2%22%0A%20%20%20%20%20%20%5D%2C%0A%20%20%20%20%20%20%22echConfigList%22%3A%20%22cloudflare-ech.com%2Bhttps%3A%2F%2Fdns.alidns.com%2Fdns-query%22%2C%0A%20%20%20%20%20%20%22echForceQuery%22%3A%20%22full%22%0A%20%20%20%20%7D%2C%0A%20%20%20%20%22xhttpSettings%22%3A%20%7B%0A%20%20%20%20%20%20%22path%22%3A%20%22%2Fstatic%22%2C%0A%20%20%20%20%20%20%22mode%22%3A%20%22auto%22%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D&insecure=0&host=ea-app.mcseekeri.com&allowInsecure=0&flow=xtls-rprx-vision#galzburg
     # H2 限速多，H3 多限速
     # QUIC 和 IPv6 全面普及的世界，你在哪……
 
