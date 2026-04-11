@@ -1,6 +1,24 @@
 {
   description = "Naomi Flake Configuration";
 
+  nixConfig = {
+    # 给 Garnix 用的，不配置镜像源能把我的额度烧光……
+    extra-substituters = [
+      "https://nix-community.cachix.org?priority=1"
+      "https://numtide.cachix.org?priority=2"
+      "https://cache.garnix.io?priority=3"
+      "https://nix-gaming.cachix.org?priority=4"
+      "https://cache.nixos-cuda.org?priority=5"
+    ];
+    extra-trusted-public-keys = [
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
+      "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="
+      "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
+      "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
+    ];
+  };
+
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11"; # 官方源
     # unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
