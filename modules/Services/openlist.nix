@@ -159,7 +159,7 @@
           _: instance:
           lib.nameValuePair instance.domain {
             forceSSL = true;
-            enableACME = true;
+            useACMEHost = instance.domain;
             locations."/" = {
               proxyPass = "http://127.0.0.1:${toString instance.port}";
 

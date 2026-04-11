@@ -107,7 +107,7 @@ if [ "$ask_sudo_password" -eq 1 ] && [ "$activate_prefix" = "sudo" ]; then
   ssh -t "${ssh_opts[@]}" "$target_host" "sudo -v"
 fi
 
-NIX_SSHOPTS="$(printf '%q ' "${ssh_opts[@]}")" nix copy "${nix_copy_args[@]}" --to "ssh://$target_host" "$out"
+NIX_SSHOPTS="$(printf '%q ' "${ssh_opts[@]}")" nix copy --no-check-sigs "${nix_copy_args[@]}" --to "ssh-ng://$target_host" "$out"
 
 if [ "$action" = "push" ]; then
   exit 0

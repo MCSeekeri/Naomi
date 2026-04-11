@@ -76,7 +76,7 @@
     bandwhich.enable = lib.mkDefault true;
     mosh = {
       enable = lib.mkDefault true;
-      openFirewall = false;
+      openFirewall = true;
     };
   };
   environment = {

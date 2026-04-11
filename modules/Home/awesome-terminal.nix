@@ -94,7 +94,6 @@
     #   enableZshIntegration = true;
     #   enableTransience = true;
     # };
-    nix-index.enable = true;
     fastfetch = {
       enable = true;
       # 我完全看不出来有何意义，但 unixporn 上全是这种东西……
