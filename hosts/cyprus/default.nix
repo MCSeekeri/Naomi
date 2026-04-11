@@ -32,6 +32,7 @@
     "${self}/modules/Services/adguardhome.nix"
     "${self}/modules/Services/geph5.nix"
     "${self}/modules/Services/localsend.nix"
+    "${self}/modules/Services/Grafana/agent.nix"
 
     "${self}/modules/Games/retro.nix"
     "${self}/modules/Games/minecraft.nix"
@@ -44,6 +45,7 @@
   # 网络配置
   networking = {
     hostName = "cyprus"; # 主机名，设置好之后最好不要修改
+    firewall.interfaces.tailscale0.allowedTCPPorts = [ 9091 ];
   };
 
   nix.buildMachines = [
@@ -207,6 +209,13 @@
 
   environment = {
     systemPackages = [ pkgs.wayvr ];
+    etc."alloy/sink.alloy".text = ''
+      loki.write "default" {
+        endpoint {
+          url = "http://galzburg:9092/loki/api/v1/push"
+        }
+      }
+    '';
   };
 
   security = {
