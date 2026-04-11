@@ -85,6 +85,7 @@
 
   services = {
     userborn.enable = true;
+    resolved.enable = true;
   };
 
   environment = {
@@ -140,6 +141,12 @@
     # enableStrictShellChecks = true;
     # [TODO] 等我整明白如何给上游提交 PR 修复这些问题再说
     network.wait-online.enable = false;
+    oomd = {
+      enable = true;
+      enableRootSlice = true;
+      enableUserSlices = true;
+      enableSystemSlice = true;
+    };
   };
 
   virtualisation.vmVariant = {

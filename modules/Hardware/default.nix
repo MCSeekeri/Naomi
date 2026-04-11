@@ -288,6 +288,7 @@ in
         );
 
       sessionVariables = lib.mkMerge [
+        # 在某些强制需要独显渲染的时候会出现微妙的错误
         (lib.mkIf isIntel {
           LIBVA_DRIVER_NAME = "iHD";
           VDPAU_DRIVER = "va_gl";

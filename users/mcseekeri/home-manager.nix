@@ -65,6 +65,7 @@
       pnpm
       yarn-berry
       unityhub
+      imhex
       # micromamba
       gradle
       reqable
@@ -117,7 +118,7 @@
             kiss-translator
             # aw-watcher-web
             private-relay
-            keepassxc-browser
+            bitwarden
             steam-database
           ];
         };
