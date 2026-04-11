@@ -17,7 +17,10 @@
     "${self}/modules/Server/podman.nix"
 
     "${self}/modules/Services/archisteamfarm.nix"
+    "${self}/modules/Services/cloudflared.nix"
     "${self}/modules/Services/cowrie.nix"
+    "${self}/modules/Services/Grafana"
+    "${self}/modules/Services/Grafana/agent.nix"
     "${self}/modules/Services/openlist.nix"
     "${self}/modules/Services/nginx.nix"
     "${self}/modules/Services/vaultwarden.nix"
@@ -36,6 +39,10 @@
         443
       ];
       allowedUDPPorts = [ 443 ];
+      interfaces.tailscale0.allowedTCPPorts = [
+        9090
+        9092
+      ];
       logRefusedConnections = false;
     };
   };
@@ -118,6 +125,15 @@
       email = "mcseekeri@outlook.com";
       dnsProvider = "cloudflare";
       environmentFile = config.sops.secrets.acme.path;
+    };
+    certs = {
+      "pan.mcseekeri.com".group = "nginx";
+      "drive.sci-adv.cc".group = "nginx";
+      "grafana.mcseekeri.com".group = "nginx";
+      "vault.mcseekeri.com".group = "nginx";
+      "ea-app.mcseekeri.com" = {
+        group = "nginx";
+      };
     };
   };
 
@@ -258,6 +274,14 @@
       };
     };
 
+    grafana.settings = {
+      security.admin_user = "MCSeekeri";
+      server = {
+        domain = "grafana.mcseekeri.com";
+        root_url = "https://grafana.mcseekeri.com/";
+      };
+    };
+
     # vless://{UUID}@ea-app.mcseekeri.com:443?alpn=h2&fp=chrome&ech=ea-app.mcseekeri.com%2Bhttps%3A%2F%2Fdns.alidns.com%2Fdns-query&type=xhttp&sni=ea-app.mcseekeri.com&mode=auto&path=%2Fstatic&security=tls&encryption={ENCRYPTION}&extra=%7B%0A%20%20%22downloadSettings%22%3A%20%7B%0A%20%20%20%20%22address%22%3A%20%22pan.mcseekeri.com%22%2C%0A%20%20%20%20%22port%22%3A%20443%2C%0A%20%20%20%20%22network%22%3A%20%22xhttp%22%2C%0A%20%20%20%20%22security%22%3A%20%22tls%22%2C%0A%20%20%20%20%22tlsSettings%22%3A%20%7B%0A%20%20%20%20%20%20%22serverName%22%3A%20%22pan.mcseekeri.com%22%2C%0A%20%20%20%20%20%20%22alpn%22%3A%20%5B%0A%20%20%20%20%20%20%20%20%22h2%22%0A%20%20%20%20%20%20%5D%2C%0A%20%20%20%20%20%20%22echConfigList%22%3A%20%22cloudflare-ech.com%2Bhttps%3A%2F%2Fdns.alidns.com%2Fdns-query%22%2C%0A%20%20%20%20%20%20%22echForceQuery%22%3A%20%22full%22%0A%20%20%20%20%7D%2C%0A%20%20%20%20%22xhttpSettings%22%3A%20%7B%0A%20%20%20%20%20%20%22path%22%3A%20%22%2Fstatic%22%2C%0A%20%20%20%20%20%20%22mode%22%3A%20%22auto%22%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D&insecure=0&host=ea-app.mcseekeri.com&allowInsecure=0&flow=xtls-rprx-vision#galzburg
     # H2 限速多，H3 多限速
     # QUIC 和 IPv6 全面普及的世界，你在哪……
@@ -284,31 +308,58 @@
           keepalive 32;
         '';
       };
-      virtualHosts."pan.mcseekeri.com" = {
-        http2 = true;
-        http3 = true;
-        quic = true;
-        reuseport = true;
-        extraConfig = ''
-          add_header Alt-Svc 'h3=":443"; ma=86400' always;
-          add_header Strict-Transport-Security "max-age=31536000" always;
-        '';
-        locations."^~ /static" = {
-          extraConfig = ''
-            access_log off;
-            log_not_found off;
+      virtualHosts = {
+        "pan.mcseekeri.com" = {
+          http2 = true;
+          http3 = true;
+          quic = true;
+          locations."^~ /static" = {
+            extraConfig = ''
+              access_log off;
+              log_not_found off;
 
-            grpc_pass grpc://xray-xhttp;
-            client_body_timeout 1d;
-            grpc_read_timeout 1d;
-            grpc_send_timeout 1d;
-            grpc_socket_keepalive on;
-            client_max_body_size 0;
+              grpc_pass grpc://xray-xhttp;
+              grpc_read_timeout 1d;
+              grpc_send_timeout 1d;
+              grpc_socket_keepalive on;
+              client_max_body_size 0;
+            '';
+          };
+        };
+        "grafana.mcseekeri.com" = {
+          forceSSL = true;
+          useACMEHost = "grafana.mcseekeri.com";
+          http2 = true;
+          http3 = true;
+          quic = true;
+          locations."/" = {
+            proxyPass = "http://127.0.0.1:4300";
+            proxyWebsockets = true;
+            recommendedProxySettings = true;
+          };
+        };
+        "vault.mcseekeri.com".useACMEHost = "vault.mcseekeri.com";
+        "ea-app.mcseekeri.com" = {
+          forceSSL = true;
+          useACMEHost = "ea-app.mcseekeri.com";
+          http2 = true;
+          http3 = true;
+          quic = true;
+          locations."^~ /static" = {
+            extraConfig = ''
+              access_log off;
+              log_not_found off;
 
-            grpc_set_header Host $host;
-            grpc_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            grpc_set_header X-Forwarded-Proto $scheme;
-          '';
+              grpc_pass grpc://xray-xhttp;
+              grpc_read_timeout 1d;
+              grpc_send_timeout 1d;
+              grpc_socket_keepalive on;
+              client_max_body_size 0;
+            '';
+          };
+          locations."/" = {
+            return = "404";
+          };
         };
       };
     };
@@ -329,5 +380,40 @@
       domain = "vault.mcseekeri.com";
       environmentFile = [ config.sops.secrets.vaultwarden_env.path ];
     };
+
+    prometheus.scrapeConfigs = [
+      {
+        job_name = "node";
+        static_configs = [
+          {
+            labels.host = "galzburg";
+            targets = [ "127.0.0.1:9091" ];
+          }
+          {
+            labels.host = "cyprus";
+            targets = [ "cyprus:9091" ];
+          }
+        ];
+      }
+      {
+        job_name = "cowrie";
+        static_configs = [
+          {
+            labels.host = "galzburg";
+            targets = [ "127.0.0.1:9000" ];
+          }
+        ];
+      }
+    ];
+  };
+
+  environment = {
+    etc."alloy/sink.alloy".text = ''
+      loki.write "default" {
+        endpoint {
+          url = "http://127.0.0.1:9092/loki/api/v1/push"
+        }
+      }
+    '';
   };
 }
