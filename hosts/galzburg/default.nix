@@ -20,6 +20,7 @@
     "${self}/modules/Services/cowrie.nix"
     "${self}/modules/Services/openlist.nix"
     "${self}/modules/Services/nginx.nix"
+    "${self}/modules/Services/vaultwarden.nix"
     "${self}/modules/Services/xray.nix"
 
     "${self}/users/remote"
@@ -134,6 +135,14 @@
       sopsFile = "${self}/secrets/services/acme.env";
       format = "dotenv";
       key = "";
+    };
+    vaultwarden_env = {
+      sopsFile = "${self}/secrets/services/vaultwarden.env";
+      format = "dotenv";
+      key = "";
+      owner = "vaultwarden";
+      group = "vaultwarden";
+      mode = "0440";
     };
   };
 
@@ -284,5 +293,12 @@
   systemd = {
     settings.Manager.DefaultLimitNOFILE = "1048576";
     services.tailscaled.serviceConfig.LogLevelMax = "notice";
+  };
+
+  services = {
+    vaultwarden = {
+      domain = "vault.mcseekeri.com";
+      environmentFile = [ config.sops.secrets.vaultwarden_env.path ];
+    };
   };
 }
