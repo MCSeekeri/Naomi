@@ -17,6 +17,7 @@
     "${self}/modules/Server/podman.nix"
 
     "${self}/modules/Services/archisteamfarm.nix"
+    "${self}/modules/Services/cowrie.nix"
     "${self}/modules/Services/openlist.nix"
     "${self}/modules/Services/nginx.nix"
     "${self}/modules/Services/xray.nix"
@@ -28,6 +29,8 @@
     hostName = "galzburg";
     firewall = {
       allowedTCPPorts = [
+        22 # 兵者，诡道也。
+        23
         80
         443
       ];
@@ -178,6 +181,10 @@
   };
 
   services = {
+    # 单车单车，异乡的温柔
+    openssh.ports = [ 16489 ];
+    # 偷车偷车，像江水东流
+
     journald.extraConfig = ''
       SystemMaxUse=64M
       SystemMaxFileSize=8M
