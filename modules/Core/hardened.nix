@@ -4,7 +4,6 @@
   inputs,
   ...
 }:
-
 {
   # 未来可能讲更有意思的话，著更其完美的文，做更其壮丽的事业，但今天只是今天，未来也只是今天的未来。
   # 若留下探索，后人总结；若留下经验，后人咀嚼；若留下教训，后人借鉴；若留下失误，后人避免。
@@ -20,7 +19,6 @@
   };
 
   config = lib.mkIf config.security.hardened.enable {
-
     nix-mineral = {
       enable = true;
       preset = "compatibility";

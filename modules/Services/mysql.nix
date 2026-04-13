@@ -4,7 +4,6 @@
   lib,
   ...
 }:
-
 {
   environment.systemPackages = lib.optionals config.services.mysql.enable [ pkgs.mycli ];
 

@@ -169,5 +169,4 @@
       snapper.configs = lib.mkForce { };
     };
   };
-
 }

@@ -23,7 +23,6 @@
       nix-diff
       rclone
     ];
-
   };
 
   programs = {
