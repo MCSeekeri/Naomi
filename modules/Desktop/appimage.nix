@@ -34,7 +34,8 @@
         })
       ];
       nativeBuildInputs = [ pkgs.makeWrapper ];
-      postBuild = # QT 魔法，防止不同版本的打架
+      postBuild =
+        # QT 魔法，防止不同版本的打架
         ''
           mv $out/bin/appimage-run $out/bin/.appimage-run-wrapped
           makeWrapper $out/bin/.appimage-run-wrapped $out/bin/appimage-run \
