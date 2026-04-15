@@ -12,20 +12,16 @@ node {
 # https://github.com/daeuniverse/dae/blob/main/docs/zh/configuration/dns.md
 dns {
 	# ipversion_prefer: 4 # IPv6 在某些网络环境下是个悲剧
+	bind: 'tcp+udp://127.0.0.1:53'
 	upstream {
-		adguard: 'udp://127.0.0.1:53'
-		alidns: 'https://dns.alidns.com/dns-query'
-		cloudflare: 'https://cloudflare-dns.com/dns-query'
+		alidns: 'https://dns.alidns.com'
+		cloudflare: 'https://cloudflare-dns.com'
 	}
 	routing {
 		request {
 			qname(geosite:category-ads, geosite:category-ads-all) -> reject
-			qname(geosite:cn) -> adguard
+			qname(geosite:cn) -> alidns
 			fallback: cloudflare
-		}
-		response {
-			ip(geoip:private) && !qname(geosite:cn) -> cloudflare
-			fallback: accept
 		}
 	}
 }
@@ -39,10 +35,11 @@ group {
 # https://github.com/daeuniverse/dae/blob/main/docs/zh/configuration/routing.md
 routing {
 	domain(geosite:category-ads) -> block
-	pname(geph5-client, geph5-client-gui, gephgui-wry, mihomo, clash-rs,  hysteria2, naiveproxy, sing-box, v2ray, xray, tailscaled, localsend_app, qbittorrent, AdGuardHome) -> must_direct
+	pname(systemd-resolved, geph5-client, geph5-client-gui, gephgui-wry, mihomo, clash-rs,  hysteria2, naiveproxy, sing-box, v2ray, xray, tailscaled, localsend_app, qbittorrent, AdGuardHome) -> must_direct
 	pname(NetworkManager) -> direct
 	dip(224.0.0.0/3, 'ff00::/8', geoip:private) -> must_direct
 	l4proto(udp) && dport(443) -> block
+	dport(53) && l4proto(tcp) -> block
 	dip(geoip:cn) -> direct
 	domain(geosite:cn, geosite:geolocation-cn, geosite:category-games@cn, suffix: steamserver.net) -> direct
 	domain(suffix: steamstatic.com) -> proxy
