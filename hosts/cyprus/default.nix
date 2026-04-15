@@ -29,7 +29,6 @@
 
     "${self}/modules/Services/archisteamfarm.nix"
     "${self}/modules/Services/dae"
-    "${self}/modules/Services/adguardhome.nix"
     "${self}/modules/Services/geph5.nix"
     "${self}/modules/Services/localsend.nix"
     "${self}/modules/Services/Grafana/agent.nix"
