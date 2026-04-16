@@ -38,6 +38,8 @@
       remmina
       blender
       piliplus
+      bitwarden-desktop
+      peazip
       # 主题
       lain-kde-splashscreen
       # kora-icon-theme
@@ -75,12 +77,12 @@
       nix-diff
       yt-dlp
       ffmpeg-full
-      peazip
       rclone
       httrack
       nixos-anywhere
       cachix
-      bitwarden-desktop
+      mat2
+      exiftool
     ];
     # ++ (lib.pipe kdePackages.sources [
     #   builtins.attrNames
