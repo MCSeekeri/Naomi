@@ -1,9 +1,10 @@
-_: {
+{ lib, ... }:
+{
   services.vaultwarden = {
     enable = true;
-    configureNginx = true;
-    dbBackend = "sqlite";
-    backupDir = "/var/backup/vaultwarden";
+    configureNginx = lib.mkDefault true;
+    dbBackend = lib.mkDefault "sqlite";
+    backupDir = lib.mkDefault "/var/backup/vaultwarden";
     # environmentFile = [ config.sops.secrets.vaultwarden_env.path ];
     # 基于环境变量的配置
     config = {

@@ -21,8 +21,8 @@
     "${self}/modules/Services/cowrie.nix"
     "${self}/modules/Services/Grafana"
     "${self}/modules/Services/Grafana/agent.nix"
+    "${self}/modules/Services/caddy.nix"
     "${self}/modules/Services/openlist.nix"
-    "${self}/modules/Services/nginx.nix"
     "${self}/modules/Services/vaultwarden.nix"
     "${self}/modules/Services/xray.nix"
 
@@ -117,24 +117,6 @@
   system = {
     stateVersion = "25.11";
     autoUpgrade.enable = true;
-  };
-
-  security.acme = {
-    acceptTerms = true;
-    defaults = {
-      email = "mcseekeri@outlook.com";
-      dnsProvider = "cloudflare";
-      environmentFile = config.sops.secrets.acme.path;
-    };
-    certs = {
-      "pan.mcseekeri.com".group = "nginx";
-      "drive.sci-adv.cc".group = "nginx";
-      "grafana.mcseekeri.com".group = "nginx";
-      "vault.mcseekeri.com".group = "nginx";
-      "ea-app.mcseekeri.com" = {
-        group = "nginx";
-      };
-    };
   };
 
   sops.secrets = {
@@ -258,6 +240,7 @@
       };
     };
 
+    nginx.enable = lib.mkForce false;
     openlist = {
       enable = true;
       instances = {
@@ -286,81 +269,61 @@
     # H2 限速多，H3 多限速
     # QUIC 和 IPv6 全面普及的世界，你在哪……
 
-    nginx = {
-      appendConfig = ''
-        worker_processes auto;
-        worker_rlimit_nofile 131072;
+    caddy = {
+      email = "mcseekeri@outlook.com";
+      environmentFile = config.sops.secrets.acme.path;
+      globalConfig = ''
+        acme_dns cloudflare {env.CLOUDFLARE_DNS_API_TOKEN}
+
+        ech ech.mcseekeri.com {
+          dns cloudflare {env.CLOUDFLARE_DNS_API_TOKEN}
+        }
       '';
-      appendHttpConfig = ''
-        keepalive_requests 1000;
-        open_file_cache max=200000 inactive=20s;
-        open_file_cache_valid 30s;
-        open_file_cache_min_uses 2;
-        open_file_cache_errors on;
-      '';
-      eventsConfig = ''
-        worker_connections 8192;
-        use epoll;
-      '';
-      upstreams.xray-xhttp = {
-        servers."127.0.0.1:30101" = { };
-        extraConfig = ''
-          keepalive 32;
-        '';
-      };
       virtualHosts = {
-        "pan.mcseekeri.com" = {
-          http2 = true;
-          http3 = true;
-          quic = true;
-          locations."^~ /static" = {
-            extraConfig = ''
-              access_log off;
-              log_not_found off;
+        "ech.mcseekeri.com".extraConfig = ''
+          respond "" 204
+        '';
+        "pan.mcseekeri.com".extraConfig = ''
+          encode zstd gzip
 
-              grpc_pass grpc://xray-xhttp;
-              grpc_read_timeout 1d;
-              grpc_send_timeout 1d;
-              grpc_socket_keepalive on;
-              client_max_body_size 0;
-            '';
-          };
-        };
-        "grafana.mcseekeri.com" = {
-          forceSSL = true;
-          useACMEHost = "grafana.mcseekeri.com";
-          http2 = true;
-          http3 = true;
-          quic = true;
-          locations."/" = {
-            proxyPass = "http://127.0.0.1:4300";
-            proxyWebsockets = true;
-            recommendedProxySettings = true;
-          };
-        };
-        "vault.mcseekeri.com".useACMEHost = "vault.mcseekeri.com";
-        "ea-app.mcseekeri.com" = {
-          forceSSL = true;
-          useACMEHost = "ea-app.mcseekeri.com";
-          http2 = true;
-          http3 = true;
-          quic = true;
-          locations."^~ /static" = {
-            extraConfig = ''
-              access_log off;
-              log_not_found off;
+          handle /static* {
+            reverse_proxy h2c://127.0.0.1:30101 {
+              flush_interval -1
+              stream_close_delay 5m
+            }
+          }
 
-              grpc_pass grpc://xray-xhttp;
-              grpc_read_timeout 1d;
-              grpc_send_timeout 1d;
-              grpc_socket_keepalive on;
-              client_max_body_size 0;
-            '';
-          };
-          locations."/" = {
-            return = "404";
-          };
-        };
+          handle {
+            reverse_proxy 127.0.0.1:25478
+          }
+        '';
+        "drive.sci-adv.cc".extraConfig = ''
+          encode zstd gzip
+
+          reverse_proxy 127.0.0.1:25479
+        '';
+        "grafana.mcseekeri.com".extraConfig = ''
+          encode zstd gzip
+
+          reverse_proxy 127.0.0.1:4300
+        '';
+        "vault.mcseekeri.com".extraConfig = ''
+          encode zstd gzip
+
+          reverse_proxy 127.0.0.1:8222
+        '';
+        "ea-app.mcseekeri.com".extraConfig = ''
+          handle /static* {
+            reverse_proxy h2c://127.0.0.1:30101 {
+              flush_interval -1
+              stream_close_delay 5m
+            }
+          }
+
+          handle {
+            respond "Not Found" 404
+          }
+        '';
       };
     };
     btrfs.autoScrub = {
@@ -377,8 +340,13 @@
 
   services = {
     vaultwarden = {
+      configureNginx = lib.mkForce false;
       domain = "vault.mcseekeri.com";
       environmentFile = [ config.sops.secrets.vaultwarden_env.path ];
+      config = {
+        ENABLE_WEBSOCKET = true;
+        ROCKET_ADDRESS = "127.0.0.1";
+      };
     };
 
     prometheus.scrapeConfigs = [
