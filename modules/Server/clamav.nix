@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 {
   services.clamav = {
     # fangfrisch.enable = true; # 误报率太吓人了
@@ -29,7 +29,7 @@
       };
     };
   };
-  security.polkit.extraConfig = lib.mkAfter ''
+  security.polkit.extraConfig = ''
     polkit.addRule(function(action, subject) {
       if (action.id != "org.freedesktop.systemd1.manage-units" || subject.user != "clamav") {
         return;
