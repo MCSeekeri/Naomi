@@ -147,7 +147,9 @@
   sops.templates."xray-${config.networking.hostName}-config.json" = {
     content = builtins.toJSON {
       log = {
+        access = "none";
         loglevel = "warning";
+        maskAddress = "half";
       };
       inbounds = [
         {
@@ -178,6 +180,15 @@
             network = "xhttp";
             xhttpSettings = {
               path = "/static";
+              xPaddingObfsMode = true;
+              xPaddingMethod = "tokenish";
+              xPaddingPlacement = "queryInHeader";
+              xPaddingHeader = "X-Signature";
+              xPaddingKey = "sig";
+              sessionPlacement = "query";
+              sessionKey = "id";
+              seqPlacement = "query";
+              seqKey = "part";
             };
           };
         }
@@ -201,6 +212,12 @@
             ip = [ "geoip:private" ];
             outboundTag = "block";
           }
+          {
+            type = "field";
+            ip = [ "geoip:cn" ];
+            outboundTag = "block";
+          }
+
         ];
       };
       outbounds = [
@@ -326,19 +343,7 @@
         '';
       };
     };
-    btrfs.autoScrub = {
-      enable = true;
-      interval = "monthly";
-    };
-    avahi.enable = false;
-  };
 
-  systemd = {
-    settings.Manager.DefaultLimitNOFILE = "1048576";
-    services.tailscaled.serviceConfig.LogLevelMax = "notice";
-  };
-
-  services = {
     vaultwarden = {
       configureNginx = lib.mkForce false;
       domain = "vault.mcseekeri.com";
@@ -373,6 +378,16 @@
         ];
       }
     ];
+    btrfs.autoScrub = {
+      enable = true;
+      interval = "monthly";
+    };
+    avahi.enable = false;
+  };
+
+  systemd = {
+    settings.Manager.DefaultLimitNOFILE = "1048576";
+    services.tailscaled.serviceConfig.LogLevelMax = "notice";
   };
 
   environment = {

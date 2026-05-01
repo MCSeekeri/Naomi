@@ -1,7 +1,22 @@
-{ config, self, ... }:
+{
+  config,
+  pkgs,
+  self,
+  ...
+}:
 {
   services.xray = {
     enable = true;
+    package = pkgs.xray.overrideAttrs (_: {
+      version = "26.4.25";
+      src = pkgs.fetchFromGitHub {
+        owner = "XTLS";
+        repo = "Xray-core";
+        rev = "v26.4.25";
+        hash = "sha256-sJWL6Z6bMUrL0u2Dd77/bCQbgynNOBN/Vh4RybFABS0=";
+      };
+      vendorHash = "sha256-D7zOXdiMr5g0drvwqxD8CoqAVsFyR70sW7mJnsVAEWE=";
+    });
     settingsFile = config.sops.templates."xray-${config.networking.hostName}-config.json".path;
   };
 
