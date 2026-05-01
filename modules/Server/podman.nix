@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 {
   virtualisation = {
     oci-containers.backend = "podman";
@@ -22,14 +22,8 @@
     };
   };
   environment.systemPackages = [ pkgs.docker-client ];
-  networking.firewall.interfaces =
-    let
-      matchAll = if !config.networking.nftables.enable then "podman+" else "podman*";
-    in
-    {
-      "${matchAll}".allowedUDPPorts = [
-        53
-        5353
-      ];
-    };
+  networking.firewall.interfaces."podman*".allowedUDPPorts = [
+    53
+    5353
+  ];
 }
