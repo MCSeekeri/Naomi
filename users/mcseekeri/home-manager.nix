@@ -24,14 +24,13 @@
       keepassxc
       qq
       wpsoffice-cn
-      gopeed
       kdePackages.kdenlive
       kdePackages.kleopatra
       kdePackages.kcalc
       anki-bin
       discord
       ayugram-desktop
-      qbittorrent
+      qbittorrent-enhanced
       krita
       obsidian
       kiwix
@@ -49,8 +48,6 @@
       # 游戏娱乐
       moonlight-qt
       vlc
-      lutris
-      (bottles.override { removeWarningPopup = true; })
       ckan
       r2modman
       musikcube
@@ -84,6 +81,7 @@
       cachix
       mat2
       exiftool
+      aria2
     ];
     # ++ (lib.pipe kdePackages.sources [
     #   builtins.attrNames
