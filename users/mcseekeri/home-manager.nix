@@ -10,6 +10,7 @@
     "${self}/modules/Home/direnv.nix"
     "${self}/modules/Home/kitty.nix"
     "${self}/modules/Home/vscode.nix"
+    "${self}/modules/Home/prc.nix"
   ];
 
   home = {
@@ -398,10 +399,6 @@
         kwinrc."Xwayland" = {
           "Scale" = 1.25;
           "XwaylandEavesdrops" = "Modifiers";
-        };
-        plasma-localerc = {
-          "Formats"."LANG" = "zh_CN.UTF-8";
-          "Translations"."LANGUAGE" = "zh_CN";
         };
         plasmaparc."General"."RaiseMaximumVolume" = true;
       };

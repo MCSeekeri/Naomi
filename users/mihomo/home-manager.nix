@@ -6,6 +6,7 @@
     "${self}/modules/Home/browser/chromium.nix"
     "${self}/modules/Home/vscode.nix"
     "${self}/modules/Home/fish/tide.nix"
+    "${self}/modules/Home/prc.nix"
   ];
   home = {
     username = "mihomo";
@@ -32,8 +33,6 @@
         };
         "kwinrc"."Wayland"."VirtualKeyboardEnabled" = true;
         "kwinrc"."Xwayland"."Scale" = 1.25;
-        "plasma-localerc"."Formats"."LANG" = "zh_CN.UTF-8";
-        "plasma-localerc"."Translations"."LANGUAGE" = "zh_CN";
       };
     };
   };
