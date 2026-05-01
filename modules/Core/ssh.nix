@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ pkgs, lib, ... }:
 {
   services = {
     openssh = {
@@ -11,11 +11,19 @@
         TCPKeepAlive = false;
         # AllowTcpForwarding = false; # 禁止 TCP 转发，我偶尔从设备跳转到路由器的时候会用到……
         AllowAgentForwarding = false;
-      };
+        PermitRootLogin = "no"; # 禁止 root 远程登录
+        Banner = "${pkgs.writeText "sshd-banner" ''
+          UNAUTHORIZED ACCESS TO THIS DEVICE IS PROHIBITED
+          禁止未经授权访问本设备
+
+          You must have explicit, authorized permission to access or configure this device. Unauthorized attempts and actions to access or use this system may result in civil and/or criminal penalties. All activities performed on this device are logged and monitored.
+          您必须具有明确的授权权限才能访问或配置此设备。未经授权尝试访问或使用本系统可能会导致民事和/或刑事处罚。在此设备上执行的所有活动都会被记录和监控。
+
+
+        ''}";
+      }; # 从 Reddit 抄的，好玩
       openFirewall = true;
-      settings.PermitRootLogin = "no"; # 禁止 root 远程登录
-      banner = "UNAUTHORIZED ACCESS TO THIS DEVICE IS PROHIBITED\n禁止未经授权访问本设备\n\nYou must have explicit, authorized permission to access or configure this device. Unauthorized attempts and actions to access or use this system may result in civil and/or criminal penalties. All activities performed on this device are logged and monitored.\n您必须具有明确的授权权限才能访问或配置此设备。未经授权尝试访问或使用本系统可能会导致民事和/或刑事处罚。在此设备上执行的所有活动都会被记录和监控。\n\n";
-    }; # 从 Reddit 抄的，好玩
+    };
     fail2ban = {
       enable = true;
       ignoreIP = [

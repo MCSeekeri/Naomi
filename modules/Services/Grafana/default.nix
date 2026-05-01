@@ -28,6 +28,7 @@
         };
         security = {
           admin_password = "$__file{${config.sops.secrets.grafana_admin_password.path}}";
+          secret_key = "$__file{${config.sops.secrets.grafana_secret_key.path}}";
         };
         server = {
           http_port = 4300;
@@ -105,10 +106,18 @@
     };
   };
 
-  sops.secrets.grafana_admin_password = {
-    key = "admin_password";
-    owner = "grafana";
-    group = "grafana";
-    sopsFile = "${self}/secrets/services/grafana.yaml";
+  sops.secrets = {
+    grafana_admin_password = {
+      key = "admin_password";
+      owner = "grafana";
+      group = "grafana";
+      sopsFile = "${self}/secrets/services/grafana.yaml";
+    };
+    grafana_secret_key = {
+      key = "secret_key";
+      owner = "grafana";
+      group = "grafana";
+      sopsFile = "${self}/secrets/services/grafana.yaml";
+    };
   };
 }

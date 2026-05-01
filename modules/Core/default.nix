@@ -92,8 +92,7 @@
     shellAliases = {
       sudo = "run0 --background=";
     };
-    # 基于 systemd-run 的 sudo 替代品，除了每次都要输密码之外没什么缺点
-    # [TODO] 等 26.05 发布之后看看新版本是否修复
+    # 基于 systemd-run 的 sudo 替代品
 
     stub-ld.enable = lib.mkForce false;
 

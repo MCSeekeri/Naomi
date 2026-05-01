@@ -25,7 +25,7 @@
     inputs.winapps.packages."${pkgs.stdenv.hostPlatform.system}".winapps
     inputs.winapps.packages."${pkgs.stdenv.hostPlatform.system}".winapps-launcher
 
-    wineWow64Packages.stableFull_11 # [TODO] 等待 26.05 发布后移除版本号
+    wineWow64Packages.stagingFull
     winetricks
   ];
 }

@@ -16,7 +16,7 @@
   home = {
     username = "mcseekeri";
     homeDirectory = "/home/mcseekeri";
-    stateVersion = "25.05";
+    stateVersion = "26.05";
 
     packages = with pkgs; [
       # 桌面应用

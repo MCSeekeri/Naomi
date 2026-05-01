@@ -5,26 +5,6 @@
     nix-gaming.nixosModules.platformOptimizations
   ];
 
-  # Steam 版本的地平线 4 扳机震动，你在哪里……
-  nixpkgs.overlays = [
-    (final: prev: {
-      linuxPackages_zen = prev.linuxPackages_zen.extend (
-        _kernelFinal: kernelPrev: {
-          xpadneo = kernelPrev.xpadneo.overrideAttrs {
-            version = "0.10";
-            patches = [ ];
-            src = final.fetchFromGitHub {
-              owner = "atar-axis";
-              repo = "xpadneo";
-              tag = "v0.10";
-              hash = "sha256-jIY7NzjVZMlJ+2EY4hrka1MBUalQiNWzQgW2aiNi7WU=";
-            };
-          };
-        }
-      );
-    })
-  ];
-
   programs = {
     steam = {
       enable = true;

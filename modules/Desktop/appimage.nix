@@ -29,7 +29,7 @@
             pkgs.mpv
             pkgs.sqlcipher # Element
             pkgs.webkitgtk_4_1 # JHentai
-            pkgs.xorg.xcbutilcursor # Qt 6 xcb
+            pkgs.libxcb-cursor # Qt 6 xcb
           ];
         })
       ];
