@@ -8,7 +8,7 @@
   programs = {
     steam = {
       enable = true;
-      # extest.enable = true;
+      extest.enable = true;
       dedicatedServer.openFirewall = true;
       localNetworkGameTransfers.openFirewall = true;
       remotePlay.openFirewall = true;
@@ -16,6 +16,11 @@
       protontricks.enable = true;
       gamescopeSession.enable = true;
       # fontPackages = with pkgs; [ source-han-sans ];
+      extraPackages = with pkgs; [
+        gamescope
+        mangohud
+        gamemode
+      ];
       extraCompatPackages = with pkgs; [ proton-ge-bin ];
     };
     gamescope = {
@@ -39,7 +44,6 @@
     steam-run
     steamtinkerlaunch
     ludusavi
-    samrewritten
     steam-tui
     steamcmd
     gamemode
