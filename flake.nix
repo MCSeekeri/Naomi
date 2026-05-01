@@ -20,8 +20,7 @@
   };
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11"; # 官方源
-    # unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable"; # 官方源
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-compat.url = "github:NixOS/flake-compat";
     systems.url = "github:nix-systems/default"; # 两年没更新，都不知道为什么有 Flake 引用这个……
@@ -49,7 +48,7 @@
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -81,7 +80,7 @@
     };
 
     stylix = {
-      url = "github:danth/stylix/release-25.11";
+      url = "github:danth/stylix";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-parts.follows = "flake-parts";

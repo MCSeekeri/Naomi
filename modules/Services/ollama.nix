@@ -15,6 +15,6 @@
 
   environment.systemPackages = with pkgs; [
     chatbox
-    # cherry-studio # [TODO] 等 26.05 发起冲锋一切都会好起来的
+    cherry-studio
   ];
 }

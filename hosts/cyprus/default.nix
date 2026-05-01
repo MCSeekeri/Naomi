@@ -108,7 +108,7 @@
   };
 
   system = {
-    stateVersion = "25.05";
+    stateVersion = "26.05";
     autoUpgrade.enable = true;
   };
 
@@ -207,7 +207,10 @@
   };
 
   environment = {
-    systemPackages = [ pkgs.wayvr ];
+    systemPackages = [
+      pkgs.wayvr
+      pkgs.monado-vulkan-layers
+    ];
     etc."alloy/sink.alloy".text = ''
       loki.write "default" {
         endpoint {

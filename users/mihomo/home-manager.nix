@@ -11,7 +11,7 @@
   home = {
     username = "mihomo";
     homeDirectory = "/home/mihomo";
-    stateVersion = "25.05";
+    stateVersion = "26.05";
     packages = with pkgs; [ motrix ];
   };
 

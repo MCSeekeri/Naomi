@@ -8,7 +8,7 @@
   home = {
     username = "remote";
     homeDirectory = "/home/remote";
-    stateVersion = "25.11";
+    stateVersion = "26.05";
 
     packages = with pkgs; [
       # 开发套件

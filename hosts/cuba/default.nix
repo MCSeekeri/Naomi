@@ -61,7 +61,6 @@ in
   };
   services = {
     kmscon = {
-      autologinUser = lib.mkForce "root";
       fonts = lib.mkForce [
         {
           # 一个中文字体的体积比一堆工具加起来还大，难办……
