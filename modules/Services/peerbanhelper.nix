@@ -1,6 +1,7 @@
 {
   virtualisation.oci-containers.containers.peerbanhelper = {
-    image = "ghostchu/peerbanhelper:v9.3.12";
+    image = "docker.io/ghostchu/peerbanhelper:latest";
+    labels."io.containers.autoupdate" = "registry";
     volumes = [ "pbh_data:/app/data" ];
     extraOptions = [ "--network=host" ];
   };

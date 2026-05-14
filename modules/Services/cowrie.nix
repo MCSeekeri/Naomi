@@ -5,6 +5,7 @@
 
   virtualisation.oci-containers.containers.cowrie = {
     image = "docker.io/cowrie/cowrie:latest";
+    labels."io.containers.autoupdate" = "registry";
     ports = [
       "22:22/tcp"
       "23:23/tcp"

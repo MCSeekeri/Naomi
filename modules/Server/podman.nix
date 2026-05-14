@@ -2,6 +2,10 @@
 {
   virtualisation = {
     oci-containers.backend = "podman";
+    podman.autoPrune = {
+      enable = true;
+      flags = [ "--all" ];
+    };
     containers = {
       enable = true;
       # 用大鹅而不是设置代理，能避免一些不必要的麻烦
