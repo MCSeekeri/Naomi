@@ -213,7 +213,6 @@
             ip = [ "geoip:cn" ];
             outboundTag = "block";
           }
-
         ];
       };
       outbounds = [
@@ -262,7 +261,7 @@
           port = 25478;
         };
         openlist-sciadv = {
-          domain = "drive.sci-adv.cc";
+          domain = "drive.sci-adv.org";
           port = 25479;
           dbTablePrefix = "openlist_sciadv_";
           meilisearchIndex = "openlist_sciadv";
@@ -278,7 +277,6 @@
       };
     };
 
-    # vless://{UUID}@ea-app.mcseekeri.com:443?alpn=h2&fp=chrome&ech=ea-app.mcseekeri.com%2Bhttps%3A%2F%2Fdns.alidns.com%2Fdns-query&type=xhttp&sni=ea-app.mcseekeri.com&mode=auto&path=%2Fstatic&security=tls&encryption={ENCRYPTION}&extra=%7B%0A%20%20%22downloadSettings%22%3A%20%7B%0A%20%20%20%20%22address%22%3A%20%22pan.mcseekeri.com%22%2C%0A%20%20%20%20%22port%22%3A%20443%2C%0A%20%20%20%20%22network%22%3A%20%22xhttp%22%2C%0A%20%20%20%20%22security%22%3A%20%22tls%22%2C%0A%20%20%20%20%22tlsSettings%22%3A%20%7B%0A%20%20%20%20%20%20%22serverName%22%3A%20%22pan.mcseekeri.com%22%2C%0A%20%20%20%20%20%20%22alpn%22%3A%20%5B%0A%20%20%20%20%20%20%20%20%22h2%22%0A%20%20%20%20%20%20%5D%2C%0A%20%20%20%20%20%20%22echConfigList%22%3A%20%22cloudflare-ech.com%2Bhttps%3A%2F%2Fdns.alidns.com%2Fdns-query%22%2C%0A%20%20%20%20%20%20%22echForceQuery%22%3A%20%22full%22%0A%20%20%20%20%7D%2C%0A%20%20%20%20%22xhttpSettings%22%3A%20%7B%0A%20%20%20%20%20%20%22path%22%3A%20%22%2Fstatic%22%2C%0A%20%20%20%20%20%20%22mode%22%3A%20%22auto%22%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D&insecure=0&host=ea-app.mcseekeri.com&allowInsecure=0&flow=xtls-rprx-vision#galzburg
     # H2 限速多，H3 多限速
     # QUIC 和 IPv6 全面普及的世界，你在哪……
 
@@ -292,51 +290,63 @@
           dns cloudflare {env.CLOUDFLARE_DNS_API_TOKEN}
         }
       '';
-      virtualHosts = {
-        "ech.mcseekeri.com".extraConfig = ''
-          respond "" 204
-        '';
-        "pan.mcseekeri.com".extraConfig = ''
-          encode zstd gzip
+      virtualHosts = lib.mapAttrs (_: v: v // { logFormat = lib.mkForce "output discard"; }) {
+        "ech.mcseekeri.com" = {
+          extraConfig = ''
+            respond "" 204
+          '';
+        };
+        "pan.mcseekeri.com" = {
+          extraConfig = ''
+            encode zstd gzip
 
-          handle /static* {
-            reverse_proxy h2c://127.0.0.1:30101 {
-              flush_interval -1
-              stream_close_delay 5m
+            handle /static* {
+              reverse_proxy h2c://127.0.0.1:30101 {
+                flush_interval -1
+                stream_close_delay 5m
+              }
             }
-          }
 
-          handle {
-            reverse_proxy 127.0.0.1:25478
-          }
-        '';
-        "drive.sci-adv.cc".extraConfig = ''
-          encode zstd gzip
-
-          reverse_proxy 127.0.0.1:25479
-        '';
-        "grafana.mcseekeri.com".extraConfig = ''
-          encode zstd gzip
-
-          reverse_proxy 127.0.0.1:4300
-        '';
-        "vault.mcseekeri.com".extraConfig = ''
-          encode zstd gzip
-
-          reverse_proxy 127.0.0.1:8222
-        '';
-        "ea-app.mcseekeri.com".extraConfig = ''
-          handle /static* {
-            reverse_proxy h2c://127.0.0.1:30101 {
-              flush_interval -1
-              stream_close_delay 5m
+            handle {
+              reverse_proxy 127.0.0.1:25478
             }
-          }
+          '';
+        };
+        "drive.sci-adv.org" = {
+          extraConfig = ''
+            encode zstd gzip
 
-          handle {
-            respond "Not Found" 404
-          }
-        '';
+            reverse_proxy 127.0.0.1:25479
+          '';
+        };
+        "grafana.mcseekeri.com" = {
+          extraConfig = ''
+            encode zstd gzip
+
+            reverse_proxy 127.0.0.1:4300
+          '';
+        };
+        "vault.mcseekeri.com" = {
+          extraConfig = ''
+            encode zstd gzip
+
+            reverse_proxy 127.0.0.1:8222
+          '';
+        };
+        "ea-app.mcseekeri.com" = {
+          extraConfig = ''
+            handle /static* {
+              reverse_proxy h2c://127.0.0.1:30101 {
+                flush_interval -1
+                stream_close_delay 5m
+              }
+            }
+
+            handle {
+              respond "Not Found" 404
+            }
+          '';
+        };
       };
     };
 

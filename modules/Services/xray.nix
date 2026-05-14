@@ -7,15 +7,15 @@
 {
   services.xray = {
     enable = true;
-    package = pkgs.xray.overrideAttrs (_: {
-      version = "26.4.25";
+    package = pkgs.xray.overrideAttrs (_: rec {
+      version = "26.5.9";
       src = pkgs.fetchFromGitHub {
         owner = "XTLS";
         repo = "Xray-core";
-        rev = "v26.4.25";
-        hash = "sha256-sJWL6Z6bMUrL0u2Dd77/bCQbgynNOBN/Vh4RybFABS0=";
+        rev = "v${version}";
+        hash = "sha256-5krtsy9bUVh7ONxuINAgpm4JmdjtQVBN4w0x3dJDHVo=";
       };
-      vendorHash = "sha256-D7zOXdiMr5g0drvwqxD8CoqAVsFyR70sW7mJnsVAEWE=";
+      vendorHash = "sha256-cmfHiX/MmiCWC1vxd7rkCegxMdGiFUUvfncHObQ0zKc=";
     });
     settingsFile = config.sops.templates."xray-${config.networking.hostName}-config.json".path;
   };
