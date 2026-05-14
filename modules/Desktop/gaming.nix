@@ -8,7 +8,7 @@
   programs = {
     steam = {
       enable = true;
-      extest.enable = true;
+      # extest.enable = true; # 容易漏环境，导致开了 Shell 之后一大堆 32 位 so 报错，得关……
       dedicatedServer.openFirewall = true;
       localNetworkGameTransfers.openFirewall = true;
       remotePlay.openFirewall = true;

@@ -20,7 +20,6 @@
 
     packages = with pkgs; [
       # 桌面应用
-      thunderbird-bin
       keepassxc
       qq
       wpsoffice-cn
@@ -40,6 +39,7 @@
       piliplus
       bitwarden-desktop
       peazip
+      libreoffice-qt-fresh # 无用户信息泄露，比 WPS 不知道高到哪里去了……
       # 主题
       lain-kde-splashscreen
       # kora-icon-theme
@@ -139,11 +139,9 @@
         { id = "hhinaapppaileiechjoiifaancjggfjm"; } # Web Scrobbler
       ];
     };
-    vscode = {
-      package = pkgs.vscodium;
+    vscodium = {
       profiles.default.extensions = with pkgs.vscode-marketplace; [
         activitywatch.aw-watcher-vscode
-        alibaba-cloud.tongyi-lingma
         dracula-theme.theme-dracula
         esbenp.prettier-vscode
         pinage404.nix-extension-pack
@@ -206,6 +204,9 @@
         #border = "no";
         #cursor-autohide = 1000;
       };
+    };
+    thunderbird = {
+      enable = true;
     };
     plasma = {
       enable = true;

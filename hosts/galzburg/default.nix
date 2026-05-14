@@ -84,9 +84,7 @@
       "sr_mod"
       "virtio_blk"
     ];
-    initrd.kernelModules = [ ];
     kernelModules = [ "kvm-amd" ];
-    extraModulePackages = [ ];
   };
 
   nix = {
@@ -109,14 +107,12 @@
           "gccarch-x86-64-v3"
           "gccarch-x86-64-v2"
         ];
-        mandatoryFeatures = [ ];
       }
     ];
   };
 
   system = {
     stateVersion = "26.05";
-    autoUpgrade.enable = true;
   };
 
   sops.secrets = {

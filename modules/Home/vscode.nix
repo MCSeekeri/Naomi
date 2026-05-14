@@ -1,9 +1,8 @@
 { pkgs, lib, ... }:
 {
   programs = {
-    vscode = {
+    vscodium = {
       enable = true;
-      # package = pkgs.vscode-fhs;
       profiles.default.extensions = with pkgs.vscode-marketplace; [
         huacnlee.autocorrect
         mhutchie.git-graph

@@ -1,4 +1,4 @@
-{ lib, self, ... }:
+{ self, ... }:
 {
   imports = [
     ./disko-config.nix
@@ -22,7 +22,6 @@
 
   system = {
     stateVersion = "26.05";
-    autoUpgrade.enable = true;
   };
 
   hardware = {
@@ -41,6 +40,4 @@
     ];
     kernelModules = [ "kvm-intel" ];
   };
-
-  networking.useDHCP = lib.mkDefault true;
 }

@@ -1,9 +1,4 @@
-{
-  lib,
-  self,
-  modulesPath,
-  ...
-}:
+{ self, modulesPath, ... }:
 {
   imports = [
     ./disko-config.nix
@@ -44,7 +39,6 @@
 
   # 网络配置
   networking = {
-    useDHCP = lib.mkDefault true;
     hostName = "manhattan"; # 主机名，设置好之后最好不要修改
   };
 
@@ -63,7 +57,6 @@
   };
   system = {
     stateVersion = "26.05";
-    autoUpgrade.enable = true;
   };
 
   services.misskey = {

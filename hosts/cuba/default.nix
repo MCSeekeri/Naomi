@@ -140,7 +140,6 @@ in
       "boot.shell_on_fail"
     ];
   };
-  services.samba.enable = false;
   environment = {
     systemPackages = [
       pkgs.disko

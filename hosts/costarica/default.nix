@@ -26,7 +26,6 @@
 
   system = {
     stateVersion = "26.05";
-    autoUpgrade.enable = true;
   };
   hardware.cpu.type = "qemu";
 }

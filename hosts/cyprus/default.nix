@@ -63,7 +63,6 @@
         "gccarch-x86-64-v3"
         "gccarch-x86-64-v2"
       ];
-      mandatoryFeatures = [ ];
     }
   ];
   hardware = {
@@ -109,7 +108,6 @@
 
   system = {
     stateVersion = "26.05";
-    autoUpgrade.enable = true;
   };
 
   fileSystems = {

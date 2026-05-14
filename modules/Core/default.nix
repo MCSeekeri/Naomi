@@ -72,7 +72,6 @@
   networking = {
     networkmanager.enable = lib.mkDefault false;
     useNetworkd = true; # 实验性启用
-    dhcpcd.enable = false;
     nftables.enable = true;
   };
 
@@ -136,7 +135,9 @@
   };
 
   systemd = {
-    coredump.extraConfig = "Storage=none"; # 不需要转储
+    coredump.settings.Coredump = {
+      Storage = "none";
+    }; # 不需要转储
     # enableStrictShellChecks = true;
     # [TODO] 等我整明白如何给上游提交 PR 修复这些问题再说
     network.wait-online.enable = false;
