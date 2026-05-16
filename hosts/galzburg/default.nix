@@ -23,6 +23,7 @@
     "${self}/modules/Services/Grafana/agent.nix"
     "${self}/modules/Services/caddy.nix"
     "${self}/modules/Services/openlist.nix"
+    "${self}/modules/Services/privatebin.nix"
     "${self}/modules/Services/vaultwarden.nix"
     "${self}/modules/Services/xray.nix"
 
@@ -277,6 +278,8 @@
       };
     };
 
+    privatebin.group = "caddy";
+
     # H2 限速多，H3 多限速
     # QUIC 和 IPv6 全面普及的世界，你在哪……
 
@@ -324,6 +327,15 @@
             encode zstd gzip
 
             reverse_proxy 127.0.0.1:4300
+          '';
+        };
+        "paste.mcseekeri.com" = {
+          extraConfig = ''
+            encode zstd gzip
+
+            root * ${config.services.privatebin.package}
+            file_server
+            php_fastcgi unix/${config.services.phpfpm.pools.privatebin.socket}
           '';
         };
         "vault.mcseekeri.com" = {
