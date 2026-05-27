@@ -22,6 +22,7 @@
     "${self}/modules/Services/Grafana"
     "${self}/modules/Services/Grafana/agent.nix"
     "${self}/modules/Services/caddy.nix"
+    "${self}/modules/Services/niks3.nix"
     "${self}/modules/Services/openlist.nix"
     "${self}/modules/Services/privatebin.nix"
     "${self}/modules/Services/vaultwarden.nix"
@@ -287,6 +288,12 @@
       email = "mcseekeri@outlook.com";
       environmentFile = config.sops.secrets.acme.path;
       globalConfig = ''
+        servers {
+          trusted_proxies static 127.0.0.1/8 ::1 173.245.48.0/20 103.21.244.0/22 103.22.200.0/22 103.31.4.0/22 141.101.64.0/18 108.162.192.0/18 190.93.240.0/20 188.114.96.0/20 197.234.240.0/22 198.41.128.0/17 162.158.0.0/15 104.16.0.0/13 104.24.0.0/14 172.64.0.0/13 131.0.72.0/22 2400:cb00::/32 2606:4700::/32 2803:f800::/32 2405:b500::/32 2405:8100::/32 2a06:98c0::/29 2c0f:f248::/32
+          trusted_proxies_strict
+          client_ip_headers CF-Connecting-IP X-Forwarded-For
+        }
+
         acme_dns cloudflare {env.CLOUDFLARE_DNS_API_TOKEN}
 
         ech ech.mcseekeri.com {
@@ -327,6 +334,11 @@
             encode zstd gzip
 
             reverse_proxy 127.0.0.1:4300
+          '';
+        };
+        "niks3.mcseekeri.com" = {
+          extraConfig = ''
+            reverse_proxy 127.0.0.1:5751
           '';
         };
         "paste.mcseekeri.com" = {
@@ -401,6 +413,27 @@
       interval = "monthly";
     };
     avahi.enable = false;
+    niks3 = {
+      httpAddr = "127.0.0.1:5751";
+      cacheUrl = "https://nix.mcseekeri.com";
+      s3 = {
+        endpoint = "e948fb59c8aa2a756017549554f66d6a.r2.cloudflarestorage.com";
+        bucket = "nix";
+      };
+      oidc.providers.github = {
+        issuer = "https://token.actions.githubusercontent.com";
+        audience = "https://niks3.mcseekeri.com";
+        boundClaims = {
+          repository = [ "MCSeekeri/Naomi" ];
+          repository_owner = [ "MCSeekeri" ];
+          ref = [ "refs/heads/main" ];
+          event_name = [
+            "push"
+            "workflow_dispatch"
+          ];
+        };
+      };
+    };
   };
 
   systemd = {

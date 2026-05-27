@@ -2,21 +2,8 @@
   description = "Naomi Flake Configuration";
 
   nixConfig = {
-    # 给 Garnix 用的，不配置镜像源能把我的额度烧光……
-    extra-substituters = [
-      "https://nix-community.cachix.org?priority=1"
-      "https://numtide.cachix.org?priority=2"
-      "https://cache.garnix.io?priority=3"
-      "https://nix-gaming.cachix.org?priority=4"
-      "https://cache.nixos-cuda.org?priority=5"
-    ];
-    extra-trusted-public-keys = [
-      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-      "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
-      "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="
-      "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
-      "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
-    ];
+    extra-substituters = [ "https://nix.mcseekeri.com?priority=51" ];
+    extra-trusted-public-keys = [ "nix.mcseekeri.com-1:3gd0/2u7IOF7YooxEiBbWTvRCYGC53S2UoqFdnCUYHc=" ];
   };
 
   inputs = {
@@ -28,7 +15,7 @@
       url = "github:hercules-ci/gitignore.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    pre-commit-hooks = {
+    git-hooks = {
       url = "github:cachix/git-hooks.nix";
       inputs = {
         nixpkgs.follows = "nixpkgs";
@@ -109,7 +96,7 @@
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-parts.follows = "flake-parts";
-        git-hooks.follows = "pre-commit-hooks";
+        git-hooks.follows = "git-hooks";
       };
     };
 
@@ -146,11 +133,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    jovian = {
-      url = "github:Jovian-Experiments/Jovian-NixOS";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     ndg = {
       url = "github:feel-co/ndg/v2.6.0";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -163,6 +145,14 @@
         flake-parts.follows = "flake-parts";
         flake-compat.follows = "flake-compat";
         ndg.follows = "ndg";
+      };
+    };
+
+    niks3 = {
+      url = "github:Mic92/niks3";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        treefmt-nix.follows = "treefmt-nix";
       };
     };
   };

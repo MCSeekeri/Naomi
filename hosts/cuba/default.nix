@@ -46,6 +46,7 @@ in
     inputs.stylix.nixosModules.stylix
     "${self}/modules/Core/avahi.nix"
     "${self}/modules/Core/ssh.nix"
+    "${self}/modules/Core/nix.nix"
     "${self}/modules/Desktop/kmscon.nix"
   ];
   nixpkgs = {
@@ -65,7 +66,7 @@ in
         {
           # 一个中文字体的体积比一堆工具加起来还大，难办……
           package = pkgs.maple-mono.Normal-CN;
-          name = "Maple Mono SC NF";
+          name = "Maple Mono Normal CN";
         }
       ];
       extraConfig = lib.mkForce "font-size=12";
@@ -183,39 +184,6 @@ in
   };
 
   security.sudo.enable = false;
-
-  nix = {
-    settings = {
-      extra-substituters = lib.mkForce [
-        "https://mirrors.cernet.edu.cn/nix-channels/store?priority=1"
-        "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store?priority=2"
-        "https://mirror.sjtu.edu.cn/nix-channels/store?priority=3"
-        "https://nix-community.cachix.org?priority=4"
-        "https://numtide.cachix.org?priority=5"
-        "https://cache.garnix.io?priority=6"
-        "https://nix-gaming.cachix.org?priority=7"
-        "https://cache.nixos-cuda.org?priority=8"
-      ];
-      extra-trusted-public-keys = [
-        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-        "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
-        "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="
-        "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
-        "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
-      ];
-      experimental-features = [
-        "nix-command"
-        "flakes"
-      ];
-      connect-timeout = 5;
-      http-connections = 64;
-      max-substitution-jobs = 32; # 加速下载
-      max-free = 3000 * 1024 * 1024;
-      min-free = 512 * 1024 * 1024;
-      log-lines = 25;
-      builders-use-substitutes = true;
-    };
-  };
 
   systemd = {
     tmpfiles.rules = [ "d /var/shared 0700 root root - -" ];

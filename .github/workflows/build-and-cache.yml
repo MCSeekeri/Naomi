@@ -1,0 +1,62 @@
+name: Build and cache
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 720
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: DeterminateSystems/determinate-nix-action@v3
+        with:
+          extra-conf: |
+            accept-flake-config = true
+            experimental-features = nix-command flakes
+            extra-substituters = https://nix.mcseekeri.com?priority=51
+            extra-trusted-public-keys = nix.mcseekeri.com-1:3gd0/2u7IOF7YooxEiBbWTvRCYGC53S2UoqFdnCUYHc=
+
+      - uses: Mic92/niks3-action@v1
+        with:
+          server-url: https://niks3.mcseekeri.com
+          drain-timeout: 3600
+
+      - name: Build all targets
+        shell: bash
+        timeout-minutes: 720
+        run: |
+          set -euo pipefail
+
+          targets=()
+
+          mapfile -t packages < <(
+            nix eval --json .#packages.x86_64-linux --apply builtins.attrNames | jq -r '.[]'
+          )
+
+          for package in "${packages[@]}"; do
+            targets+=(".#packages.x86_64-linux.${package}")
+          done
+
+          mapfile -t hosts < <(
+            nix eval --json .#nixosConfigurations --apply builtins.attrNames | jq -r '.[]'
+          )
+
+          for host in "${hosts[@]}"; do
+            targets+=(".#nixosConfigurations.${host}.config.system.build.toplevel")
+          done
+
+          if [ "${#targets[@]}" -eq 0 ]; then
+            exit 0
+          fi
+
+          nix build --no-link --print-build-logs --keep-going --max-jobs auto "${targets[@]}"

@@ -11,19 +11,9 @@
     };
     settings = {
       auto-optimise-store = lib.mkDefault (!config.boot.isContainer);
-      extra-substituters = [
-        "https://nix-community.cachix.org?priority=4"
-        "https://numtide.cachix.org?priority=5"
-        "https://cache.garnix.io?priority=6"
-        "https://nix-gaming.cachix.org?priority=7"
-        "https://cache.nixos-cuda.org?priority=8"
-      ];
+      extra-substituters = [ "https://nix.mcseekeri.com?priority=51" ];
       extra-trusted-public-keys = lib.mkDefault [
-        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-        "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
-        "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="
-        "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
-        "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
+        "nix.mcseekeri.com-1:3gd0/2u7IOF7YooxEiBbWTvRCYGC53S2UoqFdnCUYHc="
       ];
       # 启动 Flake，勿动，除非你知道你在做什么
       # https://nixos.wiki/wiki/Flakes
