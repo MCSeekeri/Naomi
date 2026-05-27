@@ -115,6 +115,13 @@
 
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
 
+    noctalia = {
+      url = "github:noctalia-dev/noctalia-shell/v5";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+      };
+    };
+
     winapps = {
       url = "github:winapps-org/winapps";
       inputs = {

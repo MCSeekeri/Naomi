@@ -41,8 +41,12 @@
   };
 
   home.sessionVariables = {
+    GTK_IM_MODULE = "fcitx";
     #  QT_QPA_PLATFORM = "xcb";
     QT_IM_MODULE = "fcitx";
     #  QT_IM_MODULES = "wayland;fcitx;ibus";
+    SDL_IM_MODULE = "fcitx";
+    GLFW_IM_MODULE = "ibus";
+    XMODIFIERS = "@im=fcitx";
   };
 }

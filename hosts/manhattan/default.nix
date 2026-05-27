@@ -19,7 +19,6 @@
     "${self}/modules/Desktop/fcitx5.nix"
     "${self}/modules/Desktop/adb.nix"
     "${self}/modules/Desktop/cups.nix"
-    "${self}/modules/Desktop/hyprland.nix"
 
     "${self}/modules/Services/cockpit.nix"
     "${self}/modules/Services/cloudflared.nix"

@@ -2,7 +2,6 @@
 {
   imports = [
     "${self}/modules/Home/fcitx5"
-    "${self}/modules/Home/hyprland"
     "${self}/modules/Home/browser/chromium.nix"
     "${self}/modules/Home/vscode.nix"
     "${self}/modules/Home/fish/tide.nix"

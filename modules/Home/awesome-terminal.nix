@@ -32,8 +32,7 @@
         doggo # dig
       ]
       ++
-        lib.optionals
-          (osConfig.services.xserver.enable or false || osConfig.programs.hyprland.enable or false)
+        lib.optionals (osConfig.services.xserver.enable or false || osConfig.programs.niri.enable or false)
           [
             chafa
             cava
@@ -56,10 +55,6 @@
     };
     btop = {
       enable = true;
-      package = pkgs.btop.override {
-        rocmSupport = true;
-        cudaSupport = true;
-      };
       settings = {
         show_battery = true;
         show_disks = true;

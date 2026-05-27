@@ -14,6 +14,7 @@
     "${self}/modules/Server/podman.nix"
 
     "${self}/modules/Desktop/plasma.nix"
+    "${self}/modules/Desktop/niri.nix"
     "${self}/modules/Desktop/sunshine.nix"
     "${self}/modules/Desktop/gaming.nix"
     "${self}/modules/Desktop/obs.nix"

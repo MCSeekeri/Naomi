@@ -19,8 +19,7 @@
         }
       ]
       ++
-        lib.optional
-          ((config.services.xserver.enable or false) || (config.programs.hyprland.enable or false))
+        lib.optional ((config.services.xserver.enable or false) || (config.programs.niri.enable or false))
           {
             image = lib.mkDefault (
               pkgs.fetchurl {

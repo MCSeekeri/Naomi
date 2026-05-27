@@ -9,6 +9,7 @@
     "${self}/modules/Home/awesome-terminal.nix"
     "${self}/modules/Home/direnv.nix"
     "${self}/modules/Home/kitty.nix"
+    "${self}/modules/Home/niri"
     "${self}/modules/Home/vscode.nix"
     "${self}/modules/Home/prc.nix"
   ];
@@ -403,6 +404,107 @@
         plasmaparc."General"."RaiseMaximumVolume" = true;
       };
     };
+    noctalia.settings = {
+      audio = {
+        enable_overdrive = true;
+        enable_sounds = true;
+      };
+      bar = {
+        order = [ "main" ];
+        main = {
+          contact_shadow = true;
+          end = [
+            "tray"
+            "notifications"
+            "network"
+            "bluetooth"
+            "input_volume"
+            "volume"
+            "battery"
+            "power_profile"
+            "control-center"
+            "session"
+          ];
+          margin_edge = 0;
+          margin_ends = 0;
+          margin_h = 24;
+          margin_v = 12;
+          padding = 16;
+          radius = 0;
+          scale = 2.0;
+          shadow = false;
+          start = [
+            "workspaces"
+            "launcher"
+            "media"
+            "audio_visualizer"
+          ];
+          thickness = 46;
+        };
+      };
+      dock = {
+        active_monitor_only = true;
+        auto_hide = true;
+        enabled = true;
+        icon_size = 64;
+        launcher_position = "start";
+        show_dots = true;
+      };
+
+      nightlight.enabled = true;
+
+      shell = {
+        font_family = "Sarasa UI SC";
+        corner_radius_scale = 1.2;
+        lang = "zh-CN";
+        niri_overview_type_to_launch_enabled = true;
+        password_style = "random";
+        polkit_agent = true;
+        screen_time_enabled = true;
+        settings_show_advanced = true;
+        ui_scale = 1.25;
+        panel = {
+          control_center_placement = "floating";
+          launcher_placement = "floating";
+          transparency_mode = "soft";
+        };
+        show_location = false;
+      };
+
+      theme = {
+        community_palette = "Tokyo Night Moon";
+        mode = "auto";
+        source = "community";
+      };
+
+      backdrop = {
+        enabled = true;
+        blur_intensity = 0.65;
+        tint_intensity = 0.22;
+      };
+
+      widget = {
+        audio_visualizer = {
+          capsule = false;
+          centered = true;
+          mirrored = true;
+        };
+        battery = {
+          display_mode = "graphic";
+          hide_when_full = true;
+          hide_when_plugged = true;
+          show_label = false;
+          warning_threshold = 30;
+        };
+        network = {
+          capsule = false;
+          show_label = false;
+        };
+        notifications.hide_when_no_unread = true;
+        power_profiles.capsule = false;
+        tray.capsule = true;
+      };
+    };
   };
   stylix = {
     enable = true;
@@ -438,9 +540,5 @@
       };
     };
     targets.kde.enable = false;
-  };
-
-  wayland.windowManager.hyprland.settings = {
-    monitor = ",2560x1440@60,auto,1.5";
   };
 }

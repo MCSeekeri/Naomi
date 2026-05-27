@@ -157,28 +157,26 @@
             btrfs-progs
             compsize
           ]
-      ++
-        lib.optionals (config.services.xserver.enable or false || config.programs.hyprland.enable or false)
-          [
-            # 桌面应用
-            ungoogled-chromium
-            # 开发环境
-            gcc
-            cmake
-            kdePackages.kate
-            vscodium-fhs
-            go
-            python3
-            python3Packages.pip
-            pipx
-            # 虚拟化
-            distrobox
-            distrobox-tui
-            # 系统维护
-            kdePackages.partitionmanager
-            kdePackages.ksystemlog
-            kdePackages.filelight
-          ]
+      ++ lib.optionals (config.services.xserver.enable or false || config.programs.niri.enable or false) [
+        # 桌面应用
+        ungoogled-chromium
+        # 开发环境
+        gcc
+        cmake
+        kdePackages.kate
+        vscodium-fhs
+        go
+        python3
+        python3Packages.pip
+        pipx
+        # 虚拟化
+        distrobox
+        distrobox-tui
+        # 系统维护
+        kdePackages.partitionmanager
+        kdePackages.ksystemlog
+        kdePackages.filelight
+      ]
       ++ lib.optionals config.virtualisation.podman.enable [
         podman-tui
         lazydocker
@@ -187,6 +185,6 @@
   };
 
   nixpkgs = lib.mkIf (
-    config.services.xserver.enable or false || config.programs.hyprland.enable or false
+    config.services.xserver.enable or false || config.programs.niri.enable or false
   ) { config.chromium.enableWideVine = true; };
 }
