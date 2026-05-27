@@ -14,6 +14,9 @@
         fcitx5-pinyin-minecraft
         fcitx5-fluent
       ];
+      settings.addons.pinyin = {
+        globalSection.FirstRun = "False";
+      };
     };
   };
 }

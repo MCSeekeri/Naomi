@@ -12,7 +12,6 @@
 
     packages = with pkgs; [
       # 开发套件
-      uv
       rustup
       gnumake
       musl

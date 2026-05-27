@@ -128,7 +128,10 @@
         strace
         ltrace
         lsof
-        btop
+        (btop.override {
+          rocmSupport = true;
+          cudaSupport = true;
+        })
         ncdu
       ]
       ++ lib.optionals config.networking.networkmanager.enable [
@@ -164,11 +167,11 @@
         gcc
         cmake
         kdePackages.kate
-        vscodium-fhs
+        vscodium
         go
         python3
         python3Packages.pip
-        pipx
+        uv
         # 虚拟化
         distrobox
         distrobox-tui

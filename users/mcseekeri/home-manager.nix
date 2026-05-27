@@ -54,7 +54,6 @@
       r2modman
       musikcube
       # 开发套件
-      uv
       rustup
       gnumake
       musl
@@ -174,9 +173,6 @@
       shellAliases = {
         proxy = "proxychains4 -q";
       };
-    };
-    obs-studio = {
-      enable = true;
     };
     mpv = {
       enable = true;

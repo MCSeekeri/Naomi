@@ -149,17 +149,24 @@ in
         extraPackages =
           with pkgs;
           lib.flatten (
-            [ mesa ]
+            [
+              mesa
+              ocl-icd
+            ]
             ++ lib.optionals isIntel [
               intel-media-driver
               intel-compute-runtime
+              libvdpau-va-gl
               vpl-gpu-rt
             ]
             ++ lib.optionals isAMD [
               rocmPackages.rocm-runtime
               rocmPackages.rocm-opencl-runtime
             ]
-            ++ lib.optionals isNvidia [ nvidia-vaapi-driver ]
+            ++ lib.optionals isNvidia [
+              nvidia-vaapi-driver
+              linuxPackages.nvidia_x11
+            ]
           );
 
         extraPackages32 =
@@ -251,6 +258,7 @@ in
         lib.flatten (
           [
             ethtool
+            clinfo
             (lib.optionals (config.hardware.deviceType != "server") [
               mpv
               lm_sensors
@@ -271,7 +279,6 @@ in
           ++ lib.optionals isAMD [
             rocmPackages.rocm-smi
             rocmPackages.amdgpu_top
-            clinfo
           ]
           ++ lib.optionals isNvidia [
             nvidia-vaapi-driver
