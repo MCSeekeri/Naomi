@@ -5,7 +5,7 @@
     "${self}/modules/Home/browser/chromium.nix"
     "${self}/modules/Home/fcitx5"
     "${self}/modules/Home/fish/tide.nix"
-    "${self}/modules/Home/activitywatch.nix"
+    # "${self}/modules/Home/activitywatch.nix"
     "${self}/modules/Home/awesome-terminal.nix"
     "${self}/modules/Home/direnv.nix"
     "${self}/modules/Home/kitty.nix"
@@ -106,6 +106,10 @@
 
   programs = {
     home-manager.enable = true;
+    zed-editor = {
+      enable = true;
+      enableMcpIntegration = true;
+    };
     librewolf = {
       profiles = {
         user = {
