@@ -1,10 +1,10 @@
 global {
 	wan_interface: auto
+	lan_interface: podman0
 	log_level: info
 	allow_insecure: false
 	auto_config_kernel_parameter: true
 	disable_waiting_network: true
-	fallback_resolver: '223.5.5.5:53'
 }
 
 node {
@@ -14,7 +14,6 @@ node {
 # https://github.com/daeuniverse/dae/blob/main/docs/zh/configuration/dns.md
 dns {
 	ipversion_prefer: 4 # IPv6 在某些网络环境下是个悲剧
-	bind: 'tcp+udp://127.0.0.1:53'
 	upstream {
 		alidns: 'https://dns.alidns.com'
 		cloudflare: 'https://1.1.1.1' # 防止解析到 IPv6
@@ -22,12 +21,12 @@ dns {
 	routing {
 		request {
 			qname(geosite:category-ads, geosite:category-ads-all) -> reject
-			qname(geosite:cn) -> alidns
+			qname(geosite:geolocation-!cn@cn, geosite:geolocation-cn, geosite:tld-cn) -> alidns
 			fallback: cloudflare
 		}
 		response {
 			upstream(cloudflare) -> accept
-			ip(geoip:private) && !qname(geosite:cn) -> cloudflare
+			ip(geoip:private) && !qname(geosite:geolocation-!cn@cn, geosite:geolocation-cn, geosite:tld-cn) -> cloudflare
 			fallback: accept
 		}
 	}
@@ -42,14 +41,14 @@ group {
 # https://github.com/daeuniverse/dae/blob/main/docs/zh/configuration/routing.md
 routing {
 	domain(geosite:category-ads) -> block
-	pname(systemd-resolved, geph5-client, ".geph5-client-w", geph5-client-gui, gephgui-wry, mihomo, clash-rs,  hysteria2, naiveproxy, sing-box, v2ray, xray, tailscaled, localsend_app, qbittorrent, AdGuardHome) -> must_direct
+	pname(systemd-resolved, geph5-client, geph5-client-gui, gephgui-wry, mihomo, clash-rs,  hysteria2, naiveproxy, sing-box, v2ray, xray, tailscaled, localsend_app, qbittorrent, AdGuardHome) -> must_direct
 	pname(NetworkManager) -> direct
 	dip(224.0.0.0/3, 'ff00::/8', geoip:private) -> must_direct
 	l4proto(udp) && dport(443) -> block
 	dport(53) -> block
 	dip(geoip:cn) -> direct
-	domain(geosite:cn, geosite:geolocation-cn, geosite:category-games, geosite:epicgames, geosite:hcaptcha, suffix: steamserver.net) -> direct
-	domain(suffix: steamstatic.com) -> proxy
-	
+	domain(geosite:geolocation-!cn@cn, suffix: steamserver.net) -> direct
+	domain(geosite:geolocation-!cn, geosite:geolocation-cn@!cn) -> proxy
+	domain(geosite:geolocation-cn, geosite:tld-cn) -> direct
 	fallback: proxy
 }

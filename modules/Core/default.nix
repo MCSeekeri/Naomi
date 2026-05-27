@@ -70,7 +70,10 @@
   };
 
   networking = {
-    networkmanager.enable = lib.mkDefault false;
+    networkmanager = {
+      enable = lib.mkDefault false;
+      dns = "systemd-resolved";
+    };
     useNetworkd = true; # 实验性启用
     nftables.enable = true;
   };
@@ -84,7 +87,19 @@
 
   services = {
     userborn.enable = true;
-    resolved.enable = true;
+    resolved = {
+      enable = true;
+      settings.Resolve = {
+        DNS = lib.mkDefault [
+          "1.1.1.1#cloudflare-dns.com"
+          "1.0.0.1#cloudflare-dns.com"
+          "8.8.8.8#dns.google"
+          "8.8.4.4#dns.google"
+        ];
+        FallbackDNS = [ ];
+        DNSOverTLS = "true";
+      };
+    };
   };
 
   environment = {
