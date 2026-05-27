@@ -44,7 +44,7 @@
               };
               monospace = {
                 package = lib.mkDefault pkgs.maple-mono.Normal-NF-CN-unhinted;
-                name = lib.mkDefault "Maple Mono SC NF";
+                name = lib.mkDefault "Maple Mono Normal NF CN";
               };
               emoji = {
                 package = lib.mkDefault pkgs.noto-fonts-color-emoji;

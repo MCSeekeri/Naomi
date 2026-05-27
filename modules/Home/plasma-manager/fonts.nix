@@ -1,26 +1,32 @@
-let
-  defaultFont = {
-    family = "Sarasa UI SC";
-    pointSize = 16;
-  };
-in
 {
   programs = {
     plasma = {
       fonts = {
         # 重复设置太多，抽象一下
-        general = defaultFont;
+        general = {
+          family = "Sarasa UI SC";
+          pointSize = 16;
+        };
         fixedWidth = {
-          inherit (defaultFont) pointSize;
-          family = "Maple Mono SC NF";
+          family = "Maple Mono Normal NF CN";
+          pointSize = 16;
         };
         small = {
-          inherit (defaultFont) family;
+          family = "Sarasa UI SC";
           pointSize = 14;
         };
-        toolbar = defaultFont;
-        menu = defaultFont;
-        windowTitle = defaultFont;
+        toolbar = {
+          family = "Sarasa UI SC";
+          pointSize = 16;
+        };
+        menu = {
+          family = "Sarasa UI SC";
+          pointSize = 16;
+        };
+        windowTitle = {
+          family = "Sarasa UI SC";
+          pointSize = 16;
+        };
       };
     };
   };
