@@ -279,6 +279,12 @@
       };
     };
 
+    sillytavern = {
+      enable = true;
+      port = 25480;
+      listenAddressIPv4 = "127.0.0.1";
+    };
+
     privatebin.group = "caddy";
 
     # H2 限速多，H3 多限速
@@ -355,6 +361,13 @@
             encode zstd gzip
 
             reverse_proxy 127.0.0.1:8222
+          '';
+        };
+        "sillytavern.mcseekeri.com" = {
+          extraConfig = ''
+            encode zstd gzip
+
+            reverse_proxy 127.0.0.1:25480
           '';
         };
         "ea-app.mcseekeri.com" = {

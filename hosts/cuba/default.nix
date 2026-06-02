@@ -47,7 +47,6 @@ in
     "${self}/modules/Core/avahi.nix"
     "${self}/modules/Core/ssh.nix"
     "${self}/modules/Core/nix.nix"
-    "${self}/modules/Desktop/kmscon.nix"
   ];
   nixpkgs = {
     hostPlatform = "x86_64-linux"; # 目前只考虑 x86_64
@@ -62,14 +61,11 @@ in
   };
   services = {
     kmscon = {
-      fonts = lib.mkForce [
-        {
-          # 一个中文字体的体积比一堆工具加起来还大，难办……
-          package = pkgs.maple-mono.Normal-CN;
-          name = "Maple Mono Normal CN";
-        }
-      ];
-      extraConfig = lib.mkForce "font-size=12";
+      enable = true;
+      config = {
+        font-name = "Maple Mono Normal CN";
+        font-size = 12;
+      };
     };
     tor = {
       enable = true;
@@ -87,6 +83,7 @@ in
     nscd.enableNsncd = true;
     fwupd.enable = true;
   };
+  fonts.fontconfig.enable = true;
 
   # 网络配置
   networking = {
@@ -157,6 +154,7 @@ in
       pkgs.file
       pkgs.nh
       pkgs.sbctl
+      pkgs.maple-mono.Normal-CN
       network-status
     ];
     enableAllTerminfo = true;
@@ -166,6 +164,7 @@ in
     enable = true;
     autoEnable = true;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/dracula.yaml";
+    targets.kmscon.enable = false;
   };
 
   # https://github.com/NixOS/nixpkgs/issues/219239
@@ -177,6 +176,11 @@ in
       enable = true;
       useBabelfish = true;
     };
+  };
+
+  console = {
+    earlySetup = true;
+    packages = [ pkgs.kmscon ];
   };
 
   users.users.root = {

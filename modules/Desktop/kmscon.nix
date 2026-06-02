@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   console = {
     earlySetup = true;
@@ -7,13 +7,10 @@
 
   services.kmscon = {
     enable = true;
-    fonts = [
-      {
-        name = "Sarasa Term SC";
-        package = pkgs.sarasa-gothic;
-      }
-    ];
-    extraConfig = "font-size=16";
+    config = lib.mkDefault {
+      font-name = "Maple Mono Normal CN";
+      font-size = 16;
+    };
     hwRender = true;
   };
 }

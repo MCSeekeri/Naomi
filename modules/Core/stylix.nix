@@ -16,6 +16,8 @@
           autoEnable = lib.mkDefault true;
           base16Scheme = lib.mkDefault "${pkgs.base16-schemes}/share/themes/rebecca.yaml";
           polarity = lib.mkDefault "dark";
+
+          targets.kmscon.enable = false;
         }
       ]
       ++
