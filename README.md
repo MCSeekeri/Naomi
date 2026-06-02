@@ -2,8 +2,6 @@
 
 NAOMI: Aggregate Online Modular Infrastructure，简称 Naomi，是基于 NixOS 的“定制系统”。
 
-[![built with garnix](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fgarnix.io%2Fapi%2Fbadges%2FMCSeekeri%2FNaomi&style=for-the-badge)](https://garnix.io/repo/MCSeekeri/Naomi)
-
 ![Repo Size](https://img.shields.io/github/repo-size/MCSeekeri/Naomi?style=for-the-badge)
 
 [![built with nix](https://builtwithnix.org/badge.svg)](https://builtwithnix.org)
