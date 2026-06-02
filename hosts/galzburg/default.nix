@@ -437,9 +437,7 @@
         issuer = "https://token.actions.githubusercontent.com";
         audience = "https://niks3.mcseekeri.com";
         boundClaims = {
-          repository = [ "MCSeekeri/Naomi" ];
           repository_owner = [ "MCSeekeri" ];
-          ref = [ "refs/heads/main" ];
           event_name = [
             "push"
             "workflow_dispatch"
