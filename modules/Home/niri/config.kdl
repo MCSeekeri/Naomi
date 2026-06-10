@@ -32,7 +32,7 @@ output "eDP-1" {
 
 prefer-no-csd
 spawn-at-startup "dbus-update-activation-environment" "--systemd" "--all"
-spawn-at-startup "systemctl" "--user" "import-environment" "DISPLAY" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP" "XDG_SESSION_DESKTOP" "XDG_SESSION_TYPE" "CLUTTER_BACKEND" "ELECTRON_OZONE_PLATFORM_HINT" "GTK_IM_MODULE" "GTK_USE_PORTAL" "QT_IM_MODULE" "SDL_IM_MODULE" "GLFW_IM_MODULE" "XMODIFIERS" "NIXOS_OZONE_WL"
+spawn-at-startup "systemctl" "--user" "import-environment" "DISPLAY" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP" "XDG_SESSION_DESKTOP" "XDG_SESSION_TYPE" "CLUTTER_BACKEND" "ELECTRON_OZONE_PLATFORM_HINT" "GTK_IM_MODULE" "GTK_USE_PORTAL" "QT_IM_MODULE" "SDL_IM_MODULE" "GLFW_IM_MODULE" "XMODIFIERS" "NIXOS_OZONE_WL" "SSH_AUTH_SOCK" "SSH_ASKPASS" "SSH_ASKPASS_REQUIRE"
 spawn-at-startup "fcitx5" "-d"
 spawn-at-startup "noctalia"
 

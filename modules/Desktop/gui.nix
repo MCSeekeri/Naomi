@@ -21,6 +21,7 @@
     xserver = {
       enable = true;
     };
+    gnome.gcr-ssh-agent.enable = true;
     power-profiles-daemon.enable = lib.mkDefault true;
     pipewire = {
       enable = true;
@@ -32,6 +33,10 @@
     upower.enable = lib.mkDefault true;
   };
   powerManagement.powertop.enable = lib.mkDefault true;
+
+  programs.ssh.extraConfig = ''
+    IdentityAgent /run/user/%i/gcr/ssh
+  '';
 
   xdg.portal = {
     enable = true;
@@ -58,5 +63,6 @@
     MOZ_WEBRENDER = "1";
     _JAVA_AWT_WM_NONREPARENTING = "1";
     NIXOS_OZONE_WL = "1";
+    SSH_ASKPASS_REQUIRE = "prefer";
   };
 }

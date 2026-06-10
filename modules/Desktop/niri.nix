@@ -3,7 +3,14 @@
     niri = {
       enable = true;
     };
+    dconf.enable = true;
     xwayland.enable = true;
+  };
+
+  services = {
+    gnome.gnome-keyring.enable = true;
+    gvfs.enable = true;
+    tumbler.enable = true;
   };
 
   security.pam.services = {
@@ -22,10 +29,23 @@
 
   environment.systemPackages = with pkgs; [
     brightnessctl
+    gnome-calculator
+    gnome-characters
+    gnome-disk-utility
+    gnome-font-viewer
+    gnome-logs
+    gnome-system-monitor
+    gnome-text-editor
     kitty
-    nautilus
+    loupe
+    nemo
+    nemo-fileroller
+    nemo-preview
+    nemo-seahorse
     pavucontrol
     playerctl
+    seahorse
     xwayland-satellite
+    ddcutil
   ];
 }
