@@ -14,8 +14,7 @@
     instances = lib.mkOption {
       type = lib.types.attrsOf (
         lib.types.submodule (
-          { name, ... }:
-          {
+          { name, ... }: {
             options = {
               domain = lib.mkOption {
                 type = lib.types.str;
@@ -43,6 +42,12 @@
                 type = lib.types.str;
                 default = name;
                 description = "(可选)此实例的 Meilisearch 索引名";
+              };
+
+              caddyExtraConfig = lib.mkOption {
+                type = lib.types.lines;
+                default = "";
+                description = "(可选)此实例的 Caddy 额外配置";
               };
             };
           }
@@ -170,6 +175,23 @@
                 client_max_body_size 20000m;
               '';
             };
+          }
+        ) config.services.openlist.instances
+      );
+      caddy.virtualHosts = lib.mkIf config.services.caddy.enable (
+        lib.mapAttrs' (
+          _: instance:
+          lib.nameValuePair instance.domain {
+            useACMEHost = instance.domain;
+            logFormat = lib.mkForce "output discard";
+            extraConfig = instance.caddyExtraConfig + ''
+
+              encode zstd gzip
+
+              handle {
+                reverse_proxy 127.0.0.1:${toString instance.port}
+              }
+            '';
           }
         ) config.services.openlist.instances
       );

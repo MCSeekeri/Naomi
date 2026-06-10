@@ -142,6 +142,15 @@
     };
   };
 
+  security.acme = {
+    acceptTerms = true;
+    defaults = {
+      email = "mcseekeri@outlook.com";
+      dnsProvider = "cloudflare";
+      environmentFile = config.sops.secrets.acme.path;
+    };
+  };
+
   sops.templates."xray-${config.networking.hostName}-config.json" = {
     content = builtins.toJSON {
       log = {
@@ -261,6 +270,14 @@
         openlist = {
           domain = "pan.mcseekeri.com";
           port = 25478;
+          caddyExtraConfig = ''
+            handle /static* {
+              reverse_proxy h2c://127.0.0.1:30101 {
+                flush_interval -1
+                stream_close_delay 5m
+              }
+            }
+          '';
         };
         openlist-sciadv = {
           domain = "drive.sci-adv.org";
@@ -281,8 +298,7 @@
 
     sillytavern = {
       enable = true;
-      port = 25480;
-      listenAddressIPv4 = "127.0.0.1";
+      configFile = "/var/lib/SillyTavern/sillytavern.yaml";
     };
 
     privatebin.group = "caddy";
@@ -291,100 +307,74 @@
     # QUIC 和 IPv6 全面普及的世界，你在哪……
 
     caddy = {
-      email = "mcseekeri@outlook.com";
-      environmentFile = config.sops.secrets.acme.path;
       globalConfig = ''
         servers {
           trusted_proxies static 127.0.0.1/8 ::1 173.245.48.0/20 103.21.244.0/22 103.22.200.0/22 103.31.4.0/22 141.101.64.0/18 108.162.192.0/18 190.93.240.0/20 188.114.96.0/20 197.234.240.0/22 198.41.128.0/17 162.158.0.0/15 104.16.0.0/13 104.24.0.0/14 172.64.0.0/13 131.0.72.0/22 2400:cb00::/32 2606:4700::/32 2803:f800::/32 2405:b500::/32 2405:8100::/32 2a06:98c0::/29 2c0f:f248::/32
           trusted_proxies_strict
           client_ip_headers CF-Connecting-IP X-Forwarded-For
         }
-
-        acme_dns cloudflare {env.CLOUDFLARE_DNS_API_TOKEN}
-
-        ech ech.mcseekeri.com {
-          dns cloudflare {env.CLOUDFLARE_DNS_API_TOKEN}
-        }
       '';
-      virtualHosts = lib.mapAttrs (_: v: v // { logFormat = lib.mkForce "output discard"; }) {
-        "ech.mcseekeri.com" = {
-          extraConfig = ''
-            respond "" 204
-          '';
-        };
-        "pan.mcseekeri.com" = {
-          extraConfig = ''
-            encode zstd gzip
-
-            handle /static* {
-              reverse_proxy h2c://127.0.0.1:30101 {
-                flush_interval -1
-                stream_close_delay 5m
-              }
+      virtualHosts =
+        lib.mapAttrs
+          (
+            name: v:
+            v
+            // {
+              useACMEHost = name;
+              logFormat = lib.mkForce "output discard";
             }
+          )
+          {
+            "grafana.mcseekeri.com" = {
+              extraConfig = ''
+                encode zstd gzip
 
-            handle {
-              reverse_proxy 127.0.0.1:25478
-            }
-          '';
-        };
-        "drive.sci-adv.org" = {
-          extraConfig = ''
-            encode zstd gzip
+                reverse_proxy 127.0.0.1:4300
+              '';
+            };
+            "niks3.mcseekeri.com" = {
+              extraConfig = ''
+                reverse_proxy 127.0.0.1:5751
+              '';
+            };
+            "paste.mcseekeri.com" = {
+              extraConfig = ''
+                encode zstd gzip
 
-            reverse_proxy 127.0.0.1:25479
-          '';
-        };
-        "grafana.mcseekeri.com" = {
-          extraConfig = ''
-            encode zstd gzip
+                root * ${config.services.privatebin.package}
+                file_server
+                php_fastcgi unix/${config.services.phpfpm.pools.privatebin.socket}
+              '';
+            };
+            "vault.mcseekeri.com" = {
+              extraConfig = ''
+                encode zstd gzip
 
-            reverse_proxy 127.0.0.1:4300
-          '';
-        };
-        "niks3.mcseekeri.com" = {
-          extraConfig = ''
-            reverse_proxy 127.0.0.1:5751
-          '';
-        };
-        "paste.mcseekeri.com" = {
-          extraConfig = ''
-            encode zstd gzip
+                reverse_proxy 127.0.0.1:8222
+              '';
+            };
+            "st.mcseekeri.com" = {
+              extraConfig = ''
+                encode zstd gzip
 
-            root * ${config.services.privatebin.package}
-            file_server
-            php_fastcgi unix/${config.services.phpfpm.pools.privatebin.socket}
-          '';
-        };
-        "vault.mcseekeri.com" = {
-          extraConfig = ''
-            encode zstd gzip
+                reverse_proxy 127.0.0.1:25480
+              '';
+            };
+            "ea-app.mcseekeri.com" = {
+              extraConfig = ''
+                handle /static* {
+                  reverse_proxy h2c://127.0.0.1:30101 {
+                    flush_interval -1
+                    stream_close_delay 5m
+                  }
+                }
 
-            reverse_proxy 127.0.0.1:8222
-          '';
-        };
-        "sillytavern.mcseekeri.com" = {
-          extraConfig = ''
-            encode zstd gzip
-
-            reverse_proxy 127.0.0.1:25480
-          '';
-        };
-        "ea-app.mcseekeri.com" = {
-          extraConfig = ''
-            handle /static* {
-              reverse_proxy h2c://127.0.0.1:30101 {
-                flush_interval -1
-                stream_close_delay 5m
-              }
-            }
-
-            handle {
-              respond "Not Found" 404
-            }
-          '';
-        };
-      };
+                handle {
+                  respond "Not Found" 404
+                }
+              '';
+            };
+          };
     };
 
     vaultwarden = {
