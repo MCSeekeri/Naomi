@@ -1,5 +1,4 @@
-{ pkgs, self, ... }:
-{
+{ pkgs, self, ... }: {
   imports = [
     "${self}/modules/Home/fish/tide.nix"
     "${self}/modules/Home/direnv.nix"

@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{ pkgs, ... }: {
   fonts = {
     fontDir.enable = true;
     enableDefaultPackages = true; # 自动安装基本字体

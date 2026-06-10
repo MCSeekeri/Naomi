@@ -1,5 +1,4 @@
-{ pkgs, self, ... }:
-{
+{ pkgs, self, ... }: {
   imports = [
     "${self}/modules/Home/fcitx5"
     "${self}/modules/Home/browser/chromium.nix"

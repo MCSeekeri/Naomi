@@ -1,5 +1,4 @@
-{ lib, ... }:
-{
+{ lib, ... }: {
   i18n = {
     # 默认语言不要设置为中文，tty 下会出大悲剧
     defaultLocale = lib.mkDefault "en_US.UTF-8";

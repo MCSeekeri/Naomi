@@ -1,5 +1,4 @@
-{ config, lib, ... }:
-{
+{ config, lib, ... }: {
   # 这玩意的目录结构乱的一批，用标准打包甚至能整出来 /var/lib/cowrie/var/lib/cowrie/downloads 这种令人反胃的地址
   # 摆了，直接上容器
 

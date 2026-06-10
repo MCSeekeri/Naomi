@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{ pkgs, ... }: {
   # 设置 fcitx5 为默认输入方案
   i18n.inputMethod = {
     enable = true;

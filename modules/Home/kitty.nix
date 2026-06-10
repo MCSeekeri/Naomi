@@ -1,5 +1,4 @@
-{ pkgs, lib, ... }:
-{
+{ pkgs, lib, ... }: {
   home.packages = [ pkgs.fish ]; # fish
 
   programs.kitty = {

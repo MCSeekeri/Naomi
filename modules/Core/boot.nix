@@ -1,5 +1,4 @@
-{ lib, pkgs, ... }:
-{
+{ lib, pkgs, ... }: {
   environment.systemPackages = [ pkgs.sbctl ];
   boot = lib.mkDefault {
     # efi.canTouchEfiVariables = false;

@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{ pkgs, ... }: {
   virtualisation = {
     oci-containers.backend = "podman";
     podman.autoPrune = {

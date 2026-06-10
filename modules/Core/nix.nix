@@ -1,5 +1,4 @@
-{ lib, config, ... }:
-{
+{ lib, config, ... }: {
   nix = {
     channel.enable = false;
     distributedBuilds = true;

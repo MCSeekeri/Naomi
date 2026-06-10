@@ -1,5 +1,4 @@
-{ pkgs, self, ... }:
-{
+{ pkgs, self, ... }: {
   imports = [
     "${self}/modules/Home/browser/librewolf.nix"
     "${self}/modules/Home/browser/chromium.nix"

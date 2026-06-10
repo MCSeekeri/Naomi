@@ -1,5 +1,4 @@
-{ config, self, ... }:
-{
+{ config, self, ... }: {
   # 服务器
   #
   # services.prometheus.scrapeConfigs = [

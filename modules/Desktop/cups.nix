@@ -1,5 +1,4 @@
-{ self, ... }:
-{
+{ self, ... }: {
   imports = [ "${self}/modules/Core/avahi.nix" ];
 
   services = {

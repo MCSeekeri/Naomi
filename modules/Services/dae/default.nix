@@ -1,5 +1,4 @@
-{ lib, pkgs, ... }:
-{
+{ lib, pkgs, ... }: {
   services.dae = {
     enable = true;
     assets = with pkgs; [

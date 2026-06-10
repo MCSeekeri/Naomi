@@ -1,5 +1,4 @@
-{ pkgs, lib, ... }:
-{
+{ pkgs, lib, ... }: {
   console = {
     earlySetup = true;
     packages = [ pkgs.kmscon ];

@@ -1,5 +1,4 @@
-{ self, pkgs, ... }:
-{
+{ self, pkgs, ... }: {
   imports = [
     "${self}/modules/Core"
     "${self}/modules/Core/prc.nix"

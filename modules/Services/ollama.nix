@@ -1,5 +1,4 @@
-{ pkgs, lib, ... }:
-{
+{ pkgs, lib, ... }: {
   services = {
     ollama = {
       enable = lib.mkDefault true;

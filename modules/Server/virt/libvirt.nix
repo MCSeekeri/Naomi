@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{ pkgs, ... }: {
   # 确保将用户添加到 kvm 和 libvirtd 组
   virtualisation = {
     spiceUSBRedirection.enable = true;

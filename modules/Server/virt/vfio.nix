@@ -1,5 +1,4 @@
-{ pkgs, lib, ... }:
-{
+{ pkgs, lib, ... }: {
   # lspci -nn 并设置启动内核参数
   # boot.kernelParams = [ "vfio-pci.ids=10de:26b1,10de:2684" ];
   # 然后给用户访问权限

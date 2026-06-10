@@ -1,5 +1,4 @@
-{ inputs, lib, ... }:
-{
+{ inputs, lib, ... }: {
   flake = {
     nixosConfigurations =
       lib.genAttrs

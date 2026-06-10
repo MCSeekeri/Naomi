@@ -33,7 +33,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          curl --proto '=https' --tlsv1.2 -fsSL https://install.lix.systems/lix | bash -s -- install linux \
+          curl --proto '=https' --tlsv1.2 -fsSL \
+            https://install.lix.systems/lix | bash -s -- install linux \
             --extra-conf "sandbox = false" \
             --init none \
             --no-confirm
@@ -44,10 +45,10 @@ jobs:
 
           cat > "$HOME/.config/nix/nix.conf" <<'EOF'
           experimental-features = nix-command flakes
-          extra-substituters = https://nix.mcseekeri.com?priority=51 
-          extra-trusted-public-keys = nix.mcseekeri.com-1:3gd0/2u7IOF7YooxEiBbWTvRCYGC53S2UoqFdnCUYHc=
+          extra-substituters = https://nix.mcseekeri.com?priority=51
+          extra-trusted-public-keys = \
+            nix.mcseekeri.com-1:3gd0/2u7IOF7YooxEiBbWTvRCYGC53S2UoqFdnCUYHc=
           EOF
-
       - name: 执行 treefmt 检查
         shell: bash
         run: |

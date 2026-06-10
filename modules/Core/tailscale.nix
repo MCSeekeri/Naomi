@@ -1,5 +1,4 @@
-{ config, self, ... }:
-{
+{ config, self, ... }: {
   services = {
     tailscale = {
       enable = true;

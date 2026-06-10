@@ -1,5 +1,4 @@
-{ self, modulesPath, ... }:
-{
+{ self, modulesPath, ... }: {
   imports = [
     ./disko-config.nix
     "${modulesPath}/profiles/qemu-guest.nix"

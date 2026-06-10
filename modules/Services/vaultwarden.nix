@@ -1,5 +1,4 @@
-{ lib, ... }:
-{
+{ lib, ... }: {
   services.vaultwarden = {
     enable = true;
     configureNginx = lib.mkDefault true;

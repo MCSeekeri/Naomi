@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{ pkgs, ... }: {
   services.clamav = {
     # fangfrisch.enable = true; # 误报率太吓人了
     scanner = {

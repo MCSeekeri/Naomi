@@ -1,5 +1,4 @@
-{ pkgs, self, ... }:
-{
+{ pkgs, self, ... }: {
   imports = [ "${self}/modules/Desktop/adb.nix" ];
 
   virtualisation.waydroid = {

@@ -1,5 +1,4 @@
-{ config, ... }:
-{
+{ config, ... }: {
   # 客户端
   # environment.etc."alloy/sink.alloy".text = ''
   #   loki.write "default" {

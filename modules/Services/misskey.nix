@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{ pkgs, ... }: {
   services.misskey = {
     enable = true;
     package = pkgs.misskey;
