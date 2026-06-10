@@ -103,7 +103,7 @@
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
 
     noctalia = {
-      url = "github:noctalia-dev/noctalia-shell/v5";
+      url = "github:noctalia-dev/noctalia-shell";
       inputs = {
         nixpkgs.follows = "nixpkgs";
       };
@@ -133,18 +133,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    ndg = {
-      url = "github:feel-co/ndg/v2.6.0";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     nix-mineral = {
       url = "github:cynicsketch/nix-mineral";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-parts.follows = "flake-parts";
         flake-compat.follows = "flake-compat";
-        ndg.follows = "ndg";
       };
     };
 
@@ -160,8 +154,7 @@
   outputs =
     inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } (
-      { ... }:
-      {
+      { ... }: {
         imports = [
           inputs.devshell.flakeModule
           inputs.flake-parts.flakeModules.easyOverlay

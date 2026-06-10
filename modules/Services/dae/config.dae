@@ -8,7 +8,7 @@ global {
 }
 
 node {
-	'socks5://localhost:9909'
+	'socks5://127.0.0.1:9909'
 }
 
 # https://github.com/daeuniverse/dae/blob/main/docs/zh/configuration/dns.md
@@ -35,6 +35,8 @@ dns {
 group {
 	proxy {
 		policy: min_moving_avg
+		tcp_check_url: 'http://cp.cloudflare.com,1.1.1.1'
+		udp_check_dns: 'dns.google:53,8.8.8.8'
 	}
 }
 

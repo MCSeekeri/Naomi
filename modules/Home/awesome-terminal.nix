@@ -156,7 +156,7 @@
           }
           {
             type = "gpu";
-            format = "{1} {2} @ {12}";
+            format = "{1} {2}";
             key = " ├ 󰢮 ";
             keyColor = "33";
           }

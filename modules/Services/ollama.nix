@@ -12,8 +12,5 @@
     };
   };
 
-  environment.systemPackages = with pkgs; [
-    chatbox
-    cherry-studio
-  ];
+  environment.systemPackages = with pkgs; [ cherry-studio ];
 }

@@ -5,6 +5,20 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      runner_target:
+        description: Select runner target
+        required: true
+        default: self-hosted
+        type: choice
+        options:
+          - self-hosted
+          - ubuntu-latest
+      update_lock:
+        description: Update flake.lock before build
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: read
@@ -12,7 +26,9 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: >-
+      ${{ github.event_name == 'workflow_dispatch' && inputs.runner_target ||
+      'self-hosted' }}
     timeout-minutes: 720
 
     steps:
@@ -27,13 +43,19 @@ jobs:
             accept-flake-config = true
             experimental-features = nix-command flakes
             extra-substituters = https://nix.mcseekeri.com?priority=51
-            extra-trusted-public-keys = nix.mcseekeri.com-1:3gd0/2u7IOF7YooxEiBbWTvRCYGC53S2UoqFdnCUYHc=
+            extra-trusted-public-keys = \
+              nix.mcseekeri.com-1:3gd0/2u7IOF7YooxEiBbWTvRCYGC53S2UoqFdnCUYHc=
             build-dir = /nix/build
 
       - uses: Mic92/niks3-action@v1
         with:
           server-url: https://niks3.mcseekeri.com
           drain-timeout: 3600
+
+      - name: Update flake lock
+        if: >-
+          ${{ github.event_name == 'workflow_dispatch' && inputs.update_lock }}
+        run: nix flake update
 
       - name: Build all targets
         shell: bash
@@ -44,7 +66,7 @@ jobs:
           targets=()
 
           mapfile -t packages < <(
-            nix eval --json .#packages.x86_64-linux --apply builtins.attrNames | jq -r '.[]'
+          nix eval --json .#packages.x86_64-linux --apply builtins.attrNames | jq -r '.[]'
           )
 
           for package in "${packages[@]}"; do
@@ -52,11 +74,13 @@ jobs:
           done
 
           mapfile -t hosts < <(
-            nix eval --json .#nixosConfigurations --apply builtins.attrNames | jq -r '.[]'
+          nix eval --json .#nixosConfigurations --apply builtins.attrNames | jq -r '.[]'
           )
 
           for host in "${hosts[@]}"; do
-            targets+=(".#nixosConfigurations.${host}.config.system.build.toplevel")
+            targets+=(
+              ".#nixosConfigurations.${host}.config.system.build.toplevel"
+            )
           done
 
           if [ "${#targets[@]}" -eq 0 ]; then
