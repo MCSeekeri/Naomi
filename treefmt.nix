@@ -55,8 +55,8 @@
             check-multi-line-strings = false;
           };
           line-length = {
-            max = 100;
-            allow-non-breakable-words = false;
+            max = 110;
+            allow-non-breakable-words = true;
             allow-non-breakable-inline-mappings = false;
           };
           truthy = {

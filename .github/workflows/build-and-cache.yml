@@ -35,16 +35,16 @@ jobs:
       - uses: actions/checkout@v6
 
       - uses: wimpysworld/nothing-but-nix@main
+        if: ${{ runner.environment != 'self-hosted' }}
         with:
           hatchet-protocol: 'carve'
-      - uses: DeterminateSystems/determinate-nix-action@v3
+      - uses: cachix/install-nix-action@v31
         with:
-          extra-conf: |
+          extra_nix_config: |
             accept-flake-config = true
             experimental-features = nix-command flakes
             extra-substituters = https://nix.mcseekeri.com?priority=51
-            extra-trusted-public-keys = \
-              nix.mcseekeri.com-1:3gd0/2u7IOF7YooxEiBbWTvRCYGC53S2UoqFdnCUYHc=
+            extra-trusted-public-keys = nix.mcseekeri.com-1:3gd0/2u7IOF7YooxEiBbWTvRCYGC53S2UoqFdnCUYHc=
             build-dir = /nix/build
 
       - uses: Mic92/niks3-action@v1
