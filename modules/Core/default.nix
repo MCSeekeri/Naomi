@@ -1,4 +1,5 @@
 {
+  config,
   inputs,
   outputs,
   self,
@@ -173,6 +174,12 @@
       graphics = lib.mkDefault true;
     };
 
+    virtualisation.forwardPorts = lib.forEach config.services.openssh.ports (port: {
+      from = "host";
+      host.port = port;
+      guest.port = port;
+    });
+
     system.nixos-init.enable = lib.mkForce false;
     hardware = {
       cpu.type = lib.mkForce "qemu";
@@ -183,5 +190,7 @@
       beesd.filesystems = lib.mkForce { };
       snapper.configs = lib.mkForce { };
     };
+
+    sops.validateSopsFiles = lib.mkForce false;
   };
 }

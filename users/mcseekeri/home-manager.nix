@@ -439,8 +439,13 @@
             "audio_visualizer"
           ];
           thickness = 46;
+          center = [
+            "clock"
+            "weather"
+          ];
         };
       };
+      brightness.enable_ddcutil = true;
       dock = {
         active_monitor_only = true;
         auto_hide = true;
@@ -448,14 +453,45 @@
         icon_size = 64;
         launcher_position = "start";
         show_dots = true;
+        reserve_space = false;
       };
 
       nightlight.enabled = true;
 
+      idle = {
+        behavior_order = [
+          "lock"
+          "screen-off"
+          "suspend"
+        ];
+        behavior = {
+          lock = {
+            action = "lock";
+            enabled = true;
+            timeout = 60;
+          };
+          screen-off = {
+            action = "screen_off";
+            enabled = true;
+            timeout = 65;
+          };
+          suspend = {
+            action = "suspend";
+            enabled = false;
+            lock_before_suspend = true;
+            timeout = 900;
+          };
+        };
+      };
+
+      notification.layer = "overlay";
+
       shell = {
         font_family = "Sarasa UI SC";
         corner_radius_scale = 1.2;
-        lang = "zh-CN";
+        clipboard_auto_paste = "off";
+        lang = "zh-Hans";
+        launch_apps_as_systemd_services = true;
         niri_overview_type_to_launch_enabled = true;
         password_style = "random";
         polkit_agent = true;
@@ -465,28 +501,32 @@
         panel = {
           control_center_placement = "floating";
           launcher_placement = "floating";
+          launcher_session_search = true;
           transparency_mode = "soft";
         };
+        screen_corners.enabled = true;
         show_location = false;
       };
 
       theme = {
-        community_palette = "Tokyo Night Moon";
+        builtin = "Tokyo-Night";
         mode = "auto";
-        source = "community";
+        source = "builtin";
       };
 
       backdrop = {
         enabled = true;
-        blur_intensity = 0.65;
-        tint_intensity = 0.22;
       };
 
       widget = {
+        active_window.title_scroll = "always";
         audio_visualizer = {
           capsule = false;
-          centered = true;
-          mirrored = true;
+          centered = false;
+          mirrored = false;
+          bands = 32;
+          color_1 = "tertiary";
+          color_2 = "error";
         };
         battery = {
           display_mode = "graphic";
@@ -495,13 +535,28 @@
           show_label = false;
           warning_threshold = 30;
         };
+        bluetooth.hide_when_no_connected_device = true;
+        clock.format = "{:%x %H:%M}";
+        lock_keys = {
+          display = "full";
+          show_scroll_lock = true;
+        };
+        media = {
+          hide_when_no_media = true;
+          title_scroll = "on_hover";
+        };
         network = {
           capsule = false;
           show_label = false;
         };
         notifications.hide_when_no_unread = true;
         power_profiles.capsule = false;
-        tray.capsule = true;
+        tray = {
+          drawer = true;
+          match_adjacent_spacing = true;
+        };
+        weather.show_condition = false;
+        workspaces.minimal = true;
       };
     };
   };
