@@ -9,6 +9,7 @@
       enable_audio_bell = false; # 防止把自己吓一跳，如果你好奇，输入 wall 随便什么。
       update_check_interval = 0;
       confirm_os_window_close = 0; # 我知道我在做什么
+      disable_config_watch = "yes";
       hide_window_decorations = "titlebar-and-corners";
       shell = "fish"; # 俩 fish
     };

@@ -40,7 +40,7 @@
       DNS = [
         "223.5.5.5#dns.alidns.com"
         "223.6.6.6#dns.alidns.com"
-        "dot.pub#dot.pub"
+        "119.29.29.29#dns.pub"
       ];
     };
     flatpak.remotes = [
