@@ -1,8 +1,4 @@
-{ pkgs, inputs, ... }: {
-  imports = with inputs; [
-    nix-gaming.nixosModules.pipewireLowLatency
-    nix-gaming.nixosModules.platformOptimizations
-  ];
+{ pkgs, ... }: {
 
   programs = {
     steam = {
@@ -11,7 +7,6 @@
       dedicatedServer.openFirewall = true;
       localNetworkGameTransfers.openFirewall = true;
       remotePlay.openFirewall = true;
-      platformOptimizations.enable = true;
       protontricks.enable = true;
       gamescopeSession.enable = true;
       # fontPackages = with pkgs; [ source-han-sans ];
@@ -36,6 +31,13 @@
     xpadneo.enable = true;
     steam-hardware.enable = true;
   };
+
+  boot.kernel.sysctl = {
+    "kernel.sched_cfs_bandwidth_slice_us" = 3000;
+    "net.ipv4.tcp_fin_timeout" = 5;
+    "kernel.split_lock_mitigate" = 0;
+  };
+
   environment.systemPackages = with pkgs; [
     mangohud
     adwsteamgtk
@@ -49,7 +51,6 @@
   ];
 
   services = {
-    pipewire.lowLatency.enable = true;
     udev.extraRules = ''
       # DualShock 4 (PS4)
       ATTRS{name}=="Sony Interactive Entertainment Wireless Controller Touchpad", ENV{LIBINPUT_IGNORE_DEVICE}="1"

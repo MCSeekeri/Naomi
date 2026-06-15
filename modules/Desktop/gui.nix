@@ -29,11 +29,17 @@
       alsa.support32Bit = true;
       pulse.enable = true;
       jack.enable = true;
+      extraConfig = {
+        pipewire."92-low-latency" = {
+          "context.properties" = {
+            "default.clock.min-quantum" = 64;
+            "default.clock.max-quantum" = 4096;
+          };
+        };
+      };
     };
     upower.enable = lib.mkDefault true;
   };
-  powerManagement.powertop.enable = lib.mkDefault true;
-
   programs.ssh.extraConfig = ''
     IdentityAgent /run/user/%i/gcr/ssh
   '';

@@ -91,15 +91,6 @@
       };
     };
 
-    nix-gaming = {
-      url = "github:fufexan/nix-gaming";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        flake-parts.follows = "flake-parts";
-        git-hooks.follows = "git-hooks";
-      };
-    };
-
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
 
     noctalia = {
