@@ -29,22 +29,22 @@
 
   sops.secrets = {
     niks3_s3_access_key = {
-      sopsFile = "${self}/secrets/services/niks3.yaml";
+      sopsFile = "${self}/secrets/hosts/${config.networking.hostName}/niks3.yaml";
       key = "NIKS3_S3_ACCESS_KEY";
       owner = "niks3";
     };
     niks3_s3_secret_key = {
-      sopsFile = "${self}/secrets/services/niks3.yaml";
+      sopsFile = "${self}/secrets/hosts/${config.networking.hostName}/niks3.yaml";
       key = "NIKS3_S3_SECRET_KEY";
       owner = "niks3";
     };
     niks3_api_token = {
-      sopsFile = "${self}/secrets/services/niks3.yaml";
+      sopsFile = "${self}/secrets/hosts/${config.networking.hostName}/niks3.yaml";
       key = "NIKS3_API_TOKEN";
       owner = "niks3";
     };
     niks3_signing_key = {
-      sopsFile = "${self}/secrets/services/niks3.yaml";
+      sopsFile = "${self}/secrets/hosts/${config.networking.hostName}/niks3.yaml";
       key = "NIKS3_SIGNING_KEY";
       owner = "niks3";
     };

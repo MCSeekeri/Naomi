@@ -110,13 +110,13 @@
       key = "admin_password";
       owner = "grafana";
       group = "grafana";
-      sopsFile = "${self}/secrets/services/grafana.yaml";
+      sopsFile = "${self}/secrets/hosts/${config.networking.hostName}/grafana.yaml";
     };
     grafana_secret_key = {
       key = "secret_key";
       owner = "grafana";
       group = "grafana";
-      sopsFile = "${self}/secrets/services/grafana.yaml";
+      sopsFile = "${self}/secrets/hosts/${config.networking.hostName}/grafana.yaml";
     };
   };
 }

@@ -22,13 +22,13 @@
 
   sops = {
     secrets = {
-      "xray-${config.networking.hostName}-uuid" = {
+      "xray-uuid" = {
         restartUnits = [ "xray.service" ];
-        sopsFile = "${self}/secrets/services/xray.yaml";
+        sopsFile = "${self}/secrets/hosts/${config.networking.hostName}/xray.yaml";
       };
-      "xray-${config.networking.hostName}-vless-decryption" = {
+      "xray-vless-decryption" = {
         restartUnits = [ "xray.service" ];
-        sopsFile = "${self}/secrets/services/xray.yaml";
+        sopsFile = "${self}/secrets/hosts/${config.networking.hostName}/xray.yaml";
       };
     };
   };

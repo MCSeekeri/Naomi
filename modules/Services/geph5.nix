@@ -42,6 +42,6 @@
   sops.secrets.geph5-config = {
     format = "yaml";
     key = "";
-    sopsFile = "${self}/secrets/geph5.yaml";
+    sopsFile = "${self}/secrets/services/geph5.yaml";
   };
 }

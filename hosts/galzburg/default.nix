@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   self,
   modulesPath,
   ...
@@ -118,9 +119,9 @@
   };
 
   sops.secrets = {
-    masterKey.sopsFile = "${self}/secrets/services/meilisearch.yaml";
+    masterKey.sopsFile = "${self}/secrets/hosts/galzburg/meilisearch.yaml";
     openlist_env = {
-      sopsFile = "${self}/secrets/services/openlist.env";
+      sopsFile = "${self}/secrets/hosts/galzburg/openlist.env";
       format = "dotenv";
       owner = "openlist";
       group = "openlist";
@@ -128,12 +129,12 @@
       key = "";
     };
     acme = {
-      sopsFile = "${self}/secrets/services/acme.env";
+      sopsFile = "${self}/secrets/hosts/galzburg/acme.env";
       format = "dotenv";
       key = "";
     };
     vaultwarden_env = {
-      sopsFile = "${self}/secrets/services/vaultwarden.env";
+      sopsFile = "${self}/secrets/hosts/galzburg/vaultwarden.env";
       format = "dotenv";
       key = "";
       owner = "vaultwarden";
@@ -167,12 +168,12 @@
           settings = {
             clients = [
               {
-                id = config.sops.placeholder."xray-${config.networking.hostName}-uuid";
+                id = config.sops.placeholder."xray-uuid";
                 email = "galzburg@xhttp";
                 flow = "xtls-rprx-vision";
               }
             ];
-            decryption = config.sops.placeholder."xray-${config.networking.hostName}-vless-decryption";
+            decryption = config.sops.placeholder."xray-vless-decryption";
           };
           sniffing = {
             enabled = true;
@@ -298,6 +299,7 @@
 
     sillytavern = {
       enable = true;
+      package = pkgs.nur.repos.MCSeekeri.luker;
       configFile = "/var/lib/SillyTavern/sillytavern.yaml";
     };
 
