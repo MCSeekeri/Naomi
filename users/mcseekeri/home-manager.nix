@@ -2,7 +2,6 @@
   imports = [
     "${self}/modules/Home/browser/librewolf.nix"
     "${self}/modules/Home/browser/chromium.nix"
-    "${self}/modules/Home/fcitx5"
     "${self}/modules/Home/fish/tide.nix"
     # "${self}/modules/Home/activitywatch.nix"
     "${self}/modules/Home/awesome-terminal.nix"
