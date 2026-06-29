@@ -24,9 +24,11 @@
       wayland.enable = lib.mkDefault true;
     };
   };
-  programs.xwayland.enable = true;
+
   xdg.portal = {
     extraPortals = with pkgs; [ kdePackages.xdg-desktop-portal-kde ];
-    config.common.default = lib.mkDefault "kde";
+    config.kde = {
+      default = "kde";
+    };
   };
 }

@@ -1,10 +1,13 @@
-{ pkgs, ... }: {
+{ pkgs, self, ... }: {
+
+  imports = [ "${self}/modules/Desktop/gui.nix" ];
+
   programs = {
     niri = {
       enable = true;
     };
     dconf.enable = true;
-    xwayland.enable = true;
+    nm-applet.enable = true;
   };
 
   services = {
@@ -20,7 +23,10 @@
   };
 
   xdg.portal = {
-    extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gtk
+      xdg-desktop-portal-gnome
+    ];
     config.niri = {
       "org.freedesktop.impl.portal.FileChooser" = "gtk";
       "org.freedesktop.impl.portal.ScreenCast" = "gnome";

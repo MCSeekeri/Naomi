@@ -17,10 +17,9 @@
       powerOnBoot = true;
     };
   };
+  programs.xwayland.enable = true;
+
   services = {
-    xserver = {
-      enable = true;
-    };
     gnome.gcr-ssh-agent.enable = true;
     power-profiles-daemon.enable = lib.mkDefault true;
     pipewire = {
@@ -39,6 +38,15 @@
       };
     };
     upower.enable = lib.mkDefault true;
+    libinput = {
+      enable = true;
+      touchpad = {
+        naturalScrolling = true;
+        tapping = true;
+        tappingButtonMap = "lrm";
+        scrollMethod = "twofinger";
+      };
+    };
   };
   programs.ssh.extraConfig = ''
     IdentityAgent /run/user/%i/gcr/ssh

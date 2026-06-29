@@ -1,4 +1,10 @@
-{ self, pkgs, ... }: {
+{
+  self,
+  pkgs,
+  inputs,
+  ...
+}:
+{
   imports = [
     "${self}/modules/Core"
     "${self}/modules/Core/prc.nix"
@@ -12,7 +18,6 @@
     "${self}/modules/Server/virt/k8s.nix"
     "${self}/modules/Server/podman.nix"
 
-    "${self}/modules/Desktop/plasma.nix"
     "${self}/modules/Desktop/niri.nix"
     "${self}/modules/Desktop/sunshine.nix"
     "${self}/modules/Desktop/gaming.nix"
@@ -41,9 +46,12 @@
     "${self}/users/mcseekeri"
   ];
 
+  home-manager.sharedModules = [ inputs.plasma-manager.homeModules.plasma-manager ]; # 「No 模块，No 覆盖」，Nix 的这句名言想必大家都熟记于心吧……
+
   # 网络配置
   networking = {
     hostName = "cyprus"; # 主机名，设置好之后最好不要修改
+    networkmanager.enable = true;
     firewall.interfaces.tailscale0.allowedTCPPorts = [ 9091 ];
   };
 
@@ -194,6 +202,8 @@
         TIMELINE_LIMIT_YEARLY = 0;
       };
     };
+    displayManager.ly.enable = true;
+
     wivrn = {
       enable = true;
       highPriority = true;
