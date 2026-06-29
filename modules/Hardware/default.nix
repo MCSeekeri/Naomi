@@ -186,14 +186,9 @@ in
 
       nvidia = lib.mkIf isNvidia {
         open = true;
-        nvidiaSettings = true;
         modesetting.enable = true;
         nvidiaPersistenced = true;
-        datacenter.enable = lib.mkDefault false;
-        powerManagement = {
-          enable = lib.mkDefault false;
-          finegrained = lib.mkDefault false;
-        };
+        forceFullCompositionPipeline = true;
         dynamicBoost = lib.mkIf (config.hardware.deviceType == "laptop") { enable = true; };
         prime = lib.mkIf (config.hardware.deviceType == "laptop") {
           offload = {
@@ -205,7 +200,9 @@ in
           nvidiaBusId = "PCI:1:0:0";
         };
       };
-      nvidia-container-toolkit.enable = lib.mkIf isNvidia true;
+      nvidia-container-toolkit.enable = lib.mkIf isNvidia (
+        config.virtualisation.podman.enable || config.virtualisation.docker.enable || false
+      );
 
       amdgpu = lib.mkIf isAMD {
         initrd.enable = true;
@@ -236,6 +233,7 @@ in
       (lib.mkIf (config.hardware.deviceType == "laptop" && config.hardware.cpu.type == "intel") {
         thermald.enable = lib.mkDefault true;
       })
+      (lib.mkIf (config.hardware.gpu.type == "amd") { xserver.videoDrivers = [ "amdgpu" ]; })
     ];
 
     systemd.services.nix-gc.serviceConfig =
@@ -286,11 +284,7 @@ in
             cudaPackages.cudatoolkit
             cudaPackages.cuda_cudart
             cudaPackages.cuda_nvcc
-            cudaPackages.cuda_cccl
-            linuxPackages.nvidia_x11
-            libGLU
-            libGL
-            freeglut
+            cudaPackages.cccl
           ]
         );
 
@@ -305,8 +299,15 @@ in
           VDPAU_DRIVER = "radeonsi";
           RUSTICL_ENABLE = "radeonsi";
           ROC_ENABLE_PRE_VEGA = "1";
+          HIP_VISIBLE_DEVICES = "0";
         })
-        (lib.mkIf isNvidia { CUDA_PATH = "${pkgs.cudaPackages.cudatoolkit}"; })
+        (lib.mkIf isNvidia {
+          CUDA_PATH = "${pkgs.cudaPackages.cudatoolkit}";
+          LIBVA_DRIVER_NAME = "nvidia";
+          NVD_BACKEND = "direct";
+          __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+          GBM_BACKEND = "nvidia-drm";
+        })
       ];
     };
 
