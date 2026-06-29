@@ -43,12 +43,6 @@
         "119.29.29.29#dns.pub"
       ];
     };
-    flatpak.remotes = [
-      {
-        name = "flathub_sjtug";
-        location = "https://mirror.sjtu.edu.cn/flathub/flathub.flatpakrepo";
-      }
-    ];
   };
 
   home-manager.sharedModules = [ "${self}/modules/Home/prc.nix" ];
