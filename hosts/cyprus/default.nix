@@ -111,7 +111,7 @@
       };
     };
     kernelModules = [ "kvm-intel" ];
-    kernelPackages = pkgs.linuxPackages_zen;
+    kernelPackages = pkgs.linuxPackages_xanmod_latest;
   };
 
   system = {
@@ -174,7 +174,7 @@
     beesd.filesystems = {
       root = {
         spec = "LABEL=btrfs-root";
-        hashTableSizeMB = 4096; # 周转率拉爆了，显然需要更大的哈希表
+        hashTableSizeMB = 8192; # 增大后仍不够，进一步翻倍以降 IO 换页
         verbosity = "crit";
         extraOptions = [
           "--loadavg-target"
@@ -187,7 +187,7 @@
         verbosity = "crit";
         extraOptions = [
           "--loadavg-target"
-          "15.0"
+          "25.0"
         ];
       };
     };

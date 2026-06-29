@@ -51,6 +51,8 @@
       ckan
       r2modman
       musikcube
+      lutris
+      (bottles.override { removeWarningPopup = true; })
       # 开发套件
       rustup
       gnumake
@@ -94,6 +96,26 @@
     # ]);
     # 安装整个 kdePackages 包组
     # 这个主意比看起来更糟糕……
+
+    sessionVariables = {
+      XCURSOR_THEME = "Bibata-Modern-Classic";
+      XCURSOR_SIZE = "32";
+    };
+  };
+
+  gtk = {
+    enable = true;
+
+    iconTheme = {
+      name = "Papirus-Dark";
+      package = pkgs.papirus-icon-theme;
+    };
+
+    cursorTheme = {
+      name = "Bibata-Modern-Classic";
+      package = pkgs.bibata-cursors;
+      size = 32;
+    };
   };
 
   services.flatpak.packages = [
