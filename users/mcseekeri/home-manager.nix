@@ -436,6 +436,7 @@
             "launcher"
             "media"
             "audio_visualizer"
+            "cat"
           ];
           thickness = 46;
           center = [
@@ -499,7 +500,8 @@
         ui_scale = 1.25;
         panel = {
           control_center_placement = "floating";
-          launcher_placement = "floating";
+          launcher_placement = "attached";
+          launcher_position = "auto";
           launcher_session_search = true;
           transparency_mode = "soft";
         };
@@ -515,6 +517,10 @@
 
       backdrop = {
         enabled = true;
+      };
+
+      wallpaper = {
+        transition_on_startup = true;
       };
 
       widget = {
@@ -535,7 +541,14 @@
           warning_threshold = 30;
         };
         bluetooth.hide_when_no_connected_device = true;
+        cat = {
+          audio_spectrum = true;
+          tappy_mode = true;
+          type = "noctalia/bongocat:cat";
+        };
         clock.format = "{:%x %H:%M}";
+        date.format = "{:%F}";
+        input_volume.mute_color = "on_surface";
         lock_keys = {
           display = "full";
           show_scroll_lock = true;
@@ -592,6 +605,9 @@
         name = "Noto Color Emoji";
       };
     };
-    targets.kde.enable = false;
+    targets = {
+      gtk.enable = false;
+      kde.enable = false;
+    };
   };
 }

@@ -18,6 +18,13 @@
       };
     };
 
+    xdg.mimeApps = {
+      enable = true;
+      defaultApplications = {
+        "inode/directory" = "nemo.desktop";
+      };
+    };
+
     xdg.configFile."niri/config.kdl".source = lib.mkDefault "${self}/modules/Home/niri/config.kdl";
 
     programs.noctalia = {
