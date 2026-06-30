@@ -28,7 +28,7 @@ jobs:
   build:
     runs-on: >-
       ${{ github.event_name == 'workflow_dispatch' && inputs.runner_target ||
-      'self-hosted' }}
+      'ubuntu-latest' }}
     timeout-minutes: 720
 
     steps:
@@ -61,8 +61,6 @@ jobs:
         shell: bash
         timeout-minutes: 720
         run: |
-          set -euo pipefail
-
           targets=()
 
           mapfile -t packages < <(

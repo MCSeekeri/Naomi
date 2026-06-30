@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }: {
+{ lib, ... }: {
   services = {
     ollama = {
       enable = lib.mkDefault true;
@@ -11,6 +11,4 @@
       loadModels = lib.mkDefault [ "qwen3:0.6b" ];
     };
   };
-
-  environment.systemPackages = with pkgs; [ cherry-studio ];
 }
