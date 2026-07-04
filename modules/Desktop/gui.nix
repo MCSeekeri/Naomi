@@ -48,9 +48,12 @@
       };
     };
   };
-  programs.ssh.extraConfig = ''
-    IdentityAgent /run/user/%i/gcr/ssh
-  '';
+  programs.ssh = {
+    enableAskPassword = true;
+    extraConfig = ''
+      IdentityAgent /run/user/%i/gcr/ssh
+    '';
+  };
 
   xdg.portal = {
     enable = true;
