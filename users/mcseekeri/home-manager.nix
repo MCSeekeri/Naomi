@@ -531,12 +531,6 @@
         show_location = false;
       };
 
-      theme = {
-        builtin = "Tokyo-Night";
-        mode = "auto";
-        source = "builtin";
-      };
-
       backdrop = {
         enabled = true;
       };

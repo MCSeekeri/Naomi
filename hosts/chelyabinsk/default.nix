@@ -147,5 +147,6 @@
       };
     };
   };
-  systemd.services."cloudflared-tunnel-chelyabinsk".environment.TUNNEL_TRANSPORT_PROTOCOL = "http2"; # 哈哈，QUIC ……
+  systemd.services."cloudflared-tunnel-chelyabinsk".environment.TUNNEL_TRANSPORT_PROTOCOL =
+    lib.mkForce "http2"; # 哈哈，QUIC ……
 }

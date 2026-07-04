@@ -24,7 +24,7 @@
       lxgw-neoxihei
       smiley-sans
       foundertype-fonts
-      TH-fonts
+      tianheng-fonts
 
       lxgw-wenkai-tc
 
