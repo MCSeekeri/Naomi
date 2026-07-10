@@ -4,7 +4,7 @@ set -euo pipefail
 
 usage() {
   cat >&2 <<'EOF'
-用法: ndp <config-name> <user@host> [build|push|dry-activate|test|switch|boot] [options]
+用法: ndp <config-name> <user@host> [build|push|dry-activate|test|switch|boot] [options] [-- nix-build-options...]
 
 选项:
   -p, --port PORT           指定 SSH 端口
@@ -12,6 +12,7 @@ usage() {
   --no-substitutes          执行 nix copy 时禁用替代源
   --show-trace
   --impure
+  --                        后续参数原样传递给 nix build
   -h, --help                显示帮助
 EOF
 }
@@ -36,6 +37,7 @@ shift 2
 
 port=""
 action="switch"
+action_set=0
 ask_sudo_password=0
 nix_build_args=()
 nix_copy_args=(--substitute-on-destination)
@@ -43,11 +45,23 @@ nix_copy_args=(--substitute-on-destination)
 while [ "$#" -gt 0 ]; do
   case "$1" in
     test|switch|boot)
+      if [ "$action_set" -eq 1 ]; then
+        echo "只能指定一个部署动作" >&2
+        usage
+        exit 1
+      fi
       action="$1"
+      action_set=1
       shift
       ;;
     build|push|dry-activate)
+      if [ "$action_set" -eq 1 ]; then
+        echo "只能指定一个部署动作" >&2
+        usage
+        exit 1
+      fi
       action="$1"
+      action_set=1
       shift
       ;;
     -p|--port)
@@ -71,15 +85,26 @@ while [ "$#" -gt 0 ]; do
       nix_build_args+=("$1")
       shift
       ;;
+    --)
+      shift
+      nix_build_args+=("$@")
+      break
+      ;;
     *)
-      echo "未知参数: $1" >&2
+      echo "未知参数: $1；任意 nix build 参数请放在 -- 后" >&2
       usage
       exit 1
       ;;
   esac
 done
 
-control_path="/tmp/ndp-${config_name}-${target_host//@/_}"
+if [ -n "${XDG_RUNTIME_DIR:-}" ]; then
+  control_dir="$XDG_RUNTIME_DIR/ndp"
+else
+  control_dir="${XDG_CACHE_HOME:-$HOME/.cache}/ndp"
+fi
+install -d -m 0700 "$control_dir"
+control_path="$control_dir/%C"
 
 ssh_opts=(
   -o ControlMaster=auto

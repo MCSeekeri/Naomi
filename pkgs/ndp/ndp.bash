@@ -59,7 +59,7 @@ _ndp() {
     ;;
   esac
 
-  _ndp_set_compreply compgen -W "-p --port -S --ask-sudo-password --no-substitutes --show-trace --impure" -- "${current}"
+  _ndp_set_compreply compgen -W "-p --port -S --ask-sudo-password --no-substitutes --show-trace --impure --" -- "${current}"
 }
 
 complete -F _ndp ndp

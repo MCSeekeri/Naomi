@@ -29,7 +29,8 @@ _ndp() {
     '(-S --ask-sudo-password)'{-S,--ask-sudo-password}'[激活前先验证 sudo]' \
     '--no-substitutes[执行 nix copy 时禁用替代源]' \
     '--show-trace[将 --show-trace 传递给 nix build]' \
-    '--impure[将 --impure 传递给 nix build]'
+    '--impure[将 --impure 传递给 nix build]' \
+    '--[后续参数原样传递给 nix build]'
 }
 
 _ndp "$@"
