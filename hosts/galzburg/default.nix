@@ -12,7 +12,6 @@
     (modulesPath + "/profiles/qemu-guest.nix")
 
     "${self}/modules/Core"
-    "${self}/modules/Hardware"
 
     "${self}/modules/Server/failsafe.nix"
     "${self}/modules/Server/podman.nix"

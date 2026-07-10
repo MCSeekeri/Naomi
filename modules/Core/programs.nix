@@ -129,8 +129,8 @@
         ltrace
         lsof
         (btop.override {
-          rocmSupport = true;
-          cudaSupport = true;
+          rocmSupport = config.hardware.deviceType != "server" && config.hardware.gpu.type == "amd";
+          cudaSupport = config.hardware.deviceType != "server" && config.hardware.gpu.type == "nvidia";
         })
         ncdu
       ]

@@ -14,6 +14,7 @@
     inputs.disko.nixosModules.disko
     inputs.nur.modules.nixos.default
     inputs.nix-index-database.nixosModules.nix-index
+    "${self}/modules/Hardware"
     ./apparmor.nix
     ./avahi.nix
     ./boot.nix
@@ -34,8 +35,12 @@
     autoUpgrade = {
       enable = lib.mkDefault true;
       flake = lib.mkDefault "github:MCSeekeri/Naomi";
-      operation = lib.mkDefault "boot";
-      allowReboot = lib.mkDefault true;
+      operation = lib.mkDefault (if config.hardware.deviceType == "server" then "switch" else "boot");
+      allowReboot = lib.mkDefault (config.hardware.deviceType == "server");
+      dates = lib.mkDefault (if config.hardware.deviceType == "server" then "01:15" else "04:40");
+      randomizedDelaySec = lib.mkDefault (
+        if config.hardware.deviceType == "server" then "30min" else "0"
+      );
       rebootWindow = {
         # 凌晨更新，提神醒脑
         lower = "01:00";
@@ -156,7 +161,7 @@
     }; # 不需要转储
     # enableStrictShellChecks = true;
     # [TODO] 等我整明白如何给上游提交 PR 修复这些问题再说
-    network.wait-online.enable = false;
+    network.wait-online.enable = lib.mkDefault (config.hardware.deviceType == "server");
     oomd = {
       enable = true;
       enableRootSlice = true;

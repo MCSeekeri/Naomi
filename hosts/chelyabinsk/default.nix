@@ -12,7 +12,6 @@
 
     "${self}/modules/Core"
     "${self}/modules/Core/prc.nix"
-    "${self}/modules/Hardware"
 
     "${self}/modules/Server/podman.nix"
     "${self}/modules/Services/cloudflared.nix"

@@ -8,8 +8,8 @@
 {
   environment.systemPackages = [
     pkgs.geph
-    pkgs.gephgui-wry
-  ];
+  ]
+  ++ lib.optionals (config.hardware.deviceType != "server") [ pkgs.gephgui-wry ];
 
   services.geph = {
     enable = true;

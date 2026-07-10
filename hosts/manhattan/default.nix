@@ -6,8 +6,6 @@
     "${self}/modules/Core"
     "${self}/modules/Core/prc.nix"
 
-    "${self}/modules/Hardware"
-
     "${self}/modules/Server/clamav.nix"
     "${self}/modules/Server/failsafe.nix"
     "${self}/modules/Server/virt/libvirt.nix"

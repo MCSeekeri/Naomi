@@ -2,7 +2,6 @@
   nix = {
     channel.enable = false;
     distributedBuilds = true;
-    optimise.automatic = true;
     gc = lib.mkDefault {
       automatic = true;
       dates = "daily";

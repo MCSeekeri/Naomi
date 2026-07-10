@@ -88,6 +88,10 @@ in
         assertion = !(config.hardware.cpu.optimized && config.hardware.cpu.type == "");
         message = "错误：启用了 CPU 指令集优化但未设置 hardware.cpu.type";
       }
+      {
+        assertion = !config.hardware.cpu.optimized || config.hardware.cpu.arch != "";
+        message = "错误：启用了 CPU 指令集优化但未设置 hardware.cpu.arch";
+      }
     ];
 
     nix = lib.mkMerge [
@@ -110,25 +114,23 @@ in
             in
             lib.optionals (config.hardware.cpu.arch != "") levels.${config.hardware.cpu.arch};
         };
+        daemonCPUSchedPolicy = lib.mkDefault "idle";
+        daemonIOSchedClass = lib.mkDefault "idle";
+        daemonIOSchedPriority = lib.mkDefault 7;
       }
       (lib.mkIf (config.hardware.deviceType == "server") {
         daemonCPUSchedPolicy = "other";
         daemonIOSchedClass = "best-effort";
         daemonIOSchedPriority = 4;
       })
-      (lib.mkIf (config.hardware.deviceType != "server") {
-        daemonCPUSchedPolicy = lib.mkDefault "idle";
-        daemonIOSchedClass = lib.mkDefault "idle";
-        daemonIOSchedPriority = lib.mkDefault 7;
-      })
     ];
 
     # 从 Chaotic's Nyx 偷来的
     nixpkgs = {
       config = {
-        cudaForwardCompat = lib.mkIf isNvidia true;
-        cudaSupport = lib.mkIf isNvidia true;
-        rocmSupport = lib.mkIf isAMD true;
+        cudaForwardCompat = isNvidia;
+        cudaSupport = isNvidia;
+        rocmSupport = isAMD;
       };
       hostPlatform = lib.mkIf config.hardware.cpu.optimized {
         gcc.arch = lib.replaceStrings [ "_" ] [ "-" ] config.hardware.cpu.arch;
@@ -137,78 +139,61 @@ in
       };
     };
 
-    hardware = {
-      enableAllFirmware = lib.mkDefault true;
-      intel-gpu-tools.enable = lib.mkIf isIntel true;
-      cpu = {
-        intel.updateMicrocode = lib.mkIf (config.hardware.cpu.type == "intel") true;
-        amd.updateMicrocode = lib.mkIf (config.hardware.cpu.type == "amd") true;
-      };
-
-      graphics = {
-        extraPackages =
-          with pkgs;
-          lib.flatten (
-            [
-              mesa
-              ocl-icd
-            ]
+    hardware = lib.mkMerge [
+      {
+        enableAllFirmware = lib.mkDefault true;
+        cpu = {
+          intel.updateMicrocode = config.hardware.cpu.type == "intel";
+          amd.updateMicrocode = config.hardware.cpu.type == "amd";
+        };
+      }
+      (lib.mkIf isNvidia {
+        nvidia = {
+          open = true;
+          modesetting.enable = true;
+          nvidiaPersistenced = true;
+          dynamicBoost.enable = config.hardware.deviceType == "laptop";
+          prime = lib.mkIf (config.hardware.deviceType == "laptop") {
+            offload = {
+              enable = true;
+              enableOffloadCmd = true;
+            };
+            intelBusId = lib.mkIf (config.hardware.cpu.type == "intel") "PCI:0:2:0";
+            amdgpuBusId = lib.mkIf (config.hardware.cpu.type == "amd") "PCI:54:0:0";
+            nvidiaBusId = "PCI:1:0:0";
+          };
+        };
+        nvidia-container-toolkit.enable =
+          config.virtualisation.podman.enable || config.virtualisation.docker.enable;
+      })
+      (lib.mkIf (config.hardware.deviceType != "server") {
+        intel-gpu-tools.enable = isIntel;
+        graphics = {
+          extraPackages =
+            with pkgs;
+            [ ocl-icd ]
             ++ lib.optionals isIntel [
               intel-media-driver
               intel-compute-runtime
               libvdpau-va-gl
               vpl-gpu-rt
             ]
-            ++ lib.optionals isAMD [
-              rocmPackages.rocm-runtime
-              rocmPackages.rocm-opencl-runtime
-            ]
-            ++ lib.optionals isNvidia [
-              nvidia-vaapi-driver
-              linuxPackages.nvidia_x11
-            ]
-          );
+            ++ lib.optionals isNvidia [ nvidia-vaapi-driver ];
 
-        extraPackages32 =
-          with pkgs.pkgsi686Linux;
-          lib.flatten (
-            [ mesa ]
-            ++ lib.optionals isIntel [
+          extraPackages32 =
+            with pkgs.pkgsi686Linux;
+            lib.optionals isIntel [
               intel-media-driver
               intel-vaapi-driver
             ]
-            ++ lib.optionals (!isQemu) [
-              libvdpau-va-gl
-              vdpauinfo
-            ]
-          );
-      };
-
-      nvidia = lib.mkIf isNvidia {
-        open = true;
-        modesetting.enable = true;
-        nvidiaPersistenced = true;
-        forceFullCompositionPipeline = true;
-        dynamicBoost = lib.mkIf (config.hardware.deviceType == "laptop") { enable = true; };
-        prime = lib.mkIf (config.hardware.deviceType == "laptop") {
-          offload = {
-            enable = true;
-            enableOffloadCmd = true;
-          };
-          intelBusId = lib.mkIf (config.hardware.cpu.type == "intel") "PCI:0:2:0";
-          amdgpuBusId = lib.mkIf (config.hardware.cpu.type == "amd") "PCI:54:0:0";
-          nvidiaBusId = "PCI:1:0:0";
+            ++ lib.optionals (!isQemu) [ libvdpau-va-gl ];
         };
-      };
-      nvidia-container-toolkit.enable = lib.mkIf isNvidia (
-        config.virtualisation.podman.enable || config.virtualisation.docker.enable || false
-      );
-
-      amdgpu = lib.mkIf isAMD {
-        initrd.enable = true;
-        opencl.enable = true;
-      };
-    };
+        amdgpu = lib.mkIf isAMD {
+          initrd.enable = true;
+          opencl.enable = true;
+        };
+      })
+    ];
     boot = {
       kernelParams = lib.flatten (
         lib.optionals (config.hardware.cpu.type == "intel") [ "intel_iommu=on" ]
@@ -219,21 +204,20 @@ in
       );
     };
 
-    networking.networkmanager.wifi.powersave = lib.mkIf (config.hardware.deviceType == "laptop") (
-      lib.mkDefault true
-    );
+    networking.networkmanager.wifi.powersave = lib.mkDefault (config.hardware.deviceType == "laptop");
 
     services = lib.mkMerge [
-      (lib.mkIf (!isQemu) { fwupd.enable = lib.mkDefault true; })
-      (lib.mkIf isNvidia { xserver.videoDrivers = [ "nvidia" ]; })
-      (lib.mkIf isIntel { xserver.videoDrivers = [ "modesetting" ]; })
+      (lib.mkIf (config.hardware.deviceType != "server") {
+        xserver.videoDrivers = lib.mkDefault (
+          lib.optional isNvidia "nvidia"
+          ++ lib.optional (config.hardware.gpu.type == "intel") "modesetting"
+          ++ lib.optional (config.hardware.gpu.type == "amd") "amdgpu"
+        );
+      })
       (lib.mkIf (config.hardware.deviceType == "laptop") {
         tlp.enable = lib.mkDefault (!config.services.power-profiles-daemon.enable);
+        thermald.enable = lib.mkDefault (config.hardware.cpu.type == "intel");
       })
-      (lib.mkIf (config.hardware.deviceType == "laptop" && config.hardware.cpu.type == "intel") {
-        thermald.enable = lib.mkDefault true;
-      })
-      (lib.mkIf (config.hardware.gpu.type == "amd") { xserver.videoDrivers = [ "amdgpu" ]; })
     ];
 
     systemd.services.nix-gc.serviceConfig =
@@ -250,43 +234,32 @@ in
           IOSchedulingPriority = 7;
         };
 
-    environment = {
+    environment = lib.mkIf (config.hardware.deviceType != "server") {
       systemPackages =
         with pkgs;
-        lib.flatten (
-          [
-            ethtool
-            clinfo
-            (lib.optionals (config.hardware.deviceType != "server") [
-              mpv
-              lm_sensors
-            ])
-            (lib.optionals (config.hardware.deviceType == "laptop") [
-              s-tui
-              powerstat
-              stress
-            ])
-            (lib.optionals (config.hardware.deviceType != "server" && !isQemu) [
-              vulkan-tools
-              libva-utils
-              nvtopPackages.full
-              mesa-demos
-            ])
-          ]
-          ++ lib.optionals isIntel [ intel-gpu-tools ]
-          ++ lib.optionals isAMD [
-            rocmPackages.rocm-smi
-            rocmPackages.amdgpu_top
-          ]
-          ++ lib.optionals isNvidia [
-            nvidia-vaapi-driver
-            nv-codec-headers-12
-            cudaPackages.cudatoolkit
-            cudaPackages.cuda_cudart
-            cudaPackages.cuda_nvcc
-            cudaPackages.cccl
-          ]
-        );
+        [
+          clinfo
+          mpv
+          lm_sensors
+        ]
+        ++ lib.optionals (config.hardware.deviceType == "laptop") [
+          s-tui
+          powerstat
+          stress
+        ]
+        ++ lib.optionals (!isQemu) [
+          vulkan-tools
+          libva-utils
+          nvtopPackages.full
+          mesa-demos
+          vdpauinfo
+        ]
+        ++ lib.optionals isIntel [ intel-gpu-tools ]
+        ++ lib.optionals isAMD [
+          rocmPackages.rocm-smi
+          amdgpu_top
+        ]
+        ++ lib.optionals isNvidia [ cudaPackages.cudatoolkit ];
 
       sessionVariables = lib.mkMerge [
         # 在某些强制需要独显渲染的时候会出现微妙的错误
@@ -294,20 +267,22 @@ in
           LIBVA_DRIVER_NAME = "iHD";
           VDPAU_DRIVER = "va_gl";
         })
-        (lib.mkIf isAMD {
+        (lib.mkIf (config.hardware.gpu.type == "amd") {
           LIBVA_DRIVER_NAME = "radeonsi";
           VDPAU_DRIVER = "radeonsi";
           RUSTICL_ENABLE = "radeonsi";
           ROC_ENABLE_PRE_VEGA = "1";
           HIP_VISIBLE_DEVICES = "0";
         })
-        (lib.mkIf isNvidia {
-          CUDA_PATH = "${pkgs.cudaPackages.cudatoolkit}";
-          LIBVA_DRIVER_NAME = "nvidia";
-          NVD_BACKEND = "direct";
-          __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-          GBM_BACKEND = "nvidia-drm";
-        })
+        (lib.mkIf isNvidia (
+          lib.mkMerge [
+            { CUDA_PATH = "${pkgs.cudaPackages.cudatoolkit}"; }
+            (lib.mkIf (config.hardware.deviceType == "desktop") {
+              LIBVA_DRIVER_NAME = "nvidia";
+              NVD_BACKEND = "direct";
+            })
+          ]
+        ))
       ];
     };
 
