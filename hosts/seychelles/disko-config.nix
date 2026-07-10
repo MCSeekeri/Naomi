@@ -20,13 +20,43 @@
             root = {
               size = "100%";
               content = {
-                type = "filesystem";
-                format = "ext4";
-                mountpoint = "/";
+                type = "btrfs";
+                extraArgs = [ "-f" ];
+                subvolumes = {
+                  "root" = {
+                    mountOptions = [
+                      "compress=zstd"
+                      "noatime"
+                    ];
+                    mountpoint = "/";
+                  };
+                  "/home" = {
+                    mountOptions = [
+                      "compress=zstd"
+                      "noatime"
+                    ];
+                    mountpoint = "/home";
+                  };
+                  "/nix" = {
+                    mountOptions = [
+                      "compress=zstd"
+                      "noatime"
+                    ];
+                    mountpoint = "/nix";
+                  };
+                };
               };
             };
-            data1 = {
-              device = "/dev/sda";
+          };
+        };
+      };
+      data1 = {
+        device = "/dev/sda";
+        type = "disk";
+        content = {
+          type = "gpt";
+          partitions = {
+            data = {
               type = "8300";
               size = "100%";
               content = {
@@ -35,8 +65,16 @@
                 mountpoint = "/mnt/data1";
               };
             };
-            data2 = {
-              device = "/dev/sdb";
+          };
+        };
+      };
+      data2 = {
+        device = "/dev/sdb";
+        type = "disk";
+        content = {
+          type = "gpt";
+          partitions = {
+            data = {
               type = "8300";
               size = "100%";
               content = {

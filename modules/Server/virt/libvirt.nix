@@ -20,7 +20,6 @@
   };
 
   networking.firewall = {
-    trustedInterfaces = [ "virbr0" ];
     interfaces.virbr0 = {
       allowedTCPPorts = [ 53 ];
       allowedUDPPorts = [

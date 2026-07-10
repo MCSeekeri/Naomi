@@ -57,6 +57,9 @@ jobs:
           ${{ github.event_name == 'workflow_dispatch' && inputs.update_lock }}
         run: nix flake update
 
+      - name: Validate formatting and static checks
+        run: nix build .#checks.x86_64-linux.treefmt --no-link --print-build-logs
+
       - name: Build all targets
         shell: bash
         timeout-minutes: 720
@@ -80,6 +83,8 @@ jobs:
               ".#nixosConfigurations.${host}.config.system.build.toplevel"
             )
           done
+
+          targets+=(".#nixosConfigurations.cuba.config.system.build.isoImage")
 
           if [ "${#targets[@]}" -eq 0 ]; then
             exit 0

@@ -3,7 +3,11 @@
     openssh = {
       enable = true;
       settings = {
+        PasswordAuthentication = true;
+        KbdInteractiveAuthentication = false;
         PermitEmptyPasswords = false;
+        MaxAuthTries = 3;
+        LoginGraceTime = 30;
         X11Forwarding = lib.mkDefault false; # 真的有人还用这个？
         ClientAliveInterval = 300;
         ClientAliveCountMax = 0;
@@ -26,8 +30,8 @@
     fail2ban = {
       enable = true;
       ignoreIP = [
-        "127.0.0.1"
-        "192.168.0.0/16"
+        "127.0.0.0/8"
+        "::1"
         "100.64.0.0/10" # tailscale 豁免
       ];
       maxretry = 5; # 我总是搞错密码
