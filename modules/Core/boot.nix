@@ -6,7 +6,6 @@
     # efi.efiSysMountPoint = "/boot/EFI";
     loader.limine = {
       enable = true;
-      secureBoot.enable = true;
       # 启动的时候最多显示 20 个版本
       # 如果跑了 20 个配置文件还没修好 Bug，我建议你反思下
       maxGenerations = 20;

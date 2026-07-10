@@ -82,6 +82,7 @@
     deviceType = "laptop";
   };
   boot = {
+    loader.limine.secureBoot.enable = true;
     initrd = {
       availableKernelModules = [
         "xhci_pci"

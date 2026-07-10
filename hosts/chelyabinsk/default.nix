@@ -23,10 +23,6 @@
   networking.hostName = "chelyabinsk";
 
   boot = {
-    loader = {
-      grub.enable = true;
-      limine.enable = false;
-    };
     tmp.useZram = false;
   };
   zramSwap.enable = lib.mkForce false;
