@@ -58,12 +58,24 @@ jobs:
         run: nix flake update
 
       - name: Validate formatting and static checks
-        run: nix build .#checks.x86_64-linux.treefmt --no-link --print-build-logs
+        run: >-
+          nix build .#checks.x86_64-linux.treefmt --no-link --debug
+          --log-format raw --print-build-logs --show-trace --option log-lines 0
 
       - name: Build all targets
         shell: bash
         timeout-minutes: 720
         run: |
+          heartbeat() {
+            while sleep 5m; do
+              echo "::notice::Nix build is still running at $(date --iso-8601=seconds)"
+            done
+          }
+
+          heartbeat &
+          heartbeat_pid=$!
+          trap 'kill "$heartbeat_pid" 2>/dev/null || true; wait "$heartbeat_pid" 2>/dev/null || true' EXIT
+
           targets=()
 
           mapfile -t packages < <(
@@ -90,4 +102,6 @@ jobs:
             exit 0
           fi
 
-          nix build --no-link --print-build-logs --keep-going --max-jobs auto "${targets[@]}"
+          nix build --no-link --debug --log-format raw --print-build-logs \
+            --show-trace --option log-lines 0 --keep-going --max-jobs auto \
+            "${targets[@]}"
