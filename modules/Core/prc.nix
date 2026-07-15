@@ -32,7 +32,6 @@
   nix.settings.extra-substituters = lib.mkBefore [
     "https://mirrors.cernet.edu.cn/nix-channels/store?priority=1"
     "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store?priority=2"
-    "https://mirror.sjtu.edu.cn/nix-channels/store?priority=3"
   ];
 
   services = {

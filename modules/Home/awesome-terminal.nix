@@ -43,7 +43,6 @@
       ll = "eza  -lh --no-user --long";
       df = "duf";
       ping = "gping";
-      curl = "xh";
       wget = "xh --download";
       dig = "doggo";
     };

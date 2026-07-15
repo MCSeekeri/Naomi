@@ -51,8 +51,6 @@
       ckan
       r2modman
       musikcube
-      lutris
-      (bottles.override { removeWarningPopup = true; })
       # 开发套件
       rustup
       gnumake
