@@ -19,6 +19,7 @@
     login.enableGnomeKeyring = true;
     passwd.enableGnomeKeyring = true;
     sddm.enableGnomeKeyring = true;
+    ly.enableGnomeKeyring = true;
   };
 
   xdg.portal = {
