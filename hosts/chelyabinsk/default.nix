@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   self,
   modulesPath,
   ...
@@ -15,13 +16,13 @@
 
     "${self}/modules/Server/podman.nix"
     "${self}/modules/Services/cloudflared.nix"
+    "${self}/modules/Services/caddy.nix"
     "${self}/modules/Services/dae"
     "${self}/modules/Services/geph5.nix"
     "${self}/users/remote"
   ];
 
   networking.hostName = "chelyabinsk";
-
   boot = {
     tmp.useZram = false;
   };
@@ -60,6 +61,16 @@
   users.users.remote.openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPLrxsKjyzH3Ar+W0KqbpnJvMRtdF4PdPsNSiP9kv12m 2601677867@qq.com"
   ];
+
+  users.users.deploy = {
+    isNormalUser = true;
+    home = "/var/www/remember11.com";
+    group = "caddy";
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB7CFTArcv1HbYM+RI24Xh6ZlC7v2vZr+6EQC6cas6lm Github_Action"
+    ];
+    shell = pkgs.bash;
+  };
 
   services = {
     forgejo = {
@@ -141,7 +152,22 @@
         };
       };
     };
+    caddy = {
+      openFirewall = true;
+      virtualHosts = {
+        "remember11.com" = {
+          extraConfig = ''
+            root * /var/www/remember11.com
+            encode zstd gzip
+            file_server
+          '';
+        };
+      };
+    };
   };
-  systemd.services."cloudflared-tunnel-chelyabinsk".environment.TUNNEL_TRANSPORT_PROTOCOL =
-    lib.mkForce "http2"; # 哈哈，QUIC ……
+  systemd = {
+    tmpfiles.rules = [ "d /var/www/remember11.com 0750 deploy caddy -" ];
+    services."cloudflared-tunnel-chelyabinsk".environment.TUNNEL_TRANSPORT_PROTOCOL =
+      lib.mkForce "http2"; # 哈哈，QUIC ……
+  };
 }

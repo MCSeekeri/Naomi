@@ -101,6 +101,36 @@
     };
   };
 
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications = {
+      "inode/directory" = "nemo.desktop";
+
+      "text/html" = "librewolf.desktop";
+      "text/xml" = "librewolf.desktop";
+      "application/xhtml+xml" = "librewolf.desktop";
+      "x-scheme-handler/http" = "librewolf.desktop";
+      "x-scheme-handler/https" = "librewolf.desktop";
+      "x-scheme-handler/about" = "librewolf.desktop";
+      "x-scheme-handler/unknown" = "librewolf.desktop";
+
+      "audio/mpeg" = "mpv.desktop";
+      "audio/flac" = "mpv.desktop";
+      "audio/ogg" = "mpv.desktop";
+      "audio/opus" = "mpv.desktop";
+      "audio/wav" = "mpv.desktop";
+      "video/mp4" = "mpv.desktop";
+      "video/quicktime" = "mpv.desktop";
+      "video/webm" = "mpv.desktop";
+      "video/x-matroska" = "mpv.desktop";
+
+      "application/zip" = "peazip.desktop";
+      "application/x-7z-compressed" = "peazip.desktop";
+      "application/x-rar" = "peazip.desktop";
+      "application/x-tar" = "peazip.desktop";
+    };
+  };
+
   gtk = {
     enable = true;
 
@@ -225,6 +255,120 @@
         #cursor-autohide = 1000;
       };
     };
+    yazi = {
+      enable = true;
+      enableFishIntegration = true;
+      extraPackages = with pkgs; [
+        bat
+        chafa
+        eza
+        exiftool
+        ffmpegthumbnailer
+        file
+        lazygit
+        glow
+        hexyl
+        imagemagick
+        jq
+        mediainfo
+        ouch
+        p7zip
+        poppler-utils
+        sqlite
+        rich-cli
+        unrar
+      ];
+      settings = {
+        mgr.show_hidden = true;
+        preview.show_hidden = "yes";
+        plugin = {
+          prepend_preloaders = [
+            {
+              mime = "{audio,video,image}/*";
+              run = "mediainfo";
+            }
+            {
+              mime = "application/{subrip,postscript,illustrator,dvb.ait,vnd.adobe.illustrator,eps}";
+              run = "mediainfo";
+            }
+            {
+              url = "*.{ai,eps,ait}";
+              run = "mediainfo";
+            }
+          ];
+          prepend_previewers = [
+            {
+              mime = "{audio,video,image}/*";
+              run = "mediainfo";
+            }
+            {
+              mime = "application/{subrip,postscript,illustrator,dvb.ait,vnd.adobe.illustrator,eps}";
+              run = "mediainfo";
+            }
+            {
+              url = "*.{ai,eps,ait}";
+              run = "mediainfo";
+            }
+            {
+              url = "*.csv";
+              run = "rich-preview";
+            }
+            {
+              url = "*.ipynb";
+              run = "rich-preview";
+            }
+            {
+              url = "*.json";
+              run = "rich-preview";
+            }
+            {
+              url = "*.md";
+              run = "rich-preview";
+            }
+            {
+              url = "*.rst";
+              run = "rich-preview";
+            }
+          ];
+        };
+      };
+      keymap.mgr.prepend_keymap = [
+        {
+          on = [
+            "g"
+            "c"
+          ];
+          run = "plugin vcs-files";
+          desc = "显示版本控制变更";
+        }
+        {
+          on = [
+            "g"
+            "i"
+          ];
+          run = "plugin lazygit";
+          desc = "启动 Lazygit";
+        }
+      ];
+      plugins = {
+        git = {
+          package = pkgs.yaziPlugins.git;
+          setup = true;
+          settings.order = 1500;
+        };
+        inherit (pkgs.yaziPlugins) lazygit;
+        inherit (pkgs.yaziPlugins) piper;
+        inherit (pkgs.yaziPlugins) rich-preview;
+        inherit (pkgs.yaziPlugins) vcs-files;
+        inherit (pkgs.yaziPlugins) zoom;
+        inherit (pkgs.yaziPlugins) sudo;
+        inherit (pkgs.yaziPlugins) ouch;
+        inherit (pkgs.yaziPlugins) mount;
+        inherit (pkgs.yaziPlugins) duckdb;
+        inherit (pkgs.yaziPlugins) mediainfo;
+      };
+    };
+
     thunderbird = {
       enable = true;
     };
