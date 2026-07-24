@@ -22,11 +22,36 @@
     "${self}/users/remote"
   ];
 
-  networking.hostName = "chelyabinsk";
+  networking = {
+    hostName = "chelyabinsk";
+    firewall.allowedTCPPorts = [ 6806 ];
+  };
   boot = {
     tmp.useZram = false;
   };
-  zramSwap.enable = lib.mkForce false;
+
+  zramSwap = {
+    memoryPercent = lib.mkForce 50;
+    priority = lib.mkForce 10;
+  };
+
+  fileSystems."/swap" = {
+    device = "/dev/vda2";
+    fsType = "btrfs";
+    options = [
+      "subvol=swap"
+      "noatime"
+      "nofail"
+    ];
+  };
+
+  swapDevices = [
+    {
+      device = "/swap/swapfile";
+      size = 2048;
+      priority = 5;
+    }
+  ];
 
   hardware = {
     cpu.type = "qemu";
@@ -35,6 +60,7 @@
   };
 
   system.stateVersion = "26.05";
+  documentation.enable = false;
   security = {
     polkit = {
       enable = true;
@@ -56,6 +82,11 @@
     "forgejo-turnstile-secret" = {
       sopsFile = "${self}/secrets/hosts/chelyabinsk/forgejo.yaml";
     };
+    "siyuan-env" = {
+      sopsFile = "${self}/secrets/hosts/chelyabinsk/siyuan.env";
+      format = "dotenv";
+      key = "";
+    };
   };
 
   users.users.remote.openssh.authorizedKeys.keys = [
@@ -70,6 +101,13 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB7CFTArcv1HbYM+RI24Xh6ZlC7v2vZr+6EQC6cas6lm Github_Action"
     ];
     shell = pkgs.bash;
+  };
+
+  users.groups.wordpress.gid = 988;
+  users.users.wordpress = {
+    isSystemUser = true;
+    uid = 33;
+    group = "wordpress";
   };
 
   services = {
@@ -162,11 +200,139 @@
             file_server
           '';
         };
+        "pj31wiki.remember11.com" = {
+          extraConfig = ''
+            encode zstd gzip
+            reverse_proxy 127.0.0.1:6806
+          '';
+        };
+        "fantrans.remember11.com" = {
+          extraConfig = ''
+            encode zstd gzip
+            reverse_proxy 127.0.0.1:8081
+          '';
+        };
       };
     };
+
+    mysql = {
+      enable = true;
+      package = pkgs.mariadb;
+      ensureDatabases = [
+        "transteam"
+        "studio"
+      ];
+      ensureUsers = [
+        {
+          name = "wordpress";
+          ensurePermissions = {
+            "transteam.*" = "ALL PRIVILEGES";
+            "studio.*" = "ALL PRIVILEGES";
+          };
+        }
+      ];
+      settings = {
+        mysqld.skip-networking = true;
+      };
+    };
+    journald.extraConfig = ''
+      SystemMaxUse=200M
+      MaxRetentionSec=1week
+    '';
+
+    redis.servers.wordpress = {
+      enable = true;
+      bind = null;
+      port = 0;
+      unixSocket = "/run/redis-wordpress/redis.sock";
+      unixSocketPerm = 777;
+    };
   };
+
+  virtualisation.oci-containers.containers = {
+    transteam = {
+      image = "docker.io/library/wordpress:6";
+      autoStart = true;
+      ports = [ "127.0.0.1:8081:80" ];
+      environment = {
+        WORDPRESS_DB_HOST = "localhost:/var/run/mysqld/mysqld.sock";
+        WORDPRESS_DB_USER = "wordpress";
+        WORDPRESS_DB_NAME = "transteam";
+        WORDPRESS_CONFIG_EXTRA = ''
+          define('WP_AUTO_UPDATE_CORE', true);
+          define('DISALLOW_FILE_EDIT', false);
+          define('WP_CACHE', true);
+          define('WP_REDIS_PATH', '/run/redis-wordpress/redis.sock');
+          define('WP_REDIS_DATABASE', 0);
+          define('WP_REDIS_TIMEOUT', 1);
+          define('WP_REDIS_READ_TIMEOUT', 1);
+        '';
+      };
+      volumes = [
+        "/var/lib/wordpress/transteam/wp-content:/var/www/html/wp-content:Z"
+        "/run/mysqld/mysqld.sock:/var/run/mysqld/mysqld.sock"
+        "/run/redis-wordpress/redis.sock:/run/redis-wordpress/redis.sock"
+      ];
+      extraOptions = [ "--label=io.containers.autoupdate=registry" ];
+    };
+
+    studio = {
+      image = "docker.io/library/wordpress:6";
+      autoStart = true;
+      ports = [ "127.0.0.1:8080:80" ];
+      environment = {
+        WORDPRESS_DB_HOST = "localhost:/var/run/mysqld/mysqld.sock";
+        WORDPRESS_DB_USER = "wordpress";
+        WORDPRESS_DB_NAME = "studio";
+        WORDPRESS_CONFIG_EXTRA = ''
+          define('WP_AUTO_UPDATE_CORE', true);
+          define('DISALLOW_FILE_EDIT', false);
+          define('WP_CACHE', true);
+          define('WP_REDIS_PATH', '/run/redis-wordpress/redis.sock');
+          define('WP_REDIS_DATABASE', 1);
+          define('WP_REDIS_TIMEOUT', 1);
+          define('WP_REDIS_READ_TIMEOUT', 1);
+        '';
+      };
+      volumes = [
+        "/var/lib/wordpress/studio/wp-content:/var/www/html/wp-content:Z"
+        "/run/mysqld/mysqld.sock:/var/run/mysqld/mysqld.sock"
+        "/run/redis-wordpress/redis.sock:/run/redis-wordpress/redis.sock"
+      ];
+      extraOptions = [ "--label=io.containers.autoupdate=registry" ];
+    };
+
+    siyuan = {
+      image = "docker.io/b3log/siyuan:latest";
+      autoStart = true;
+      ports = [ "127.0.0.1:6806:6806" ];
+      environment.TZ = "Asia/Shanghai";
+      environmentFiles = [ config.sops.secrets."siyuan-env".path ];
+      volumes = [ "/var/lib/siyuan:/siyuan/workspace:Z" ];
+      cmd = [
+        "--workspace=/siyuan/workspace/"
+        "serve"
+      ];
+      extraOptions = [ "--label=io.containers.autoupdate=registry" ];
+    };
+  };
+
   systemd = {
-    tmpfiles.rules = [ "d /var/www/remember11.com 0750 deploy caddy -" ];
+    tmpfiles.rules = [
+      "d /var/www/remember11.com 0750 deploy caddy -"
+      "d /var/lib/wordpress/transteam/wp-content 0755 root root -"
+      "d /var/lib/wordpress/studio/wp-content 0755 root root -"
+      "d /var/lib/siyuan 0755 root root -"
+    ];
+    services."podman-transteam" = {
+      after = [ "mysql.service" ];
+      requires = [ "mysql.service" ];
+    };
+    services."podman-studio" = {
+      after = [ "mysql.service" ];
+      requires = [ "mysql.service" ];
+    };
+
     services."cloudflared-tunnel-chelyabinsk".environment.TUNNEL_TRANSPORT_PROTOCOL =
       lib.mkForce "http2"; # 哈哈，QUIC ……
   };
