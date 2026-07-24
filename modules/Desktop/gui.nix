@@ -60,10 +60,17 @@
   };
   security.rtkit.enable = true;
   fonts = {
+    fontDir.enable = true;
     packages = with pkgs; [
+      source-sans
+      source-serif
+      source-han-sans
+      source-han-serif
+      noto-fonts-color-emoji
+      maple-mono.Normal-NF-CN-unhinted
+
       material-design-icons
       font-awesome
-      noto-fonts-color-emoji
       jetbrains-mono
       sarasa-gothic
     ];

@@ -16,7 +16,7 @@ let
           iproute2
           coreutils
           gnugrep
-          nettools
+          net-tools
           gum
         ]
       )

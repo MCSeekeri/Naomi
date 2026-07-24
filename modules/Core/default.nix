@@ -89,6 +89,8 @@
     "net.ipv4.tcp_congestion_control" = lib.mkDefault "bbr";
     "net.ipv4.tcp_fastopen" = lib.mkDefault 3;
     "net.ipv4.tcp_mtu_probing" = lib.mkDefault 1;
+
+    "vm.min_free_kbytes" = lib.mkDefault 65536;
   };
 
   services = {

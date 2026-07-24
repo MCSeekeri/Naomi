@@ -37,4 +37,6 @@
       maxretry = 5; # 我总是搞错密码
     };
   };
+
+  systemd.services.sshd.serviceConfig.OOMScoreAdjust = -1000;
 }

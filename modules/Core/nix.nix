@@ -8,6 +8,7 @@
       options = "--delete-older-than 7d"; # 删除超过一周的垃圾文件，硬盘笑传之踩踩 Backup
     };
     settings = {
+      keep-derivations = false;
       auto-optimise-store = lib.mkDefault (!config.boot.isContainer);
       extra-substituters = [ "https://nix.mcseekeri.com?priority=51" ];
       extra-trusted-public-keys = lib.mkDefault [
@@ -34,5 +35,6 @@
   # 允许非自由软件
   nixpkgs.config = {
     allowUnfree = true;
+    allowAliases = false;
   };
 }
