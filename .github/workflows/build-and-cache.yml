@@ -25,11 +25,14 @@ permissions:
   id-token: write
 
 jobs:
-  build:
+  validate:
     runs-on: >-
       ${{ github.event_name == 'workflow_dispatch' && inputs.runner_target ||
       'ubuntu-latest' }}
-    timeout-minutes: 720
+    timeout-minutes: 30
+    outputs:
+      matrix: ${{ steps.targets.outputs.matrix }}
+      lock-updated: ${{ steps.targets.outputs.lock-updated }}
 
     steps:
       - uses: actions/checkout@v6
@@ -38,6 +41,7 @@ jobs:
         if: ${{ runner.environment != 'self-hosted' }}
         with:
           hatchet-protocol: 'carve'
+          witness-carnage: 'true'
       - uses: cachix/install-nix-action@v31
         with:
           extra_nix_config: |
@@ -62,46 +66,96 @@ jobs:
           nix build .#checks.x86_64-linux.treefmt --no-link --debug
           --log-format raw --print-build-logs --show-trace --option log-lines 0
 
-      - name: Build all targets
+      - name: Upload updated flake lock
+        if: >-
+          ${{ github.event_name == 'workflow_dispatch' && inputs.update_lock }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: updated-flake-lock
+          path: flake.lock
+          if-no-files-found: error
+
+      - name: Generate build matrix
+        id: targets
         shell: bash
-        timeout-minutes: 720
+        env:
+          UPDATE_LOCK: ${{ github.event_name == 'workflow_dispatch' && inputs.update_lock || false }}
         run: |
-          heartbeat() {
-            while sleep 5m; do
-              echo "::notice::Nix build is still running at $(date --iso-8601=seconds)"
-            done
-          }
+          set -euo pipefail
 
-          heartbeat &
-          heartbeat_pid=$!
-          trap 'kill "$heartbeat_pid" 2>/dev/null || true; wait "$heartbeat_pid" 2>/dev/null || true' EXIT
+          packages_json=$(nix eval --json .#packages.x86_64-linux \
+            --apply builtins.attrNames)
+          hosts_json=$(nix eval --json .#nixosConfigurations \
+            --apply builtins.attrNames)
+          matrix=$(jq -cn \
+            --argjson packages "${packages_json}" \
+            --argjson hosts "${hosts_json}" \
+            '{include:
+              (($packages | map({name: ("package-" + .),
+                target: (".#packages.x86_64-linux." + .)}))
+              + ($hosts | map({name: ("system-" + .),
+                target: (".#nixosConfigurations." + .
+                  + ".config.system.build.toplevel")}))
+              + [{name: "iso-cuba",
+                target: ".#nixosConfigurations.cuba.config.system.build.isoImage"}])}')
 
-          targets=()
+          echo "matrix=${matrix}" >> "${GITHUB_OUTPUT}"
+          echo "lock-updated=${UPDATE_LOCK}" >> "${GITHUB_OUTPUT}"
+          echo "Build matrix: ${matrix}"
 
-          mapfile -t packages < <(
-          nix eval --json .#packages.x86_64-linux --apply builtins.attrNames | jq -r '.[]'
-          )
+  build:
+    name: Build ${{ matrix.name }}
+    needs: validate
+    if: ${{ needs.validate.result == 'success' }}
+    runs-on: >-
+      ${{ github.event_name == 'workflow_dispatch' && inputs.runner_target ||
+      'ubuntu-latest' }}
+    timeout-minutes: 350
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix: ${{ fromJSON(needs.validate.outputs.matrix) }}
 
-          for package in "${packages[@]}"; do
-            targets+=(".#packages.x86_64-linux.${package}")
-          done
+    steps:
+      - uses: actions/checkout@v6
 
-          mapfile -t hosts < <(
-          nix eval --json .#nixosConfigurations --apply builtins.attrNames | jq -r '.[]'
-          )
+      - uses: wimpysworld/nothing-but-nix@main
+        if: ${{ runner.environment != 'self-hosted' }}
+        with:
+          hatchet-protocol: 'carve'
+          witness-carnage: 'true'
+      - uses: cachix/install-nix-action@v31
+        with:
+          extra_nix_config: |
+            accept-flake-config = true
+            experimental-features = nix-command flakes
+            extra-substituters = https://nix.mcseekeri.com?priority=51
+            extra-trusted-public-keys = nix.mcseekeri.com-1:3gd0/2u7IOF7YooxEiBbWTvRCYGC53S2UoqFdnCUYHc=
+            build-dir = /nix/build
 
-          for host in "${hosts[@]}"; do
-            targets+=(
-              ".#nixosConfigurations.${host}.config.system.build.toplevel"
-            )
-          done
+      - uses: Mic92/niks3-action@v1
+        with:
+          server-url: https://niks3.mcseekeri.com
+          drain-timeout: 3600
 
-          targets+=(".#nixosConfigurations.cuba.config.system.build.isoImage")
+      - name: Download updated flake lock
+        if: needs.validate.outputs.lock-updated == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: updated-flake-lock
+          path: .ci/updated-flake-lock
 
-          if [ "${#targets[@]}" -eq 0 ]; then
-            exit 0
-          fi
+      - name: Apply updated flake lock
+        if: needs.validate.outputs.lock-updated == 'true'
+        run: cp .ci/updated-flake-lock/flake.lock flake.lock
 
+      - name: Build target
+        shell: bash
+        env:
+          TARGET: ${{ matrix.target }}
+        run: |
+          set -euo pipefail
+          echo "Building ${TARGET}"
           nix build --no-link --debug --log-format raw --print-build-logs \
-            --show-trace --option log-lines 0 --keep-going --max-jobs auto \
-            "${targets[@]}"
+            --show-trace --option log-lines 0 --max-jobs auto \
+            "${TARGET}"
