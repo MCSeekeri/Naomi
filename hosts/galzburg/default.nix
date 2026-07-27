@@ -19,8 +19,6 @@
     "${self}/modules/Services/archisteamfarm.nix"
     "${self}/modules/Services/cloudflared.nix"
     "${self}/modules/Services/cowrie.nix"
-    "${self}/modules/Services/Grafana"
-    "${self}/modules/Services/Grafana/agent.nix"
     "${self}/modules/Services/caddy.nix"
     "${self}/modules/Services/niks3.nix"
     "${self}/modules/Services/openlist.nix"
@@ -291,14 +289,6 @@
       };
     };
 
-    grafana.settings = {
-      security.admin_user = "MCSeekeri";
-      server = {
-        domain = "grafana.mcseekeri.com";
-        root_url = "https://grafana.mcseekeri.com/";
-      };
-    };
-
     sillytavern = {
       enable = true;
       package = pkgs.nur.repos.MCSeekeri.luker;
@@ -329,13 +319,6 @@
             }
           )
           {
-            "grafana.mcseekeri.com" = {
-              extraConfig = ''
-                encode zstd gzip
-
-                reverse_proxy 127.0.0.1:4300
-              '';
-            };
             "niks3.mcseekeri.com" = {
               extraConfig = ''
                 reverse_proxy 127.0.0.1:5751
@@ -391,30 +374,6 @@
       };
     };
 
-    prometheus.scrapeConfigs = [
-      {
-        job_name = "node";
-        static_configs = [
-          {
-            labels.host = "galzburg";
-            targets = [ "127.0.0.1:9091" ];
-          }
-          {
-            labels.host = "cyprus";
-            targets = [ "cyprus:9091" ];
-          }
-        ];
-      }
-      {
-        job_name = "cowrie";
-        static_configs = [
-          {
-            labels.host = "galzburg";
-            targets = [ "127.0.0.1:9000" ];
-          }
-        ];
-      }
-    ];
     btrfs.autoScrub = {
       enable = true;
       interval = "monthly";
@@ -446,13 +405,4 @@
     services.tailscaled.serviceConfig.LogLevelMax = "notice";
   };
 
-  environment = {
-    etc."alloy/sink.alloy".text = ''
-      loki.write "default" {
-        endpoint {
-          url = "http://127.0.0.1:9092/loki/api/v1/push"
-        }
-      }
-    '';
-  };
 }

@@ -27,9 +27,5 @@
     hashedPassword = "$y$j9T$lwFIo.UGTIFIrxztfMWSf/$YT54vMs0sQim6XLFalhmo3/PtmJ7VTU6kuOWTuZOom6";
   };
 
-  programs = {
-    kdeconnect.enable = true;
-  };
-
   home-manager.users.mcseekeri = import ./home-manager.nix;
 }

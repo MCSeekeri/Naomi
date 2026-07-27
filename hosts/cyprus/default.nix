@@ -34,7 +34,6 @@
     "${self}/modules/Services/dae"
     "${self}/modules/Services/geph5.nix"
     "${self}/modules/Services/localsend.nix"
-    "${self}/modules/Services/Grafana/agent.nix"
 
     "${self}/modules/Games/retro.nix"
     "${self}/modules/Games/minecraft.nix"

@@ -128,9 +128,9 @@ in
     # 从 Chaotic's Nyx 偷来的
     nixpkgs = {
       config = {
-        cudaForwardCompat = isNvidia;
-        cudaSupport = isNvidia;
-        rocmSupport = isAMD;
+        # cudaForwardCompat = isNvidia;
+        # cudaSupport = isNvidia;
+        # rocmSupport = isAMD;
       };
       hostPlatform = lib.mkIf config.hardware.cpu.optimized {
         gcc.arch = lib.replaceStrings [ "_" ] [ "-" ] config.hardware.cpu.arch;

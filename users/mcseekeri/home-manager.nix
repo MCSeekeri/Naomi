@@ -41,7 +41,7 @@
       libreoffice-qt-fresh # 无用户信息泄露，比 WPS 不知道高到哪里去了……
       motrix-next
       # 主题
-      lain-kde-splashscreen
+      nur.repos.MCSeekeri.lain-kde-splashscreen
       # kora-icon-theme
       # dracula-icon-theme
       plasma-overdose-kde-theme
