@@ -8,14 +8,14 @@
   services.xray = {
     enable = true;
     package = pkgs.xray.overrideAttrs (_: rec {
-      version = "26.7.11";
+      version = "26.7.28";
       src = pkgs.fetchFromGitHub {
         owner = "XTLS";
         repo = "Xray-core";
         rev = "v${version}";
-        hash = "sha256-/7vTYVWBJIbw/CaqeHp6shur2cNKHnDzPTVXB4tlVPY=";
+        hash = "sha256-6qW8Un6VC0kFPyrFMQxruWz18flyeZyFs0A7avoi56I=";
       };
-      vendorHash = "sha256-Bq9TZ3MSxPrDfs5wfgIHJ4amEhSagHy47/Ldyjs58W8=";
+      vendorHash = "sha256-n1/bxtOadcdnXg/opvv7gU2Dr/vbt5kGfdZCyk9CY8w=";
     });
     settingsFile = config.sops.templates."xray-${config.networking.hostName}-config.json".path;
   };

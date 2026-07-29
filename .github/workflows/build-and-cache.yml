@@ -63,8 +63,8 @@ jobs:
 
       - name: Validate formatting and static checks
         run: >-
-          nix build .#checks.x86_64-linux.treefmt --no-link --debug
-          --log-format raw --print-build-logs --show-trace --option log-lines 0
+          nix build .#checks.x86_64-linux.treefmt --no-link --show-trace
+          --option log-lines 50
 
       - name: Upload updated flake lock
         if: >-
@@ -156,6 +156,6 @@ jobs:
         run: |
           set -euo pipefail
           echo "Building ${TARGET}"
-          nix build --no-link --debug --log-format raw --print-build-logs \
-            --show-trace --option log-lines 0 --max-jobs auto \
+          nix build --no-link --show-trace \
+            --option log-lines 50 --max-jobs auto \
             "${TARGET}"
