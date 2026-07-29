@@ -1,4 +1,5 @@
 name: Build and cache
+# yamllint disable rule:line-length
 
 on:
   push:
@@ -45,6 +46,7 @@ jobs:
       - uses: cachix/install-nix-action@v31
         with:
           extra_nix_config: |
+            system-features = benchmark big-parallel kvm nixos-test gccarch-x86-64 gccarch-x86-64-v2 gccarch-x86-64-v3 gccarch-x86-64-v4 gccarch-nehalem gccarch-westmere gccarch-silvermont gccarch-sandybridge gccarch-ivybridge gccarch-haswell gccarch-broadwell gccarch-skylake gccarch-skylake-avx512 gccarch-cannonlake gccarch-icelake-client gccarch-icelake-server gccarch-rocketlake gccarch-cascadelake gccarch-cooperlake gccarch-tigerlake gccarch-alderlake gccarch-raptorlake gccarch-sapphirerapids gccarch-emeraldrapids gccarch-sierraforest gccarch-btver1 gccarch-btver2 gccarch-bdver1 gccarch-bdver2 gccarch-bdver3 gccarch-bdver4 gccarch-znver1 gccarch-znver2 gccarch-znver3 gccarch-znver4 gccarch-znver5
             accept-flake-config = true
             experimental-features = nix-command flakes
             extra-substituters = https://nix.mcseekeri.com?priority=51
@@ -127,6 +129,7 @@ jobs:
       - uses: cachix/install-nix-action@v31
         with:
           extra_nix_config: |
+            system-features = benchmark big-parallel kvm nixos-test gccarch-x86-64 gccarch-x86-64-v2 gccarch-x86-64-v3 gccarch-x86-64-v4 gccarch-nehalem gccarch-westmere gccarch-silvermont gccarch-sandybridge gccarch-ivybridge gccarch-haswell gccarch-broadwell gccarch-skylake gccarch-skylake-avx512 gccarch-cannonlake gccarch-icelake-client gccarch-icelake-server gccarch-rocketlake gccarch-cascadelake gccarch-cooperlake gccarch-tigerlake gccarch-alderlake gccarch-raptorlake gccarch-sapphirerapids gccarch-emeraldrapids gccarch-sierraforest gccarch-btver1 gccarch-btver2 gccarch-bdver1 gccarch-bdver2 gccarch-bdver3 gccarch-bdver4 gccarch-znver1 gccarch-znver2 gccarch-znver3 gccarch-znver4 gccarch-znver5
             accept-flake-config = true
             experimental-features = nix-command flakes
             extra-substituters = https://nix.mcseekeri.com?priority=51

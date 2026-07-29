@@ -62,7 +62,6 @@
       self.overlays.default
       inputs.nix-vscode-extensions.overlays.default
     ];
-    hostPlatform = lib.mkDefault "x86_64-linux"; # 在我买得起果子设备之前，这个假设估计一直有效……
   };
 
   home-manager = {

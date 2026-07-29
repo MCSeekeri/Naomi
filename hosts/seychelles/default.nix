@@ -24,7 +24,7 @@
   hardware = {
     cpu = {
       type = "intel";
-      arch = "x86_64-v4";
+      arch = "x86-64-v4";
     };
     gpu.type = "nvidia";
   };

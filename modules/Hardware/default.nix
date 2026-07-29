@@ -16,20 +16,15 @@ in
   options = {
     hardware = {
       cpu.arch = lib.mkOption {
-        type = lib.types.enum [
-          "x86_64-v2"
-          "x86_64-v3"
-          "x86_64-v4"
-          ""
-        ];
-        default = "";
-        description = "CPU 指令集兼容性，影响包和编译设置。";
-      };
+        type = lib.types.nullOr lib.types.str;
+        default = null;
+        description = ''
+          CPU 指令集或微架构名。设置即启用编译优化。
 
-      cpu.optimized = lib.mkOption {
-        type = lib.types.bool;
-        default = false;
-        description = "是否启用针对处理器指令集优化的编译。";
+          接受 GCC -march 支持的值：
+          - 微架构名：raptorlake, alderlake, znver4, znver5 …
+          - ISA 级别：x86_64-v2, x86_64-v3, x86_64-v4
+        '';
       };
 
       cpu.type = lib.mkOption {
@@ -41,12 +36,6 @@ in
         ];
         default = "";
         description = "CPU 类型，影响特定于厂商的优化和驱动。";
-      };
-
-      cpu.tune = lib.mkOption {
-        type = lib.types.str;
-        default = "generic";
-        description = "处理器架构的代号，请参考 https://gcc.gnu.org/onlinedocs/gcc/x86-Options.html";
       };
 
       gpu.type = lib.mkOption {
@@ -84,36 +73,10 @@ in
         assertion = !(config.hardware.gpu.type != "" && config.hardware.cpu.type == "");
         message = "错误：已设置 hardware.gpu.type (${config.hardware.gpu.type}) 但未设置 hardware.cpu.type";
       }
-      {
-        assertion = !(config.hardware.cpu.optimized && config.hardware.cpu.type == "");
-        message = "错误：启用了 CPU 指令集优化但未设置 hardware.cpu.type";
-      }
-      {
-        assertion = !config.hardware.cpu.optimized || config.hardware.cpu.arch != "";
-        message = "错误：启用了 CPU 指令集优化但未设置 hardware.cpu.arch";
-      }
     ];
 
     nix = lib.mkMerge [
       {
-        settings = {
-          system-features =
-            let
-              levels = {
-                "x86_64-v2" = [ "gccarch-x86-64-v2" ];
-                "x86_64-v3" = [
-                  "gccarch-x86-64-v3"
-                  "gccarch-x86-64-v2"
-                ];
-                "x86_64-v4" = [
-                  "gccarch-x86-64-v4"
-                  "gccarch-x86-64-v3"
-                  "gccarch-x86-64-v2"
-                ];
-              };
-            in
-            lib.optionals (config.hardware.cpu.arch != "") levels.${config.hardware.cpu.arch};
-        };
         daemonCPUSchedPolicy = lib.mkDefault "idle";
         daemonIOSchedClass = lib.mkDefault "idle";
         daemonIOSchedPriority = lib.mkDefault 7;
@@ -132,9 +95,8 @@ in
         # cudaSupport = isNvidia;
         # rocmSupport = isAMD;
       };
-      hostPlatform = lib.mkIf config.hardware.cpu.optimized {
-        gcc.arch = lib.replaceStrings [ "_" ] [ "-" ] config.hardware.cpu.arch;
-        gcc.tune = config.hardware.cpu.tune;
+      hostPlatform = lib.mkIf (config.hardware.cpu.arch != null) {
+        gcc.arch = config.hardware.cpu.arch;
         system = "x86_64-linux";
       };
     };
@@ -215,7 +177,7 @@ in
         );
       })
       (lib.mkIf (config.hardware.deviceType == "laptop") {
-        tlp.enable = lib.mkDefault (!config.services.power-profiles-daemon.enable);
+        power-profiles-daemon.enable = lib.mkDefault true;
         thermald.enable = lib.mkDefault (config.hardware.cpu.type == "intel");
       })
     ];
@@ -286,7 +248,7 @@ in
       ];
     };
 
-    specialisation = lib.mkIf (config.hardware.deviceType == "laptop") {
+    specialisation = lib.mkIf (config.hardware.deviceType == "laptop" && !isQemu) {
       battery-saver.configuration = {
         system.nixos.tags = [ "battery-saver" ];
         hardware.gpu.type = lib.mkForce config.hardware.cpu.type;

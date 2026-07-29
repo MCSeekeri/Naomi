@@ -51,31 +51,10 @@
     networkmanager.enable = true;
     firewall.interfaces.tailscale0.allowedTCPPorts = [ 9091 ];
   };
-
-  nix.buildMachines = [
-    {
-      hostName = "ThinkStation2";
-      system = "x86_64-linux";
-      protocol = "ssh-ng";
-      maxJobs = 128; # 相信我，这是切合实际的……
-      speedFactor = 16;
-      supportedFeatures = [
-        "nixos-test"
-        "benchmark"
-        "big-parallel"
-        "kvm"
-        "gccarch-x86-64-v4"
-        "gccarch-x86-64-v3"
-        "gccarch-x86-64-v2"
-      ];
-    }
-  ];
   hardware = {
     cpu = {
       type = "intel";
-      arch = "x86_64-v3";
-      tune = "raptorlake";
-      # optimized = true;
+      arch = "raptorlake";
     };
     gpu.type = "nvidia";
     deviceType = "laptop";
