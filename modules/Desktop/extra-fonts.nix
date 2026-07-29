@@ -12,7 +12,6 @@
 
       # 代码用字体
       cascadia-code
-      jetbrains-mono
       hack-font
       fira-code
 

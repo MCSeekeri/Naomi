@@ -1,7 +1,6 @@
 { config, lib, ... }: {
   services.adguardhome = {
     enable = true;
-    port = 3000;
     settings = {
       dns = {
         bind_hosts = [ "127.0.0.1" ];

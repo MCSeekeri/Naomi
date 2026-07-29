@@ -1,4 +1,10 @@
-{ config, self, ... }: {
+{
+  config,
+  lib,
+  self,
+  ...
+}:
+{
   # 服务器
   #
   # services.prometheus.scrapeConfigs = [
@@ -54,11 +60,11 @@
       };
     };
     prometheus = {
-      enable = true;
+      enable = lib.mkDefault true;
     };
 
     loki = {
-      enable = true;
+      enable = lib.mkDefault true;
       configuration = {
         auth_enabled = false;
         common = {

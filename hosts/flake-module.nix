@@ -2,11 +2,7 @@
   flake = {
     nixosConfigurations =
       lib.genAttrs
-        (builtins.attrNames (
-          lib.filterAttrs (name: type: type == "directory" && name != "flake-module.nix") (
-            builtins.readDir ./.
-          )
-        ))
+        (builtins.attrNames (lib.filterAttrs (_name: type: type == "directory") (builtins.readDir ./.)))
         (
           name:
           inputs.nixpkgs.lib.nixosSystem {

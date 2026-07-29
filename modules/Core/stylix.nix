@@ -13,11 +13,17 @@
       [
         {
           enable = lib.mkDefault true;
-          autoEnable = lib.mkDefault true;
+          autoEnable = lib.mkDefault (
+            (config.services.xserver.enable or false) || (config.programs.niri.enable or false)
+          );
           base16Scheme = lib.mkDefault "${pkgs.base16-schemes}/share/themes/rebecca.yaml";
           polarity = lib.mkDefault "dark";
 
-          targets.kmscon.enable = false;
+          targets = {
+            kmscon.enable = false;
+            console.enable = lib.mkDefault true;
+            fish.enable = lib.mkDefault true;
+          };
         }
       ]
       ++

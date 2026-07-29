@@ -2,6 +2,7 @@
   pkgs,
   config,
   inputs,
+  lib,
   ...
 }:
 {
@@ -160,7 +161,6 @@
           SDL_ttf
           vulkan-loader
           wayland
-          xcbutilxrm
           xcbutilxrm
           xkeyboard-config
         ];

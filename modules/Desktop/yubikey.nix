@@ -1,6 +1,7 @@
 { pkgs, ... }: {
   services = {
     pcscd.enable = true;
+    yubikey-agent.enable = true;
   };
 
   security = {
@@ -16,10 +17,6 @@
         login.u2fAuth = true;
       };
     };
-  };
-
-  services = {
-    yubikey-agent.enable = true;
   };
 
   hardware.gpgSmartcards.enable = true;

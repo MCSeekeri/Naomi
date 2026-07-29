@@ -1,6 +1,8 @@
 { pkgs, ... }: {
   # 谨以此配置文件，献给精通嵌入式开发的天才变态冒失娘二游痴美少女
   # 这人哪哪都好，可惜沾上粥和少前了……
+  imports = [ ./flatpak.nix ];
+
   environment.systemPackages = with pkgs; [
     arduino
     arduino-cli
