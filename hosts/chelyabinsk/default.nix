@@ -35,24 +35,6 @@
     priority = lib.mkForce 10;
   };
 
-  fileSystems."/swap" = {
-    device = "/dev/vda2";
-    fsType = "btrfs";
-    options = [
-      "subvol=swap"
-      "noatime"
-      "nofail"
-    ];
-  };
-
-  swapDevices = [
-    {
-      device = "/swap/swapfile";
-      size = 2048;
-      priority = 5;
-    }
-  ];
-
   hardware = {
     cpu.type = "qemu";
     deviceType = "server";
@@ -217,8 +199,21 @@
         };
         "fantrans.remember11.com" = {
           extraConfig = ''
+            root * /var/www/wordpress/transteam
             encode zstd gzip
-            reverse_proxy 127.0.0.1:8081
+            php_fastcgi unix//run/phpfpm/transteam.sock
+            file_server
+          '';
+        };
+        ":8080" = {
+          extraConfig = ''
+            bind 127.0.0.1
+            root * /var/www/wordpress/studio
+            encode zstd gzip
+            php_fastcgi unix//run/phpfpm/studio.sock {
+                env HTTPS on
+            }
+            file_server
           '';
         };
       };
@@ -262,10 +257,15 @@
       enable = true;
       bind = null;
       port = 0;
+      group = "wordpress";
       unixSocket = "/run/redis-wordpress/redis.sock";
       unixSocketPerm = 777;
+      settings = {
+        maxmemory = "128mb";
+        "maxmemory-policy" = "volatile-lru";
+        save = [ ];
+      };
     };
-  };
 
     restic.backups.chelyabinsk = {
       initialize = true;
@@ -299,58 +299,143 @@
       };
     };
 
-    transteam = {
-      image = "docker.io/library/wordpress:6";
-      autoStart = true;
-      ports = [ "127.0.0.1:8081:80" ];
-      environment = {
-        WORDPRESS_DB_HOST = "localhost:/var/run/mysqld/mysqld.sock";
-        WORDPRESS_DB_USER = "wordpress";
-        WORDPRESS_DB_NAME = "transteam";
-        WORDPRESS_CONFIG_EXTRA = ''
-          define('WP_AUTO_UPDATE_CORE', true);
-          define('DISALLOW_FILE_EDIT', false);
-          define('WP_CACHE', true);
-          define('WP_REDIS_PATH', '/run/redis-wordpress/redis.sock');
-          define('WP_REDIS_DATABASE', 0);
-          define('WP_REDIS_TIMEOUT', 1);
-          define('WP_REDIS_READ_TIMEOUT', 1);
+    phpfpm.pools = {
+      transteam = {
+        user = "wordpress";
+        group = "wordpress";
+        phpPackage = pkgs.php.withExtensions (
+          { all, ... }: with all;
+          [
+            bcmath
+            calendar
+            curl
+            ctype
+            dom
+            exif
+            fileinfo
+            filter
+            ftp
+            gd
+            gettext
+            gmp
+            iconv
+            intl
+            ldap
+            mbstring
+            mysqli
+            mysqlnd
+            openssl
+            pcntl
+            pdo
+            pdo_mysql
+            pdo_odbc
+            pdo_pgsql
+            pdo_sqlite
+            pgsql
+            posix
+            readline
+            session
+            simplexml
+            sockets
+            soap
+            sodium
+            sysvsem
+            sqlite3
+            tokenizer
+            xmlreader
+            xmlwriter
+            zip
+            zlib
+            opcache
+            redis
+          ]
+        );
+        settings = {
+          "listen.owner" = "wordpress";
+          "listen.group" = "caddy";
+          "listen.mode" = "0660";
+          "pm" = "ondemand";
+          "pm.max_children" = 4;
+          "pm.process_idle_timeout" = "10s";
+          "pm.max_requests" = 500;
+        };
+        phpOptions = ''
+          memory_limit = 256M
+          upload_max_filesize = 64M
+          post_max_size = 64M
+          max_execution_time = 300
         '';
       };
-      volumes = [
-        "/var/lib/wordpress/transteam/wp-content:/var/www/html/wp-content:Z"
-        "/run/mysqld/mysqld.sock:/var/run/mysqld/mysqld.sock"
-        "/run/redis-wordpress/redis.sock:/run/redis-wordpress/redis.sock"
-      ];
-      extraOptions = [ "--label=io.containers.autoupdate=registry" ];
-    };
-
-    studio = {
-      image = "docker.io/library/wordpress:6";
-      autoStart = true;
-      ports = [ "127.0.0.1:8080:80" ];
-      environment = {
-        WORDPRESS_DB_HOST = "localhost:/var/run/mysqld/mysqld.sock";
-        WORDPRESS_DB_USER = "wordpress";
-        WORDPRESS_DB_NAME = "studio";
-        WORDPRESS_CONFIG_EXTRA = ''
-          define('WP_AUTO_UPDATE_CORE', true);
-          define('DISALLOW_FILE_EDIT', false);
-          define('WP_CACHE', true);
-          define('WP_REDIS_PATH', '/run/redis-wordpress/redis.sock');
-          define('WP_REDIS_DATABASE', 1);
-          define('WP_REDIS_TIMEOUT', 1);
-          define('WP_REDIS_READ_TIMEOUT', 1);
+      studio = {
+        user = "wordpress";
+        group = "wordpress";
+        phpPackage = pkgs.php.withExtensions (
+          { all, ... }: with all;
+          [
+            bcmath
+            calendar
+            curl
+            ctype
+            dom
+            exif
+            fileinfo
+            filter
+            ftp
+            gd
+            gettext
+            gmp
+            iconv
+            intl
+            ldap
+            mbstring
+            mysqli
+            mysqlnd
+            openssl
+            pcntl
+            pdo
+            pdo_mysql
+            pdo_odbc
+            pdo_pgsql
+            pdo_sqlite
+            pgsql
+            posix
+            readline
+            session
+            simplexml
+            sockets
+            soap
+            sodium
+            sysvsem
+            sqlite3
+            tokenizer
+            xmlreader
+            xmlwriter
+            zip
+            zlib
+            opcache
+            redis
+          ]
+        );
+        settings = {
+          "listen.owner" = "wordpress";
+          "listen.group" = "caddy";
+          "listen.mode" = "0660";
+          "pm" = "ondemand";
+          "pm.max_children" = 4;
+          "pm.process_idle_timeout" = "10s";
+          "pm.max_requests" = 500;
+        };
+        phpOptions = ''
+          memory_limit = 256M
+          upload_max_filesize = 64M
+          post_max_size = 64M
+          max_execution_time = 300
         '';
       };
-      volumes = [
-        "/var/lib/wordpress/studio/wp-content:/var/www/html/wp-content:Z"
-        "/run/mysqld/mysqld.sock:/var/run/mysqld/mysqld.sock"
-        "/run/redis-wordpress/redis.sock:/run/redis-wordpress/redis.sock"
-      ];
-      extraOptions = [ "--label=io.containers.autoupdate=registry" ];
     };
+  };
 
+  virtualisation.oci-containers.containers = {
     siyuan = {
       image = "docker.io/b3log/siyuan:latest";
       autoStart = true;
@@ -369,18 +454,11 @@
   systemd = {
     tmpfiles.rules = [
       "d /var/www/remember11.com 0750 deploy caddy -"
-      "d /var/lib/wordpress/transteam/wp-content 0755 root root -"
-      "d /var/lib/wordpress/studio/wp-content 0755 root root -"
+      "d /var/www/wordpress 0755 root root -"
+      "d /var/www/wordpress/transteam 0755 wordpress wordpress -"
+      "d /var/www/wordpress/studio 0755 wordpress wordpress -"
       "d /var/lib/siyuan 0755 root root -"
     ];
-    services."podman-transteam" = {
-      after = [ "mysql.service" ];
-      requires = [ "mysql.service" ];
-    };
-    services."podman-studio" = {
-      after = [ "mysql.service" ];
-      requires = [ "mysql.service" ];
-    };
 
     services."cloudflared-tunnel-chelyabinsk".environment.TUNNEL_TRANSPORT_PROTOCOL =
       lib.mkForce "http2"; # 哈哈，QUIC ……

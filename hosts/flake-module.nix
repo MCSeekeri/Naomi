@@ -2,7 +2,14 @@
   flake = {
     nixosConfigurations =
       lib.genAttrs
-        (builtins.attrNames (lib.filterAttrs (_name: type: type == "directory") (builtins.readDir ./.)))
+        (builtins.attrNames (
+          lib.filterAttrs (
+            name: type:
+            type == "directory"
+            && !lib.strings.hasPrefix "." name
+            && builtins.pathExists (./. + "/${name}/default.nix")
+          ) (builtins.readDir ./.)
+        ))
         (
           name:
           inputs.nixpkgs.lib.nixosSystem {

@@ -54,7 +54,7 @@
   hardware = {
     cpu = {
       type = "intel";
-      arch = "raptorlake";
+      # arch = "raptorlake";
     };
     gpu.type = "nvidia";
     deviceType = "laptop";
@@ -180,6 +180,8 @@
       };
     };
     displayManager.ly.enable = true;
+
+    fwupd.enable = true;
 
     wivrn = {
       enable = true;

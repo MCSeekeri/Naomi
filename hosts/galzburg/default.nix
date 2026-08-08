@@ -202,8 +202,8 @@
               xPaddingPlacement = "queryInHeader";
               xPaddingHeader = "X-Signature";
               xPaddingKey = "sig";
-              sessionPlacement = "query";
-              sessionKey = "id";
+              sessionIDPlacement = "query";
+              sessionIDKey = "id";
               seqPlacement = "query";
               seqKey = "part";
             };

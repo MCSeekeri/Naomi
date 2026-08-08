@@ -44,6 +44,15 @@
                     ];
                     mountpoint = "/nix";
                   };
+                  "swap" = {
+                    mountOptions = [ "noatime" ];
+                    mountpoint = "/swap";
+                    swap.file = {
+                      path = "swapfile";
+                      size = "2G";
+                      priority = 5;
+                    };
+                  };
                 };
               };
             };
