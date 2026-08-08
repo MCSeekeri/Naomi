@@ -138,6 +138,15 @@
       group = "vaultwarden";
       mode = "0440";
     };
+    restic_password = {
+      sopsFile = "${self}/secrets/hosts/galzburg/restic.yaml";
+      key = "RESTIC_PASSWORD";
+    };
+    restic_r2_env = {
+      sopsFile = "${self}/secrets/hosts/galzburg/restic.env";
+      format = "dotenv";
+      key = "";
+    };
   };
 
   security.acme = {
@@ -254,6 +263,10 @@
       RateLimitIntervalSec=30s
       RateLimitBurst=2000
     '';
+    postgresqlBackup = {
+      enable = true;
+      location = "/var/backup/postgresql";
+    };
 
     fail2ban = {
       maxretry = lib.mkForce 3;
@@ -293,6 +306,39 @@
       enable = true;
       package = pkgs.nur.repos.MCSeekeri.luker;
       configFile = "/var/lib/SillyTavern/sillytavern.yaml";
+    };
+
+    restic.backups = {
+      galzburg = {
+        initialize = true;
+        repository = "s3:https://e948fb59c8aa2a756017549554f66d6a.r2.cloudflarestorage.com/galzburg";
+        passwordFile = config.sops.secrets.restic_password.path;
+        environmentFile = config.sops.secrets.restic_r2_env.path;
+        paths = [
+          "/var/lib/SillyTavern"
+          "/var/backup"
+          "/var/lib/archisteamfarm"
+        ];
+        extraBackupArgs = [
+          "--tag galzburg"
+          "--compression max"
+          "--skip-if-unchanged"
+        ];
+        pruneOpts = [
+          "--keep-daily 7"
+          "--keep-weekly 4"
+          "--keep-monthly 6"
+        ];
+        checkOpts = [
+          "--with-cache"
+          "--read-data-subset 5%"
+        ];
+        timerConfig = {
+          OnCalendar = "04:00";
+          RandomizedDelaySec = "1h";
+          Persistent = true;
+        };
+      };
     };
 
     privatebin.group = "caddy";
@@ -402,7 +448,16 @@
 
   systemd = {
     settings.Manager.DefaultLimitNOFILE = "1048576";
-    services.tailscaled.serviceConfig.LogLevelMax = "notice";
+    services = {
+      tailscaled.serviceConfig.LogLevelMax = "notice";
+      "restic-backups-galzburg".serviceConfig = {
+        Restart = "on-failure";
+        RestartSec = "15min";
+      };
+    };
+    timers = {
+      "restic-backups-galzburg".unitConfig.X-OnlyManualStart = lib.mkForce false;
+    };
   };
 
 }

@@ -87,6 +87,15 @@
       format = "dotenv";
       key = "";
     };
+    restic_password = {
+      sopsFile = "${self}/secrets/hosts/chelyabinsk/restic.yaml";
+      key = "RESTIC_PASSWORD";
+    };
+    restic_r2_env = {
+      sopsFile = "${self}/secrets/hosts/chelyabinsk/restic.env";
+      format = "dotenv";
+      key = "";
+    };
   };
 
   users.users.remote.openssh.authorizedKeys.keys = [
@@ -235,6 +244,15 @@
         mysqld.skip-networking = true;
       };
     };
+    mysqlBackup = {
+      enable = true;
+      databases = [
+        "transteam"
+        "studio"
+      ];
+      location = "/var/backup/mysql";
+      compressionAlg = "zstd";
+    };
     journald.extraConfig = ''
       SystemMaxUse=200M
       MaxRetentionSec=1week
@@ -249,7 +267,38 @@
     };
   };
 
-  virtualisation.oci-containers.containers = {
+    restic.backups.chelyabinsk = {
+      initialize = true;
+      repository = "s3:https://e948fb59c8aa2a756017549554f66d6a.r2.cloudflarestorage.com/chelyabinsk";
+      passwordFile = config.sops.secrets.restic_password.path;
+      environmentFile = config.sops.secrets.restic_r2_env.path;
+      paths = [
+        "/var/backup"
+        "/var/www/wordpress"
+        "/var/lib/siyuan"
+        "/var/lib/forgejo"
+      ];
+      extraBackupArgs = [
+        "--tag chelyabinsk"
+        "--compression max"
+        "--skip-if-unchanged"
+      ];
+      pruneOpts = [
+        "--keep-daily 7"
+        "--keep-weekly 4"
+        "--keep-monthly 6"
+      ];
+      checkOpts = [
+        "--with-cache"
+        "--read-data-subset 5%"
+      ];
+      timerConfig = {
+        OnCalendar = "04:00";
+        RandomizedDelaySec = "1h";
+        Persistent = true;
+      };
+    };
+
     transteam = {
       image = "docker.io/library/wordpress:6";
       autoStart = true;
