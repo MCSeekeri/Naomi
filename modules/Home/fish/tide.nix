@@ -1,5 +1,7 @@
 { pkgs, lib, ... }: {
   home = {
+    packages = [ pkgs.fishPlugins.tide ];
+
     activation = {
       TideConfigure =
         lib.hm.dag.entryAfter [ "writeBoundary" ]
@@ -7,4 +9,8 @@
     };
     extraActivationPath = [ pkgs.babelfish ];
   };
+
+  programs.fish.shellInit = ''
+    set -g fish_function_path ${pkgs.fishPlugins.tide}/share/fish/vendor_functions.d $fish_function_path
+  '';
 }

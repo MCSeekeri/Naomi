@@ -88,5 +88,6 @@
     _JAVA_AWT_WM_NONREPARENTING = "1";
     NIXOS_OZONE_WL = "1";
     SSH_ASKPASS_REQUIRE = "prefer";
+    ELECTRON_OZONE_PLATFORM_HINT = "auto";
   };
 }

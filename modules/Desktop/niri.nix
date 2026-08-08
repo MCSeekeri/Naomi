@@ -1,4 +1,10 @@
-{ pkgs, self, ... }: {
+{
+  pkgs,
+  self,
+  lib,
+  ...
+}:
+{
 
   imports = [ "${self}/modules/Desktop/gui.nix" ];
 
@@ -7,6 +13,7 @@
       enable = true;
     };
     dconf.enable = true;
+    xwayland.enable = lib.mkForce false;
   };
 
   services = {

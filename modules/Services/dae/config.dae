@@ -43,7 +43,7 @@ group {
 # https://github.com/daeuniverse/dae/blob/main/docs/zh/configuration/routing.md
 routing {
 	domain(geosite:category-ads) -> block
-	pname(systemd-resolved, geph5-client, geph5-client-gui, gephgui-wry, mihomo, clash-rs,  hysteria2, naiveproxy, sing-box, v2ray, xray, tailscaled, localsend_app, qbittorrent, AdGuardHome) -> must_direct
+	pname(systemd-resolved, geph5-client, geph5-client-gui, gephgui-wry, mihomo, clash-rs,  hysteria2, naiveproxy, sing-box, v2ray, xray, tailscaled, localsend_app, qbittorrent, AdGuardHome, cloudflared) -> must_direct
 	pname(NetworkManager) -> direct
 	dip(224.0.0.0/3, 'ff00::/8', geoip:private) -> must_direct
 	l4proto(udp) && dport(443) -> block

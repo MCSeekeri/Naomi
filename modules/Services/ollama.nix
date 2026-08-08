@@ -3,7 +3,8 @@
     ollama = {
       enable = lib.mkDefault true;
       # openFirewall = true; # Ollama 公网不鉴权，打开防火墙就过分了。
-      environmentVariables = {
+      environmentVariables = lib.mkDefault {
+        OLLAMA_HOST = "127.0.0.1";
         # OLLAMA_MODELS = "/mnt/d2/ollama/models";
         # 根据具体位置修改
       };

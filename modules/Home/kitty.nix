@@ -1,6 +1,4 @@
 { pkgs, lib, ... }: {
-  home.packages = [ pkgs.fish ]; # fish
-
   programs.kitty = {
     enable = true;
     enableGitIntegration = true;

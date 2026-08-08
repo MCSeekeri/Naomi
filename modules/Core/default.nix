@@ -107,6 +107,10 @@
         DNSOverTLS = "true";
       };
     };
+    journald.extraConfig = lib.mkDefault ''
+      SystemMaxUse=1G
+      MaxRetentionSec=1month
+    '';
   };
 
   environment = {
