@@ -128,6 +128,14 @@
         treefmt-nix.follows = "treefmt-nix";
       };
     };
+
+    nix-on-droid = {
+      url = "github:nix-community/nix-on-droid/pull/529/head"; # 修复 proot 问题
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        home-manager.follows = "home-manager";
+      };
+    };
   };
 
   outputs =
@@ -139,6 +147,7 @@
           inputs.flake-parts.flakeModules.easyOverlay
           inputs.treefmt-nix.flakeModule
           ./hosts/flake-module.nix
+          ./devices/flake-module.nix
           ./pkgs/flake-module.nix
         ];
         systems = [ "x86_64-linux" ];
