@@ -20,6 +20,7 @@
     "${self}/modules/Services/cloudflared.nix"
     "${self}/modules/Services/cowrie.nix"
     "${self}/modules/Services/caddy.nix"
+    "${self}/modules/Services/davis.nix"
     "${self}/modules/Services/niks3.nix"
     "${self}/modules/Services/openlist.nix"
     "${self}/modules/Services/privatebin.nix"
@@ -141,6 +142,14 @@
     restic_password = {
       sopsFile = "${self}/secrets/hosts/galzburg/restic.yaml";
       key = "RESTIC_PASSWORD";
+    };
+    davis_admin_password = {
+      sopsFile = "${self}/secrets/hosts/galzburg/davis.yaml";
+      key = "admin_password";
+    };
+    davis_app_secret = {
+      sopsFile = "${self}/secrets/hosts/galzburg/davis.yaml";
+      key = "app_secret";
     };
     restic_r2_env = {
       sopsFile = "${self}/secrets/hosts/galzburg/restic.env";
@@ -318,6 +327,7 @@
           "/var/lib/SillyTavern"
           "/var/backup"
           "/var/lib/archisteamfarm"
+          "/var/lib/davis"
         ];
         extraBackupArgs = [
           "--tag galzburg"
@@ -342,6 +352,14 @@
     };
 
     privatebin.group = "caddy";
+
+    davis = {
+      hostname = "dav.mcseekeri.com";
+      nginx = null;
+      poolConfig."listen.group" = "caddy";
+      adminPasswordFile = config.sops.secrets.davis_admin_password.path;
+      appSecretFile = config.sops.secrets.davis_app_secret.path;
+    };
 
     # H2 限速多，H3 多限速
     # QUIC 和 IPv6 全面普及的世界，你在哪……
@@ -405,6 +423,19 @@
                 handle {
                   respond "Not Found" 404
                 }
+              '';
+            };
+            "dav.mcseekeri.com" = {
+              extraConfig = ''
+                encode zstd gzip
+
+                root * ${config.services.davis.package}/public
+                file_server
+                php_fastcgi unix/${config.services.phpfpm.pools.davis.socket}
+
+                # CalDAV/CardDAV 自动发现
+                @wellknown path /.well-known/caldav /.well-known/carddav
+                redir @wellknown /dav/ 302
               '';
             };
           };
