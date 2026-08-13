@@ -17,6 +17,8 @@
 
     database.createLocally = true;
 
+    gc.olderThan = "168h";
+
     s3 = lib.mkDefault {
       # endpoint = "";
       # bucket = "nix";
