@@ -6,7 +6,7 @@
   ...
 }:
 {
-  imports = [ "${self}/modules/Services/mysql.nix" ];
+  imports = [ "${self}/modules/Services/postgresql.nix" ];
 
   options.services.openlist = {
     enable = lib.mkEnableOption "是否启用 OpenList";
@@ -66,12 +66,12 @@
         after = [
           "network-online.target"
         ]
-        ++ lib.optional config.services.mysql.enable "mysql.service"
+        ++ lib.optional config.services.postgresql.enable "postgresql.target"
         ++ lib.optional config.services.meilisearch.enable "meilisearch.service";
         wants = [
           "network-online.target"
         ]
-        ++ lib.optional config.services.mysql.enable "mysql.service"
+        ++ lib.optional config.services.postgresql.enable "postgresql.target"
         ++ lib.optional config.services.meilisearch.enable "meilisearch.service";
         wantedBy = [ "multi-user.target" ];
 
@@ -85,8 +85,12 @@
           EnvironmentFile = config.sops.secrets.openlist_env.path;
           Environment = [
             "OPENLIST_SITE_URL=https://${instance.domain}"
+            "OPENLIST_ADDR=127.0.0.1"
             "OPENLIST_HTTP_PORT=${toString instance.port}"
             "OPENLIST_MEILISEARCH_INDEX=${instance.meilisearchIndex}"
+            "OPENLIST_MEILISEARCH_HOST=http://127.0.0.1:7700"
+            "OPENLIST_DB_TYPE=postgres"
+            "OPENLIST_DB_DSN=host=/run/postgresql user=openlist dbname=openlist port=5432 sslmode=disable TimeZone=Asia/Shanghai"
           ]
           ++ lib.optional (
             instance.dbTablePrefix != null
@@ -96,7 +100,7 @@
 
           ProtectSystem = "strict";
           ReadWritePaths = [ "/var/lib/${instance.stateDirectory}" ];
-          BindReadOnlyPaths = lib.optionals config.services.mysql.enable [ "/run/mysqld" ];
+          BindReadOnlyPaths = lib.optionals config.services.postgresql.enable [ "/run/postgresql" ];
 
           MountAPIVFS = true;
 
@@ -146,15 +150,14 @@
         enable = lib.mkDefault true;
         masterKeyFile = config.sops.secrets.masterKey.path;
       };
-      mysql = lib.mkIf config.services.mysql.enable {
+      postgresql = {
+        enable = true;
         ensureDatabases = [ "openlist" ];
         ensureUsers = [
           # 用 Unix Socket 的好处是不需要设置密码，坏处是没有密码……
           {
             name = "openlist";
-            ensurePermissions = {
-              "openlist.*" = "ALL PRIVILEGES";
-            };
+            ensureDBOwnership = true;
           }
         ];
       };

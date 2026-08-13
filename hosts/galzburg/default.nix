@@ -272,11 +272,6 @@
       RateLimitIntervalSec=30s
       RateLimitBurst=2000
     '';
-    postgresqlBackup = {
-      enable = true;
-      location = "/var/backup/postgresql";
-    };
-
     fail2ban = {
       maxretry = lib.mkForce 3;
       bantime = "12h";
