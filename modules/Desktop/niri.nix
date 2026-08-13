@@ -14,6 +14,10 @@
     };
     dconf.enable = true;
     xwayland.enable = lib.mkForce false;
+    nautilus-open-any-terminal = {
+      enable = true;
+      terminal = "kitty";
+    };
   };
 
   services = {
@@ -51,13 +55,11 @@
     gnome-text-editor
     kitty
     loupe
-    nemo
-    nemo-fileroller
-    nemo-preview
-    nemo-seahorse
+    nautilus
     pavucontrol
     playerctl
     seahorse
+    sushi
     xwayland-satellite
     ddcutil
   ];

@@ -62,7 +62,7 @@ layer-rule {
 }
 
 binds {
-    Mod+E { spawn "nemo"; }
+    Mod+E { spawn "nautilus"; }
     Mod+T { spawn "kitty"; }
     Mod+D { toggle-overview; }
     Mod+R { spawn "noctalia" "msg" "panel-toggle" "launcher"; }

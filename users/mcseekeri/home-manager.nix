@@ -30,6 +30,7 @@
       ayugram-desktop
       qbittorrent-enhanced
       krita
+      pix
       obsidian
       kiwix
       element-desktop
@@ -104,7 +105,7 @@
   xdg.mimeApps = {
     enable = true;
     defaultApplications = {
-      "inode/directory" = "nemo.desktop";
+      "inode/directory" = "org.gnome.Nautilus.desktop";
 
       "text/html" = "librewolf.desktop";
       "text/xml" = "librewolf.desktop";
@@ -123,6 +124,20 @@
       "video/quicktime" = "mpv.desktop";
       "video/webm" = "mpv.desktop";
       "video/x-matroska" = "mpv.desktop";
+
+      "image/avif" = "pix.desktop";
+      "image/bmp" = "pix.desktop";
+      "image/gif" = "pix.desktop";
+      "image/heic" = "pix.desktop";
+      "image/heif" = "pix.desktop";
+      "image/jpeg" = "pix.desktop";
+      "image/jxl" = "pix.desktop";
+      "image/png" = "pix.desktop";
+      "image/svg+xml" = "pix.desktop";
+      "image/tiff" = "pix.desktop";
+      "image/vnd.microsoft.icon" = "pix.desktop";
+      "image/webp" = "pix.desktop";
+      "image/x-tga" = "pix.desktop";
 
       "application/zip" = "peazip.desktop";
       "application/x-7z-compressed" = "peazip.desktop";
@@ -193,6 +208,7 @@
       ];
     };
     vscodium = {
+      package = pkgs.vscodium-fhs;
       profiles.default.extensions = with pkgs.vscode-marketplace; [
         activitywatch.aw-watcher-vscode
         dracula-theme.theme-dracula
