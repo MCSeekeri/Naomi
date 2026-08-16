@@ -3,79 +3,17 @@
     "${self}/modules/Home/fish/tide.nix"
     "${self}/modules/Home/git.nix"
     "${self}/modules/Home/direnv.nix"
+    "${self}/modules/Home/cli-tools.nix"
   ];
 
   home = {
     stateVersion = "24.05";
-    packages = with pkgs; [
-      upx
-      lazygit
-      git-ignore
-      gitleaks
-      git-secrets
-      xh
-      magic-wormhole-rs
-      sd
-      duf
-      gh
-      trash-cli
-      pandoc
-      rsclock
-      oha
-      ipfetch
-      genact
-      neo-cowsay
-      hyperfine
-      fuc
-      doggo
-      gping
-    ];
-
-    shellAliases = {
-      ls = "eza";
-      ll = "eza -lh --no-user --long";
-      df = "duf";
-      ping = "gping";
-      wget = "xh --download";
-      dig = "doggo";
-    };
   };
 
   programs = {
     fish = {
       enable = true;
       shellAliases.proxy = "proxychains4 -q";
-    };
-    tealdeer = {
-      enable = true;
-      settings.updates.auto_update = true;
-    };
-    btop = {
-      enable = true;
-      settings = {
-        show_battery = true;
-        show_disks = true;
-        io_mode = true;
-        update_ms = 100;
-        theme_background = false;
-        check_temp = true;
-      };
-    };
-    eza = {
-      enable = true;
-      icons = "auto";
-      enableFishIntegration = true;
-      git = true;
-
-      extraOptions = [
-        "--group-directories-first"
-        "--no-quotes"
-        "--header"
-        "--icons=always"
-        "--time-style=long-iso"
-        "--classify"
-        "--hyperlink"
-      ];
     };
     fastfetch = {
       enable = true;
