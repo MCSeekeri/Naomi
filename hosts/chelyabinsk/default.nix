@@ -6,6 +6,9 @@
   modulesPath,
   ...
 }:
+let
+  siyuanPort = 6806;
+in
 {
   imports = [
     ./disko-config.nix
@@ -24,7 +27,6 @@
 
   networking = {
     hostName = "chelyabinsk";
-    firewall.allowedTCPPorts = [ 6806 ];
   };
   boot = {
     tmp.useZram = false;
@@ -194,7 +196,7 @@
         "pj31wiki.remember11.com" = {
           extraConfig = ''
             encode zstd gzip
-            reverse_proxy 127.0.0.1:6806
+            reverse_proxy 127.0.0.1:${toString siyuanPort}
           '';
         };
         "fantrans.remember11.com" = {
@@ -259,7 +261,6 @@
       port = 0;
       group = "wordpress";
       unixSocket = "/run/redis-wordpress/redis.sock";
-      unixSocketPerm = 777;
       settings = {
         maxmemory = "128mb";
         "maxmemory-policy" = "volatile-lru";
@@ -293,7 +294,7 @@
     siyuan = {
       image = "docker.io/b3log/siyuan:latest";
       autoStart = true;
-      ports = [ "127.0.0.1:6806:6806" ];
+      ports = [ "127.0.0.1:${toString siyuanPort}:6806" ];
       environment.TZ = "Asia/Shanghai";
       environmentFiles = [ config.sops.secrets."siyuan-env".path ];
       volumes = [ "/var/lib/siyuan:/siyuan/workspace:Z" ];

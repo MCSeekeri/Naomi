@@ -197,7 +197,7 @@
           };
           streamSettings = {
             sockopt = {
-              trustedXForwardedFor = [ "127.0.0.1" ];
+              trustedXForwardedFor = [ "X-Forwarded-For" ];
             };
             network = "xhttp";
             xhttpSettings = {

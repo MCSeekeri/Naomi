@@ -87,10 +87,12 @@
             "OPENLIST_SITE_URL=https://${instance.domain}"
             "OPENLIST_ADDR=127.0.0.1"
             "OPENLIST_HTTP_PORT=${toString instance.port}"
-            "OPENLIST_MEILISEARCH_INDEX=${instance.meilisearchIndex}"
-            "OPENLIST_MEILISEARCH_HOST=http://127.0.0.1:7700"
             "OPENLIST_DB_TYPE=postgres"
             "OPENLIST_DB_DSN=host=/run/postgresql user=openlist dbname=openlist port=5432 sslmode=disable TimeZone=Asia/Shanghai"
+          ]
+          ++ lib.optionals config.services.meilisearch.enable [
+            "OPENLIST_MEILISEARCH_INDEX=${instance.meilisearchIndex}"
+            "OPENLIST_MEILISEARCH_HOST=http://127.0.0.1:7700"
           ]
           ++ lib.optional (
             instance.dbTablePrefix != null
