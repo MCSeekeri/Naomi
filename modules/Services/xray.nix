@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   pkgs,
   self,
   ...
@@ -36,25 +37,10 @@
   systemd.services.xray = {
     after = [ "sops-install-secrets.service" ];
     requires = [ "sops-install-secrets.service" ];
-    serviceConfig = {
+    serviceConfig = lib.hardenedServiceConfig // {
       DevicePolicy = "closed";
       KeyringMode = "private";
-      LockPersonality = true;
       MemoryDenyWriteExecute = true;
-      PrivateDevices = true;
-      PrivateMounts = true;
-      PrivateTmp = true;
-      ProcSubset = "pid";
-      ProtectClock = true;
-      ProtectControlGroups = true;
-      ProtectHome = true;
-      ProtectHostname = true;
-      ProtectKernelLogs = true;
-      ProtectKernelModules = true;
-      ProtectKernelTunables = true;
-      ProtectProc = "invisible";
-      ProtectSystem = "strict";
-      RemoveIPC = true;
       Restart = "on-failure";
       RestartSec = "5s";
       RestrictAddressFamilies = [
@@ -62,9 +48,6 @@
         "AF_INET"
         "AF_INET6"
       ];
-      RestrictNamespaces = true;
-      RestrictRealtime = true;
-      RestrictSUIDSGID = true;
       SystemCallErrorNumber = "EPERM";
       SystemCallFilter = [
         "@system-service"
@@ -116,8 +99,6 @@
         "~vm86"
         "~vm86old"
       ];
-      SystemCallArchitectures = "native";
-      UMask = "0077";
     };
   };
 }

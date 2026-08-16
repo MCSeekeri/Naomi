@@ -51,7 +51,7 @@
     };
     git = {
       enable = lib.mkDefault true;
-      package = if config.services.xserver.enable or false then pkgs.gitFull else pkgs.git;
+      package = if lib.isDesktop config then pkgs.gitFull else pkgs.git;
       lfs.enable = true;
     };
     tmux = {
@@ -160,7 +160,7 @@
             btrfs-progs
             compsize
           ]
-      ++ lib.optionals (config.services.xserver.enable or false || config.programs.niri.enable or false) [
+      ++ lib.optionals (lib.isDesktop config) [
         # 桌面应用
         ungoogled-chromium
         # 开发环境
@@ -187,7 +187,5 @@
       ];
   };
 
-  nixpkgs = lib.mkIf (
-    config.services.xserver.enable or false || config.programs.niri.enable or false
-  ) { config.chromium.enableWideVine = true; };
+  nixpkgs = lib.mkIf (lib.isDesktop config) { config.chromium.enableWideVine = true; };
 }

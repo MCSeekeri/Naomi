@@ -313,8 +313,7 @@
     };
 
     restic.backups = {
-      galzburg = {
-        initialize = true;
+      galzburg = lib.mkResticBackup {
         repository = "s3:https://e948fb59c8aa2a756017549554f66d6a.r2.cloudflarestorage.com/galzburg";
         passwordFile = config.sops.secrets.restic_password.path;
         environmentFile = config.sops.secrets.restic_r2_env.path;
@@ -324,25 +323,7 @@
           "/var/lib/archisteamfarm"
           "/var/lib/davis"
         ];
-        extraBackupArgs = [
-          "--tag galzburg"
-          "--compression max"
-          "--skip-if-unchanged"
-        ];
-        pruneOpts = [
-          "--keep-daily 7"
-          "--keep-weekly 4"
-          "--keep-monthly 6"
-        ];
-        checkOpts = [
-          "--with-cache"
-          "--read-data-subset 5%"
-        ];
-        timerConfig = {
-          OnCalendar = "04:00";
-          RandomizedDelaySec = "1h";
-          Persistent = true;
-        };
+        tag = "galzburg";
       };
     };
 

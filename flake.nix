@@ -141,12 +141,15 @@
   outputs =
     inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } (
-      { ... }: {
+      { lib, ... }: {
+        flake.lib = import ./lib { inherit lib; };
+
         imports = [
           inputs.devshell.flakeModule
           inputs.flake-parts.flakeModules.easyOverlay
           inputs.treefmt-nix.flakeModule
           ./hosts/flake-module.nix
+          ./modules/flake-module.nix
           ./devices/flake-module.nix
           ./pkgs/flake-module.nix
         ];

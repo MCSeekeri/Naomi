@@ -75,7 +75,7 @@
         ++ lib.optional config.services.meilisearch.enable "meilisearch.service";
         wantedBy = [ "multi-user.target" ];
 
-        serviceConfig = {
+        serviceConfig = lib.hardenedServiceConfig // {
           ExecStart = "${pkgs.openlist}/bin/OpenList server";
           WorkingDirectory = "/var/lib/${instance.stateDirectory}";
 
@@ -97,42 +97,11 @@
           ) "OPENLIST_DB_TABLE_PREFIX=${instance.dbTablePrefix}";
           StateDirectory = instance.stateDirectory;
           Restart = "on-failure";
-
-          ProtectSystem = "strict";
           ReadWritePaths = [ "/var/lib/${instance.stateDirectory}" ];
           BindReadOnlyPaths = lib.optionals config.services.postgresql.enable [ "/run/postgresql" ];
-
           MountAPIVFS = true;
-
-          UMask = "0077";
-          ProtectHome = true;
-          PrivateTmp = true;
-          ProtectControlGroups = true;
-          ProtectKernelModules = true;
-          ProtectKernelTunables = true;
-          ProtectKernelLogs = true;
-          ProtectClock = true;
-          ProtectHostname = true;
-          ProtectProc = "invisible";
-          ProcSubset = "pid";
-
           NoNewPrivileges = true;
-          PrivateDevices = true;
           PrivateUsers = true;
-          PrivateMounts = true;
-          RestrictNamespaces = true;
-          RestrictSUIDSGID = true;
-          RestrictRealtime = true;
-          LockPersonality = true;
-          RemoveIPC = true;
-          SystemCallArchitectures = "native";
-          SystemCallFilter = [
-            "@system-service"
-            "~@privileged"
-            "~@resources"
-            "~@reboot"
-            "~@obsolete"
-          ];
           CapabilityBoundingSet = "";
 
           MemoryDenyWriteExecute = true;

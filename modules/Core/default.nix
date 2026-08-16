@@ -67,7 +67,12 @@
   home-manager = {
     useUserPackages = true;
     useGlobalPkgs = true;
-    extraSpecialArgs = { inherit self inputs outputs; };
+    extraSpecialArgs = {
+      inherit self inputs outputs;
+      lib = (import "${self}/lib") {
+        lib = import "${inputs.home-manager}/modules/lib/stdlib-extended.nix" inputs.nixpkgs.lib;
+      };
+    };
     sharedModules = [
       inputs.nix-index-database.homeModules.nix-index
       "${self}/modules/Home/xdg.nix"

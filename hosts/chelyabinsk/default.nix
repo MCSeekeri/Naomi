@@ -267,8 +267,7 @@
       };
     };
 
-    restic.backups.chelyabinsk = {
-      initialize = true;
+    restic.backups.chelyabinsk = lib.mkResticBackup {
       repository = "s3:https://e948fb59c8aa2a756017549554f66d6a.r2.cloudflarestorage.com/chelyabinsk";
       passwordFile = config.sops.secrets.restic_password.path;
       environmentFile = config.sops.secrets.restic_r2_env.path;
@@ -278,160 +277,15 @@
         "/var/lib/siyuan"
         "/var/lib/forgejo"
       ];
-      extraBackupArgs = [
-        "--tag chelyabinsk"
-        "--compression max"
-        "--skip-if-unchanged"
-      ];
-      pruneOpts = [
-        "--keep-daily 7"
-        "--keep-weekly 4"
-        "--keep-monthly 6"
-      ];
-      checkOpts = [
-        "--with-cache"
-        "--read-data-subset 5%"
-      ];
-      timerConfig = {
-        OnCalendar = "04:00";
-        RandomizedDelaySec = "1h";
-        Persistent = true;
-      };
+      tag = "chelyabinsk";
     };
 
-    phpfpm.pools = {
-      transteam = {
-        user = "wordpress";
-        group = "wordpress";
-        phpPackage = pkgs.php.withExtensions (
-          { all, ... }: with all;
-          [
-            bcmath
-            calendar
-            curl
-            ctype
-            dom
-            exif
-            fileinfo
-            filter
-            ftp
-            gd
-            gettext
-            gmp
-            iconv
-            intl
-            ldap
-            mbstring
-            mysqli
-            mysqlnd
-            openssl
-            pcntl
-            pdo
-            pdo_mysql
-            pdo_odbc
-            pdo_pgsql
-            pdo_sqlite
-            pgsql
-            posix
-            readline
-            session
-            simplexml
-            sockets
-            soap
-            sodium
-            sysvsem
-            sqlite3
-            tokenizer
-            xmlreader
-            xmlwriter
-            zip
-            zlib
-            opcache
-            redis
-          ]
-        );
-        settings = {
-          "listen.owner" = "wordpress";
-          "listen.group" = "caddy";
-          "listen.mode" = "0660";
-          "pm" = "ondemand";
-          "pm.max_children" = 4;
-          "pm.process_idle_timeout" = "10s";
-          "pm.max_requests" = 500;
-        };
-        phpOptions = ''
-          memory_limit = 256M
-          upload_max_filesize = 64M
-          post_max_size = 64M
-          max_execution_time = 300
-        '';
-      };
-      studio = {
-        user = "wordpress";
-        group = "wordpress";
-        phpPackage = pkgs.php.withExtensions (
-          { all, ... }: with all;
-          [
-            bcmath
-            calendar
-            curl
-            ctype
-            dom
-            exif
-            fileinfo
-            filter
-            ftp
-            gd
-            gettext
-            gmp
-            iconv
-            intl
-            ldap
-            mbstring
-            mysqli
-            mysqlnd
-            openssl
-            pcntl
-            pdo
-            pdo_mysql
-            pdo_odbc
-            pdo_pgsql
-            pdo_sqlite
-            pgsql
-            posix
-            readline
-            session
-            simplexml
-            sockets
-            soap
-            sodium
-            sysvsem
-            sqlite3
-            tokenizer
-            xmlreader
-            xmlwriter
-            zip
-            zlib
-            opcache
-            redis
-          ]
-        );
-        settings = {
-          "listen.owner" = "wordpress";
-          "listen.group" = "caddy";
-          "listen.mode" = "0660";
-          "pm" = "ondemand";
-          "pm.max_children" = 4;
-          "pm.process_idle_timeout" = "10s";
-          "pm.max_requests" = 500;
-        };
-        phpOptions = ''
-          memory_limit = 256M
-          upload_max_filesize = 64M
-          post_max_size = 64M
-          max_execution_time = 300
-        '';
-      };
+    phpfpm.pools = lib.mkWordpressPhpPools {
+      inherit pkgs;
+      names = [
+        "transteam"
+        "studio"
+      ];
     };
   };
 
