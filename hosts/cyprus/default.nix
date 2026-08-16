@@ -49,7 +49,6 @@
   networking = {
     hostName = "cyprus"; # 主机名，设置好之后最好不要修改
     networkmanager.enable = true;
-    firewall.interfaces.tailscale0.allowedTCPPorts = [ 9091 ];
   };
   hardware = {
     cpu = {
@@ -198,13 +197,6 @@
       pkgs.wayvr
       pkgs.monado-vulkan-layers
     ];
-    etc."alloy/sink.alloy".text = ''
-      loki.write "default" {
-        endpoint {
-          url = "http://galzburg:9092/loki/api/v1/push"
-        }
-      }
-    '';
   };
 
   security = {

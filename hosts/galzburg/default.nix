@@ -40,10 +40,6 @@
         443
       ];
       allowedUDPPorts = [ 443 ];
-      interfaces.tailscale0.allowedTCPPorts = [
-        9090
-        9092
-      ];
       logRefusedConnections = false;
     };
   };
