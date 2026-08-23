@@ -58,8 +58,8 @@ layer-rule {
 }
 
 binds {
-    Mod+E { spawn "nautilus"; }
-    Mod+T { spawn "kitty"; }
+    Mod+E { spawn "nemo"; }
+    Mod+T { spawn "ghostty"; }
     Mod+D { toggle-overview; }
     Mod+R { spawn "noctalia" "msg" "panel-toggle" "launcher"; }
     Mod+V { spawn "noctalia" "msg" "panel-toggle" "clipboard"; }
@@ -138,3 +138,4 @@ binds {
     Mod+Shift+E { quit; }
     Mod+Shift+P { power-off-monitors; }
 }
+include optional=true "host.kdl"

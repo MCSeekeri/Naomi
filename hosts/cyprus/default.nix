@@ -43,7 +43,22 @@
     "${self}/users/mcseekeri"
   ];
 
-  home-manager.sharedModules = [ inputs.plasma-manager.homeModules.plasma-manager ]; # 「No 模块，No 覆盖」，Nix 的这句名言想必大家都熟记于心吧……
+  home-manager.sharedModules = [
+    inputs.plasma-manager.homeModules.plasma-manager # 「No 模块，No 覆盖」，Nix 的这句名言想必大家都熟记于心吧……
+    {
+      home.file."steam/steam/steam_dev.cfg".text = ''
+        @nClientDownloadEnableHTTP2PlatformLinux 0
+        unShaderBackgroundProcessingThreads 16
+      '';
+    }
+  ];
+
+  home-manager.users.mcseekeri.xdg.configFile."niri/host.kdl".text = ''
+    output "eDP-1" {
+        scale 1.25
+        variable-refresh-rate
+    }
+  '';
 
   # 网络配置
   networking = {
