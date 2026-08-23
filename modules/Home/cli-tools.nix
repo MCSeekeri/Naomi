@@ -5,11 +5,11 @@
       lazygit
       git-ignore
       gitleaks # 查找文件或仓库中的敏感信息
-      git-secrets
-      xh # curl
+      curlie
       # noti # fish done
       magic-wormhole-rs
       sd
+      ugrep
       duf # df -h
       gh
       trash-cli
@@ -23,14 +23,17 @@
       fuc # cpz rmz
       doggo # dig
       gping
+      yq-go
+      just
+      watchexec
     ];
     shellAliases = {
-      ls = "eza";
-      ll = "eza -lh --no-user --long";
+      ll = "eza -lh --no-user";
+      grep = "ugrep";
       df = "duf";
       ping = "gping";
-      wget = "xh --download";
       dig = "doggo";
+      curl = "curlie";
     };
   };
   programs = {

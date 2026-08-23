@@ -11,6 +11,7 @@
     # "${self}/modules/Home/activitywatch.nix"
     "${self}/modules/Home/awesome-terminal.nix"
     "${self}/modules/Home/direnv.nix"
+    "${self}/modules/Home/ghostty.nix"
     "${self}/modules/Home/kitty.nix"
     "${self}/modules/Home/niri"
     "${self}/modules/Home/vscode.nix"
@@ -75,6 +76,8 @@
       gradle
       reqable
       flutter
+      mcp-nixos
+      nur.repos.trev.chrome-devtools-mcp
       # 常用工具
       btrfs-assistant
       nix-diff

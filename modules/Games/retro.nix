@@ -38,5 +38,6 @@
 
     # 640KiB
     dosbox-x
+    dosbox-staging
   ];
 }

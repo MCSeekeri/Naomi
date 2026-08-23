@@ -1,4 +1,10 @@
-{ lib, config, ... }: {
+{
+  inputs,
+  lib,
+  config,
+  ...
+}:
+{
   nix = {
     channel.enable = false;
     distributedBuilds = true;
@@ -32,6 +38,7 @@
     daemonCPUSchedPolicy = lib.mkDefault "idle"; # 确保在桌面环境下不影响用户体验
     daemonIOSchedClass = lib.mkDefault "idle";
     daemonIOSchedPriority = lib.mkDefault 7;
+    registry.nixpkgs.flake = inputs.nixpkgs;
   };
   # 允许非自由软件
   nixpkgs.config = {

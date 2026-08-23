@@ -12,6 +12,7 @@
 
   services = {
     sysstat.enable = true;
+    locate.enable = lib.mkDefault true;
     # gvfs.enable = true;
   };
   programs = {
@@ -42,7 +43,10 @@
     fish = {
       enable = lib.mkDefault true; # 比 zsh 更好，可惜不兼容 bash
       useBabelfish = lib.mkDefault true; # 啥
-      shellAliases = lib.mkDefault { proxy = "proxychains4 -q"; };
+      shellAliases = lib.mkDefault {
+        proxy = "proxychains4 -q";
+        cat = "bat";
+      };
     };
     neovim = {
       enable = lib.mkDefault true;
@@ -69,12 +73,15 @@
       enableExtraSocket = true;
     };
     bat.enable = lib.mkDefault true; # cat
-    screen.enable = lib.mkDefault true;
     command-not-found.enable = lib.mkDefault false;
-    iotop.enable = lib.mkDefault true;
+    iotop = {
+      enable = true;
+      package = lib.mkDefault pkgs.iotop-c;
+    };
     iftop.enable = lib.mkDefault true;
-    mtr.enable = lib.mkDefault true; # traceroute
+    trippy.enable = lib.mkDefault true;
     bandwhich.enable = lib.mkDefault true;
+    sniffnet.enable = true;
     mosh = {
       enable = lib.mkDefault true;
       openFirewall = true;
@@ -120,6 +127,9 @@
         # 终端优化
         killall
         fd
+        dust
+        gron
+        procs
         zellij # tmux
         gping # ping
         fastfetch
@@ -133,7 +143,7 @@
           rocmSupport = config.hardware.deviceType != "server" && config.hardware.gpu.type == "amd";
           cudaSupport = config.hardware.deviceType != "server" && config.hardware.gpu.type == "nvidia";
         })
-        ncdu
+        dua
       ]
       ++ lib.optionals config.networking.networkmanager.enable [
         nmap
