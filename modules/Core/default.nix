@@ -21,6 +21,7 @@
     ./fonts.nix
     #./hardened.nix
     ./i18n.nix
+    ./nix-ld.nix
     ./nix.nix
     ./programs.nix
     ./sops.nix
@@ -75,6 +76,8 @@
     };
     sharedModules = [
       inputs.nix-index-database.homeModules.nix-index
+      # comma：`, 包名` 临时运行任意包，配合上面的 nix-index 数据库
+      { programs.nix-index-database.comma.enable = true; }
       "${self}/modules/Home/xdg.nix"
     ];
   };
