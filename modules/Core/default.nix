@@ -14,6 +14,7 @@
     inputs.disko.nixosModules.disko
     inputs.nur.modules.nixos.default
     inputs.nix-index-database.nixosModules.nix-index
+    inputs.flyline.nixosModules.flyline
     "${self}/modules/Hardware"
     ./apparmor.nix
     ./avahi.nix

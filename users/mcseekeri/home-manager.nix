@@ -1,8 +1,13 @@
-{ pkgs, self, ... }: {
+{
+  pkgs,
+  self,
+  lib,
+  ...
+}:
+{
   imports = [
     "${self}/modules/Home/browser/librewolf.nix"
     "${self}/modules/Home/browser/chromium.nix"
-    "${self}/modules/Home/fish/tide.nix"
     # "${self}/modules/Home/activitywatch.nix"
     "${self}/modules/Home/awesome-terminal.nix"
     "${self}/modules/Home/direnv.nix"
@@ -169,6 +174,15 @@
 
   programs = {
     home-manager.enable = true;
+    starship = {
+      enable = true;
+      presets = [ "gruvbox-rainbow" ];
+      settings = {
+        add_newline = false;
+        directory.truncation_length = 4;
+        palette = lib.mkForce "gruvbox_dark";
+      };
+    };
     zed-editor = {
       enable = true;
       enableMcpIntegration = true;

@@ -1,6 +1,5 @@
 { pkgs, self, ... }: {
   imports = [
-    "${self}/modules/Home/fish/tide.nix"
     "${self}/modules/Home/git.nix"
     "${self}/modules/Home/direnv.nix"
     "${self}/modules/Home/cli-tools.nix"

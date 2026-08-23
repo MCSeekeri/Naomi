@@ -9,7 +9,6 @@
       confirm_os_window_close = 0; # 我知道我在做什么
       disable_config_watch = "yes";
       hide_window_decorations = "titlebar-and-corners";
-      shell = "fish"; # 俩 fish
     };
 
     font = {

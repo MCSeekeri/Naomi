@@ -1,8 +1,5 @@
 { pkgs, self, ... }: {
-  imports = [
-    "${self}/modules/Home/fish/tide.nix"
-    "${self}/modules/Home/direnv.nix"
-  ];
+  imports = [ "${self}/modules/Home/direnv.nix" ];
 
   home = {
     username = "remote";

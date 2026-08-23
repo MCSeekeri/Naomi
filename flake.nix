@@ -136,6 +136,12 @@
         home-manager.follows = "home-manager";
       };
     };
+
+    flyline = {
+      url = "github:HalFrgrd/flyline";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
 
   outputs =

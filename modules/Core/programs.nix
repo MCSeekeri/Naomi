@@ -38,6 +38,7 @@
       enable = lib.mkDefault true;
       # clean.enable = true; # 和 nix.gc 不共存
     };
+    flyline.enable = true;
     fish = {
       enable = lib.mkDefault true; # 比 zsh 更好，可惜不兼容 bash
       useBabelfish = lib.mkDefault true; # 啥
