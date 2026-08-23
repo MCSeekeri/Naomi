@@ -77,7 +77,6 @@
     };
     yazi = {
       enable = true;
-      enableFishIntegration = true;
       extraPackages = with pkgs; [
         bat
         chafa

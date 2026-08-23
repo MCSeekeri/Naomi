@@ -52,16 +52,12 @@
     eza = {
       enable = true;
       icons = "auto";
-      enableBashIntegration = true;
-      enableZshIntegration = true;
-      enableFishIntegration = true;
       git = true;
 
       extraOptions = [
         "--group-directories-first"
         "--no-quotes" # 不使用符号包裹空格
         "--header"
-        "--icons=always"
         "--time-style=long-iso" # YYYY-MM-DD HH:MM 最美妙的表示时间的方式
         "--classify"
         "--hyperlink"
