@@ -17,6 +17,7 @@
     "${self}/modules/Server/podman.nix"
 
     "${self}/modules/Desktop/niri.nix"
+    "${self}/modules/Desktop/ananicy.nix"
     "${self}/modules/Desktop/sunshine.nix"
     "${self}/modules/Desktop/gaming.nix"
     "${self}/modules/Desktop/obs.nix"
@@ -86,6 +87,7 @@
       luks = {
         devices."root" = {
           device = "/dev/disk/by-partlabel/root";
+          allowDiscards = true;
           crypttabExtraOpts = [
             "fido2-device=auto"
             "tpm2-device=auto"
@@ -98,10 +100,14 @@
         };
         devices."Games" = {
           device = "/dev/disk/by-partlabel/Games";
+          allowDiscards = true;
         };
       };
     };
-    kernelModules = [ "kvm-intel" ];
+    kernelModules = [
+      "kvm-intel"
+      "ntsync"
+    ];
     kernelPackages = pkgs.linuxPackages_xanmod_latest;
   };
 
@@ -115,6 +121,7 @@
       fsType = "btrfs";
       options = [
         "compress=zstd"
+        "noatime"
         "subvol=@"
       ];
     };
@@ -133,6 +140,7 @@
       fsType = "btrfs";
       options = [
         "compress=zstd"
+        "noatime"
         "subvol=@home"
       ];
     };
@@ -165,11 +173,11 @@
     beesd.filesystems = {
       root = {
         spec = "LABEL=btrfs-root";
-        hashTableSizeMB = 8192; # 增大后仍不够，进一步翻倍以降 IO 换页
+        hashTableSizeMB = 6144;
         verbosity = "crit";
         extraOptions = [
           "--loadavg-target"
-          "30.0"
+          "12.0"
         ];
       };
       Games = {
@@ -178,7 +186,7 @@
         verbosity = "crit";
         extraOptions = [
           "--loadavg-target"
-          "25.0"
+          "12.0"
         ];
       };
     };

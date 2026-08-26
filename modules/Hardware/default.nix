@@ -163,6 +163,10 @@ in
           "amd_iommu=on"
           "amd_pstate=active"
         ]
+        ++ lib.optionals (config.hardware.deviceType != "server") [
+          "nowatchdog"
+          "nmi_watchdog=0"
+        ]
       );
     };
 
@@ -175,6 +179,9 @@ in
           ++ lib.optional (config.hardware.gpu.type == "intel") "modesetting"
           ++ lib.optional (config.hardware.gpu.type == "amd") "amdgpu"
         );
+        udev.extraRules = ''
+          ACTION=="add", SUBSYSTEM=="block", KERNEL=="nvme*n*", ATTR{queue/read_ahead_kb}="1024"
+        '';
       })
       (lib.mkIf (config.hardware.deviceType == "laptop") {
         power-profiles-daemon.enable = lib.mkDefault true;
