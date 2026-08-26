@@ -42,6 +42,28 @@
       allowedUDPPorts = [ 443 ];
       logRefusedConnections = false;
     };
+
+    wireguard.interfaces.warp0 = {
+      privateKeyFile = config.sops.secrets.warp_private_key.path;
+      ips = [
+        "172.16.0.2/32"
+        "2606:4700:110:8b52:44af:1ff7:ad4f:71b7/128"
+      ];
+      mtu = 1280;
+      allowedIPsAsRoutes = false;
+      peers = [
+        {
+          publicKey = "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo="; # 全 Warp 一致
+          allowedIPs = [
+            "0.0.0.0/0"
+            "::/0"
+          ];
+          endpoint = "162.159.192.10:2408";
+          persistentKeepalive = 25;
+        }
+      ];
+    };
+
   };
 
   hardware = {
@@ -152,6 +174,7 @@
       format = "dotenv";
       key = "";
     };
+    warp_private_key.sopsFile = "${self}/secrets/hosts/galzburg/xray.yaml";
   };
 
   security.acme = {
@@ -169,6 +192,12 @@
         access = "none";
         loglevel = "warning";
         maskAddress = "half";
+      };
+      dns = {
+        servers = [
+          "1.1.1.1"
+          "1.0.0.1"
+        ];
       };
       inbounds = [
         {
@@ -226,6 +255,11 @@
           }
           {
             type = "field";
+            port = 25;
+            outboundTag = "block";
+          }
+          {
+            type = "field";
             domain = [ "geosite:private" ];
             outboundTag = "block";
           }
@@ -245,6 +279,14 @@
         {
           protocol = "freedom";
           tag = "direct";
+          settings = {
+            domainStrategy = "UseIP";
+          };
+          streamSettings = {
+            sockopt = {
+              interface = "warp0";
+            };
+          };
         }
         {
           protocol = "blackhole";
@@ -287,6 +329,7 @@
           caddyExtraConfig = ''
             handle /static* {
               reverse_proxy h2c://127.0.0.1:30101 {
+                header_up X-Forwarded-For {http.vars.client_ip}
                 flush_interval -1
                 stream_close_delay 5m
               }
@@ -387,6 +430,7 @@
               extraConfig = ''
                 handle /static* {
                   reverse_proxy h2c://127.0.0.1:30101 {
+                    header_up X-Forwarded-For {http.vars.client_ip}
                     flush_interval -1
                     stream_close_delay 5m
                   }
@@ -450,6 +494,18 @@
   };
 
   systemd = {
+    network.networks."40-warp0" = {
+      routes = [
+        {
+          Destination = "0.0.0.0/0";
+          Metric = 4242;
+        }
+        {
+          Destination = "::/0";
+          Metric = 4242;
+        }
+      ];
+    };
     settings.Manager.DefaultLimitNOFILE = "1048576";
     services = {
       tailscaled.serviceConfig.LogLevelMax = "notice";
