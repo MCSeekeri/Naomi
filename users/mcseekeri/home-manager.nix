@@ -177,6 +177,7 @@
 
   programs = {
     home-manager.enable = true;
+    bash.enable = true;
     starship = {
       enable = true;
       presets = [ "gruvbox-rainbow" ];

@@ -27,11 +27,14 @@
       flags = [ "--disable-up-arrow" ];
     };
 
-    bash.initExtra = ''
-      if [[ -n "$(type -p flyline 2>/dev/null)" ]]; then
-        flyline key bind Ctrl+r 'always=runBashCommand(__atuin_widget_run)+submitOrNewline'
-      fi
-    '';
+    bash = {
+      enable = true;
+      initExtra = ''
+        if [[ -n "$(type -p flyline 2>/dev/null)" ]]; then
+          flyline key bind Ctrl+r 'always=runBashCommand(__atuin_widget_run)+submitOrNewline'
+        fi
+      '';
+    };
 
     fastfetch = {
       enable = true;

@@ -85,6 +85,9 @@ in
   };
   fonts.fontconfig.enable = true;
 
+  documentation.enable = lib.mkOverride 50 false;
+  isoImage.squashfsCompression = "zstd";
+
   # 网络配置
   networking = {
     hostName = "cuba"; # 主机名，设置好之后最好不要修改
@@ -107,6 +110,7 @@ in
   };
 
   system = {
+    installer.channel.enable = false; # 不把 nixpkgs 源码打进镜像，缩小体积；安装走 flake 流程用不到
     activationScripts.root-password = ''
       mkdir -p /var/shared
       cat /dev/urandom | tr -dc 'A-HJ-KMNP-Y3-9' | fold -w 4 | head -n 4 | paste -sd "-" - > /var/shared/root-password
@@ -126,14 +130,16 @@ in
       useZram = true;
     };
     initrd.systemd.emergencyAccess = true;
-    supportedFilesystems = [
-      "ext4"
-      "exfat"
-      "ext2"
-    ];
+    supportedFilesystems = {
+      ext4 = true;
+      exfat = true;
+      ext2 = true;
+      bcachefs = true;
+    };
     kernelParams = [
       "nouveau.modeset=0"
       "console=ttyS0,115200" # 串口调试
+      "console=tty0"
       "zswap.zpool=zsmalloc"
       "boot.shell_on_fail"
     ];
@@ -141,6 +147,9 @@ in
   environment = {
     systemPackages = [
       pkgs.disko
+      pkgs.rsync
+      pkgs.jq
+      pkgs.nixos-facter
       pkgs.bore-cli
       pkgs.geph
       pkgs.clash-rs
@@ -169,8 +178,10 @@ in
 
   # https://github.com/NixOS/nixpkgs/issues/219239
   programs = {
-    bash.interactiveShellInit = ''
-      watch --no-title --color ${network-status}/bin/network-status
+    bash.interactiveShellInit = lib.mkAfter ''
+      if [[ "$(tty)" =~ /dev/(tty1|hvc0|ttyS0)$ ]]; then
+        watch --no-title --color ${network-status}/bin/network-status
+      fi
     '';
     fish = {
       enable = true;
@@ -192,6 +203,21 @@ in
   systemd = {
     tmpfiles.rules = [ "d /var/shared 0700 root root - -" ];
     services = {
+      log-network-status = {
+        wantedBy = [ "multi-user.target" ];
+        restartIfChanged = false;
+        serviceConfig = {
+          Type = "oneshot";
+          StandardOutput = "journal+console";
+          ExecStart = [
+            "-${pkgs.systemd}/lib/systemd/systemd-networkd-wait-online"
+            "${pkgs.iproute2}/bin/ip -c addr"
+            "${pkgs.iproute2}/bin/ip -c -6 route"
+            "${pkgs.iproute2}/bin/ip -c -4 route"
+            "${pkgs.systemd}/bin/networkctl status"
+          ];
+        };
+      };
       bore-tunnel = {
         description = "Bore tunnel service";
         after = [ "network-online.target" ];
