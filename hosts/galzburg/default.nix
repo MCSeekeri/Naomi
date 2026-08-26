@@ -15,6 +15,7 @@
 
     "${self}/modules/Server/failsafe.nix"
     "${self}/modules/Server/podman.nix"
+    "${self}/modules/Server/ntfy-agent.nix"
 
     "${self}/modules/Services/archisteamfarm.nix"
     "${self}/modules/Services/cloudflared.nix"
@@ -359,6 +360,7 @@
         paths = [
           "/var/lib/SillyTavern"
           "/var/backup"
+          "/var/lib/ntfy-sh"
           "/var/lib/archisteamfarm"
           "/var/lib/davis"
         ];
@@ -374,6 +376,26 @@
       poolConfig."listen.group" = "caddy";
       adminPasswordFile = config.sops.secrets.davis_admin_password.path;
       appSecretFile = config.sops.secrets.davis_app_secret.path;
+    };
+
+    ntfy-sh = {
+      enable = true;
+      settings = {
+        base-url = "https://ntfy.mcseekeri.com";
+        behind-proxy = true;
+        cache-duration = "72h";
+        cache-startup-queries = ''
+          pragma journal_mode = WAL;
+          pragma synchronous = normal;
+          pragma temp_store = memory;
+          pragma busy_timeout = 15000;
+        '';
+        auth-default-access = "deny-all";
+        enable-login = true;
+        require-login = true;
+        auth-users = [ "mcseekeri:$2a$10$eNDiY5fPdV2jDb5QcAF6cOdEDudQ4Lek525XoyKn5K8s.L2WlB9LS:admin" ];
+        auth-access = [ "*:pub-*:rw" ];
+      };
     };
 
     # H2 限速多，H3 多限速
@@ -452,6 +474,15 @@
                 # CalDAV/CardDAV 自动发现
                 @wellknown path /.well-known/caldav /.well-known/carddav
                 redir @wellknown /dav/ 302
+              '';
+            };
+            "ntfy.mcseekeri.com" = {
+              extraConfig = ''
+                encode zstd gzip
+
+                reverse_proxy 127.0.0.1:2586 {
+                  flush_interval -1
+                }
               '';
             };
           };
