@@ -135,47 +135,56 @@
     stateVersion = "26.05";
   };
 
-  sops.secrets = {
-    masterKey.sopsFile = "${self}/secrets/hosts/galzburg/meilisearch.yaml";
-    openlist_env = {
-      sopsFile = "${self}/secrets/hosts/galzburg/openlist.env";
-      format = "dotenv";
-      owner = "openlist";
-      group = "openlist";
-      mode = "0440";
-      key = "";
+  sops = {
+    secrets = {
+      masterKey.sopsFile = "${self}/secrets/hosts/galzburg/meilisearch.yaml";
+      openlist_env = {
+        sopsFile = "${self}/secrets/hosts/galzburg/openlist.env";
+        format = "dotenv";
+        owner = "openlist";
+        group = "openlist";
+        mode = "0440";
+        key = "";
+      };
+      acme = {
+        sopsFile = "${self}/secrets/hosts/galzburg/acme.env";
+        format = "dotenv";
+        key = "";
+      };
+      vaultwarden_env = {
+        sopsFile = "${self}/secrets/hosts/galzburg/vaultwarden.env";
+        format = "dotenv";
+        key = "";
+        owner = "vaultwarden";
+        group = "vaultwarden";
+        mode = "0440";
+      };
+      restic_password = {
+        sopsFile = "${self}/secrets/hosts/galzburg/restic.yaml";
+        key = "RESTIC_PASSWORD";
+      };
+      davis_admin_password = {
+        sopsFile = "${self}/secrets/hosts/galzburg/davis.yaml";
+        key = "admin_password";
+      };
+      davis_app_secret = {
+        sopsFile = "${self}/secrets/hosts/galzburg/davis.yaml";
+        key = "app_secret";
+      };
+      changedetection_salted_pass.sopsFile = "${self}/secrets/hosts/galzburg/changedetection.yaml";
+      restic_r2_env = {
+        sopsFile = "${self}/secrets/hosts/galzburg/restic.env";
+        format = "dotenv";
+        key = "";
+      };
+      warp_private_key.sopsFile = "${self}/secrets/hosts/galzburg/xray.yaml";
     };
-    acme = {
-      sopsFile = "${self}/secrets/hosts/galzburg/acme.env";
-      format = "dotenv";
-      key = "";
+    templates = {
+      "changedetection_env" = {
+        content = "SALTED_PASS='${config.sops.placeholder.changedetection_salted_pass}'";
+        restartUnits = [ "changedetection-io.service" ];
+      };
     };
-    vaultwarden_env = {
-      sopsFile = "${self}/secrets/hosts/galzburg/vaultwarden.env";
-      format = "dotenv";
-      key = "";
-      owner = "vaultwarden";
-      group = "vaultwarden";
-      mode = "0440";
-    };
-    restic_password = {
-      sopsFile = "${self}/secrets/hosts/galzburg/restic.yaml";
-      key = "RESTIC_PASSWORD";
-    };
-    davis_admin_password = {
-      sopsFile = "${self}/secrets/hosts/galzburg/davis.yaml";
-      key = "admin_password";
-    };
-    davis_app_secret = {
-      sopsFile = "${self}/secrets/hosts/galzburg/davis.yaml";
-      key = "app_secret";
-    };
-    restic_r2_env = {
-      sopsFile = "${self}/secrets/hosts/galzburg/restic.env";
-      format = "dotenv";
-      key = "";
-    };
-    warp_private_key.sopsFile = "${self}/secrets/hosts/galzburg/xray.yaml";
   };
 
   security.acme = {
@@ -321,6 +330,12 @@
     };
 
     nginx.enable = lib.mkForce false;
+    changedetection-io = {
+      enable = true;
+      behindProxy = true;
+      baseURL = "https://watch.mcseekeri.com";
+      environmentFile = config.sops.templates."changedetection_env".path;
+    };
     openlist = {
       enable = true;
       instances = {
@@ -394,7 +409,10 @@
         enable-login = true;
         require-login = true;
         auth-users = [ "mcseekeri:$2a$10$eNDiY5fPdV2jDb5QcAF6cOdEDudQ4Lek525XoyKn5K8s.L2WlB9LS:admin" ];
-        auth-access = [ "*:pub-*:rw" ];
+        auth-access = [
+          "*:pub-*:rw"
+          "*:codec-*:wo"
+        ];
       };
     };
 
@@ -483,6 +501,13 @@
                 reverse_proxy 127.0.0.1:2586 {
                   flush_interval -1
                 }
+              '';
+            };
+            "watch.mcseekeri.com" = {
+              extraConfig = ''
+                encode zstd gzip
+
+                reverse_proxy 127.0.0.1:5000
               '';
             };
           };
