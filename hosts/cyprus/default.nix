@@ -10,6 +10,7 @@
     "${self}/modules/Core/prc.nix"
 
     "${self}/modules/Server/clamav.nix"
+    "${self}/modules/Server/ntfy-agent.nix"
     "${self}/modules/Server/failsafe.nix"
     "${self}/modules/Server/virt/libvirt.nix"
     # "${self}/modules/Server/virt/virtualbox.nix"
@@ -213,6 +214,7 @@
       autoStart = true;
       openFirewall = true;
     };
+    smartd.enable = true;
   };
 
   environment = {
