@@ -23,6 +23,7 @@
     retroarch-joypad-autoconfig
 
     ryubing
+    dolphin-emu
 
     pcsx2
     ppsspp

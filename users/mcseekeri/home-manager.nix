@@ -33,6 +33,7 @@
       kdePackages.kcalc
       anki-bin
       discord
+      vesktop
       ayugram-desktop
       qbittorrent-enhanced
       krita
@@ -46,7 +47,8 @@
       # bitwarden-desktop
       peazip
       libreoffice-qt # 无用户信息泄露，比 WPS 不知道高到哪里去了……
-      motrix-next
+      motrix
+      v2rayn
       # 主题
       nur.repos.MCSeekeri.lain-kde-splashscreen
       # kora-icon-theme
@@ -57,7 +59,8 @@
       vlc
       ckan
       r2modman
-      musikcube
+      splayer-next
+      scanmem
       # 开发套件
       rustup
       gnumake
@@ -72,6 +75,9 @@
       yarn-berry
       unityhub
       imhex
+      libressl
+      bfg-repo-cleaner
+      bun
       # micromamba
       gradle
       reqable
@@ -90,6 +96,7 @@
       mat2
       exiftool
       aria2
+      yad
     ];
     # ++ (lib.pipe kdePackages.sources [
     #   builtins.attrNames

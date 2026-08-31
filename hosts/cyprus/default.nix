@@ -65,7 +65,10 @@
   # 网络配置
   networking = {
     hostName = "cyprus"; # 主机名，设置好之后最好不要修改
-    networkmanager.enable = true;
+    networkmanager = {
+      enable = true;
+      wifi.powersave = false;
+    };
   };
   hardware = {
     cpu = {
@@ -74,6 +77,10 @@
     };
     gpu.type = "nvidia";
     deviceType = "laptop";
+    nvidia.powerManagement = {
+      enable = true;
+      finegrained = true;
+    };
   };
   boot = {
     loader.limine.secureBoot.enable = true;
@@ -110,6 +117,20 @@
       "ntsync"
     ];
     kernelPackages = pkgs.linuxPackages_xanmod_latest;
+    kernelParams = [
+      "transparent_hugepage=always"
+      "rcutree.enable_rcu_lazy=1"
+    ];
+    kernel.sysfs = {
+      "kernel"."mm" = {
+        "transparent_hugepage" = {
+          "defrag" = "defer+madvise";
+        };
+        "khugepaged" = {
+          "max_ptes_none" = 409;
+        };
+      };
+    };
   };
 
   system = {

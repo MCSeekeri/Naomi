@@ -8,7 +8,7 @@
 {
   services.xray = {
     enable = true;
-    package = pkgs.xray.overrideAttrs (_: rec {
+    package = pkgs.xray.overrideAttrs (old: rec {
       version = "26.7.28";
       src = pkgs.fetchFromGitHub {
         owner = "XTLS";
@@ -17,6 +17,9 @@
         hash = "sha256-6qW8Un6VC0kFPyrFMQxruWz18flyeZyFs0A7avoi56I=";
       };
       vendorHash = "sha256-n1/bxtOadcdnXg/opvv7gU2Dr/vbt5kGfdZCyk9CY8w=";
+      env = (old.env or { }) // {
+        GOAMD64 = "v3";
+      };
     });
     settingsFile = config.sops.templates."xray-${config.networking.hostName}-config.json".path;
   };

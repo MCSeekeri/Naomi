@@ -2,6 +2,7 @@
   programs.kitty = {
     enable = true;
     enableGitIntegration = true;
+    shellIntegration.mode = null;
     settings = {
       scrollback_pager_history_size = 100;
       enable_audio_bell = false; # 防止把自己吓一跳，如果你好奇，输入 wall 随便什么。
