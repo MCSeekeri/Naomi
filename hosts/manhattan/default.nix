@@ -42,15 +42,6 @@
     cpu.type = "qemu";
   };
 
-  boot = {
-    initrd.availableKernelModules = [
-      "ata_piix"
-      "xhci_pci"
-      "ahci"
-      "sr_mod"
-    ];
-    kernelModules = [ "kvm-intel" ];
-  };
   system = {
     stateVersion = "26.05";
   };
