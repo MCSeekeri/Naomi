@@ -129,13 +129,13 @@ in
 
       settings = {
         server = {
-          DOMAIN = "git.exampletext.team";
-          ROOT_URL = "https://git.exampletext.team/";
+          DOMAIN = "git.remember11.com";
+          ROOT_URL = "https://git.remember11.com/";
 
           HTTP_ADDR = "127.0.0.1";
           HTTP_PORT = 3000;
           SSH_PORT = 22;
-          SSH_DOMAIN = "git.exampletext.team";
+          SSH_DOMAIN = "git.remember11.com";
 
           OFFLINE_MODE = false;
         };
@@ -164,7 +164,7 @@ in
         };
 
         service = {
-          DISABLE_REGISTRATION = false;
+          DISABLE_REGISTRATION = true;
 
           ENABLE_CAPTCHA = true;
           CAPTCHA_TYPE = "cfturnstile";
@@ -192,6 +192,14 @@ in
             root * /var/www/remember11.com
             encode zstd gzip
             file_server
+          '';
+        };
+        "git.remember11.com" = {
+          extraConfig = ''
+            encode zstd gzip
+            reverse_proxy 127.0.0.1:3000 {
+              flush_interval -1
+            }
           '';
         };
         "pj31wiki.remember11.com" = {
@@ -288,6 +296,11 @@ in
         "transteam"
         "studio"
       ];
+    };
+
+    btrfs.autoScrub = {
+      enable = true;
+      interval = "monthly";
     };
   };
 
