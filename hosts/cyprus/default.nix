@@ -131,6 +131,7 @@
         };
       };
     };
+    kernel.sysctl."kernel.yama.ptrace_scope" = 0;
   };
 
   system = {
