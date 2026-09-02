@@ -23,6 +23,8 @@ in
     "${self}/modules/Services/caddy.nix"
     "${self}/modules/Services/dae"
     "${self}/modules/Services/geph5.nix"
+    "${self}/modules/Services/mysql.nix"
+    "${self}/modules/Services/postgresql.nix"
     "${self}/users/remote"
   ];
 
@@ -65,6 +67,12 @@ in
       sopsFile = "${self}/secrets/hosts/chelyabinsk/forgejo.yaml";
     };
     "forgejo-turnstile-secret" = {
+      sopsFile = "${self}/secrets/hosts/chelyabinsk/forgejo.yaml";
+    };
+    "forgejo-r2-access-key" = {
+      sopsFile = "${self}/secrets/hosts/chelyabinsk/forgejo.yaml";
+    };
+    "forgejo-r2-secret" = {
       sopsFile = "${self}/secrets/hosts/chelyabinsk/forgejo.yaml";
     };
     "siyuan-env" = {
@@ -112,18 +120,14 @@ in
 
       database.type = "postgres";
 
-      dump = {
-        enable = true;
-        backupDir = "/var/lib/forgejo/dump";
-        interval = "daily";
-        type = "tar.zst";
-        age = "14d";
-      };
-
       secrets = {
         service = {
           CF_TURNSTILE_SITEKEY = config.sops.secrets."forgejo-turnstile-sitekey".path;
           CF_TURNSTILE_SECRET = config.sops.secrets."forgejo-turnstile-secret".path;
+        };
+        lfs = {
+          MINIO_ACCESS_KEY_ID = config.sops.secrets."forgejo-r2-access-key".path;
+          MINIO_SECRET_ACCESS_KEY = config.sops.secrets."forgejo-r2-secret".path;
         };
       };
 
@@ -155,6 +159,14 @@ in
 
         lfs = {
           LFS_HTTP_AUTH_EXPIRY = "24h";
+
+          STORAGE_TYPE = "minio";
+          MINIO_ENDPOINT = "e948fb59c8aa2a756017549554f66d6a.r2.cloudflarestorage.com";
+          MINIO_BUCKET = "forgejo";
+          MINIO_LOCATION = "auto";
+          MINIO_USE_SSL = true;
+          MINIO_CHECKSUM_ALGORITHM = "md5";
+          SERVE_DIRECT = true;
         };
 
         mailer = {
@@ -231,8 +243,6 @@ in
     };
 
     mysql = {
-      enable = true;
-      package = pkgs.mariadb;
       ensureDatabases = [
         "transteam"
         "studio"
@@ -250,14 +260,10 @@ in
         mysqld.skip-networking = true;
       };
     };
-    mysqlBackup = {
-      enable = true;
-      databases = [
-        "transteam"
-        "studio"
-      ];
-      location = "/var/backup/mysql";
-      compressionAlg = "zstd";
+    postgresql.settings = {
+      shared_buffers = "128MB";
+      effective_cache_size = "512MB";
+      maintenance_work_mem = "64MB";
     };
     journald.extraConfig = ''
       SystemMaxUse=200M

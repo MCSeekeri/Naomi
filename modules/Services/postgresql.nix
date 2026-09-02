@@ -19,4 +19,9 @@
       compression = "none";
     };
   };
+
+  systemd.services.postgresqlBackup = lib.mkIf config.services.postgresql.enable {
+    after = [ "postgresql.service" ];
+    requires = [ "postgresql.service" ];
+  };
 }

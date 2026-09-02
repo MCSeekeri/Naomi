@@ -16,10 +16,16 @@
 
     mysqlBackup = lib.mkIf config.services.mysql.enable {
       enable = true;
+      databases = lib.mkDefault config.services.mysql.ensureDatabases;
       location = "/var/backup/mysql";
       calendar = "03:00:00";
       compressionAlg = "zstd";
       compressionLevel = 19; # 能省一点硬盘是一点……算力又不值钱
     };
+  };
+
+  systemd.services.mysql-backup = lib.mkIf config.services.mysql.enable {
+    after = [ "mysql.service" ];
+    requires = [ "mysql.service" ];
   };
 }
