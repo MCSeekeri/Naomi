@@ -50,6 +50,7 @@
   };
   programs.ssh = {
     enableAskPassword = true;
+    askPassword = "${pkgs.seahorse}/libexec/seahorse/ssh-askpass";
     extraConfig = ''
       IdentityAgent /run/user/%i/gcr/ssh
     '';
