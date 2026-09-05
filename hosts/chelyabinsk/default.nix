@@ -265,10 +265,10 @@ in
       effective_cache_size = "512MB";
       maintenance_work_mem = "64MB";
     };
-    journald.extraConfig = ''
-      SystemMaxUse=200M
-      MaxRetentionSec=1week
-    '';
+    journald.settings.Journal = {
+      SystemMaxUse = "200M";
+      MaxRetentionSec = "1week";
+    };
 
     redis.servers.wordpress = {
       enable = true;

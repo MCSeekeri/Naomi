@@ -303,14 +303,14 @@
     openssh.ports = [ 16489 ];
     # 偷车偷车，像江水东流
 
-    journald.extraConfig = ''
-      SystemMaxUse=64M
-      SystemMaxFileSize=8M
-      SystemMaxFiles=8
-      MaxRetentionSec=14day
-      RateLimitIntervalSec=30s
-      RateLimitBurst=2000
-    '';
+    journald.settings.Journal = {
+      SystemMaxUse = "64M";
+      SystemMaxFileSize = "8M";
+      SystemMaxFiles = 8;
+      MaxRetentionSec = "14day";
+      RateLimitIntervalSec = "30s";
+      RateLimitBurst = 2000;
+    };
     fail2ban = {
       maxretry = lib.mkForce 3;
       bantime = "12h";

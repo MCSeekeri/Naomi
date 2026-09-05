@@ -116,10 +116,10 @@
         DNSOverTLS = "true";
       };
     };
-    journald.extraConfig = lib.mkDefault ''
-      SystemMaxUse=1G
-      MaxRetentionSec=1month
-    '';
+    journald.settings.Journal = lib.mkDefault {
+      SystemMaxUse = "1G";
+      MaxRetentionSec = "1month";
+    };
   };
 
   environment = {
