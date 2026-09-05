@@ -116,6 +116,8 @@ lib.extend (
         environmentFile,
         paths,
         tag,
+        exclude ? [ ],
+        onCalendar ? "04:00",
       }:
       {
         initialize = true;
@@ -129,7 +131,11 @@ lib.extend (
           "--tag ${tag}"
           "--compression max"
           "--skip-if-unchanged"
-        ];
+        ]
+        ++ lib.concatMap (pattern: [
+          "--exclude"
+          pattern
+        ]) exclude;
         pruneOpts = [
           "--keep-daily 7"
           "--keep-weekly 4"
@@ -140,11 +146,10 @@ lib.extend (
           "--read-data-subset 5%"
         ];
         timerConfig = {
-          OnCalendar = "04:00";
+          OnCalendar = onCalendar;
           RandomizedDelaySec = "1h";
           Persistent = true;
         };
       };
-
   }
 )

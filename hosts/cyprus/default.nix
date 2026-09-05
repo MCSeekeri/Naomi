@@ -1,4 +1,6 @@
 {
+  config,
+  lib,
   self,
   pkgs,
   inputs,
@@ -237,6 +239,35 @@
       openFirewall = true;
     };
     smartd.enable = true;
+
+    restic.backups.cyprus = lib.mkResticBackup {
+      repository = "s3:https://e948fb59c8aa2a756017549554f66d6a.r2.cloudflarestorage.com/cyprus";
+      passwordFile = config.sops.secrets.restic_password.path;
+      environmentFile = config.sops.secrets.restic_r2_env.path;
+      paths = [
+        "/home/mcseekeri/.omp/agent"
+        "/home/mcseekeri/.ssh"
+        "/home/mcseekeri/.gnupg"
+      ];
+      exclude = [
+        "**/cache/tiny-models/**"
+        "**/cache/tiny-title-runtime/**"
+      ];
+      onCalendar = "22:00";
+      tag = "cyprus";
+    };
+  };
+
+  sops.secrets = {
+    restic_password = {
+      sopsFile = "${self}/secrets/hosts/cyprus/restic.yaml";
+      key = "RESTIC_PASSWORD";
+    };
+    restic_r2_env = {
+      sopsFile = "${self}/secrets/hosts/cyprus/restic.env";
+      format = "dotenv";
+      key = "";
+    };
   };
 
   environment = {
