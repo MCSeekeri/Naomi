@@ -1,7 +1,6 @@
 { pkgs, ... }: {
   services = {
     pcscd.enable = true;
-    yubikey-agent.enable = true;
   };
 
   security = {
