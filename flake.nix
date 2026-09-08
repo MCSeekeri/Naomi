@@ -8,7 +8,10 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable"; # 官方源
-    flake-parts.url = "github:hercules-ci/flake-parts";
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
     flake-compat.url = "github:NixOS/flake-compat";
     systems.url = "github:nix-systems/default"; # 两年没更新，都不知道为什么有 Flake 引用这个……
 
