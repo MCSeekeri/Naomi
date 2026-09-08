@@ -97,6 +97,7 @@
       exiftool
       aria2
       yad
+      restic
     ];
     # ++ (lib.pipe kdePackages.sources [
     #   builtins.attrNames
