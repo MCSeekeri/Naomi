@@ -8,19 +8,21 @@
 {
   services.xray = {
     enable = true;
-    package = pkgs.xray.overrideAttrs (old: rec {
-      version = "26.7.28";
-      src = pkgs.fetchFromGitHub {
-        owner = "XTLS";
-        repo = "Xray-core";
-        rev = "v${version}";
-        hash = "sha256-6qW8Un6VC0kFPyrFMQxruWz18flyeZyFs0A7avoi56I=";
-      };
-      vendorHash = "sha256-n1/bxtOadcdnXg/opvv7gU2Dr/vbt5kGfdZCyk9CY8w=";
-      env = (old.env or { }) // {
-        GOAMD64 = "v3";
-      };
-    });
+    package =
+      (pkgs.xray.override { buildGo126Module = pkgs.buildGo127Module; }).overrideAttrs
+        (old: rec {
+          version = "26.9.9";
+          src = pkgs.fetchFromGitHub {
+            owner = "XTLS";
+            repo = "Xray-core";
+            rev = "v${version}";
+            hash = "sha256-GqPEAgWM9Wx19uxMj0LGeOyHreLbU0IMSmalwLe/SIc=";
+          };
+          vendorHash = "sha256-6Qa05hFdvfLlH8WQd426IU7MScmeevIgrgP5037pNek=";
+          preBuild = (old.preBuild or "") + ''
+            export GOFLAGS="$GOFLAGS -gcflags=all=-l=4"
+          '';
+        });
     settingsFile = config.sops.templates."xray-${config.networking.hostName}-config.json".path;
   };
 

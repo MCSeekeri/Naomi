@@ -369,15 +369,15 @@
           lukerHead = pkgs.fetchFromGitHub {
             owner = "funnycups";
             repo = "Luker";
-            rev = "9fd213ccc632ca26bf42e6d128d38bdbf6c567c6";
-            hash = "sha256-lUElS78dcz0XVzeZCbug4PYIAFJsa/oss3tUCtpIYeQ=";
+            rev = "bb8ab49ed2c1dbad0fb8a12e362ef3fc0085b964";
+            hash = "sha256-74qgtPoTHgd9+uoZvPM+Becwi95yUFVYH9OjzWfIiis=";
           };
         in
         pkgs.nur.repos.MCSeekeri.luker.overrideAttrs (_: {
-          version = "2.7.0-unstable-2026-09-05";
+          version = "2.7.0-unstable-2026-09-12";
           src = lukerHead;
           npmDeps = pkgs.fetchNpmDeps {
-            name = "luker-2.7.0-unstable-2026-09-05-npm-deps";
+            name = "luker-2.7.0-unstable-2026-09-12-npm-deps";
             src = lukerHead;
             hash = "sha256-cX78cfJgj9E9YN3ZdSHYP4lt75aiAAVJjsLdMpDV6nQ=";
           };
