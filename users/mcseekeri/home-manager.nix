@@ -162,6 +162,35 @@
     };
   };
 
+  xdg.dataFile = {
+    "fcitx5/rime/default.custom.yaml".text = ''
+      patch:
+        __include: rime_ice_suggestion:/
+        schema_list:
+          - schema: rime_ice
+    '';
+    "fcitx5/rime/rime_ice.custom.yaml".text = ''
+      patch:
+        menu/page_size: 9
+        translator/packs: [zhwiki, moegirl]
+        grammar:
+          language: wanxiang-lts-zh-hans
+          collocation_max_length: 6
+          collocation_min_length: 3
+          collocation_penalty: -14
+          non_collocation_penalty: -6
+          weak_collocation_penalty: -100
+          rear_penalty: -20
+        translator/contextual_suggestions: true
+        translator/max_homophones: 8
+        key_binder/bindings/+:
+          - { when: paging, accept: comma, send: Page_Up }
+          - { when: has_menu, accept: period, send: Page_Down }
+          - { when: has_menu, accept: Up, send: Page_Up }
+          - { when: has_menu, accept: Down, send: Page_Down }
+    '';
+  };
+
   gtk = {
     enable = true;
 
