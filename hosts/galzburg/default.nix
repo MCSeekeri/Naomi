@@ -320,6 +320,16 @@
       };
     };
 
+    beszel = {
+      hub = {
+        enable = true;
+        environment = {
+          APP_URL = "https://beszel.mcseekeri.com";
+          CHECK_UPDATES = "false";
+        };
+      };
+    };
+
     nginx.enable = lib.mkForce false;
     changedetection-io = {
       enable = true;
@@ -516,6 +526,13 @@
                 encode zstd gzip
 
                 reverse_proxy 127.0.0.1:5000
+              '';
+            };
+            "beszel.mcseekeri.com" = {
+              extraConfig = ''
+                encode zstd gzip
+
+                reverse_proxy 127.0.0.1:${toString config.services.beszel.hub.port}
               '';
             };
           };
