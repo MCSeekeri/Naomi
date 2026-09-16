@@ -539,6 +539,7 @@
     niks3 = {
       httpAddr = "127.0.0.1:5751";
       cacheUrl = "https://nix.mcseekeri.com";
+      priority = 51;
       s3 = {
         endpoint = "e948fb59c8aa2a756017549554f66d6a.r2.cloudflarestorage.com";
         bucket = "nix";
@@ -577,9 +578,32 @@
         Restart = "on-failure";
         RestartSec = "15min";
       };
+      asf-claim-points = {
+        description = "领取 Steam 点数商店免费物品";
+        after = [ "archisteamfarm.service" ];
+        wants = [ "archisteamfarm.service" ];
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = pkgs.writeShellScriptBin "asf-claim-points" ''
+            ${pkgs.curl}/bin/curl -fsS -m 60 \
+              --retry 3 --retry-connrefused --retry-delay 10 \
+              -X POST \
+              -H "Content-Type: application/json" \
+              --data-binary '{"Command":"CPI ASF"}' \
+              http://127.0.0.1:1242/Api/Command
+          '';
+        };
+      };
     };
     timers = {
       "restic-backups-galzburg".unitConfig.X-OnlyManualStart = lib.mkForce false;
+      asf-claim-points = {
+        wantedBy = [ "timers.target" ];
+        timerConfig = {
+          OnCalendar = "*-*-* 06:00:00";
+          Persistent = true;
+        };
+      };
     };
   };
 

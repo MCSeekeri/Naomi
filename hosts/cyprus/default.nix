@@ -207,7 +207,7 @@
       };
       Games = {
         spec = "LABEL=Games";
-        hashTableSizeMB = 1024;
+        hashTableSizeMB = 2048;
         verbosity = "crit";
         extraOptions = [
           "--loadavg-target"

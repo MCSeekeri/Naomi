@@ -81,6 +81,7 @@
     iftop.enable = lib.mkDefault true;
     trippy.enable = lib.mkDefault true;
     bandwhich.enable = lib.mkDefault true;
+    mtr.enable = lib.mkDefault true;
     sniffnet.enable = true;
     mosh = {
       enable = lib.mkDefault true;
@@ -144,14 +145,17 @@
           cudaSupport = config.hardware.deviceType != "server" && config.hardware.gpu.type == "nvidia";
         })
         dua
-      ]
-      ++ lib.optionals config.networking.networkmanager.enable [
         nmap
         socat
         dnsutils
-        nethogs
+        doggo
+        iperf3
         iproute2
         conntrack-tools
+        speedtest-go
+        sysbench
+        fio
+        netcat-openbsd
       ]
       ++ lib.optionals config.programs.fish.enable [
         babelfish
