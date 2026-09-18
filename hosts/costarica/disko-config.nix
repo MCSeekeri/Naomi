@@ -21,8 +21,18 @@
               size = "100%";
               content = {
                 type = "filesystem";
-                format = "ext4";
+                format = "xfs";
+                extraArgs = [
+                  "-f"
+                  "-K"
+                ];
                 mountpoint = "/";
+                mountOptions = [
+                  "defaults"
+                  "noatime"
+                  "pquota"
+                  "logbsize=256k"
+                ];
               };
             };
           };

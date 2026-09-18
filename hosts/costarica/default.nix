@@ -1,6 +1,7 @@
-{ self, ... }: {
+{ self, modulesPath, ... }: {
   imports = [
     ./disko-config.nix
+    (modulesPath + "/profiles/qemu-guest.nix")
 
     "${self}/modules/Core"
     "${self}/modules/Core/prc.nix"
@@ -25,4 +26,13 @@
     stateVersion = "26.05";
   };
   hardware.cpu.type = "qemu";
+
+  boot.loader = {
+    systemd-boot = {
+      enable = true;
+      configurationLimit = 20;
+    };
+    limine.enable = false;
+    efi.canTouchEfiVariables = true;
+  };
 }
