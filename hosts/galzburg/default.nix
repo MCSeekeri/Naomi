@@ -249,6 +249,11 @@
         domainStrategy = "IPIfNonMatch";
         rules = [
           {
+            type = "field";
+            port = 53;
+            outboundTag = "dns-direct";
+          }
+          {
             # 容易被大公司用 DMCA 击落
             type = "field";
             protocol = [ "bittorrent" ];
@@ -271,6 +276,11 @@
           }
           {
             type = "field";
+            domain = [ "geosite:cn" ];
+            outboundTag = "block";
+          }
+          {
+            type = "field";
             ip = [ "geoip:cn" ];
             outboundTag = "block";
           }
@@ -280,14 +290,16 @@
         {
           protocol = "freedom";
           tag = "direct";
-          settings = {
-            domainStrategy = "UseIP";
-          };
           streamSettings = {
             sockopt = {
               interface = "warp0";
+              domainStrategy = "UseIP";
             };
           };
+        }
+        {
+          protocol = "freedom";
+          tag = "dns-direct";
         }
         {
           protocol = "blackhole";

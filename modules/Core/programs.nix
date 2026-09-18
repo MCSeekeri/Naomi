@@ -83,6 +83,7 @@
     bandwhich.enable = lib.mkDefault true;
     mtr.enable = lib.mkDefault true;
     sniffnet.enable = true;
+    tcpdump.enable = lib.mkDefault true;
     mosh = {
       enable = lib.mkDefault true;
       openFirewall = true;

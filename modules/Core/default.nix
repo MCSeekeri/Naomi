@@ -97,6 +97,7 @@
     "net.ipv4.tcp_congestion_control" = lib.mkDefault "bbr";
     "net.ipv4.tcp_fastopen" = lib.mkDefault 3;
     "net.ipv4.tcp_mtu_probing" = lib.mkDefault 1;
+    "net.ipv4.tcp_slow_start_after_idle" = lib.mkDefault 0;
 
     "vm.min_free_kbytes" = lib.mkDefault 65536;
   };
@@ -112,8 +113,11 @@
           "8.8.8.8#dns.google"
           "8.8.4.4#dns.google"
         ];
-        FallbackDNS = [ ];
-        DNSOverTLS = "true";
+        FallbackDNS = lib.mkDefault [
+          "1.1.1.1#cloudflare-dns.com"
+          "8.8.8.8#dns.google"
+        ];
+        DNSOverTLS = lib.mkDefault "opportunistic";
       };
     };
     journald.settings.Journal = lib.mkDefault {
