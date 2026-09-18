@@ -1,5 +1,4 @@
 {
-  config,
   lib,
   pkgs,
   inputs,
@@ -30,7 +29,6 @@ let
     network_status="Root 密码: $(cat /var/shared/root-password)
     本地网络地址:
     $(ip -brief -color addr | grep -v 127.0.0.1)
-    $([[ -e /var/shared/onion-hostname ]] && echo "Onion 地址: $(cat /var/shared/onion-hostname)" || echo "Onion 地址: 等待 tor 网络启动...")
     $([[ -e /var/shared/bore.log ]] && grep -q 'listening at bore.pub' /var/shared/bore.log && echo "Bore 地址: bore.pub:$(grep -oP 'listening at bore.pub:\K\d+' /var/shared/bore.log | tail -1)" || echo "Bore 地址: 连接中...")
     Multicast DNS: $(hostname).local"
     network_status=$(gum style --border-foreground 240 --border normal "$network_status")
@@ -59,6 +57,7 @@ in
       })
     ];
   };
+  nix.settings.auto-optimise-store = false;
   services = {
     kmscon = {
       enable = true;
@@ -67,23 +66,15 @@ in
         font-size = 12;
       };
     };
-    tor = {
-      enable = true;
-      relay.onionServices.hidden-ssh = {
-        version = 3;
-        map = [
-          {
-            port = 22;
-            target.port = 22;
-          }
-        ];
-      };
-      client.enable = true;
-    };
+    getty.autologinUser = lib.mkForce "root";
+    openssh.settings.PermitRootLogin = lib.mkForce "yes";
+    fail2ban.enable = lib.mkForce false;
     nscd.enableNsncd = true;
-    fwupd.enable = true;
   };
-  fonts.fontconfig.enable = true;
+  fonts = {
+    fontconfig.enable = true;
+    packages = [ pkgs.maple-mono.Normal-CN ];
+  };
 
   documentation.enable = lib.mkOverride 50 false;
   isoImage.squashfsCompression = "zstd";
@@ -113,7 +104,7 @@ in
     installer.channel.enable = false; # 不把 nixpkgs 源码打进镜像，缩小体积；安装走 flake 流程用不到
     activationScripts.root-password = ''
       mkdir -p /var/shared
-      cat /dev/urandom | tr -dc 'A-HJ-KMNP-Y3-9' | fold -w 4 | head -n 4 | paste -sd "-" - > /var/shared/root-password
+      tr -dc 'A-HJ-KMNP-Y3-9' < /dev/urandom | fold -w 4 | head -n 4 | paste -sd "-" - > /var/shared/root-password
       echo "root:$(cat /var/shared/root-password)" | chpasswd
     '';
   };
@@ -127,7 +118,7 @@ in
   boot = {
     tmp = {
       cleanOnBoot = true;
-      useZram = true;
+      useTmpfs = true;
     };
     initrd.systemd.emergencyAccess = true;
     supportedFilesystems = {
@@ -155,7 +146,7 @@ in
       pkgs.clash-rs
       pkgs.proxychains-ng
       pkgs.dae
-      pkgs.bind
+      pkgs.bind.dnsutils
       pkgs.ripgrep
       pkgs.btop
       pkgs.progress
@@ -234,18 +225,16 @@ in
       };
       announce = {
         after = [
-          "tor.service"
           "bore-tunnel.service"
           "network-online.target"
         ];
         wants = [
-          "tor.service"
           "bore-tunnel.service"
           "network-online.target"
         ];
         wantedBy = [ "multi-user.target" ];
         serviceConfig = {
-          ExecStart = pkgs.writeShellScript "announce-hidden-service" ''
+          ExecStart = pkgs.writeShellScript "announce-login-info" ''
             set -efu
             export PATH=${
               lib.makeBinPath (
@@ -260,33 +249,32 @@ in
               )
             }
 
-            until test -e ${config.services.tor.settings.DataDirectory}/onion/hidden-ssh/hostname; do
-              echo "Waiting for Onion address..."
-              sleep 1
+            last_address=""
+            while true; do
+              until grep -q 'listening at bore.pub' /var/shared/bore.log 2>/dev/null; do
+                sleep 1
+              done
+
+              bore_address=$(grep -oP 'listening at bore.pub:\K\d+' /var/shared/bore.log | tail -1 || true)
+              if [[ -n "$bore_address" && "$bore_address" != "$last_address" ]]; then
+                echo "Bore 地址已就绪: bore.pub:$bore_address"
+                local_addrs=$(ip -json addr | jq '[map(.addr_info) | flatten | .[] | select(.scope == "global") | .local]')
+                jq -nc \
+                  --arg password "$(cat /var/shared/root-password)" \
+                  --argjson local_addrs "$local_addrs" \
+                  --arg bore_address "bore.pub:$bore_address" \
+                  '{ pass: $password, addrs: $local_addrs, bore: $bore_address }' \
+                  > /var/shared/login.json
+
+                qrencode -s 2 -m 2 -t utf8 -o /var/shared/qrcode.utf8 < /var/shared/login.json
+                last_address="$bore_address"
+              fi
+              sleep 5
             done
-
-            until grep -q 'listening at bore.pub' /var/shared/bore.log; do
-              echo "Waiting for bore address..."
-              sleep 1
-            done
-
-            onion_hostname=$(cat ${config.services.tor.settings.DataDirectory}/onion/hidden-ssh/hostname)
-            echo "$onion_hostname" > /var/shared/onion-hostname
-            bore_address=$(grep -oP 'listening at bore.pub:\K\d+' /var/shared/bore.log | tail -1)
-            local_addrs=$(ip -json addr | jq '[map(.addr_info) | flatten | .[] | select(.scope == "global") | .local]')
-            jq -nc \
-              --arg password "$(cat /var/shared/root-password)" \
-              --arg onion_address "$onion_hostname" \
-              --argjson local_addrs "$local_addrs" \
-              --arg bore_address "bore.pub:$bore_address" \
-              '{ pass: $password, tor: $onion_address, addrs: $local_addrs, bore: $bore_address }' \
-              > /var/shared/login.json
-
-            cat /var/shared/login.json | qrencode -s 2 -m 2 -t utf8 -o /var/shared/qrcode.utf8
           '';
           PrivateTmp = "true";
-          User = "tor";
-          Type = "oneshot";
+          Restart = "always";
+          RestartSec = 5;
         };
       };
     };

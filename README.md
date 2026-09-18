@@ -24,7 +24,8 @@ NAOMI: Aggregate Online Modular Infrastructure，简称 Naomi，是基于 NixOS 
 ### 使用官方安装镜像
 
 ```sh
-nix run 'github:nix-community/disko/latest#disko-install' -- --flake github:MCSeekeri/Naomi#<设备代号> --disk main <设备文件位置>
+nix run github:nix-community/disko -- --mode destroy,format,mount -f github:MCSeekeri/Naomi#<设备代号> --disk main <设备文件位置>
+nixos-install --root /mnt --no-channel-copy --flake github:MCSeekeri/Naomi#<设备代号>
 ```
 
 官方安装镜像需手工配置`substituters`以加快在部分地区的下载速度，参见 [MirrorZ](https://help.mirrorz.org/nix-channels/) 的文档。
