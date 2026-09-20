@@ -165,24 +165,24 @@
   xdg.dataFile = {
     "fcitx5/rime/default.custom.yaml".text = ''
       patch:
-        __include: rime_ice_suggestion:/
+        __include: rime_frost_suggestion:/
         schema_list:
-          - schema: rime_ice
+          - schema: rime_frost
     '';
-    "fcitx5/rime/rime_ice.custom.yaml".text = ''
+    "fcitx5/rime/rime_frost.custom.yaml".text = ''
       patch:
         menu/page_size: 9
         translator/packs: [zhwiki, moegirl]
+        translator/enable_correction: true
         grammar:
           language: wanxiang-lts-zh-hans
-          collocation_max_length: 6
-          collocation_min_length: 3
+          non_collocation_penalty: -4
+          collocation_max_length: 5
+          collocation_min_length: 2
           collocation_penalty: -14
-          non_collocation_penalty: -6
-          weak_collocation_penalty: -100
-          rear_penalty: -20
         translator/contextual_suggestions: true
-        translator/max_homophones: 8
+        translator/max_homophones: 4
+        translator/max_homographs: 2
         key_binder/bindings/+:
           - { when: paging, accept: comma, send: Page_Up }
           - { when: has_menu, accept: period, send: Page_Down }
@@ -637,6 +637,7 @@
       };
     };
     noctalia.settings = {
+      accessibility.ui_scale = 1.25;
       audio = {
         enable_overdrive = true;
         enable_sounds = true;
@@ -646,15 +647,18 @@
         main = {
           contact_shadow = true;
           end = [
-            "tray"
+            "privacy"
             "notifications"
+            "tray"
+            "inbox"
+            "bar"
+            "indicator"
             "network"
             "bluetooth"
             "input_volume"
             "volume"
             "battery"
             "power_profile"
-            "control-center"
             "session"
           ];
           margin_edge = 0;
@@ -667,10 +671,10 @@
           shadow = false;
           start = [
             "workspaces"
-            "launcher"
+            "cat"
             "media"
             "audio_visualizer"
-            "cat"
+            "lyrics"
           ];
           thickness = 46;
           center = [
@@ -719,9 +723,16 @@
       };
 
       notification.layer = "overlay";
-
+      plugins.enabled = [
+        "noctalia/bongocat"
+        "rxtsel/portctl"
+        "hy4ri/github-notifications"
+        "raycursive/niri-displays"
+        "h465855hgg/lyrics"
+      ];
       shell = {
         font_family = "Sarasa UI SC";
+        app_icon_color = "error";
         corner_radius_scale = 1.2;
         clipboard_auto_paste = "off";
         lang = "zh-Hans";
@@ -756,10 +767,13 @@
         audio_visualizer = {
           capsule = false;
           centered = false;
-          mirrored = false;
           bands = 32;
           color_1 = "tertiary";
           color_2 = "error";
+        };
+        bar = {
+          show_resolution = false;
+          type = "raycursive/niri-displays:bar";
         };
         battery = {
           display_mode = "graphic";
@@ -776,12 +790,25 @@
         };
         clock.format = "{:%x %H:%M}";
         date.format = "{:%F}";
+        inbox.type = "hy4ri/github-notifications:inbox";
+        indicator.type = "rxtsel/portctl:indicator";
         input_volume.mute_color = "on_surface";
         lock_keys = {
           display = "full";
           show_scroll_lock = true;
         };
+        lyrics = {
+          double_line_height_budget = 23;
+          hide_when_no_lyrics = true;
+          hide_when_paused = true;
+          marquee_speed = 32;
+          secondary_font_size = 13;
+          show_cover = false;
+          show_glyph = false;
+          type = "h465855hgg/lyrics:lyrics";
+        };
         media = {
+          album_art_only = true;
           hide_when_no_media = true;
           title_scroll = "on_hover";
         };
@@ -791,12 +818,16 @@
         };
         notifications.hide_when_no_unread = true;
         power_profiles.capsule = false;
+        privacy.hide_inactive = true;
         tray = {
           drawer = true;
           match_adjacent_spacing = true;
         };
         weather.show_condition = false;
-        workspaces.minimal = true;
+        workspaces = {
+          hide_when_empty = true;
+          minimal = true;
+        };
       };
     };
   };

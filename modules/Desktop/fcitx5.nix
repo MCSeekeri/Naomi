@@ -24,7 +24,7 @@
         qt6Packages.fcitx5-chinese-addons
         (fcitx5-rime.override {
           rimeDataPkgs = [
-            rime-ice
+            nur.repos.MCSeekeri.rime-frost
             rime-zhwiki
             rime-moegirl
             rime-data
