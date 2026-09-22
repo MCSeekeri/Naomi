@@ -127,9 +127,10 @@ in
         nvidia-container-toolkit.enable =
           config.virtualisation.podman.enable || config.virtualisation.docker.enable;
       })
-      (lib.mkIf (config.hardware.deviceType != "server") {
+      {
         intel-gpu-tools.enable = isIntel;
         graphics = {
+          enable = lib.mkDefault (isIntel || isAMD || isNvidia);
           extraPackages =
             with pkgs;
             [ ocl-icd ]
@@ -138,22 +139,22 @@ in
               intel-compute-runtime
               libvdpau-va-gl
               vpl-gpu-rt
-            ]
-            ++ lib.optionals isNvidia [ nvidia-vaapi-driver ];
+            ];
 
-          extraPackages32 =
+          extraPackages32 = lib.mkIf (config.hardware.deviceType != "server") (
             with pkgs.pkgsi686Linux;
             lib.optionals isIntel [
               intel-media-driver
               intel-vaapi-driver
             ]
-            ++ lib.optionals (!isQemu) [ libvdpau-va-gl ];
+            ++ lib.optionals (!isQemu) [ libvdpau-va-gl ]
+          );
         };
         amdgpu = lib.mkIf isAMD {
-          initrd.enable = true;
           opencl.enable = true;
+          initrd.enable = lib.mkIf (config.hardware.deviceType != "server") true;
         };
-      })
+      }
     ];
     boot = {
       kernelParams = lib.flatten (
@@ -172,10 +173,12 @@ in
     networking.networkmanager.wifi.powersave = lib.mkDefault (config.hardware.deviceType == "laptop");
 
     services = lib.mkMerge [
+      (lib.mkIf (isNvidia && !config.hardware.nvidia.datacenter.enable) {
+        xserver.videoDrivers = lib.mkDefault [ "nvidia" ];
+      })
       (lib.mkIf (config.hardware.deviceType != "server") {
         xserver.videoDrivers = lib.mkDefault (
-          lib.optional isNvidia "nvidia"
-          ++ lib.optional (config.hardware.gpu.type == "intel") "modesetting"
+          lib.optional (config.hardware.gpu.type == "intel") "modesetting"
           ++ lib.optional (config.hardware.gpu.type == "amd") "amdgpu"
         );
         udev.extraRules = ''
