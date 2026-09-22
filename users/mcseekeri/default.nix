@@ -18,6 +18,7 @@
       "vboxusers"
       "gamemode"
       "wireshark"
+      "k3s"
     ]
     ++ lib.optionals config.virtualisation.podman.enable [ "podman" ];
     shell = pkgs.bash;

@@ -59,6 +59,11 @@
     }
   '';
 
+  home-manager.users.mcseekeri.programs.k9s = {
+    enable = true;
+    settings.k9s.skipLatestRevCheck = true;
+  };
+
   # 网络配置
   networking = {
     hostName = "cyprus"; # 主机名，设置好之后最好不要修改
@@ -66,6 +71,10 @@
       enable = true;
       wifi.powersave = false;
     };
+    firewall.interfaces."cni0".allowedTCPPorts = [
+      6443
+      10250
+    ];
   };
   hardware = {
     cpu = {
@@ -235,6 +244,14 @@
     };
     smartd.enable = true;
 
+    k3s = {
+      enable = true;
+      extraFlags = [
+        "--write-kubeconfig-mode=0640"
+        "--write-kubeconfig-group=k3s"
+      ];
+    };
+
     restic.backups.cyprus = lib.mkResticBackup {
       repository = "s3:https://e948fb59c8aa2a756017549554f66d6a.r2.cloudflarestorage.com/cyprus";
       passwordFile = config.sops.secrets.restic_password.path;
@@ -266,9 +283,13 @@
   };
 
   environment = {
+    sessionVariables.KUBECONFIG = "/etc/rancher/k3s/k3s.yaml";
     systemPackages = [
       pkgs.wayvr
       pkgs.monado-vulkan-layers
+      pkgs.kubectl
+      pkgs.k9s
+      pkgs.kubernetes-helm
     ];
   };
 
