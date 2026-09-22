@@ -2,6 +2,7 @@
   pkgs,
   self,
   lib,
+  osConfig,
   ...
 }:
 {
@@ -62,7 +63,11 @@
       splayer-next
       scanmem
       # 开发套件
-      rustup
+      rustc
+      cargo
+      clippy
+      rustfmt
+      rust-analyzer
       gnumake
       musl
       nixpkgs-review
@@ -76,7 +81,7 @@
       unityhub
       imhex
       libressl
-      bfg-repo-cleaner
+      git-filter-repo
       bun
       # micromamba
       gradle
@@ -87,7 +92,6 @@
       # 常用工具
       btrfs-assistant
       nix-diff
-      yt-dlp
       ffmpeg-full
       rclone
       httrack
@@ -95,7 +99,6 @@
       cachix
       mat2
       exiftool
-      aria2
       yad
       restic
     ];
@@ -215,6 +218,24 @@
   programs = {
     home-manager.enable = true;
     bash.enable = true;
+    aria2 = {
+      enable = true;
+    };
+    yt-dlp = {
+      enable = true;
+      settings = {
+        output = "~/Downloads/%(title)s.%(ext)s";
+      };
+    };
+    mangohud = lib.mkIf osConfig.programs.steam.enable {
+      enable = true;
+      settings = {
+        vram = true;
+        gpu_temp = true;
+        cpu_temp = true;
+        frame_timing = true;
+      };
+    };
     starship = {
       enable = true;
       presets = [ "gruvbox-rainbow" ];
@@ -291,11 +312,21 @@
         };
       };
     };
+    jujutsu = {
+      enable = true;
+      settings = {
+        user = {
+          name = "MCSeekeri";
+          email = "mcseekeri@outlook.com";
+        };
+        signing = {
+          backend = "gpg";
+          key = "3276666666666666!";
+        };
+      };
+    };
     fish = {
       enable = true; # 比 zsh 更好，可惜不兼容 bash
-      shellAliases = {
-        proxy = "proxychains4 -q";
-      };
     };
     mpv = {
       enable = true;

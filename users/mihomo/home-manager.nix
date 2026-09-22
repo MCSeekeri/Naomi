@@ -12,12 +12,7 @@
   };
 
   programs = {
-    fish = {
-      enable = true;
-      shellAliases = {
-        proxy = "proxychains4 -q";
-      };
-    };
+    fish.enable = true;
     plasma = {
       enable = true;
       configFile = {

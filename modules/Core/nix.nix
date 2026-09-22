@@ -14,9 +14,8 @@
       options = "--delete-older-than 7d"; # 删除超过一周的垃圾文件，硬盘笑传之踩踩 Backup
       persistent = true;
     };
+    optimise.automatic = lib.mkDefault (!config.boot.isContainer);
     settings = {
-      keep-derivations = false;
-      auto-optimise-store = lib.mkDefault (!config.boot.isContainer);
       extra-substituters = [ "https://nix.mcseekeri.com?priority=51" ];
       extra-trusted-public-keys = lib.mkDefault [
         "nix.mcseekeri.com-1:3gd0/2u7IOF7YooxEiBbWTvRCYGC53S2UoqFdnCUYHc="

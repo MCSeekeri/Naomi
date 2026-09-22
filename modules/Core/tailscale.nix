@@ -8,6 +8,9 @@
       useRoutingFeatures = "both";
     };
   };
+
+  systemd.services.tailscaled.serviceConfig.OOMScoreAdjust = -1000;
+
   # 90 天一换，别忘记了……
   sops.secrets."auth-key" = {
     sopsFile = "${self}/secrets/services/tailscale.yaml";

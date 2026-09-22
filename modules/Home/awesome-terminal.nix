@@ -8,7 +8,7 @@
 {
   imports = [ "${self}/modules/Home/cli-tools.nix" ];
 
-  home.packages = lib.optionals (lib.isDesktop osConfig) (
+  home.packages = lib.optionals (lib.hasGui osConfig) (
     with pkgs;
     [
       chafa
@@ -19,17 +19,26 @@
   services.pueue.enable = true;
 
   programs = {
+    zellij = {
+      enable = true;
+      settings.copy_command = "wl-copy";
+    };
     carapace = {
       enable = true;
     };
     atuin = {
       enable = true;
-      flags = [ "--disable-up-arrow" ];
+      settings = {
+        update_check = false;
+        style = "compact";
+        inline_height = 20;
+        search_mode = "fuzzy";
+      };
     };
 
     bash = {
       enable = true;
-      initExtra = ''
+      initExtra = lib.mkAfter ''
         if [[ -n "$(type -p flyline 2>/dev/null)" ]]; then
           flyline key bind Ctrl+r 'always=runBashCommand(__atuin_widget_run)+submitOrNewline'
         fi

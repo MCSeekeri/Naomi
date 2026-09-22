@@ -43,7 +43,7 @@
     fish = {
       enable = lib.mkDefault true; # 比 zsh 更好，可惜不兼容 bash
       useBabelfish = lib.mkDefault true; # 啥
-      shellAliases = lib.mkDefault {
+      shellAliases = {
         proxy = "proxychains4 -q";
         cat = "bat";
       };
@@ -98,13 +98,15 @@
         # 基础必备
         curl
         wget
+        wget2
         tree
         file
         which
         gnused
         gawk
+        goawk
         ripgrep
-        jq
+        jaq
         progress
         hexyl
         # inetutils
@@ -197,7 +199,6 @@
         kdePackages.filelight
       ]
       ++ lib.optionals config.virtualisation.podman.enable [
-        podman-tui
         lazydocker
         podman-compose
       ];

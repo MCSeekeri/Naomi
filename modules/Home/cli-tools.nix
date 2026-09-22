@@ -1,42 +1,52 @@
-{ pkgs, ... }: {
-  home = {
-    packages = with pkgs; [
-      upx
-      lazygit
-      git-ignore
-      gitleaks # 查找文件或仓库中的敏感信息
-      curlie
-      # noti # fish done
-      magic-wormhole-rs
-      sd
-      ugrep
-      duf # df -h
-      gh
-      trash-cli
-      pandoc
-      rsclock
-      oha # 反向测速
-      ipfetch
-      genact
-      neo-cowsay
-      hyperfine
-      fuc # cpz rmz
-      doggo # dig
-      gping
-      yq-go
-      just
-      watchexec
-    ];
-    shellAliases = {
-      ll = "eza -lh --no-user";
-      grep = "ugrep";
-      df = "duf";
-      ping = "gping";
-      dig = "doggo";
-      curl = "curlie";
-    };
+{ pkgs, ... }:
+let
+  shortcuts = {
+    ll = "eza -lh --no-user";
+    grep = "ugrep";
+    awk = "goawk";
+    wget = "wget2";
   };
+in
+{
+  home.packages = with pkgs; [
+    upx
+    lazygit
+    git-ignore
+    trufflehog # 查找文件或仓库中的敏感信息
+    curlie
+    # noti # fish done
+    magic-wormhole-rs
+    sd
+    ugrep
+    duf # df -h
+    gh
+    trash-cli
+    pandoc
+    rsclock
+    oha # 反向测速
+    ipfetch
+    genact
+    neo-cowsay
+    hyperfine
+    fuc # cpz rmz
+    doggo # dig
+    gping
+    yq-go
+    just
+    watchexec
+  ];
   programs = {
+    fish.shellAbbrs = shortcuts;
+    bash.shellAliases = shortcuts;
+
+    less = {
+      enable = true;
+      options = {
+        R = true;
+        i = true;
+        F = true;
+      };
+    };
     tealdeer = {
       enable = true;
       settings.updates.auto_update = true;

@@ -22,11 +22,6 @@
 
   programs = {
     home-manager.enable = true;
-    fish = {
-      enable = true;
-      shellAliases = {
-        proxy = "proxychains4 -q";
-      };
-    };
+    fish.enable = true;
   };
 }

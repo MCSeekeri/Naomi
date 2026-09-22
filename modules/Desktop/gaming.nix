@@ -48,6 +48,10 @@
     steam-tui
     steamcmd
     gamemode
+    umu-launcher
+    protonup-qt
+    dxvk
+    vkd3d-proton
   ];
 
   services = {
