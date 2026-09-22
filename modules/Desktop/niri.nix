@@ -5,7 +5,6 @@
   ...
 }:
 {
-
   imports = [ "${self}/modules/Desktop/gui.nix" ];
 
   programs = {
