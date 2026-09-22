@@ -1,28 +1,12 @@
 {
   config,
   lib,
-  pkgs,
   self,
   ...
 }:
 {
   services.xray = {
     enable = true;
-    package =
-      (pkgs.xray.override { buildGo126Module = pkgs.buildGo127Module; }).overrideAttrs
-        (old: rec {
-          version = "26.9.9";
-          src = pkgs.fetchFromGitHub {
-            owner = "XTLS";
-            repo = "Xray-core";
-            rev = "v${version}";
-            hash = "sha256-GqPEAgWM9Wx19uxMj0LGeOyHreLbU0IMSmalwLe/SIc=";
-          };
-          vendorHash = "sha256-6Qa05hFdvfLlH8WQd426IU7MScmeevIgrgP5037pNek=";
-          preBuild = (old.preBuild or "") + ''
-            export GOFLAGS="$GOFLAGS -gcflags=all=-l=4"
-          '';
-        });
     settingsFile = config.sops.templates."xray-${config.networking.hostName}-config.json".path;
   };
 
