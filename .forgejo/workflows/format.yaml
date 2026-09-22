@@ -29,12 +29,12 @@ jobs:
           restore-keys: |
             nix-user-cache-${{ runner.os }}-
 
-      - name: 安装 Lix
+      - name: 安装 Nix
         shell: bash
         run: |
           set -euo pipefail
           curl --proto '=https' --tlsv1.2 -fsSL \
-            https://install.lix.systems/lix | bash -s -- install linux \
+            https://install.determinate.systems/nix | bash -s -- install linux \
             --extra-conf "sandbox = false" \
             --init none \
             --no-confirm
@@ -44,7 +44,7 @@ jobs:
           mkdir -p "$HOME/.config/nix"
 
           cat > "$HOME/.config/nix/nix.conf" <<'EOF'
-          experimental-features = nix-command flakes
+          experimental-features = nix-command flakes pipe-operators
           extra-substituters = https://nix.mcseekeri.com?priority=51
           extra-trusted-public-keys = \
             nix.mcseekeri.com-1:3gd0/2u7IOF7YooxEiBbWTvRCYGC53S2UoqFdnCUYHc=
