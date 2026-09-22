@@ -7,9 +7,7 @@
     "${self}/modules/Core/prc.nix"
 
     "${self}/modules/Server/clamav.nix"
-    "${self}/modules/Server/failsafe.nix"
     "${self}/modules/Server/virt/libvirt.nix"
-    "${self}/modules/Server/podman.nix"
     "${self}/modules/Desktop/plasma.nix"
     "${self}/modules/Desktop/sunshine.nix"
     "${self}/modules/Desktop/gaming.nix"

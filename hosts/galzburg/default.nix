@@ -13,8 +13,6 @@
 
     "${self}/modules/Core"
 
-    "${self}/modules/Server/failsafe.nix"
-    "${self}/modules/Server/podman.nix"
     "${self}/modules/Server/ntfy-agent.nix"
 
     "${self}/modules/Services/archisteamfarm.nix"

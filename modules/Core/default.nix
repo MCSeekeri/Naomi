@@ -16,14 +16,15 @@
     inputs.nix-index-database.nixosModules.nix-index
     inputs.flyline.nixosModules.flyline
     "${self}/modules/Hardware"
-    ./apparmor.nix
     ./avahi.nix
     ./boot.nix
+    ./failsafe.nix
     ./fonts.nix
     #./hardened.nix
     ./i18n.nix
     ./nix-ld.nix
     ./nix.nix
+    ./podman.nix
     ./programs.nix
     ./sops.nix
     ./stylix.nix
@@ -37,12 +38,10 @@
     autoUpgrade = {
       enable = lib.mkDefault true;
       flake = lib.mkDefault "github:MCSeekeri/Naomi";
-      operation = lib.mkDefault (if config.hardware.deviceType == "server" then "switch" else "boot");
-      allowReboot = lib.mkDefault (config.hardware.deviceType == "server");
-      dates = lib.mkDefault (if config.hardware.deviceType == "server" then "01:15" else "04:40");
-      randomizedDelaySec = lib.mkDefault (
-        if config.hardware.deviceType == "server" then "30min" else "0"
-      );
+      operation = lib.mkDefault (if lib.isServer config then "switch" else "boot");
+      allowReboot = lib.mkDefault (lib.isServer config);
+      dates = lib.mkDefault (if lib.isServer config then "01:15" else "04:40");
+      randomizedDelaySec = lib.mkDefault (if lib.isServer config then "30min" else "0");
       rebootWindow = {
         # 凌晨更新，提神醒脑
         lower = "01:00";
@@ -124,6 +123,17 @@
       SystemMaxUse = "1G";
       MaxRetentionSec = "1month";
     };
+
+    ananicy = lib.mkIf (lib.isAttended config) {
+      enable = lib.mkDefault true;
+      package = pkgs.ananicy-cpp;
+      rulesProvider = pkgs.ananicy-rules-cachyos;
+    };
+
+    scx = lib.mkIf (lib.isAttended config) {
+      enable = lib.mkDefault true;
+      scheduler = "scx_bpfland";
+    };
   };
 
   environment = {
@@ -172,6 +182,8 @@
     polkit.enable = true;
     sudo.enable = false;
     tpm2.enable = lib.mkDefault true;
+    apparmor.enable = true;
+    # AppArmor 在 NixOS 下作用不大，主要应该在 Systemd 上发力
   };
 
   systemd = {
@@ -180,7 +192,7 @@
     }; # 不需要转储
     # enableStrictShellChecks = true;
     # [TODO] 等我整明白如何给上游提交 PR 修复这些问题再说
-    network.wait-online.enable = lib.mkDefault (config.hardware.deviceType == "server");
+    network.wait-online.enable = lib.mkDefault (lib.isServer config);
     oomd = {
       enable = true;
       enableRootSlice = true;

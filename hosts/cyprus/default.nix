@@ -13,14 +13,10 @@
 
     "${self}/modules/Server/clamav.nix"
     "${self}/modules/Server/ntfy-agent.nix"
-    "${self}/modules/Server/failsafe.nix"
     "${self}/modules/Server/virt/libvirt.nix"
     # "${self}/modules/Server/virt/virtualbox.nix"
-    "${self}/modules/Server/virt/k8s.nix"
-    "${self}/modules/Server/podman.nix"
 
     "${self}/modules/Desktop/niri.nix"
-    "${self}/modules/Desktop/ananicy.nix"
     "${self}/modules/Desktop/sunshine.nix"
     "${self}/modules/Desktop/gaming.nix"
     "${self}/modules/Desktop/obs.nix"
@@ -30,7 +26,6 @@
     "${self}/modules/Desktop/cups.nix"
     "${self}/modules/Desktop/embedded.nix"
     "${self}/modules/Desktop/yubikey.nix"
-    "${self}/modules/Desktop/wine.nix"
     "${self}/modules/Desktop/extra-fonts.nix"
     "${self}/modules/Desktop/appimage.nix"
 

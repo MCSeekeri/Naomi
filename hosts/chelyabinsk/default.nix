@@ -17,7 +17,6 @@ in
     "${self}/modules/Core"
     "${self}/modules/Core/prc.nix"
 
-    "${self}/modules/Server/podman.nix"
     "${self}/modules/Server/ntfy-agent.nix"
     "${self}/modules/Services/cloudflared.nix"
     "${self}/modules/Services/caddy.nix"
