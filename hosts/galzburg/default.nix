@@ -20,6 +20,7 @@
     "${self}/modules/Services/cowrie.nix"
     "${self}/modules/Services/caddy.nix"
     "${self}/modules/Services/davis.nix"
+    "${self}/modules/Services/misskey.nix"
     "${self}/modules/Services/niks3.nix"
     "${self}/modules/Services/openlist.nix"
     "${self}/modules/Services/privatebin.nix"
@@ -125,7 +126,10 @@
 
   sops = {
     secrets = {
-      masterKey.sopsFile = "${self}/secrets/hosts/galzburg/meilisearch.yaml";
+      masterKey = {
+        sopsFile = "${self}/secrets/hosts/galzburg/meilisearch.yaml";
+        key = "masterKey";
+      };
       openlist_env = {
         sopsFile = "${self}/secrets/hosts/galzburg/openlist.env";
         format = "dotenv";
@@ -181,6 +185,7 @@
       email = "mcseekeri@outlook.com";
       dnsProvider = "cloudflare";
       environmentFile = config.sops.secrets.acme.path;
+      extraLegoFlags = [ "--dns.propagation.disable-rns" ];
     };
   };
 
@@ -371,6 +376,24 @@
       };
     };
 
+    misskey = {
+      settings = {
+        url = "https://mcseekeri.com";
+        fulltextSearch.provider = "meilisearch";
+        deliverJobConcurrency = 16;
+        inboxJobConcurrency = 8;
+        relationshipJobConcurrency = 8;
+        deliverJobPerSec = 16;
+        inboxJobPerSec = 8;
+        relationshipJobPerSec = 16;
+        maxFileSize = 67108864;
+      };
+      meilisearch.keyFile = "/run/credentials/misskey.service/meili-key";
+    };
+
+    redis.servers.misskey.settings.maxmemory = "128mb";
+    meilisearch.settings.max_indexing_memory = "256 MiB";
+
     sillytavern = {
       enable = true;
       package =
@@ -405,6 +428,7 @@
           "/var/lib/ntfy-sh"
           "/var/lib/archisteamfarm"
           "/var/lib/davis"
+          "/var/lib/misskey"
         ];
         tag = "galzburg";
       };
@@ -465,6 +489,13 @@
             }
           )
           {
+            "mcseekeri.com" = {
+              extraConfig = ''
+                encode zstd gzip
+
+                reverse_proxy 127.0.0.1:3000
+              '';
+            };
             "niks3.mcseekeri.com" = {
               extraConfig = ''
                 reverse_proxy 127.0.0.1:5751
@@ -600,6 +631,23 @@
     settings.Manager.DefaultLimitNOFILE = "1048576";
     services = {
       tailscaled.serviceConfig.LogLevelMax = "notice";
+      misskey = {
+        after = [
+          "sops-nix.service"
+          "meilisearch.service"
+        ];
+        wants = [ "meilisearch.service" ];
+        serviceConfig = {
+          Restart = "on-failure";
+          RestartSec = "10s";
+          MemoryHigh = "800M";
+          MemoryMax = "1200M";
+          LoadCredential = "meili-key:${config.sops.secrets.masterKey.path}";
+          ExecStartPre = lib.mkAfter [
+            "${lib.getExe pkgs.replace-secret} '@MEILISEARCH_KEY@' '/run/credentials/misskey.service/meili-key' /run/misskey/default.json"
+          ];
+        };
+      };
       "restic-backups-galzburg".serviceConfig = {
         Restart = "on-failure";
         RestartSec = "15min";
