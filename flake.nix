@@ -4,6 +4,7 @@
   nixConfig = {
     extra-substituters = [ "https://nix.mcseekeri.com?priority=51" ];
     extra-trusted-public-keys = [ "nix.mcseekeri.com-1:3gd0/2u7IOF7YooxEiBbWTvRCYGC53S2UoqFdnCUYHc=" ];
+    extra-experimental-features = [ "pipe-operators" ];
   };
 
   inputs = {
@@ -13,17 +14,6 @@
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
     flake-compat.url = "github:NixOS/flake-compat";
-    systems.url = "github:nix-systems/default"; # 两年没更新，都不知道为什么有 Flake 引用这个……
-
-    devshell = {
-      url = "github:numtide/devshell";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    flake-utils = {
-      url = "github:numtide/flake-utils";
-      inputs.systems.follows = "systems";
-    };
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -62,7 +52,6 @@
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-parts.follows = "flake-parts";
-        systems.follows = "systems";
         nur.follows = "nur";
       };
     };
@@ -82,21 +71,12 @@
       };
     };
 
-    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
+    nix-flatpak.url = "github:gmodena/nix-flatpak";
 
     noctalia = {
       url = "github:noctalia-dev/noctalia-shell";
       inputs = {
         nixpkgs.follows = "nixpkgs";
-      };
-    };
-
-    winapps = {
-      url = "github:winapps-org/winapps";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        flake-compat.follows = "flake-compat";
-        flake-utils.follows = "flake-utils";
       };
     };
 
@@ -144,7 +124,6 @@
       url = "github:HalFrgrd/flyline";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
   };
 
   outputs =
@@ -154,7 +133,6 @@
         flake.lib = import ./lib { inherit lib; };
 
         imports = [
-          inputs.devshell.flakeModule
           inputs.flake-parts.flakeModules.easyOverlay
           inputs.treefmt-nix.flakeModule
           ./hosts/flake-module.nix
@@ -169,8 +147,28 @@
             pkgs,
             system,
             config,
+            lib,
             ...
           }:
+          let
+            devPackages = with pkgs; [
+              nix
+              git
+              fish
+              sops
+              age
+              home-manager
+              nix-init
+              nh
+              nixfmt
+              fh
+              libressl # openssl rand -hex 64
+              nix-melt
+              nix-tree
+              config.packages.ndp
+              config.treefmt.build.wrapper
+            ];
+          in
           {
             treefmt.config = import ./treefmt.nix;
             formatter = config.treefmt.build.wrapper;
@@ -180,32 +178,12 @@
               config.allowUnfree = true;
             };
 
-            devshells.default = {
-              env = [
-                {
-                  name = "fish_complete_path";
-                  eval = ''"$DEVSHELL_DIR/share/fish/vendor_completions.d"'';
-                }
-              ];
+            devShells.default = pkgs.mkShell {
+              packages = devPackages;
 
-              packages = with pkgs; [
-                nix
-                git
-                fish
-                sops
-                age
-                home-manager
-                nix-init
-                nh
-                nixfmt
-                fh
-                libressl # openssl rand -hex 64
-                nix-melt
-                nix-tree
-                colmena
-                config.packages.ndp
-                config.treefmt.build.wrapper
-              ];
+              shellHook = ''
+                export fish_complete_path="${lib.makeSearchPath "share/fish/vendor_completions.d" devPackages}:$fish_complete_path"
+              '';
             };
           };
       }

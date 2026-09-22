@@ -80,6 +80,8 @@
   environment.systemPackages = with pkgs; [
     ocs-url
     coppwr
+    wineWow64Packages.stagingFull
+    winetricks
   ];
 
   environment.sessionVariables = {
