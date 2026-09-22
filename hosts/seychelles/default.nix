@@ -25,6 +25,7 @@
       #arch = "x86-64-v4";
     };
     gpu.type = "nvidia";
+    deviceType = "server";
   };
   boot = {
     initrd.availableKernelModules = [

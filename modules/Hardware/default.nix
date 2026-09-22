@@ -61,8 +61,7 @@ in
           "laptop"
           "server"
         ];
-        default = "desktop";
-        description = "设备类型，影响电源管理和相关配置。";
+        description = "设备类型，影响电源管理，服务优先级等配置，必须手动设置。";
       };
     };
   };
@@ -203,18 +202,12 @@ in
           IOSchedulingPriority = 7;
         };
 
-    environment = lib.mkIf (config.hardware.deviceType != "server") {
+    environment = {
       systemPackages =
         with pkgs;
         [
           clinfo
-          mpv
           lm_sensors
-        ]
-        ++ lib.optionals (config.hardware.deviceType == "laptop") [
-          s-tui
-          powerstat
-          stress
         ]
         ++ lib.optionals (!isQemu) [
           vulkan-tools
@@ -228,7 +221,13 @@ in
           rocmPackages.rocm-smi
           amdgpu_top
         ]
-        ++ lib.optionals isNvidia [ cudaPackages.cudatoolkit ];
+        ++ lib.optionals isNvidia [ cudaPackages.cudatoolkit ]
+        ++ lib.optionals (lib.isAttended config) [ mpv ]
+        ++ lib.optionals (lib.isLaptop config) [
+          s-tui
+          powerstat
+          stress
+        ];
 
       sessionVariables = lib.mkMerge [
         # 在某些强制需要独显渲染的时候会出现微妙的错误
@@ -243,15 +242,11 @@ in
           ROC_ENABLE_PRE_VEGA = "1";
           HIP_VISIBLE_DEVICES = "0";
         })
-        (lib.mkIf isNvidia (
-          lib.mkMerge [
-            { CUDA_PATH = "${pkgs.cudaPackages.cudatoolkit}"; }
-            (lib.mkIf (config.hardware.deviceType == "desktop") {
-              LIBVA_DRIVER_NAME = "nvidia";
-              NVD_BACKEND = "direct";
-            })
-          ]
-        ))
+        (lib.mkIf isNvidia {
+          CUDA_PATH = "${pkgs.cudaPackages.cudatoolkit}";
+          LIBVA_DRIVER_NAME = "nvidia";
+          NVD_BACKEND = "direct";
+        })
       ];
     };
 

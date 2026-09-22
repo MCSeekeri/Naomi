@@ -56,7 +56,7 @@
     };
     git = {
       enable = lib.mkDefault true;
-      package = if lib.isDesktop config then pkgs.gitFull else pkgs.git;
+      package = if lib.hasGui config then pkgs.gitFull else pkgs.git;
       lfs.enable = true;
     };
     tmux = {
@@ -142,8 +142,8 @@
         ltrace
         lsof
         (btop.override {
-          rocmSupport = config.hardware.deviceType != "server" && config.hardware.gpu.type == "amd";
-          cudaSupport = config.hardware.deviceType != "server" && config.hardware.gpu.type == "nvidia";
+          rocmSupport = lib.isAttended config && config.hardware.gpu.type == "amd";
+          cudaSupport = lib.isAttended config && config.hardware.gpu.type == "nvidia";
         })
         dua
         nmap
@@ -176,7 +176,7 @@
             btrfs-progs
             compsize
           ]
-      ++ lib.optionals (lib.isDesktop config) [
+      ++ lib.optionals (lib.hasGui config) [
         # 桌面应用
         ungoogled-chromium
         # 开发环境
@@ -203,5 +203,5 @@
       ];
   };
 
-  nixpkgs = lib.mkIf (lib.isDesktop config) { config.chromium.enableWideVine = true; };
+  nixpkgs = lib.mkIf (lib.hasGui config) { config.chromium.enableWideVine = true; };
 }

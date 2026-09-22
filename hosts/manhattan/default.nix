@@ -38,6 +38,7 @@
 
   hardware = {
     cpu.type = "qemu";
+    deviceType = "desktop";
   };
 
   system = {

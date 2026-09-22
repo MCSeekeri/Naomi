@@ -13,7 +13,7 @@
       [
         {
           enable = lib.mkDefault true;
-          autoEnable = lib.mkDefault (lib.isDesktop config);
+          autoEnable = lib.mkDefault (lib.hasGui config);
           base16Scheme = lib.mkDefault "${pkgs.base16-schemes}/share/themes/rebecca.yaml";
           polarity = lib.mkDefault "dark";
 
@@ -24,7 +24,7 @@
           };
         }
       ]
-      ++ lib.optional (lib.isDesktop config) {
+      ++ lib.optional (lib.hasGui config) {
         image = lib.mkDefault (
           pkgs.fetchurl {
             url = "https://github.com/MCSeekeri/storage/raw/main/wallpaper/nixos-catppuccin-macchiato-rainbow.png";

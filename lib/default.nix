@@ -1,7 +1,12 @@
 { lib }:
 lib.extend (
   final: _prev: {
-    isDesktop =
+    isServer = config: config.hardware.deviceType == "server";
+    isLaptop = config: config.hardware.deviceType == "laptop";
+    isDesktop = config: config.hardware.deviceType == "desktop";
+    isAttended = config: config.hardware.deviceType != "server";
+
+    hasGui =
       config:
       (config.services.xserver.enable or false)
       || (config.programs.niri.enable or false)

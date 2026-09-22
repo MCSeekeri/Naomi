@@ -9,7 +9,7 @@
   environment.systemPackages = [
     pkgs.geph
   ]
-  ++ lib.optionals (config.hardware.deviceType != "server") [ pkgs.gephgui-wry ];
+  ++ lib.optionals (lib.isAttended config) [ pkgs.gephgui-wry ];
 
   services.geph = {
     enable = true;

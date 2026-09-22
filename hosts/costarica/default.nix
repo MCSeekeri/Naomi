@@ -24,7 +24,10 @@
   system = {
     stateVersion = "26.05";
   };
-  hardware.cpu.type = "qemu";
+  hardware = {
+    cpu.type = "qemu";
+    deviceType = "desktop";
+  };
 
   boot.loader = {
     systemd-boot = {
