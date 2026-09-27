@@ -71,9 +71,9 @@ in
         "--group-directories-first"
         "--no-quotes" # 不使用符号包裹空格
         "--header"
-        "--time-style=long-iso" # YYYY-MM-DD HH:MM 最美妙的表示时间的方式
-        "--classify"
         "--hyperlink"
+        "--classify"
+        "--time-style=long-iso" # YYYY-MM-DD HH:MM 最美妙的表示时间的方式
       ];
     };
   };

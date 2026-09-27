@@ -11,6 +11,15 @@ let
   isIntel = config.hardware.gpu.type == "intel" || config.hardware.cpu.type == "intel";
   isAMD = config.hardware.gpu.type == "amd" || config.hardware.cpu.type == "amd";
   isQemu = config.hardware.cpu.type == "qemu";
+  decodeDriver =
+    if config.hardware.cpu.type == "intel" then
+      "iHD"
+    else if config.hardware.cpu.type == "amd" then
+      "radeonsi"
+    else if isNvidia then
+      "nvidia"
+    else
+      null;
 in
 {
   options = {
@@ -233,13 +242,9 @@ in
         ];
 
       sessionVariables = lib.mkMerge [
-        # 在某些强制需要独显渲染的时候会出现微妙的错误
-        (lib.mkIf (config.hardware.gpu.type == "intel") {
-          LIBVA_DRIVER_NAME = "iHD";
-          VDPAU_DRIVER = "va_gl";
-        })
-        (lib.mkIf (config.hardware.gpu.type == "amd") {
-          LIBVA_DRIVER_NAME = "radeonsi";
+        (lib.mkIf (decodeDriver != null) { LIBVA_DRIVER_NAME = lib.mkDefault decodeDriver; })
+        (lib.mkIf (config.hardware.cpu.type == "intel") { VDPAU_DRIVER = "va_gl"; })
+        (lib.mkIf (config.hardware.cpu.type == "amd") {
           VDPAU_DRIVER = "radeonsi";
           RUSTICL_ENABLE = "radeonsi";
           ROC_ENABLE_PRE_VEGA = "1";
@@ -247,7 +252,6 @@ in
         })
         (lib.mkIf isNvidia {
           CUDA_PATH = "${pkgs.cudaPackages.cudatoolkit}";
-          LIBVA_DRIVER_NAME = "nvidia";
           NVD_BACKEND = "direct";
         })
       ];

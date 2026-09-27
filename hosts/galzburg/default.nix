@@ -448,6 +448,7 @@
       enable = true;
       settings = {
         base-url = "https://ntfy.mcseekeri.com";
+        listen-http = "127.0.0.1:2586";
         behind-proxy = true;
         cache-duration = "72h";
         cache-startup-queries = ''
