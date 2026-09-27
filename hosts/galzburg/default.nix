@@ -659,7 +659,7 @@
         wants = [ "archisteamfarm.service" ];
         serviceConfig = {
           Type = "oneshot";
-          ExecStart = pkgs.writeShellScriptBin "asf-claim-points" ''
+          ExecStart = pkgs.writeShellScript "asf-claim-points" ''
             ${pkgs.curl}/bin/curl -fsS -m 60 \
               --retry 3 --retry-connrefused --retry-delay 10 \
               -X POST \
