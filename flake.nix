@@ -124,6 +124,11 @@
       url = "github:HalFrgrd/flyline";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    niri-glass = {
+      url = "github:zaroutt/Niri-glass";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

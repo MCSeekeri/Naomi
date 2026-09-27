@@ -676,6 +676,7 @@
       bar = {
         order = [ "main" ];
         main = {
+          background_opacity = 0.85;
           contact_shadow = true;
           end = [
             "privacy"
@@ -779,7 +780,7 @@
           launcher_placement = "attached";
           launcher_position = "auto";
           launcher_session_search = true;
-          transparency_mode = "soft";
+          transparency_mode = "glass";
         };
         screen_corners.enabled = true;
         show_location = false;
@@ -871,6 +872,11 @@
     }; # https://www.deviantart.com/chasingartwork/art/ahh-a-snake-383715432
     polarity = "dark";
     base16Scheme = "${pkgs.base16-schemes}/share/themes/ayu-dark.yaml";
+    opacity = {
+      terminal = 0.85;
+      desktop = 0.85;
+      popups = 0.9;
+    };
     fonts = {
       sizes = {
         applications = 16;
