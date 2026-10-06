@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   lib,
   pkgs,
   self,
@@ -28,6 +29,8 @@
     "${self}/modules/Services/xray.nix"
 
     "${self}/users/remote"
+
+    inputs.nur.legacyPackages.x86_64-linux.repos.MCSeekeri.nixosModules.luker
   ];
 
   networking = {
@@ -95,6 +98,8 @@
       };
     };
   };
+
+  nixpkgs.overlays = [ (final: _prev: { luker = final.nur.repos.MCSeekeri.luker; }) ];
 
   nix = {
     gc = {
@@ -394,26 +399,8 @@
     redis.servers.misskey.settings.maxmemory = "128mb";
     meilisearch.settings.max_indexing_memory = "256 MiB";
 
-    sillytavern = {
+    luker = {
       enable = true;
-      package =
-        let
-          lukerHead = pkgs.fetchFromGitHub {
-            owner = "funnycups";
-            repo = "Luker";
-            rev = "bb8ab49ed2c1dbad0fb8a12e362ef3fc0085b964";
-            hash = "sha256-74qgtPoTHgd9+uoZvPM+Becwi95yUFVYH9OjzWfIiis=";
-          };
-        in
-        pkgs.nur.repos.MCSeekeri.luker.overrideAttrs (_: {
-          version = "2.7.0-unstable-2026-09-12";
-          src = lukerHead;
-          npmDeps = pkgs.fetchNpmDeps {
-            name = "luker-2.7.0-unstable-2026-09-12-npm-deps";
-            src = lukerHead;
-            hash = "sha256-cX78cfJgj9E9YN3ZdSHYP4lt75aiAAVJjsLdMpDV6nQ=";
-          };
-        });
       configFile = "/var/lib/SillyTavern/sillytavern.yaml";
     };
 
