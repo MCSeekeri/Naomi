@@ -15,7 +15,6 @@
 
             # Securefox
             "browser.sessionstore.interval" = 60000;
-            "browser.privatebrowsing.resetPBM.enabled" = true;
             "browser.urlbar.groupLabels.enabled" = false;
             "signon.privateBrowsingCapture.enabled" = false;
             # "editor.truncate_user_pastes" = false; # 密码长度截断
@@ -24,16 +23,13 @@
             "extensions.getAddons.cache.enabled" = false;
 
             # Peskyfox
-            # "browser.profiles.enabled" = true;
             # "browser.compactmode.show" = true;
-            "browser.ml.linkPreview.enabled" = false;
-            "full-screen-api.transition-duration.enter" = "0 0";
-            "full-screen-api.transition-duration.leave" = "0 0";
             # "browser.download.open_pdf_attachments_inline" = true;
             # "browser.bookmarks.openInTabClosesMenu" = false;
             "browser.menu.showViewImageInfo" = true;
             "findbar.highlightAll" = true;
             "layout.word_select.eat_space_to_next_word" = true;
+            "full-screen-api.warning.timeout" = 0;
 
             # 杂项
             "privacy.resistFingerprinting.letterboxing" = true;
@@ -41,12 +37,16 @@
             "browser.sessionstore.resume_from_crash" = false;
             "browser.translations.automaticallyPopup" = false;
             "browser.urlbar.suggest.recentsearches" = false;
-            "browser.urlbar.suggest.bookmark" = true; # 真正意义上的历史记录
+            "browser.urlbar.suggest.history" = false;
+            "browser.urlbar.suggest.openpage" = false;
+            "browser.urlbar.suggest.engines" = false;
 
             "widget.use-xdg-desktop-portal.file-picker" = 1; # 使用 XDG 来访问系统相关的东西
             "widget.use-xdg-desktop-portal.mime-handler" = 1;
             "widget.use-xdg-desktop-portal.open-uri" = 1;
             "widget.use-xdg-desktop-portal.settings" = 1;
+
+            "browser.nova.enabled" = false; # 不是现在……
           };
           extensions = {
             packages = with pkgs.nur.repos.rycee.firefox-addons; [

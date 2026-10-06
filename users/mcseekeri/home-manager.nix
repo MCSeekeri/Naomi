@@ -26,14 +26,11 @@
 
     packages = with pkgs; [
       # 桌面应用
-      keepassxc
       qq
       wpsoffice-cn
       kdePackages.kdenlive
       kdePackages.kleopatra
-      kdePackages.kcalc
       anki-bin
-      discord
       vesktop
       ayugram-desktop
       qbittorrent-enhanced
@@ -43,8 +40,6 @@
       kiwix
       element-desktop
       remmina
-      blender
-      piliplus
       # bitwarden-desktop
       peazip
       libreoffice-qt # 无用户信息泄露，比 WPS 不知道高到哪里去了……
@@ -52,14 +47,9 @@
       v2rayn
       # 主题
       nur.repos.MCSeekeri.lain-kde-splashscreen
-      # kora-icon-theme
-      # dracula-icon-theme
-      plasma-overdose-kde-theme
       # 游戏娱乐
       moonlight-qt
       vlc
-      ckan
-      r2modman
       splayer-next
       scanmem
       # 开发套件
@@ -177,13 +167,6 @@
         menu/page_size: 9
         translator/packs: [zhwiki, moegirl]
         translator/enable_correction: true
-        grammar:
-          language: wanxiang-lts-zh-hans
-          non_collocation_penalty: -4
-          collocation_max_length: 5
-          collocation_min_length: 2
-          collocation_penalty: -14
-        translator/contextual_suggestions: true
         translator/max_homophones: 4
         translator/max_homographs: 2
         key_binder/bindings/+:

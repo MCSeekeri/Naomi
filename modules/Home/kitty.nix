@@ -12,6 +12,11 @@
       hide_window_decorations = "titlebar-and-corners";
     };
 
+    mouseBindings = {
+      "left click" = "ungrabbed no-op";
+      "ctrl+left click" = "ungrabbed mouse_handle_click selection link prompt";
+    };
+
     font = {
       name = lib.mkForce "Maple Mono Normal CN";
       package = lib.mkForce pkgs.maple-mono.Normal-CN-unhinted; # Kitty 会自动处理 Nerd Fonts，所以可以不带 NF.
