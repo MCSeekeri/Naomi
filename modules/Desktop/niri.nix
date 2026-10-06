@@ -2,20 +2,15 @@
   pkgs,
   self,
   lib,
-  inputs,
   ...
 }:
 {
-  imports = [
-    "${self}/modules/Desktop/gui.nix"
-    inputs.niri-glass.nixosModules.default
-  ];
+  imports = [ "${self}/modules/Desktop/gui.nix" ];
 
   programs = {
     niri = {
       enable = true;
     };
-    niri-glass.enable = true;
     dconf.enable = true;
     xwayland.enable = lib.mkForce false;
     nautilus-open-any-terminal = {

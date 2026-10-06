@@ -2,12 +2,9 @@
   self,
   lib,
   osConfig,
-  inputs,
   ...
 }:
 {
-  imports = [ inputs.noctalia.homeModules.default ];
-
   config = lib.mkIf (osConfig.programs.niri.enable or false) {
     home = {
       sessionVariables = {

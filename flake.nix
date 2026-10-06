@@ -73,13 +73,6 @@
 
     nix-flatpak.url = "github:gmodena/nix-flatpak";
 
-    noctalia = {
-      url = "github:noctalia-dev/noctalia-shell";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-      };
-    };
-
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -122,11 +115,6 @@
 
     flyline = {
       url = "github:HalFrgrd/flyline";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    niri-glass = {
-      url = "github:zaroutt/Niri-glass";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
