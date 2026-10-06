@@ -90,7 +90,7 @@
     };
   };
   environment = {
-    enableAllTerminfo = true;
+    # enableAllTerminfo = true;
     localBinInPath = lib.mkDefault true;
     systemPackages =
       with pkgs;

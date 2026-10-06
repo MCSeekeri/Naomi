@@ -17,6 +17,7 @@
     # "${self}/modules/Server/virt/virtualbox.nix"
 
     "${self}/modules/Desktop/niri.nix"
+    "${self}/modules/Desktop/kmscon.nix"
     "${self}/modules/Desktop/sunshine.nix"
     "${self}/modules/Desktop/gaming.nix"
     "${self}/modules/Desktop/obs.nix"

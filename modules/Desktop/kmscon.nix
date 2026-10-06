@@ -9,7 +9,7 @@
     config = lib.mkDefault {
       font-name = "Maple Mono Normal CN";
       font-size = 16;
+      hwaccel = true;
     };
-    hwRender = true;
   };
 }
