@@ -30,7 +30,7 @@ jobs:
     runs-on: >-
       ${{ github.event_name == 'workflow_dispatch' && inputs.runner_target ||
       'ubuntu-latest' }}
-    timeout-minutes: 30
+    timeout-minutes: 60
     outputs:
       matrix: ${{ steps.targets.outputs.matrix }}
       lock-updated: ${{ steps.targets.outputs.lock-updated }}
@@ -89,7 +89,7 @@ jobs:
             --apply builtins.attrNames)
           hosts_json=$(nix eval --json .#nixosConfigurations \
             --apply builtins.attrNames)
-          matrix=$(jq -cn \
+          full_matrix=$(jq -cn \
             --argjson packages "${packages_json}" \
             --argjson hosts "${hosts_json}" \
             '{include:
@@ -100,6 +100,26 @@ jobs:
                   + ".config.system.build.toplevel")}))
               + [{name: "iso-cuba",
                 target: ".#nixosConfigurations.cuba.config.system.build.isoImage"}])}')
+
+          p=$(nix eval --json .#packages.x86_64-linux --apply 'p: builtins.mapAttrs (n: v: v.outPath or null) p') || p='{}'
+          s=$(nix eval --json .#nixosConfigurations --apply 'c: builtins.mapAttrs (n: v: v.config.system.build.toplevel.outPath) c') || s='{}'
+          q=$(nix eval --json .#nixosConfigurations.cuba.config.system.build.isoImage --apply 'i: i.outPath or null') || q='null'
+          m=$(jq -cn --argjson p "$p" --argjson s "$s" --argjson q "$q" '{packages: $p, systems: $s, iso: $q}')
+          keep=()
+          while IFS= read -r n; do
+            case "$n" in
+              package-*) o=$(jq -r --arg k "${n#package-}" '.packages[$k] // empty' <<<"$m") ;;
+              system-*) o=$(jq -r --arg k "${n#system-}" '.systems[$k] // empty' <<<"$m") ;;
+              *) o=$(jq -r '.iso // empty' <<<"$m") ;;
+            esac
+            [[ -n "$o" ]] && curl -sSf --max-time 15 -o /dev/null "https://nix.mcseekeri.com/$(basename "$o" | cut -d- -f1).narinfo" >/dev/null 2>&1 || keep+=("$n")
+          done < <(jq -r '.include[].name' <<<"$full_matrix")
+          if ((${#keep[@]} == 0)); then
+            matrix='{"include":[{"name":"__skip_build","target":"","skip":true}]}'
+          else
+            k=$(printf '%s\n' "${keep[@]}" | jq -R . | jq -s .)
+            matrix=$(jq -cn --argjson f "$full_matrix" --argjson k "$k" '{include: ($f.include | map(select(.name as $n | $k | index($n))))}')
+          fi
 
           echo "matrix=${matrix}" >> "${GITHUB_OUTPUT}"
           echo "lock-updated=${UPDATE_LOCK}" >> "${GITHUB_OUTPUT}"
@@ -122,11 +142,12 @@ jobs:
       - uses: actions/checkout@v7
 
       - uses: wimpysworld/nothing-but-nix@main
-        if: ${{ runner.environment != 'self-hosted' }}
+        if: ${{ !matrix.skip && runner.environment != 'self-hosted' }}
         with:
           hatchet-protocol: 'carve'
           witness-carnage: 'true'
       - uses: cachix/install-nix-action@v31
+        if: ${{ !matrix.skip }}
         with:
           extra_nix_config: |
             system-features = benchmark big-parallel kvm nixos-test gccarch-x86-64 gccarch-x86-64-v2 gccarch-x86-64-v3 gccarch-x86-64-v4 gccarch-nehalem gccarch-westmere gccarch-silvermont gccarch-sandybridge gccarch-ivybridge gccarch-haswell gccarch-broadwell gccarch-skylake gccarch-skylake-avx512 gccarch-cannonlake gccarch-icelake-client gccarch-icelake-server gccarch-rocketlake gccarch-cascadelake gccarch-cooperlake gccarch-tigerlake gccarch-alderlake gccarch-raptorlake gccarch-sapphirerapids gccarch-emeraldrapids gccarch-sierraforest gccarch-btver1 gccarch-btver2 gccarch-bdver1 gccarch-bdver2 gccarch-bdver3 gccarch-bdver4 gccarch-znver1 gccarch-znver2 gccarch-znver3 gccarch-znver4 gccarch-znver5
@@ -137,28 +158,30 @@ jobs:
             build-dir = /nix/build
 
       - uses: Mic92/niks3-action@v1
+        if: ${{ !matrix.skip }}
         with:
           server-url: https://niks3.mcseekeri.com
           drain-timeout: 3600
 
       - name: Download updated flake lock
-        if: needs.validate.outputs.lock-updated == 'true'
+        if: ${{ !matrix.skip && needs.validate.outputs.lock-updated == 'true' }}
         uses: actions/download-artifact@v8
         with:
           name: updated-flake-lock
           path: .ci/updated-flake-lock
 
       - name: Apply updated flake lock
-        if: needs.validate.outputs.lock-updated == 'true'
+        if: ${{ !matrix.skip && needs.validate.outputs.lock-updated == 'true' }}
         run: cp .ci/updated-flake-lock/flake.lock flake.lock
 
       - name: Build target
+        if: ${{ !matrix.skip }}
         shell: bash
         env:
           TARGET: ${{ matrix.target }}
         run: |
           set -euo pipefail
           echo "Building ${TARGET}"
-          nix build --no-link --show-trace \
+          nix build --keep-going --no-link --show-trace \
             --option log-lines 50 --max-jobs auto \
             "${TARGET}"
