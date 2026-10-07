@@ -8,7 +8,7 @@
   };
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable"; # 官方源
+    nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst"; # 官方源
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs-lib.follows = "nixpkgs";
