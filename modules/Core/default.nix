@@ -47,6 +47,7 @@
         lower = "01:00";
         upper = "04:00";
       };
+      runGarbageCollection = true;
     };
     nixos = {
       # 设置此项以自研操作系统
@@ -56,6 +57,7 @@
     };
     etc.overlay.enable = true;
     nixos-init.enable = true;
+    tools.nixos-rebuild.enableRun0Elevation = true;
   };
 
   nixpkgs = {
@@ -137,11 +139,6 @@
   };
 
   environment = {
-    shellAliases = {
-      sudo = "run0 --background=";
-    };
-    # 基于 systemd-run 的 sudo 替代品
-
     stub-ld.enable = lib.mkForce false;
 
     # userborn 不支持分配 uid/gid 范围
@@ -181,6 +178,14 @@
   security = {
     polkit.enable = true;
     sudo.enable = false;
+    run0 = {
+      enable = true;
+      sudo-shim.enable = true;
+      persistentAuth = {
+        enable = true;
+        enableRemote = true;
+      };
+    };
     tpm2.enable = lib.mkDefault true;
     apparmor.enable = true;
     # AppArmor 在 NixOS 下作用不大，主要应该在 Systemd 上发力

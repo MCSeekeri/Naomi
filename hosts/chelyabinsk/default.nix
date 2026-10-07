@@ -48,19 +48,8 @@ in
   system.stateVersion = "26.05";
   documentation.enable = false;
   security = {
-    polkit = {
-      enable = true;
-      extraConfig = ''
-        polkit.addRule(function(action, subject) {
-          if (action.id == "org.freedesktop.systemd1.manage-units" &&
-              subject.isInGroup("wheel")) {
-            return polkit.Result.YES;
-          }
-        });
-      '';
-    }; # wheel 权限无密码提权，非常不安全……
+    run0.wheelNeedsPassword = false;
   };
-
   sops.secrets = {
     "forgejo-turnstile-sitekey" = {
       sopsFile = "${self}/secrets/hosts/chelyabinsk/forgejo.yaml";
