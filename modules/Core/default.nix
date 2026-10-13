@@ -20,7 +20,6 @@
     ./boot.nix
     ./failsafe.nix
     ./fonts.nix
-    #./hardened.nix
     ./i18n.nix
     ./nix-ld.nix
     ./nix.nix

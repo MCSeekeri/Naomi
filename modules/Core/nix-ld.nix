@@ -1,16 +1,15 @@
 {
   pkgs,
   config,
-  inputs,
   lib,
   ...
 }:
 {
-  nixpkgs.overlays = [ inputs.nix-alien.overlays.default ];
+  # nixpkgs.overlays = [ inputs.nix-alien.overlays.default ]; # 等我给 nix-alien 提完 PR 支持 tarball 再说
 
-  environment = {
-    systemPackages = with pkgs; [ nix-alien ];
-  };
+  # environment = {
+  #   systemPackages = with pkgs; [ nix-alien ];
+  # };
 
   # services.envfs.enable = true; # 会让 QQ 启动后无法渲染图标，无法理解
 

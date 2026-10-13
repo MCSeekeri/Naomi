@@ -28,15 +28,6 @@
       };
     };
 
-    nix-alien = {
-      url = "github:thiagokokada/nix-alien";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        flake-compat.follows = "flake-compat";
-        nix-index-database.follows = "nix-index-database";
-      };
-    };
-
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -88,28 +79,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nix-mineral = {
-      url = "github:cynicsketch/nix-mineral";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        flake-parts.follows = "flake-parts";
-        flake-compat.follows = "flake-compat";
-      };
-    };
-
     niks3 = {
       url = "github:Mic92/niks3";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         treefmt-nix.follows = "treefmt-nix";
-      };
-    };
-
-    nix-on-droid = {
-      url = "github:nix-community/nix-on-droid/pull/529/head"; # 修复 proot 问题
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        home-manager.follows = "home-manager";
       };
     };
 
@@ -130,7 +104,6 @@
           inputs.treefmt-nix.flakeModule
           ./hosts/flake-module.nix
           ./modules/flake-module.nix
-          ./devices/flake-module.nix
           ./pkgs/flake-module.nix
         ];
         systems = [ "x86_64-linux" ];
