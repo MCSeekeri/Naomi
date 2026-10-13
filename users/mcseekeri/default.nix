@@ -19,6 +19,7 @@
       "gamemode"
       "wireshark"
       "k3s"
+      "scanner"
     ]
     ++ lib.optionals config.virtualisation.podman.enable [ "podman" ];
     shell = pkgs.bash;
