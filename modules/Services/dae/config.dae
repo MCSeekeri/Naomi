@@ -1,32 +1,29 @@
 global {
 	wan_interface: auto
 	lan_interface: podman0
-	log_level: info
-	allow_insecure: false
-	auto_config_kernel_parameter: true
-	disable_waiting_network: true
+	tcp_check_url: 'http://cp.cloudflare.com'
 }
 
 node {
-	'socks5://127.0.0.1:9909'
+	local: 'socks5://127.0.0.1:9909'
 }
 
-# https://github.com/daeuniverse/dae/blob/main/docs/zh/configuration/dns.md
 dns {
 	ipversion_prefer: 4 # IPv6 在某些网络环境下是个悲剧
 	upstream {
-		alidns: 'https://dns.alidns.com'
-		cloudflare: 'https://1.1.1.1' # 防止解析到 IPv6
+		alidns: 'https://223.5.5.5/dns-query?tls_server_name=dns.alidns.com'
+		cloudflare: 'https://1.1.1.1/dns-query?tls_server_name=cloudflare-dns.com'
 	}
 	routing {
 		request {
+			qtype(https, svcb) -> reject # 阻止浏览器绕过
 			qname(geosite:category-ads, geosite:category-ads-all) -> reject
-			qname(geosite:geolocation-!cn@cn, geosite:geolocation-cn, geosite:tld-cn) -> alidns
+			qname(geosite:cn, geosite:geolocation-cn, geosite:tld-cn) -> alidns
 			fallback: cloudflare
 		}
 		response {
 			upstream(cloudflare) -> accept
-			ip(geoip:private) && !qname(geosite:geolocation-!cn@cn, geosite:geolocation-cn, geosite:tld-cn) -> cloudflare
+			ip(geoip:private) && !qname(geosite:cn, geosite:geolocation-cn, geosite:tld-cn) -> cloudflare
 			fallback: accept
 		}
 	}
@@ -35,22 +32,27 @@ dns {
 group {
 	proxy {
 		policy: min_moving_avg
-		tcp_check_url: 'http://cp.cloudflare.com,1.1.1.1'
-		udp_check_dns: 'dns.google:53,8.8.8.8'
 	}
 }
 
-# https://github.com/daeuniverse/dae/blob/main/docs/zh/configuration/routing.md
 routing {
-	domain(geosite:category-ads) -> block
-	pname(systemd-resolved, geph5-client, geph5-client-gui, gephgui-wry, mihomo, clash-rs,  hysteria2, naiveproxy, sing-box, v2ray, xray, tailscaled, localsend_app, qbittorrent, AdGuardHome, cloudflared) -> must_direct
+	pname(systemd-resolved, dnsmasq) && dport(53) -> direct(must)
 	pname(NetworkManager) -> direct
-	dip(224.0.0.0/3, 'ff00::/8', geoip:private) -> must_direct
-	l4proto(udp) && dport(443) -> block
-	dport(53) -> block
-	dip(geoip:cn) -> direct
-	domain(geosite:geolocation-!cn@cn, suffix: steamserver.net) -> direct
-	domain(geosite:geolocation-!cn, geosite:geolocation-cn@!cn) -> proxy
-	domain(geosite:geolocation-cn, geosite:tld-cn) -> direct
+	dport(123) -> direct # NTP 不能走代理
+
+	pname(
+		geph5-client, geph5-client-gui, gephgui-wry, mihomo, clash-rs,
+		hysteria2, naiveproxy, sing-box, v2ray, xray, cloudflared,
+		tailscaled, localsend_app, qbittorrent, AdGuardHome
+	) -> direct(must)
+
+	dip(geoip:private, 224.0.0.0/3, 'ff00::/8') -> direct(must)
+
+	domain(geosite:category-ads, geosite:category-ads-all) -> block
+	dport(53) -> block # 注释此项以让床底下的国家安全战士和你一起乐
+	dip(geoip:cn) -> direct # 不能误杀国内软件的 QUIC……虽然真的有国产软件用 QUIC 吗？
+	domain(suffix: steamserver.net, geosite:cn, geosite:geolocation-cn, geosite:tld-cn) -> direct
+	l4proto(udp) && dport(443) -> block # 只干掉境外 QUIC，不影响实时 UDP
+	domain(geosite:category-public-tracker) -> direct
 	fallback: proxy
 }

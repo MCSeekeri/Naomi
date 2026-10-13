@@ -34,6 +34,8 @@
       max-free = 5 * 1024 * 1024 * 1024;
       min-free = 1024 * 1024 * 1024;
       builders-use-substitutes = true;
+      narinfo-cache-negative-ttl = 600;
+      stalled-download-timeout = 120;
     };
     daemonCPUSchedPolicy = lib.mkDefault "idle"; # 确保在桌面环境下不影响用户体验
     daemonIOSchedClass = lib.mkDefault "idle";

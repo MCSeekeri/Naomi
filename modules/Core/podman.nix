@@ -15,4 +15,5 @@ _: {
 
   environment.sessionVariables.DOCKER_HOST = "unix:///run/podman/podman.sock";
   networking.firewall.interfaces."podman*".allowedUDPPorts = [ 53 ];
+  systemd.timers."podman-auto-update".wantedBy = [ "timers.target" ];
 }

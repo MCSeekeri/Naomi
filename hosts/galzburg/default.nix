@@ -191,13 +191,17 @@
     };
   };
 
-  security.acme = {
-    acceptTerms = true;
-    defaults = {
-      email = "mcseekeri@outlook.com";
-      dnsProvider = "cloudflare";
-      environmentFile = config.sops.secrets.acme.path;
-      extraLegoFlags = [ "--dns.propagation.disable-rns" ];
+  security = {
+    lockKernelModules = true;
+    protectKernelImage = true;
+    acme = {
+      acceptTerms = true;
+      defaults = {
+        email = "mcseekeri@outlook.com";
+        dnsProvider = "cloudflare";
+        environmentFile = config.sops.secrets.acme.path;
+        extraLegoFlags = [ "--dns.propagation.disable-rns" ];
+      };
     };
   };
 

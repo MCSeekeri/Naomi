@@ -3,7 +3,7 @@
     enable = true;
     algorithm = "zstd";
     priority = 10;
-    memoryPercent = 75;
+    memoryPercent = 50;
   };
 
   boot.kernel.sysctl = {
