@@ -25,6 +25,7 @@
     "${self}/modules/Services/niks3.nix"
     "${self}/modules/Services/openlist.nix"
     "${self}/modules/Services/privatebin.nix"
+    "${self}/modules/Services/rsshub.nix"
     "${self}/modules/Services/vaultwarden.nix"
     "${self}/modules/Services/xray.nix"
 
@@ -175,6 +176,12 @@
         key = "";
       };
       warp_private_key.sopsFile = "${self}/secrets/hosts/galzburg/xray.yaml";
+      rsshub_env = {
+        sopsFile = "${self}/secrets/hosts/galzburg/rsshub.env";
+        format = "dotenv";
+        key = "";
+        restartUnits = [ "rsshub.service" ];
+      };
     };
     templates = {
       "changedetection_env" = {
@@ -423,6 +430,19 @@
 
     privatebin.group = "caddy";
 
+    rsshub = {
+      redis.port = 6380;
+      settings = {
+        SUFFIX = " · rss.mcseekeri.com";
+        MASTODON_API_HOST = "mastodon.social";
+        MASTODON_API_ACCT_DOMAIN = "mastodon.social";
+      };
+    };
+    redis.servers.rsshub.settings = {
+      maxmemory = "64mb";
+      "maxmemory-policy" = "allkeys-lru";
+    };
+
     davis = {
       hostname = "dav.mcseekeri.com";
       nginx = null;
@@ -561,6 +581,13 @@
                 encode zstd gzip
 
                 reverse_proxy 127.0.0.1:${toString config.services.beszel.hub.port}
+              '';
+            };
+            "rss.mcseekeri.com" = {
+              extraConfig = ''
+                encode zstd gzip
+
+                reverse_proxy 127.0.0.1:${toString config.services.rsshub.settings.PORT}
               '';
             };
           };
