@@ -13,7 +13,13 @@
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
-    flake-compat.url = "github:NixOS/flake-compat";
+
+    systems.url = "github:nix-systems/default";
+
+    flake-utils = {
+      url = "github:numtide/flake-utils";
+      inputs.systems.follows = "systems";
+    };
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -44,6 +50,7 @@
         nixpkgs.follows = "nixpkgs";
         flake-parts.follows = "flake-parts";
         nur.follows = "nur";
+        systems.follows = "systems";
       };
     };
 
@@ -89,6 +96,19 @@
 
     flyline = {
       url = "github:HalFrgrd/flyline";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    gradient = {
+      url = "github:wavelens/gradient/latest";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-utils.follows = "flake-utils";
+      };
+    };
+
+    niri = {
+      url = "github:niri-wm/niri";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -141,7 +161,11 @@
 
             _module.args.pkgs = import inputs.nixpkgs {
               inherit system;
-              config.allowUnfree = true;
+              config = {
+                allowUnfree = true;
+                allowAliases = false;
+              };
+              overlays = [ ];
             };
 
             devShells.default = pkgs.mkShell {

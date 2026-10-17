@@ -21,6 +21,7 @@
     "${self}/modules/Services/cowrie.nix"
     "${self}/modules/Services/caddy.nix"
     "${self}/modules/Services/davis.nix"
+    "${self}/modules/Services/gradient.nix"
     "${self}/modules/Services/misskey.nix"
     "${self}/modules/Services/niks3.nix"
     "${self}/modules/Services/openlist.nix"
@@ -632,6 +633,32 @@
         };
       };
     };
+
+    gradient = {
+      domain = "gradient.mcseekeri.com";
+      port = 3100;
+
+      nar.hotCacheBytes = 64 * 1024 * 1024;
+      proto.maxConnections = 32;
+      database = {
+        cache.maxConnections = 8;
+        maxConnections = 8;
+        web.maxConnections = 4;
+      };
+
+      reverseProxy.caddy = {
+        enable = true;
+        useACMEHost = "gradient.mcseekeri.com";
+      };
+      s3 = {
+        bucket = "gradient";
+        region = "auto";
+        endpoint = "https://e948fb59c8aa2a756017549554f66d6a.r2.cloudflarestorage.com";
+        accessKeyId = "85f256dde9fd8255443d55901fc83062";
+      };
+      state.users.admin.email = "mcseekeri@outlook.com";
+    };
+    postgresql.settings.max_connections = 100;
   };
 
   systemd = {
