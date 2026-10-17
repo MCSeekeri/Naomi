@@ -45,7 +45,7 @@ in
     enableAllFirmware = false;
   };
 
-  system.stateVersion = "26.05";
+  system.stateVersion = "26.11";
   documentation.enable = false;
   security = {
     run0.wheelNeedsPassword = false;

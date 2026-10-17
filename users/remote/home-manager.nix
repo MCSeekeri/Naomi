@@ -4,7 +4,7 @@
   home = {
     username = "remote";
     homeDirectory = "/home/remote";
-    stateVersion = "26.05";
+    stateVersion = "26.11";
 
     packages = with pkgs; [
       # 开发套件
