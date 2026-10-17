@@ -20,7 +20,6 @@ in
     "${self}/modules/Server/ntfy-agent.nix"
     "${self}/modules/Services/cloudflared.nix"
     "${self}/modules/Services/caddy.nix"
-    "${self}/modules/Services/dae"
     "${self}/modules/Services/geph5.nix"
     "${self}/modules/Services/mysql.nix"
     "${self}/modules/Services/postgresql.nix"
@@ -79,25 +78,30 @@ in
     };
   };
 
-  users.users.remote.openssh.authorizedKeys.keys = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPLrxsKjyzH3Ar+W0KqbpnJvMRtdF4PdPsNSiP9kv12m 2601677867@qq.com"
-  ];
+  users = {
+    users = {
+      remote.openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPLrxsKjyzH3Ar+W0KqbpnJvMRtdF4PdPsNSiP9kv12m 2601677867@qq.com"
+      ];
 
-  users.users.deploy = {
-    isNormalUser = true;
-    home = "/var/www/remember11.com";
-    group = "caddy";
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB7CFTArcv1HbYM+RI24Xh6ZlC7v2vZr+6EQC6cas6lm Github_Action"
-    ];
-    shell = pkgs.bash;
-  };
+      deploy = {
+        isNormalUser = true;
+        home = "/var/www/remember11.com";
+        group = "caddy";
+        openssh.authorizedKeys.keys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB7CFTArcv1HbYM+RI24Xh6ZlC7v2vZr+6EQC6cas6lm Github_Action"
+        ];
+        shell = pkgs.bash;
+      };
 
-  users.groups.wordpress.gid = 988;
-  users.users.wordpress = {
-    isSystemUser = true;
-    uid = 33;
-    group = "wordpress";
+      wordpress = {
+        isSystemUser = true;
+        uid = 33;
+        group = "wordpress";
+      };
+    };
+
+    groups.wordpress.gid = 988;
   };
 
   services = {

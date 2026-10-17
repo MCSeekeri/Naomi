@@ -5,7 +5,7 @@
   ...
 }:
 {
-  # nixpkgs.overlays = [ inputs.nix-alien.overlays.default ]; # 等我给 nix-alien 提完 PR 支持 tarball 再说
+  # nixpkgs.overlays = [ inputs.nix-alien.overlays.default ];
 
   # environment = {
   #   systemPackages = with pkgs; [ nix-alien ];
@@ -20,7 +20,7 @@
       libraries =
         # https://github.com/Alper-Celik/MyConfig/blob/main/Configs/nix-ld.os.nix
         # 这哥们为什么要写好几遍……
-        lib.mkDefault (
+        lib.mkAfter (
           with pkgs;
           [
             acl
@@ -29,54 +29,40 @@
             curl
             dbus
             dbus-glib
-            desktop-file-utils
             e2fsprogs
             expat
-            flac
-            flite
-            fontconfig
-            freetype
-            fribidi
             fuse
             fuse3
             gmp
+            gnutls
             icu
             keyutils.lib
             libcap
-            libgbm
             libgcc
             libgcrypt
             libgpg-error
             libidn
-            libmikmod
-            libogg
-            libpng12
-            libsamplerate
+            libproxy
             libsodium
             libssh
-            libthai
-            libtheora
-            libtiff
+            libtool.lib
             libudev0-shim
             libunwind
             libusb1
             libuuid
-            libvorbis
-            libvpx
             libxcrypt
             libxcrypt-legacy
             libxml2
-            libtool.lib
+            ncurses
             nspr
             nss
+            onetbb
             openssl
             p11-kit
-            pixman
             python3
-            speex
+            sqlite
             stdenv.cc.cc
             systemd
-            onetbb
             udev
             util-linux
             xz
@@ -85,21 +71,27 @@
           ]
           ++ lib.optionals config.hardware.graphics.enable [
             alsa-lib
-            at-spi2-atk
             at-spi2-core
-            atk
             cairo
+            colord
             cups
+            desktop-file-utils
+            flac
+            flite
+            fontconfig
+            freetype
+            fribidi
             gdk-pixbuf
             glew_1_10
-            glib
             glfw
+            glib
             gst_all_1.gst-plugins-base
             gst_all_1.gst-plugins-ugly
             gst_all_1.gstreamer
             gtk2
             gtk3
             harfbuzz
+            kdePackages.qtbase
             libappindicator
             libayatana-appindicator
             libcaca
@@ -108,18 +100,34 @@
             libdbusmenu
             libdrm
             libepoxy
-            libGL
+            libgbm
             libGLU
             libglvnd
             libice
             libjack2
             libjpeg
+            libjpeg8
+            libmikmod
+            libogg
+            libpciaccess
+            libpng
+            libpng12
             libpulseaudio
             librsvg
+            libsamplerate
+            libsForQt5.qtbase
             libsm
+            libsndfile
+            libthai
+            libtheora
+            libtiff
             libva
             libvdpau
+            libvorbis
+            libvpx
+            libwebp
             libx11
+            libxcb
             libxcb-keysyms
             libxcb-render-util
             libxcb-wm
@@ -131,24 +139,24 @@
             libxft
             libxi
             libxinerama
+            libxkbcommon
+            libxkbfile
             libxmu
+            libxpm
             libxrandr
             libxrender
             libxscrnsaver
             libxshmfence
             libxt
             libxtst
-            libxkbcommon
-            libxkbfile
             libxxf86vm
-            libpciaccess
-            libxcb
             mesa
             mpv # PiliPlus
             openal
             pango
             pciutils
             pipewire
+            pixman
             SDL
             SDL2
             SDL2_image
@@ -157,6 +165,7 @@
             SDL_image
             SDL_mixer
             SDL_ttf
+            speex
             vulkan-loader
             wayland
             xcbutilxrm

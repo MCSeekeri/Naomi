@@ -2,10 +2,13 @@
   pkgs,
   self,
   lib,
+  inputs,
   ...
 }:
 {
   imports = [ "${self}/modules/Desktop/gui.nix" ];
+
+  nixpkgs.overlays = [ inputs.niri.overlays.default ];
 
   programs = {
     niri = {

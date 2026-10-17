@@ -1,6 +1,5 @@
 global {
 	wan_interface: auto
-	lan_interface: podman0
 	tcp_check_url: 'http://cp.cloudflare.com'
 }
 

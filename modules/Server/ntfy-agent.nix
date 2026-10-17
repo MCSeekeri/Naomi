@@ -165,9 +165,11 @@
         NTFY_HOSTNAME = "%H";
         NTFY_EXCLUDED = lib.concatStringsSep " " config.services.ntfy-agent.excludedUnits;
       };
-      serviceConfig.Type = "oneshot";
-      serviceConfig.EnvironmentFile = [ config.sops.secrets.ntfy_agent_env.path ];
-      serviceConfig.ExecStart = "/run/current-system/sw/bin/ntfy-notify alert %i";
+      serviceConfig = {
+        Type = "oneshot";
+        EnvironmentFile = [ config.sops.secrets.ntfy_agent_env.path ];
+        ExecStart = "/run/current-system/sw/bin/ntfy-notify alert %i";
+      };
     };
 
     systemd.services.ntfy-memguard = {
@@ -175,19 +177,25 @@
       wantedBy = [ "multi-user.target" ];
       wants = [ "network-online.target" ];
       after = [ "network-online.target" ];
-      environment.NTFY_TOPIC_PREFIX = "codec";
-      environment.NTFY_HOSTNAME = "%H";
-      serviceConfig.Type = "simple";
-      serviceConfig.EnvironmentFile = [ config.sops.secrets.ntfy_agent_env.path ];
-      serviceConfig.ExecStart = "/run/current-system/sw/bin/ntfy-memguard";
-      serviceConfig.Restart = "on-failure";
+      environment = {
+        NTFY_TOPIC_PREFIX = "codec";
+        NTFY_HOSTNAME = "%H";
+      };
+      serviceConfig = {
+        Type = "simple";
+        EnvironmentFile = [ config.sops.secrets.ntfy_agent_env.path ];
+        ExecStart = "/run/current-system/sw/bin/ntfy-memguard";
+        Restart = "on-failure";
+      };
     };
 
     services.smartd = {
       autodetect = true;
-      notifications.mail.enable = lib.mkDefault false;
-      notifications.wall.enable = lib.mkDefault false;
-      notifications.x11.enable = lib.mkDefault false;
+      notifications = {
+        mail.enable = lib.mkDefault false;
+        wall.enable = lib.mkDefault false;
+        x11.enable = lib.mkDefault false;
+      };
       defaults.monitored = "-a -m <nomailer> -M exec /run/current-system/sw/bin/ntfy-smartd-hook";
     };
 
