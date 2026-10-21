@@ -275,6 +275,21 @@
       onCalendar = "22:00";
       tag = "cyprus";
     };
+    llama-cpp = {
+      enable = true;
+      package = pkgs.llama-cpp-cuda;
+      settings = {
+        models-dir = "/var/lib/llama-cpp/models";
+        models-max = 1;
+        models-preset = "/var/lib/llama-cpp/models/models.ini";
+        sleep-idle-seconds = 1800;
+      };
+    };
+  };
+
+  systemd.services.llama-cpp = {
+    unitConfig.RequiresMountsFor = "/home/mcseekeri/models";
+    serviceConfig.BindReadOnlyPaths = [ "/home/mcseekeri/models:/var/lib/llama-cpp/models" ];
   };
 
   sops.secrets = {
