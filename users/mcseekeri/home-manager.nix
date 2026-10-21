@@ -43,8 +43,8 @@
       # bitwarden-desktop
       peazip
       libreoffice-qt # 无用户信息泄露，比 WPS 不知道高到哪里去了……
-      motrix
       v2rayn
+      calibre
       # 主题
       nur.repos.MCSeekeri.lain-kde-splashscreen
       # 游戏娱乐
@@ -91,6 +91,7 @@
       exiftool
       yad
       restic
+      wrangler
     ];
     # ++ (lib.pipe kdePackages.sources [
     #   builtins.attrNames
