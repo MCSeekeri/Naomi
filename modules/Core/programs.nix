@@ -20,6 +20,7 @@
       enable = lib.mkDefault true;
       package = pkgs.proxychains-ng;
       quietMode = true;
+      chain.type = lib.mkDefault "dynamic";
       proxies = {
         geph = {
           enable = true;

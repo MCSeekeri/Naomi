@@ -1,7 +1,6 @@
-{ lib, ... }: {
+_: {
   services.glances = {
     enable = true;
-    openFirewall = lib.mkDefault false;
     extraArgs = [
       "--bind"
       "127.0.0.1"

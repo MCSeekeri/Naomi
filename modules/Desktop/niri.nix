@@ -23,7 +23,10 @@
   };
 
   services = {
-    gnome.gnome-keyring.enable = true;
+    gnome = {
+      gnome-keyring.enable = true;
+      localsearch.enable = true;
+    };
     gvfs.enable = true;
     tumbler.enable = true;
   };
@@ -36,10 +39,6 @@
   };
 
   xdg.portal = {
-    extraPortals = with pkgs; [
-      xdg-desktop-portal-gtk
-      xdg-desktop-portal-gnome
-    ];
     config.niri = {
       "org.freedesktop.impl.portal.FileChooser" = "gtk";
       "org.freedesktop.impl.portal.ScreenCast" = "gnome";

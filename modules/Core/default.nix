@@ -121,9 +121,9 @@
         DNSOverTLS = lib.mkDefault "opportunistic";
       };
     };
-    journald.settings.Journal = lib.mkDefault {
-      SystemMaxUse = "1G";
-      MaxRetentionSec = "1month";
+    journald.settings.Journal = {
+      SystemMaxUse = lib.mkDefault "1G";
+      MaxRetentionSec = lib.mkDefault "1month";
     };
 
     ananicy = lib.mkIf (lib.isAttended config) {

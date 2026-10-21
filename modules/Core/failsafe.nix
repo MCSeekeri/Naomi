@@ -19,6 +19,12 @@ lib.mkIf (lib.isServer config) {
       availableKernelModules = [
         "virtio_net"
         "virtio_pci"
+        "e1000e"
+        "igb"
+        "ixgbe"
+        "i40e"
+        "r8169"
+        # 实机显卡驱动……
       ];
 
       network = {
@@ -28,7 +34,11 @@ lib.mkIf (lib.isServer config) {
           port = 22;
           ignoreEmptyHostKeys = true;
           authorizedKeys = lib.unique (
-            lib.concatLists (lib.mapAttrsToList (_: u: u.openssh.authorizedKeys.keys) config.users.users)
+            lib.concatLists (
+              lib.mapAttrsToList (
+                _: u: lib.optionals (u.enable && builtins.elem "wheel" u.extraGroups) u.openssh.authorizedKeys.keys
+              ) config.users.users
+            )
           );
         };
       };

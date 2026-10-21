@@ -41,12 +41,10 @@
     mangohud
     adwsteamgtk
     samrewritten
-    steam-run
     steamtinkerlaunch
     ludusavi
     steam-tui
     steamcmd
-    gamemode
     umu-launcher
     protonup-qt
     dxvk

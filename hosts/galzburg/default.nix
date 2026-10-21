@@ -230,7 +230,6 @@
               {
                 id = config.sops.placeholder."xray-uuid";
                 email = "galzburg@xhttp";
-                flow = "xtls-rprx-vision";
               }
             ];
             decryption = config.sops.placeholder."xray-vless-decryption";

@@ -6,7 +6,10 @@
   ...
 }:
 {
-  imports = [ inputs.niks3.nixosModules.niks3 ];
+  imports = [
+    inputs.niks3.nixosModules.niks3
+    ./postgresql.nix
+  ];
 
   services.niks3 = {
     enable = true;

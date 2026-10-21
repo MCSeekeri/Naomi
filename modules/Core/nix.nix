@@ -8,11 +8,11 @@
   nix = {
     channel.enable = false;
     distributedBuilds = true;
-    gc = lib.mkDefault {
-      automatic = true;
-      dates = "daily";
-      options = "--delete-older-than 7d"; # 删除超过一周的垃圾文件，硬盘笑传之踩踩 Backup
-      persistent = true;
+    gc = {
+      automatic = lib.mkDefault true;
+      dates = lib.mkDefault "daily";
+      options = lib.mkDefault "--delete-older-than 7d"; # 删除超过一周的垃圾文件，硬盘笑传之踩踩 Backup
+      persistent = lib.mkDefault true;
     };
     optimise.automatic = lib.mkDefault (!config.boot.isContainer);
     settings = {

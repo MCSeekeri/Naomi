@@ -88,7 +88,7 @@
             "OPENLIST_ADDR=127.0.0.1"
             "OPENLIST_HTTP_PORT=${toString instance.port}"
             "OPENLIST_DB_TYPE=postgres"
-            "OPENLIST_DB_DSN=host=/run/postgresql user=openlist dbname=openlist port=5432 sslmode=disable TimeZone=Asia/Shanghai"
+            "OPENLIST_DB_DSN=host=/run/postgresql user=openlist dbname=openlist port=5432 sslmode=disable TimeZone=${config.time.timeZone}"
           ]
           ++ lib.optionals config.services.meilisearch.enable [
             "OPENLIST_MEILISEARCH_INDEX=${instance.meilisearchIndex}"
@@ -132,7 +132,6 @@
           }
         ];
       };
-      nginx.enable = lib.mkDefault true;
       nginx.virtualHosts = lib.mkIf config.services.nginx.enable (
         lib.mapAttrs' (
           _: instance:

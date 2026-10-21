@@ -1,11 +1,12 @@
 { lib, ... }: {
-  services.avahi = lib.mkDefault {
-    enable = true;
-    nssmdns4 = true;
-    publish = {
-      enable = true;
-      domain = true;
-      userServices = true;
+  services.avahi = {
+    enable = lib.mkDefault true;
+    nssmdns4 = lib.mkDefault true;
+    settings.publish = {
+      disable-publishing = lib.mkDefault false;
+      disable-user-service-publishing = lib.mkDefault false;
+      publish-addresses = lib.mkDefault true;
+      publish-domain = lib.mkDefault true;
     };
   };
 }

@@ -1,7 +1,8 @@
-{ pkgs, ... }: {
+{ ... }: {
+  imports = [ ./postgresql.nix ];
+
   services.misskey = {
     enable = true;
-    package = pkgs.misskey;
     # reverseProxy = {
     #   enable = true;
     #   host = "example.com";
@@ -12,5 +13,4 @@
     meilisearch.createLocally = true;
     redis.createLocally = true;
   };
-  services.meilisearch.package = pkgs.meilisearch;
 }

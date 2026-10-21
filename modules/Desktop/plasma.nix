@@ -1,5 +1,4 @@
 {
-  pkgs,
   lib,
   self,
   inputs,
@@ -26,7 +25,6 @@
   };
 
   xdg.portal = {
-    extraPortals = with pkgs; [ kdePackages.xdg-desktop-portal-kde ];
     config.kde = {
       default = "kde";
     };

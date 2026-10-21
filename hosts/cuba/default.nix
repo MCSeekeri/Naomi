@@ -47,7 +47,6 @@ in
     "${self}/modules/Core/nix.nix"
   ];
   nixpkgs = {
-    hostPlatform = "x86_64-linux"; # 目前只考虑 x86_64
     overlays = [
       self.overlays.default
       (_final: prev: {

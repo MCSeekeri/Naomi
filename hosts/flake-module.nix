@@ -14,6 +14,7 @@
           specialArgs = {
             inherit inputs;
             inherit (inputs) self;
+            outputs = inputs.self;
             lib = inputs.self.lib;
           };
           modules = [ ./${name} ];

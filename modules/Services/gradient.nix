@@ -5,7 +5,10 @@
   ...
 }:
 {
-  imports = [ inputs.gradient.nixosModules.default ];
+  imports = [
+    inputs.gradient.nixosModules.default
+    ./postgresql.nix
+  ];
 
   services.gradient = {
     enable = true;
