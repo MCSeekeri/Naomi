@@ -1,6 +1,10 @@
 {
   projectRootFile = "flake.nix";
 
+  settings.global = {
+    excludes = [ "modules/Services/caddy-iis/legacy/*" ];
+  };
+
   programs = {
     nixfmt = {
       enable = true;

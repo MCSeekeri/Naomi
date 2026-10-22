@@ -20,6 +20,7 @@
     "${self}/modules/Services/cloudflared.nix"
     "${self}/modules/Services/cowrie.nix"
     "${self}/modules/Services/caddy.nix"
+    "${self}/modules/Services/caddy-iis"
     "${self}/modules/Services/davis.nix"
     "${self}/modules/Services/gradient.nix"
     "${self}/modules/Services/misskey.nix"
@@ -374,6 +375,8 @@
           domain = "pan.mcseekeri.com";
           port = 25478;
           caddyExtraConfig = ''
+            ${config.services.caddy.iisCamouflage.fragment}
+
             handle /static* {
               reverse_proxy h2c://127.0.0.1:30101 {
                 header_up X-Forwarded-For {http.vars.client_ip}
@@ -483,6 +486,9 @@
     # QUIC 和 IPv6 全面普及的世界，你在哪……
 
     caddy = {
+      iisCamouflage = {
+        excludeHosts = [ "mcseekeri.com" ];
+      };
       globalConfig = ''
         servers {
           trusted_proxies static 127.0.0.1/8 ::1 173.245.48.0/20 103.21.244.0/22 103.22.200.0/22 103.31.4.0/22 141.101.64.0/18 108.162.192.0/18 190.93.240.0/20 188.114.96.0/20 197.234.240.0/22 198.41.128.0/17 162.158.0.0/15 104.16.0.0/13 104.24.0.0/14 172.64.0.0/13 131.0.72.0/22 2400:cb00::/32 2606:4700::/32 2803:f800::/32 2405:b500::/32 2405:8100::/32 2a06:98c0::/29 2c0f:f248::/32
@@ -490,7 +496,7 @@
           client_ip_headers CF-Connecting-IP X-Forwarded-For
         }
       '';
-      virtualHosts =
+      virtualHosts = config.services.caddy.iisCamouflage.transform (
         lib.mapAttrs
           (
             name: v:
@@ -546,9 +552,7 @@
                   }
                 }
 
-                handle {
-                  respond "Not Found" 404
-                }
+                ${config.services.caddy.iisCamouflage.site}
               '';
             };
             "dav.mcseekeri.com" = {
@@ -594,7 +598,8 @@
                 reverse_proxy 127.0.0.1:${toString config.services.rsshub.settings.PORT}
               '';
             };
-          };
+          }
+      );
     };
 
     vaultwarden = {
