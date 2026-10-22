@@ -1,4 +1,4 @@
-{ ... }: {
+{ lib, ... }: {
   imports = [ ./postgresql.nix ];
 
   services.misskey = {
@@ -12,5 +12,14 @@
     database.createLocally = true;
     meilisearch.createLocally = true;
     redis.createLocally = true;
+  };
+
+  systemd.services.misskey = {
+    serviceConfig = lib.serviceHardening {
+      ReadWritePaths = [
+        "/run/postgresql"
+        "/run/redis-misskey"
+      ];
+    };
   };
 }

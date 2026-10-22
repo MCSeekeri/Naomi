@@ -15,5 +15,14 @@
     log_errors = on
     memory_limit = 256M
     max_execution_time = 120
+    fatal_error_backtraces = 0
+    session.upload_progress.enabled = 0
   '';
+
+  systemd.services.phpfpm-davis = {
+    serviceConfig = lib.phpPoolHardening [
+      "/var/lib/davis"
+      "/run/postgresql"
+    ];
+  };
 }

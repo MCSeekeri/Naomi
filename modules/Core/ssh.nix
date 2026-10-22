@@ -39,5 +39,18 @@
     };
   };
 
-  systemd.services.sshd.serviceConfig.OOMScoreAdjust = -1000;
+  systemd.services = {
+    sshd.serviceConfig = {
+      OOMScoreAdjust = -1000;
+    };
+
+    fail2ban.serviceConfig = lib.serviceHardening {
+      RestrictAddressFamilies = [
+        "AF_UNIX"
+        "AF_INET"
+        "AF_INET6"
+        "AF_NETLINK"
+      ];
+    };
+  };
 }

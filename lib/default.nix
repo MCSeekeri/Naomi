@@ -61,7 +61,6 @@ lib.extend (
               xmlwriter
               zip
               zlib
-              opcache
               redis
             ]
           );
@@ -79,6 +78,7 @@ lib.extend (
             upload_max_filesize = 64M
             post_max_size = 64M
             max_execution_time = 300
+            fatal_error_backtraces = 0
           '';
         };
       in
@@ -106,13 +106,47 @@ lib.extend (
       SystemCallArchitectures = "native";
       SystemCallFilter = [
         "@system-service"
-        "~@privileged"
-        "~@resources"
+        "~@debug"
+        "~@mount"
+        "~@raw-io"
         "~@reboot"
+        "~@swap"
         "~@obsolete"
+        "~@cpu-emulation"
       ];
       UMask = "0077";
     };
+
+    serviceHardening =
+      extra:
+      let
+        readWritePaths = extra.ReadWritePaths or [ ];
+        rest = removeAttrs extra [ "ReadWritePaths" ];
+      in
+      final.recursiveUpdate final.hardenedServiceConfig (
+        { ProtectSystem = lib.mkForce "strict"; } // rest
+      )
+      // lib.optionalAttrs (readWritePaths != [ ]) { ReadWritePaths = final.mkAfter readWritePaths; };
+
+    phpPoolHardening =
+      writablePaths:
+      final.recursiveUpdate final.hardenedServiceConfig {
+        ProtectSystem = lib.mkForce "strict";
+        UMask = "0022";
+        SystemCallFilter = [
+          "@system-service"
+          "~@debug"
+          "~@mount"
+          "~@raw-io"
+          "~@reboot"
+          "~@swap"
+          "~@obsolete"
+          "~@cpu-emulation"
+        ];
+      }
+      // {
+        ReadWritePaths = final.mkAfter writablePaths;
+      };
 
     mkResticBackup =
       {

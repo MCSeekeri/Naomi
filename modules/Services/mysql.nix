@@ -24,8 +24,28 @@
     };
   };
 
-  systemd.services.mysql-backup = lib.mkIf config.services.mysql.enable {
-    after = [ "mysql.service" ];
-    requires = [ "mysql.service" ];
+  systemd.services = {
+    mysql-backup = lib.mkIf config.services.mysql.enable {
+      after = [ "mysql.service" ];
+      requires = [ "mysql.service" ];
+    };
+
+    mysql.serviceConfig = lib.mkIf config.services.mysql.enable (
+      lib.serviceHardening {
+        ProcSubset = "all";
+        ProtectProc = "default";
+        SystemCallFilter = [
+          "@system-service"
+          "@aio"
+          "~@debug"
+          "~@mount"
+          "~@raw-io"
+          "~@reboot"
+          "~@swap"
+          "~@obsolete"
+          "~@cpu-emulation"
+        ];
+      }
+    );
   };
 }

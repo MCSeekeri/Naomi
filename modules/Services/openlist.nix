@@ -99,7 +99,6 @@
           ) "OPENLIST_DB_TABLE_PREFIX=${instance.dbTablePrefix}";
           StateDirectory = instance.stateDirectory;
           Restart = "on-failure";
-          ReadWritePaths = [ "/var/lib/${instance.stateDirectory}" ];
           BindReadOnlyPaths = lib.optionals config.services.postgresql.enable [ "/run/postgresql" ];
           MountAPIVFS = true;
           NoNewPrivileges = true;

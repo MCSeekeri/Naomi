@@ -675,7 +675,37 @@
     };
     settings.Manager.DefaultLimitNOFILE = "1048576";
     services = {
-      tailscaled.serviceConfig.LogLevelMax = "notice";
+      tailscaled.serviceConfig = {
+        LogLevelMax = "notice";
+      };
+
+      luker = {
+        serviceConfig = lib.serviceHardening { ReadWritePaths = [ "/var/lib/SillyTavern" ]; };
+      };
+
+      beszel-hub = {
+        serviceConfig = lib.serviceHardening {
+          RestrictAddressFamilies = [
+            "AF_UNIX"
+            "AF_INET"
+            "AF_INET6"
+          ];
+          ProtectHome = "read-only";
+          ProtectControlGroups = lib.mkForce "strict";
+          UMask = lib.mkForce "0077";
+        };
+      };
+
+      ntfy-sh = {
+        serviceConfig = lib.serviceHardening {
+          RestrictAddressFamilies = [
+            "AF_UNIX"
+            "AF_INET"
+            "AF_INET6"
+          ];
+        };
+      };
+
       misskey = {
         after = [
           "sops-nix.service"

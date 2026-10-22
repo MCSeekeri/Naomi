@@ -186,6 +186,37 @@
         EnvironmentFile = [ config.sops.secrets.ntfy_agent_env.path ];
         ExecStart = "/run/current-system/sw/bin/ntfy-memguard";
         Restart = "on-failure";
+        NoNewPrivileges = true;
+        PrivateTmp = true;
+        ProtectHome = true;
+        ProtectSystem = "strict";
+        ProtectClock = true;
+        ProtectControlGroups = true;
+        ProtectHostname = true;
+        ProtectKernelLogs = true;
+        ProtectKernelModules = true;
+        ProtectKernelTunables = true;
+        RestrictNamespaces = true;
+        RestrictRealtime = true;
+        RestrictSUIDSGID = true;
+        LockPersonality = true;
+        SystemCallArchitectures = "native";
+        SystemCallFilter = [
+          "@system-service"
+          "~@debug"
+          "~@mount"
+          "~@raw-io"
+          "~@reboot"
+          "~@swap"
+          "~@obsolete"
+          "~@cpu-emulation"
+        ];
+        UMask = "0077";
+        RestrictAddressFamilies = [
+          "AF_UNIX"
+          "AF_INET"
+          "AF_INET6"
+        ];
       };
     };
 

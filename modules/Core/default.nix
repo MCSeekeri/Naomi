@@ -103,6 +103,7 @@
   };
 
   services = {
+    phpfpm.phpOptions = "session.upload_progress.enabled = 0";
     userborn.enable = true;
     resolved = {
       enable = true;
@@ -200,5 +201,17 @@
     };
 
     sops.validateSopsFiles = lib.mkForce false;
+  };
+
+  systemd.services = {
+    mandb.serviceConfig = lib.serviceHardening { };
+    nscd.serviceConfig = lib.serviceHardening {
+      RestrictAddressFamilies = [
+        "AF_UNIX"
+        "AF_INET"
+        "AF_INET6"
+      ];
+      ProtectHome = "read-only";
+    };
   };
 }

@@ -2,6 +2,7 @@
   config,
   inputs,
   self,
+  lib,
   ...
 }:
 {
@@ -51,6 +52,22 @@
     gradient_s3_secret_key = {
       sopsFile = "${self}/secrets/hosts/${config.networking.hostName}/gradient.yaml";
       key = "GRADIENT_S3_SECRET_KEY";
+    };
+  };
+
+  systemd.services.gradient-server = {
+    serviceConfig = lib.serviceHardening {
+      ReadWritePaths = [
+        "/var/lib/gradient"
+        "/run/postgresql"
+      ];
+      ProcSubset = lib.mkForce "all";
+      ProtectProc = lib.mkForce "default";
+      RestrictAddressFamilies = [
+        "AF_UNIX"
+        "AF_INET"
+        "AF_INET6"
+      ];
     };
   };
 }

@@ -1,4 +1,10 @@
-{ config, self, ... }: {
+{
+  config,
+  lib,
+  self,
+  ...
+}:
+{
   services.cloudflared = {
     enable = true;
     tunnels = {
@@ -13,5 +19,15 @@
 
   sops.secrets."cloudflare-tunnel-${config.networking.hostName}" = {
     sopsFile = "${self}/secrets/services/cloudflare.yaml";
+  };
+
+  systemd.services."cloudflared-tunnel-${config.networking.hostName}" = {
+    serviceConfig = lib.serviceHardening {
+      RestrictAddressFamilies = [
+        "AF_UNIX"
+        "AF_INET"
+        "AF_INET6"
+      ];
+    };
   };
 }

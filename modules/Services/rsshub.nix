@@ -14,4 +14,16 @@
       LOGGER_LEVEL = "warn";
     };
   };
+
+  systemd.services.rsshub = {
+    serviceConfig = lib.serviceHardening {
+      ReadWritePaths = [ "/run/redis-rsshub" ];
+      RestrictAddressFamilies = [
+        "AF_UNIX"
+        "AF_INET"
+        "AF_INET6"
+        "AF_NETLINK"
+      ];
+    };
+  };
 }

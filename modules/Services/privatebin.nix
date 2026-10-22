@@ -1,4 +1,4 @@
-{
+{ lib, ... }: {
   services.privatebin = {
     enable = true;
     poolConfig = { };
@@ -19,5 +19,9 @@
         batchsize = 10;
       };
     };
+  };
+
+  systemd.services.phpfpm-privatebin = {
+    serviceConfig = lib.phpPoolHardening [ "/var/lib/privatebin" ];
   };
 }

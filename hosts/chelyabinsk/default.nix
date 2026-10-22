@@ -46,9 +46,6 @@ in
 
   system.stateVersion = "26.11";
   documentation.enable = false;
-  security = {
-    run0.wheelNeedsPassword = false;
-  };
   sops.secrets = {
     "forgejo-turnstile-sitekey" = {
       sopsFile = "${self}/secrets/hosts/chelyabinsk/forgejo.yaml";
@@ -327,7 +324,15 @@ in
       "d /var/lib/siyuan 0755 root root -"
     ];
 
-    services."cloudflared-tunnel-chelyabinsk".environment.TUNNEL_TRANSPORT_PROTOCOL =
-      lib.mkForce "http2"; # 哈哈，QUIC ……
+    services = {
+      "cloudflared-tunnel-chelyabinsk".environment.TUNNEL_TRANSPORT_PROTOCOL = lib.mkForce "http2";
+    }
+    // lib.genAttrs [ "phpfpm-transteam" "phpfpm-studio" ] (name: {
+      serviceConfig = lib.phpPoolHardening [
+        "/var/www/wordpress/${lib.removePrefix "phpfpm-" name}"
+        "/run/mysqld"
+        "/run/redis-wordpress"
+      ];
+    });
   };
 }
