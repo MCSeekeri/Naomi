@@ -74,13 +74,13 @@ lib.extend (
             "pm.process_idle_timeout" = "10s";
             "pm.max_requests" = 500;
           };
-          phpOptions = ''
-            memory_limit = 256M
-            upload_max_filesize = 64M
-            post_max_size = 64M
-            max_execution_time = 300
-            fatal_error_backtraces = 0
-          '';
+          phpOptions = {
+            memory_limit = "256M";
+            upload_max_filesize = "64M";
+            post_max_size = "64M";
+            max_execution_time = 300;
+            fatal_error_backtraces = 0;
+          };
         };
       in
       final.genAttrs names (_: pool);

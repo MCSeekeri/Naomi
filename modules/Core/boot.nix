@@ -22,8 +22,5 @@
       "vm.max_map_count" = 2147483642;
       "kernel.panic" = 15; # 内核恐慌 15 秒之后重启
     };
-    initrd = {
-      systemd.enable = lib.mkDefault true;
-    };
   };
 }

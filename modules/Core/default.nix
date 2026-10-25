@@ -103,7 +103,9 @@
   };
 
   services = {
-    phpfpm.phpOptions = "session.upload_progress.enabled = 0";
+    phpfpm.phpOptions = {
+      "session.upload_progress.enabled" = 0;
+    };
     userborn.enable = true;
     resolved = {
       enable = true;

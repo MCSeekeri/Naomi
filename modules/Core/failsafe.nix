@@ -4,7 +4,6 @@
   pkgs,
   ...
 }:
-
 lib.mkIf (lib.isServer config) {
   boot = {
     kernelModules = [ "softdog" ];
