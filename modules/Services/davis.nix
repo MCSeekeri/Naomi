@@ -1,4 +1,4 @@
-{ lib, ... }: {
+{ config, lib, ... }: {
   services.davis = {
     enable = true;
     nginx = lib.mkDefault null;
@@ -20,9 +20,8 @@
   };
 
   systemd.services.phpfpm-davis = {
-    serviceConfig = lib.phpPoolHardening [
-      "/var/lib/davis"
-      "/run/postgresql"
-    ];
+    serviceConfig = lib.phpPoolHardening (
+      lib.optional (config.services.davis.database.driver == "postgresql") "/run/postgresql"
+    );
   };
 }

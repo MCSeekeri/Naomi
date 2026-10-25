@@ -1,4 +1,4 @@
-{ lib, ... }: {
+{ config, lib, ... }: {
   imports = [ ./postgresql.nix ];
 
   services.misskey = {
@@ -16,10 +16,9 @@
 
   systemd.services.misskey = {
     serviceConfig = lib.serviceHardening {
-      ReadWritePaths = [
-        "/run/postgresql"
-        "/run/redis-misskey"
-      ];
+      ReadWritePaths =
+        lib.optional config.services.misskey.database.createLocally "/run/postgresql"
+        ++ lib.optional config.services.misskey.redis.createLocally "/run/redis-misskey";
     };
   };
 }

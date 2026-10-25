@@ -1,4 +1,4 @@
-{ lib, ... }: {
+{ config, lib, ... }: {
   services.caddy = {
     enable = true;
     globalConfig = lib.mkBefore ''
@@ -8,7 +8,7 @@
 
   systemd.services.caddy = {
     serviceConfig = lib.serviceHardening {
-      ReadWritePaths = [ "/run/phpfpm" ];
+      ReadWritePaths = lib.optional (config.services.phpfpm.pools != { }) "/run/phpfpm";
       RestrictAddressFamilies = [
         "AF_UNIX"
         "AF_INET"

@@ -328,11 +328,11 @@ in
       "cloudflared-tunnel-chelyabinsk".environment.TUNNEL_TRANSPORT_PROTOCOL = lib.mkForce "http2";
     }
     // lib.genAttrs [ "phpfpm-transteam" "phpfpm-studio" ] (name: {
-      serviceConfig = lib.phpPoolHardening [
-        "/var/www/wordpress/${lib.removePrefix "phpfpm-" name}"
-        "/run/mysqld"
-        "/run/redis-wordpress"
-      ];
+      serviceConfig = lib.phpPoolHardening (
+        [ "/var/www/wordpress/${lib.removePrefix "phpfpm-" name}" ]
+        ++ lib.optional config.services.mysql.enable "/run/mysqld"
+        ++ lib.optional config.services.redis.servers.wordpress.enable "/run/redis-wordpress"
+      );
     });
   };
 }

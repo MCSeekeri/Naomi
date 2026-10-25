@@ -17,7 +17,9 @@
 
   systemd.services.rsshub = {
     serviceConfig = lib.serviceHardening {
-      ReadWritePaths = [ "/run/redis-rsshub" ];
+      ReadWritePaths = lib.optional (
+        config.services.rsshub.redis.enable && config.services.rsshub.redis.createLocally
+      ) "/run/redis-rsshub";
       RestrictAddressFamilies = [
         "AF_UNIX"
         "AF_INET"

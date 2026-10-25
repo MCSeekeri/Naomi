@@ -13,6 +13,12 @@ lib.extend (
       || (config.programs.umbriel.enable or false)
       || (config.services.desktopManager.plasma6.enable or false);
 
+    hasBtrfs =
+      config:
+      builtins.any (name: (config.fileSystems.${name}.fsType or "") == "btrfs") (
+        builtins.attrNames config.fileSystems
+      );
+
     mkWordpressPhpPools =
       { pkgs, names }:
       let

@@ -57,7 +57,7 @@
 
   systemd.services.niks3 = {
     serviceConfig = lib.serviceHardening {
-      ReadWritePaths = [ "/run/postgresql" ];
+      ReadWritePaths = lib.optional config.services.niks3.database.createLocally "/run/postgresql";
       RestrictAddressFamilies = [
         "AF_UNIX"
         "AF_INET"
