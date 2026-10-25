@@ -53,7 +53,7 @@
       privateKeyFile = config.sops.secrets.warp_private_key.path;
       ips = [
         "172.16.0.2/32"
-        "2606:4700:110:8b52:44af:1ff7:ad4f:71b7/128"
+        "2606:4700:110:8a9c:9c1d:6547:d170:460b/128"
       ];
       mtu = 1280;
       allowedIPsAsRoutes = false;
@@ -64,11 +64,42 @@
             "0.0.0.0/0"
             "::/0"
           ];
-          endpoint = "162.159.192.10:2408";
+          endpoint = "162.159.192.1:2408";
           persistentKeepalive = 25;
         }
       ];
     };
+  };
+
+  users = {
+    groups.usque = { };
+    users.usque = {
+      isSystemUser = true;
+      group = "usque";
+    };
+  };
+
+  systemd.services.usque = {
+    description = "usque MASQUE client (WARP over HTTP/3)";
+    after = [ "network-online.target" ];
+    wants = [ "network-online.target" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.usque}/bin/usque socks -b 127.0.0.1 -p 1080 -c ${config.sops.secrets.usque_config.path}";
+      User = "usque";
+      Group = "usque";
+      Restart = "always";
+      RestartSec = "5s";
+      ProtectSystem = "strict";
+      ProtectHome = true;
+      PrivateTmp = true;
+      NoNewPrivileges = true;
+      RestrictAddressFamilies = [
+        "AF_INET"
+        "AF_INET6"
+        "AF_UNIX"
+      ];
+    };
+    wantedBy = [ "multi-user.target" ];
   };
 
   hardware = {
@@ -178,6 +209,13 @@
         key = "";
       };
       warp_private_key.sopsFile = "${self}/secrets/hosts/galzburg/xray.yaml";
+      usque_config = {
+        sopsFile = "${self}/secrets/hosts/galzburg/xray.yaml";
+        key = "usque-config";
+        owner = "usque";
+        group = "usque";
+        mode = "0400";
+      };
       rsshub_env = {
         sopsFile = "${self}/secrets/hosts/galzburg/rsshub.env";
         format = "dotenv";
@@ -216,8 +254,9 @@
       };
       dns = {
         servers = [
-          "1.1.1.1"
-          "1.0.0.1"
+          "https://1.1.1.1/dns-query"
+          "https://1.0.0.1/dns-query"
+          "https://8.8.8.8/dns-query"
         ];
       };
       inbounds = [
@@ -264,13 +303,35 @@
           };
         }
       ];
+      observatory = {
+        subjectSelector = [
+          "warp"
+          "usque"
+        ];
+        probeUrl = "http://cp.cloudflare.com/generate_204";
+        probeInterval = "15s";
+        enableConcurrency = true;
+      };
       routing = {
         domainStrategy = "IPIfNonMatch";
+        balancers = [
+          {
+            tag = "auto";
+            selector = [
+              "warp"
+              "usque"
+            ];
+            fallbackTag = "direct";
+            strategy = {
+              type = "leastPing";
+            };
+          }
+        ];
         rules = [
           {
             type = "field";
             port = 53;
-            outboundTag = "dns-direct";
+            balancerTag = "auto";
           }
           {
             # 容易被大公司用 DMCA 击落
@@ -303,12 +364,17 @@
             ip = [ "geoip:cn" ];
             outboundTag = "block";
           }
+          {
+            type = "field";
+            network = "tcp,udp";
+            balancerTag = "auto";
+          }
         ];
       };
       outbounds = [
         {
           protocol = "freedom";
-          tag = "direct";
+          tag = "warp";
           streamSettings = {
             sockopt = {
               interface = "warp0";
@@ -317,8 +383,20 @@
           };
         }
         {
+          protocol = "socks";
+          tag = "usque";
+          settings = {
+            servers = [
+              {
+                address = "127.0.0.1";
+                port = 1080;
+              }
+            ];
+          };
+        }
+        {
           protocol = "freedom";
-          tag = "dns-direct";
+          tag = "direct";
         }
         {
           protocol = "blackhole";
