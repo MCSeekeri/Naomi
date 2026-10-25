@@ -22,7 +22,7 @@
     "${self}/modules/Services/caddy.nix"
     "${self}/modules/Services/caddy-iis"
     "${self}/modules/Services/davis.nix"
-    "${self}/modules/Services/gradient.nix"
+    # "${self}/modules/Services/gradient.nix"
     "${self}/modules/Services/misskey.nix"
     "${self}/modules/Services/niks3.nix"
     "${self}/modules/Services/openlist.nix"
@@ -640,29 +640,34 @@
 
     gradient = {
       domain = "gradient.mcseekeri.com";
-      port = 3100;
 
-      nar.hotCacheBytes = 64 * 1024 * 1024;
-      proto.maxConnections = 32;
-      database = {
-        cache.maxConnections = 8;
-        maxConnections = 8;
-        web.maxConnections = 4;
+      environmentVariables = {
+        GRADIENT_PORT = 3100;
+        GRADIENT_STATE_DELETE = false;
+        GRADIENT_NAR_HOT_CACHE_BYTES = 64 * 1024 * 1024;
+        GRADIENT_PROTO_MAX_CONNECTIONS = 32;
+        GRADIENT_DATABASE_MAX_CONNECTIONS = 8;
+        GRADIENT_DATABASE_CACHE_MAX_CONNECTIONS = 8;
+        GRADIENT_DATABASE_WEB_MAX_CONNECTIONS = 4;
+        GRADIENT_S3_BUCKET = "gradient";
+        GRADIENT_S3_REGION = "auto";
+        GRADIENT_S3_ENDPOINT = "https://e948fb59c8aa2a756017549554f66d6a.r2.cloudflarestorage.com";
+        GRADIENT_S3_ACCESS_KEY_ID = "85f256dde9fd8255443d55901fc83062";
       };
 
-      reverseProxy.caddy = {
-        enable = true;
-        useACMEHost = "gradient.mcseekeri.com";
+      state.users.admin = {
+        email = "mcseekeri@outlook.com";
+        password_file = config.sops.secrets.gradient_admin_password.path;
+        superuser = true;
       };
-      s3 = {
-        bucket = "gradient";
-        region = "auto";
-        endpoint = "https://e948fb59c8aa2a756017549554f66d6a.r2.cloudflarestorage.com";
-        accessKeyId = "85f256dde9fd8255443d55901fc83062";
-      };
-      state.users.admin.email = "mcseekeri@outlook.com";
     };
-    postgresql.settings.max_connections = 100;
+    postgresql.settings = {
+      max_connections = 100;
+      wal_compression = "zstd";
+      wal_buffers = "64MB";
+      checkpoint_timeout = "15min";
+      synchronous_commit = "off";
+    };
   };
 
   systemd = {

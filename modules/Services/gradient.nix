@@ -1,38 +1,43 @@
 {
   config,
-  inputs,
-  self,
   lib,
+  self,
   ...
 }:
+let
+  cfg = config.services.gradient;
+  env = cfg.environmentVariables;
+in
 {
-  imports = [
-    inputs.gradient.nixosModules.default
-    ./postgresql.nix
-  ];
+  imports = [ ./postgresql.nix ];
 
-  services.gradient = {
-    enable = true;
-    proto.public = true;
-
-    secrets = {
-      jwtFile = config.sops.secrets.gradient_jwt.path;
-      cryptFile = config.sops.secrets.gradient_crypt.path;
-    };
-
-    postgres.enable = true;
-
-    s3 = {
+  services = {
+    gradient = {
       enable = true;
-      secretAccessKeyFile = config.sops.secrets.gradient_s3_secret_key.path;
+      nginx.enable = lib.mkDefault false;
+
+      secrets = {
+        jwtFile = config.sops.secrets.gradient_jwt.path;
+        cryptFile = config.sops.secrets.gradient_crypt.path;
+        s3SecretAccessKeyFile = config.sops.secrets.gradient_s3_secret_key.path;
+      };
+
+      postgres.enable = lib.mkDefault true;
     };
 
-    state = {
-      delete = false;
-      users.admin = {
-        password_file = config.sops.secrets.gradient_admin_password.path;
-        superuser = true;
-      };
+    caddy.virtualHosts.${cfg.domain} = {
+      useACMEHost = cfg.domain;
+      extraConfig = ''
+        @backend path /api/* /cache/* /proto
+        handle @backend {
+          reverse_proxy http://${env.GRADIENT_LISTEN_ADDR}:${toString env.GRADIENT_PORT}
+        }
+        handle {
+          root * ${cfg.packages.frontend}/share/gradient-frontend
+          try_files {path} index.html
+          file_server
+        }
+      '';
     };
   };
 
@@ -57,17 +62,8 @@
 
   systemd.services.gradient-server = {
     serviceConfig = lib.serviceHardening {
-      ReadWritePaths = [
-        "/var/lib/gradient"
-        "/run/postgresql"
-      ];
+      ReadWritePaths = lib.optional cfg.postgres.enable "/run/postgresql";
       ProcSubset = lib.mkForce "all";
-      ProtectProc = lib.mkForce "default";
-      RestrictAddressFamilies = [
-        "AF_UNIX"
-        "AF_INET"
-        "AF_INET6"
-      ];
     };
   };
 }

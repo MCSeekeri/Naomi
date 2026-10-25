@@ -99,14 +99,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    gradient = {
-      url = "github:wavelens/gradient/latest";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        flake-utils.follows = "flake-utils";
-      };
-    };
-
     niri = {
       url = "github:niri-wm/niri";
       inputs.nixpkgs.follows = "nixpkgs";
