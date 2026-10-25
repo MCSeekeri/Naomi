@@ -89,6 +89,8 @@
       enable = lib.mkDefault true;
       openFirewall = true;
     };
+    compsize.enable = lib.mkDefault (lib.hasBtrfs config);
+    partition-manager.enable = lib.mkDefault (lib.hasGui config);
   };
   environment = {
     enableAllTerminfo = true;
@@ -122,7 +124,6 @@
         gnutar
         unrar
         # 加解密
-        gnupg
         age
         sops
         # 文件系统
@@ -170,15 +171,7 @@
         fishPlugins.git-abbr
         fishPlugins.fish-you-should-use
       ]
-      ++
-        lib.optionals
-          (builtins.any (name: (config.fileSystems.${name}.fsType or "") == "btrfs") (
-            builtins.attrNames config.fileSystems
-          ))
-          [
-            btrfs-progs
-            compsize
-          ]
+      ++ lib.optionals (lib.hasBtrfs config) [ btrfs-progs ]
       ++ lib.optionals (lib.hasGui config) [
         # 桌面应用
         ungoogled-chromium
@@ -195,7 +188,6 @@
         distrobox
         distrobox-tui
         # 系统维护
-        kdePackages.partitionmanager
         kdePackages.ksystemlog
         kdePackages.filelight
       ]

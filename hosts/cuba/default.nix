@@ -149,11 +149,8 @@ in
       pkgs.ripgrep
       pkgs.btop
       pkgs.progress
-      pkgs.tmux
       pkgs.file
-      pkgs.nh
       pkgs.sbctl
-      pkgs.maple-mono.Normal-CN
       network-status
     ];
     enableAllTerminfo = true;
@@ -177,11 +174,12 @@ in
       enable = true;
       useBabelfish = true;
     };
+    nh.enable = true;
+    tmux.enable = true;
   };
 
   console = {
     earlySetup = true;
-    packages = [ pkgs.kmscon ];
   };
 
   users.users.root = {

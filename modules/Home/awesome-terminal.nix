@@ -12,13 +12,16 @@
     with pkgs;
     [
       chafa
-      cava
       hollywood
     ]
   );
   services.pueue.enable = true;
 
   programs = {
+    cava.enable = lib.hasGui osConfig;
+    gh.enable = true;
+    lazygit.enable = true;
+    pandoc.enable = true;
     zellij = {
       enable = true;
       settings.copy_command = "wl-copy";

@@ -10,7 +10,6 @@ in
 {
   home.packages = with pkgs; [
     upx
-    lazygit
     git-ignore
     trufflehog # 查找文件或仓库中的敏感信息
     curlie
@@ -19,9 +18,7 @@ in
     sd
     ugrep
     duf # df -h
-    gh
     trash-cli
-    pandoc
     rsclock
     oha # 反向测速
     ipfetch

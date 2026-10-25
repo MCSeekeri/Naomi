@@ -12,16 +12,16 @@
       gnumake
       musl
       nodejs
-      pnpm
       yarn-berry
       # 常用工具
       nix-diff
-      rclone
     ];
   };
 
   programs = {
     home-manager.enable = true;
     fish.enable = true;
+    pnpm.enable = true;
+    rclone.enable = true;
   };
 }

@@ -33,30 +33,23 @@
       kdePackages.kdenlive
       kdePackages.kleopatra
       anki-bin
-      vesktop
       ayugram-desktop
       qbittorrent-enhanced
       krita
       pix
-      obsidian
       kiwix
-      element-desktop
       remmina
       # bitwarden-desktop
       peazip
-      libreoffice-qt # 无用户信息泄露，比 WPS 不知道高到哪里去了……
       v2rayn
-      calibre
       # 主题
       nur.repos.MCSeekeri.lain-kde-splashscreen
       # 游戏娱乐
-      moonlight-qt
       vlc
       splayer-next
       scanmem
       # 开发套件
       rustc
-      cargo
       clippy
       rustfmt
       rust-analyzer
@@ -65,27 +58,20 @@
       nixpkgs-review
       lucky-commit
       pkg-config
-      fvm
       android-studio
       nodejs
-      pnpm
       yarn-berry
       unityhub
       imhex
       libressl
       git-filter-repo
-      bun
       # micromamba
-      gradle
       reqable
-      flutter
-      mcp-nixos
       nur.repos.trev.chrome-devtools-mcp
       # 常用工具
       btrfs-assistant
       nix-diff
       ffmpeg-full
-      rclone
       httrack
       nixos-anywhere
       cachix
@@ -234,6 +220,7 @@
   programs = {
     home-manager.enable = true;
     bash.enable = true;
+    cargo.enable = true;
     aria2 = {
       enable = true;
     };
@@ -692,14 +679,13 @@
       bar = {
         order = [ "main" ];
         main = {
-          background_opacity = 0.85;
-          contact_shadow = true;
+          background_opacity = 0.5;
+          contact_shadow = false;
           end = [
             "privacy"
             "notifications"
             "tray"
             "inbox"
-            "bar"
             "indicator"
             "network"
             "bluetooth"
@@ -723,6 +709,8 @@
             "media"
             "audio_visualizer"
             "lyrics"
+            "launcher"
+            "screenshot"
           ];
           thickness = 46;
           center = [
@@ -775,7 +763,6 @@
         "noctalia/bongocat"
         "rxtsel/portctl"
         "hy4ri/github-notifications"
-        "raycursive/niri-displays"
         "h465855hgg/lyrics"
       ];
       shell = {
@@ -785,12 +772,20 @@
         clipboard_auto_paste = "off";
         lang = "zh-Hans";
         launch_apps_as_systemd_services = true;
-        niri_overview_type_to_launch_enabled = true;
+        umbriel_audio_provider_enabled = true;
+        umbriel_overview_close_on_launch_enabled = true;
+        umbriel_overview_type_to_launch_enabled = true;
         password_style = "random";
         polkit_agent = true;
         screen_time_enabled = true;
         settings_show_advanced = true;
         ui_scale = 1.25;
+        screenshot = {
+          annotate = true;
+          confirm_region = true;
+        };
+        settings_window_translucent = true;
+        telemetry_enabled = true;
         panel = {
           control_center_placement = "floating";
           launcher_placement = "attached";
@@ -815,13 +810,10 @@
         audio_visualizer = {
           capsule = false;
           centered = false;
+          mirrored = false;
           bands = 32;
           color_1 = "tertiary";
           color_2 = "error";
-        };
-        bar = {
-          show_resolution = false;
-          type = "raycursive/niri-displays:bar";
         };
         battery = {
           display_mode = "graphic";
@@ -838,7 +830,10 @@
         };
         clock.format = "{:%x %H:%M}";
         date.format = "{:%F}";
-        inbox.type = "hy4ri/github-notifications:inbox";
+        inbox = {
+          hide_when_zero = true;
+          type = "hy4ri/github-notifications:inbox";
+        };
         indicator.type = "rxtsel/portctl:indicator";
         input_volume.mute_color = "on_surface";
         lock_keys = {
@@ -851,6 +846,7 @@
           hide_when_paused = true;
           marquee_speed = 32;
           secondary_font_size = 13;
+          scroll_mode = "static";
           show_cover = false;
           show_glyph = false;
           type = "h465855hgg/lyrics:lyrics";
@@ -878,6 +874,23 @@
         };
       };
     };
+    vesktop = {
+      enable = true;
+      vencord.useSystem = true;
+    };
+    obsidian = {
+      enable = true;
+      cli.enable = true;
+    };
+    element-desktop.enable = true;
+    libreoffice = {
+      enable = true;
+      package = pkgs.libreoffice-qt;
+    };
+    pnpm.enable = true;
+    bun.enable = true;
+    gradle.enable = true;
+    rclone.enable = true;
   };
   stylix = {
     enable = true;

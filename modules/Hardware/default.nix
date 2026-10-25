@@ -121,7 +121,7 @@ in
         nvidia = {
           open = true;
           modesetting.enable = true;
-          nvidiaPersistenced = true;
+          nvidiaPersistenced = config.hardware.deviceType != "laptop";
           dynamicBoost.enable = config.hardware.deviceType == "laptop";
           prime = lib.mkIf (config.hardware.deviceType == "laptop") {
             offload = {
@@ -255,13 +255,6 @@ in
           NVD_BACKEND = "direct";
         })
       ];
-    };
-
-    specialisation = lib.mkIf (config.hardware.deviceType == "laptop" && !isQemu) {
-      battery-saver.configuration = {
-        system.nixos.tags = [ "battery-saver" ];
-        hardware.gpu.type = lib.mkForce config.hardware.cpu.type;
-      };
     };
   };
 }
