@@ -13,6 +13,7 @@
         gamescope
         mangohud
         gamemode
+        vkbasalt
       ];
       extraCompatPackages = with pkgs; [ proton-ge-bin ];
     };

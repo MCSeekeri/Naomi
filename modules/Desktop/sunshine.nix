@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+_: {
   services = {
     sunshine = {
       enable = true;
@@ -6,5 +6,10 @@
       openFirewall = true;
     };
   };
-  environment.systemPackages = [ pkgs.moonlight-qt ];
+
+  programs.moonlight-qt = {
+    enable = true;
+    capSysNice = true;
+  };
+
 }

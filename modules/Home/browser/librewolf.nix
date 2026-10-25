@@ -52,7 +52,7 @@
             packages = with pkgs.nur.repos.rycee.firefox-addons; [
               # https://discourse.nixos.org/t/firefox-extensions-with-home-manager/34108/4
               ublock-origin
-              violentmonkey
+              tampermonkey
               multi-account-containers
               temporary-containers-plus
               bilisponsorblock

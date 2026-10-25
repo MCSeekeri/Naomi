@@ -115,6 +115,8 @@
     };
   };
 
+  users.groups.k3s = { };
+
   # 网络配置
   networking = {
     hostName = "cyprus"; # 主机名，设置好之后最好不要修改
@@ -356,7 +358,6 @@
       pkgs.wayvr
       pkgs.monado-vulkan-layers
       pkgs.kubectl
-      pkgs.k9s
       pkgs.kubernetes-helm
     ];
   };
