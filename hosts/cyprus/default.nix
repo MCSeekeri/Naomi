@@ -16,7 +16,7 @@
     "${self}/modules/Server/virt/libvirt.nix"
     # "${self}/modules/Server/virt/virtualbox.nix"
 
-    "${self}/modules/Desktop/niri.nix"
+    "${self}/modules/Desktop/umbriel.nix"
     "${self}/modules/Desktop/kmscon.nix"
     "${self}/modules/Desktop/sunshine.nix"
     "${self}/modules/Desktop/gaming.nix"
@@ -55,11 +55,57 @@
     ];
 
     users.mcseekeri = {
-      xdg.configFile."niri/host.kdl".text = ''
-        output "eDP-1" {
-            scale 1.25
-            variable-refresh-rate
-        }
+      xdg.configFile."umbriel/host.toml".text = ''
+        [output."eDP-1"]
+        scale = 1.25
+        vrr = "fullscreen"
+
+        [input.cursor]
+        theme = "Bibata-Modern-Classic"
+        size = 32
+
+        [input.touchpad]
+        natural_scroll = true
+
+        [include]
+        files = [ "/run/current-system/sw/share/umbriel/effects/border/pulse/effect.toml" ]
+
+        [effects]
+        border = "pulse"
+
+        [keybinds]
+        "Mod+T" = "spawn:kitty"
+        "Mod+E" = "spawn:nautilus"
+
+        "Mod+R" = "spawn:noctalia msg panel-toggle launcher"
+        "Mod+V" = "spawn:noctalia msg panel-toggle clipboard"
+        "Mod+S" = "spawn:noctalia msg panel-toggle control-center"
+        "Mod+D" = { action = "overview-toggle", repeat = false }
+        "Mod+Shift+L" = "spawn:noctalia msg session lock"
+        "Mod+Shift+A" = "spawn:noctalia msg screenshot-annotate"
+        "Alt+Tab" = "spawn:noctalia msg window-switcher hold"
+        "Print" = "spawn:noctalia msg screenshot-annotate"
+
+        "Mod+Shift+E" = "session-quit"
+        "Mod+Escape" = "overview-close"
+
+        "Mod+Shift+V" = "window-toggle-floating"
+        "Mod+F" = "window-toggle-maximize"
+        "Mod+Shift+F" = "window-toggle-fullscreen"
+
+        "Mod+Ctrl+R" = "window-cycle-primary-extent"
+        "Mod+Ctrl+Shift+R" = "window-cycle-primary-extent-back"
+        "Mod+Minus" = "window-modify-primary-extent:-0.1"
+        "Mod+Equal" = "window-modify-primary-extent:0.1"
+
+        "Mod+Ctrl+H" = "column-move-left"
+        "Mod+Ctrl+L" = "column-move-right"
+        "Mod+Ctrl+J" = "window-move-down"
+        "Mod+Ctrl+K" = "window-move-up"
+        "Mod+Ctrl+Left" = "column-move-left"
+        "Mod+Ctrl+Right" = "column-move-right"
+        "Mod+Ctrl+Down" = "window-move-down"
+        "Mod+Ctrl+Up" = "window-move-up"
       '';
 
       programs.k9s = {

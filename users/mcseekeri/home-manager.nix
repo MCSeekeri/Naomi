@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   self,
   lib,
@@ -15,6 +16,7 @@
     "${self}/modules/Home/ghostty.nix"
     "${self}/modules/Home/kitty.nix"
     "${self}/modules/Home/niri"
+    "${self}/modules/Home/noctalia"
     "${self}/modules/Home/vscode.nix"
     "${self}/modules/Home/prc.nix"
   ];
@@ -155,6 +157,36 @@
       "application/x-tar" = "peazip.desktop";
     };
   };
+
+  xdg.configFile."umbriel/config.toml".text = ''
+    [include]
+    files = [ "${pkgs.umbriel}/share/umbriel/config.toml" ]
+
+    [include.optional]
+    files = [ "${config.xdg.configHome}/umbriel/host.toml" ]
+
+    [general]
+    autostart = [ "noctalia", "fcitx5 -d" ]
+    xwayland_native_resolution = true
+
+    [effects]
+    max_fps = 60
+
+    [appearance]
+    prefer_no_csd = true
+    border_width = 2
+    corner_radius = 10
+
+    [appearance.blur]
+    enabled = true
+    optimized = true
+    passes = 3
+    radius = 3
+    noise = 0.02
+    brightness = 0.9
+    contrast = 0.9
+    saturation = 1.1
+  '';
 
   xdg.dataFile = {
     "fcitx5/rime/default.custom.yaml".text = ''

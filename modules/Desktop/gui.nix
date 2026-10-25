@@ -56,6 +56,31 @@
     '';
   };
 
+  programs = {
+    dconf.enable = true;
+    gnome-disks.enable = true;
+    seahorse.enable = true;
+    nautilus-open-any-terminal = {
+      enable = true;
+      terminal = "kitty";
+    };
+  };
+  services = {
+    gnome = {
+      gnome-keyring.enable = true;
+      localsearch.enable = true;
+    };
+    gvfs.enable = true;
+    tumbler.enable = true;
+  };
+
+  security.pam.services = {
+    login.enableGnomeKeyring = true;
+    passwd.enableGnomeKeyring = true;
+    sddm.enableGnomeKeyring = true;
+    ly.enableGnomeKeyring = true;
+  };
+
   xdg.portal = {
     enable = true;
   };
@@ -82,6 +107,21 @@
     coppwr
     wineWow64Packages.stagingFull
     winetricks
+
+    brightnessctl
+    ddcutil
+    gnome-calculator
+    gnome-characters
+    gnome-font-viewer
+    gnome-logs
+    gnome-system-monitor
+    gnome-text-editor
+    kitty
+    loupe
+    nautilus
+    pavucontrol
+    playerctl
+    sushi
   ];
 
   environment.sessionVariables = {

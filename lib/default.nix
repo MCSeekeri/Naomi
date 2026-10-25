@@ -10,6 +10,7 @@ lib.extend (
       config:
       (config.services.xserver.enable or false)
       || (config.programs.niri.enable or false)
+      || (config.programs.umbriel.enable or false)
       || (config.services.desktopManager.plasma6.enable or false);
 
     mkWordpressPhpPools =
