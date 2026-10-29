@@ -3,6 +3,10 @@ name: 严格格式检查
 on:
   pull_request:
 
+concurrency:
+  group: format-${{ forgejo.event.pull_request.number }}
+  cancel-in-progress: true
+
 permissions:
   actions: write
   contents: read
@@ -11,6 +15,7 @@ jobs:
   nixfmt:
     name: nix fmt 检查
     runs-on: codeberg-medium-lazy
+    timeout-minutes: 60
 
     steps:
       - name: 拉取仓库
@@ -54,4 +59,14 @@ jobs:
         run: |
           set -euo pipefail
           . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-          nix build .#checks.x86_64-linux.treefmt --accept-flake-config
+          nix build .#checks.x86_64-linux.treefmt \
+            --accept-flake-config --no-link --show-trace
+
+      - name: 求值所有 NixOS 主机
+        shell: bash
+        run: |
+          set -euo pipefail
+          . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+          nix eval --json .#nixosConfigurations \
+            --apply 'c: builtins.mapAttrs (n: v: v.config.system.build.toplevel.drvPath) c' \
+            --accept-flake-config > /dev/null

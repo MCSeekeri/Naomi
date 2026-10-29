@@ -25,6 +25,19 @@ permissions:
   contents: read
   id-token: write
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'push' }}
+
+env:
+  NIX_EXTRA_CONFIG: |
+    system-features = benchmark big-parallel kvm nixos-test gccarch-x86-64 gccarch-x86-64-v2 gccarch-x86-64-v3 gccarch-x86-64-v4 gccarch-nehalem gccarch-westmere gccarch-silvermont gccarch-sandybridge gccarch-ivybridge gccarch-haswell gccarch-broadwell gccarch-skylake gccarch-skylake-avx512 gccarch-cannonlake gccarch-icelake-client gccarch-icelake-server gccarch-rocketlake gccarch-cascadelake gccarch-cooperlake gccarch-tigerlake gccarch-alderlake gccarch-raptorlake gccarch-sapphirerapids gccarch-emeraldrapids gccarch-sierraforest gccarch-btver1 gccarch-btver2 gccarch-bdver1 gccarch-bdver2 gccarch-bdver3 gccarch-bdver4 gccarch-znver1 gccarch-znver2 gccarch-znver3 gccarch-znver4 gccarch-znver5
+    accept-flake-config = true
+    experimental-features = nix-command flakes
+    extra-substituters = https://nix.mcseekeri.com?priority=51
+    extra-trusted-public-keys = nix.mcseekeri.com-1:3gd0/2u7IOF7YooxEiBbWTvRCYGC53S2UoqFdnCUYHc=
+    build-dir = /nix/build
+
 jobs:
   validate:
     runs-on: >-
@@ -45,13 +58,7 @@ jobs:
           witness-carnage: 'true'
       - uses: cachix/install-nix-action@v31
         with:
-          extra_nix_config: |
-            system-features = benchmark big-parallel kvm nixos-test gccarch-x86-64 gccarch-x86-64-v2 gccarch-x86-64-v3 gccarch-x86-64-v4 gccarch-nehalem gccarch-westmere gccarch-silvermont gccarch-sandybridge gccarch-ivybridge gccarch-haswell gccarch-broadwell gccarch-skylake gccarch-skylake-avx512 gccarch-cannonlake gccarch-icelake-client gccarch-icelake-server gccarch-rocketlake gccarch-cascadelake gccarch-cooperlake gccarch-tigerlake gccarch-alderlake gccarch-raptorlake gccarch-sapphirerapids gccarch-emeraldrapids gccarch-sierraforest gccarch-btver1 gccarch-btver2 gccarch-bdver1 gccarch-bdver2 gccarch-bdver3 gccarch-bdver4 gccarch-znver1 gccarch-znver2 gccarch-znver3 gccarch-znver4 gccarch-znver5
-            accept-flake-config = true
-            experimental-features = nix-command flakes
-            extra-substituters = https://nix.mcseekeri.com?priority=51
-            extra-trusted-public-keys = nix.mcseekeri.com-1:3gd0/2u7IOF7YooxEiBbWTvRCYGC53S2UoqFdnCUYHc=
-            build-dir = /nix/build
+          extra_nix_config: ${{ env.NIX_EXTRA_CONFIG }}
 
       - uses: Mic92/niks3-action@v1
         with:
@@ -63,11 +70,6 @@ jobs:
           ${{ github.event_name == 'workflow_dispatch' && inputs.update_lock }}
         run: nix flake update
 
-      - name: Validate formatting and static checks
-        run: >-
-          nix build .#checks.x86_64-linux.treefmt --no-link --show-trace
-          --option log-lines 50
-
       - name: Upload updated flake lock
         if: >-
           ${{ github.event_name == 'workflow_dispatch' && inputs.update_lock }}
@@ -76,6 +78,11 @@ jobs:
           name: updated-flake-lock
           path: flake.lock
           if-no-files-found: error
+
+      - name: Validate formatting and static checks
+        run: >-
+          nix build .#checks.x86_64-linux.treefmt --no-link --show-trace
+          --option log-lines 50
 
       - name: Generate build matrix
         id: targets
@@ -101,9 +108,9 @@ jobs:
               + [{name: "iso-cuba",
                 target: ".#nixosConfigurations.cuba.config.system.build.isoImage"}])}')
 
-          p=$(nix eval --json .#packages.x86_64-linux --apply 'p: builtins.mapAttrs (n: v: v.outPath or null) p') || p='{}'
-          s=$(nix eval --json .#nixosConfigurations --apply 'c: builtins.mapAttrs (n: v: v.config.system.build.toplevel.outPath) c') || s='{}'
-          q=$(nix eval --json .#nixosConfigurations.cuba.config.system.build.isoImage --apply 'i: i.outPath or null') || q='null'
+          p=$(nix eval --json .#packages.x86_64-linux --apply 'p: builtins.mapAttrs (n: v: v.outPath or null) p')
+          s=$(nix eval --json .#nixosConfigurations --apply 'c: builtins.mapAttrs (n: v: v.config.system.build.toplevel.outPath) c')
+          q=$(nix eval --json .#nixosConfigurations.cuba.config.system.build.isoImage --apply 'i: i.outPath or null')
           m=$(jq -cn --argjson p "$p" --argjson s "$s" --argjson q "$q" '{packages: $p, systems: $s, iso: $q}')
           keep=()
           while IFS= read -r n; do
@@ -112,7 +119,11 @@ jobs:
               system-*) o=$(jq -r --arg k "${n#system-}" '.systems[$k] // empty' <<<"$m") ;;
               *) o=$(jq -r '.iso // empty' <<<"$m") ;;
             esac
-            [[ -n "$o" ]] && curl -sSf --max-time 15 -o /dev/null "https://nix.mcseekeri.com/$(basename "$o" | cut -d- -f1).narinfo" >/dev/null 2>&1 || keep+=("$n")
+            if [[ -z "$o" ]] || ! curl -fsS --retry 3 --retry-delay 2 \
+              --retry-connrefused --max-time 15 -o /dev/null \
+              "https://nix.mcseekeri.com/$(basename "$o" | cut -d- -f1).narinfo"; then
+              keep+=("$n")
+            fi
           done < <(jq -r '.include[].name' <<<"$full_matrix")
           if ((${#keep[@]} == 0)); then
             matrix='{"include":[{"name":"__skip_build","target":"","skip":true}]}'
@@ -128,7 +139,9 @@ jobs:
   build:
     name: Build ${{ matrix.name }}
     needs: validate
-    if: ${{ needs.validate.result == 'success' }}
+    if: >-
+      ${{ needs.validate.result == 'success' &&
+      !contains(needs.validate.outputs.matrix, '__skip_build') }}
     runs-on: >-
       ${{ github.event_name == 'workflow_dispatch' && inputs.runner_target ||
       'ubuntu-latest' }}
@@ -149,13 +162,7 @@ jobs:
       - uses: cachix/install-nix-action@v31
         if: ${{ !matrix.skip }}
         with:
-          extra_nix_config: |
-            system-features = benchmark big-parallel kvm nixos-test gccarch-x86-64 gccarch-x86-64-v2 gccarch-x86-64-v3 gccarch-x86-64-v4 gccarch-nehalem gccarch-westmere gccarch-silvermont gccarch-sandybridge gccarch-ivybridge gccarch-haswell gccarch-broadwell gccarch-skylake gccarch-skylake-avx512 gccarch-cannonlake gccarch-icelake-client gccarch-icelake-server gccarch-rocketlake gccarch-cascadelake gccarch-cooperlake gccarch-tigerlake gccarch-alderlake gccarch-raptorlake gccarch-sapphirerapids gccarch-emeraldrapids gccarch-sierraforest gccarch-btver1 gccarch-btver2 gccarch-bdver1 gccarch-bdver2 gccarch-bdver3 gccarch-bdver4 gccarch-znver1 gccarch-znver2 gccarch-znver3 gccarch-znver4 gccarch-znver5
-            accept-flake-config = true
-            experimental-features = nix-command flakes
-            extra-substituters = https://nix.mcseekeri.com?priority=51
-            extra-trusted-public-keys = nix.mcseekeri.com-1:3gd0/2u7IOF7YooxEiBbWTvRCYGC53S2UoqFdnCUYHc=
-            build-dir = /nix/build
+          extra_nix_config: ${{ env.NIX_EXTRA_CONFIG }}
 
       - uses: Mic92/niks3-action@v1
         if: ${{ !matrix.skip }}

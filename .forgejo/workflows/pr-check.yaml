@@ -7,12 +7,19 @@ on:
       - edited
       - reopened
       - ready_for_review
-      - synchronize
+
+concurrency:
+  group: pr-check-${{ forgejo.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
   pr-template:
     name: PR 内容检查
     runs-on: codeberg-tiny-lazy
+    timeout-minutes: 5
     env:
       BODY: ${{ forgejo.event.pull_request.body }}
     steps:
