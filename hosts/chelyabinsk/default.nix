@@ -265,10 +265,10 @@ in
       port = 0;
       group = "wordpress";
       unixSocket = "/run/redis-wordpress/redis.sock";
+      save = [ ];
       settings = {
         maxmemory = "128mb";
-        "maxmemory-policy" = "volatile-lru";
-        save = [ ];
+        "maxmemory-policy" = "allkeys-lru";
       };
     };
 

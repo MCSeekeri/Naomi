@@ -488,7 +488,9 @@
       meilisearch.keyFile = "/run/credentials/misskey.service/meili-key";
     };
 
-    redis.servers.misskey.settings.maxmemory = "128mb";
+    redis.servers.misskey.settings = {
+      maxmemory = "512mb";
+    };
     meilisearch.settings.max_indexing_memory = "256 MiB";
 
     luker = {
