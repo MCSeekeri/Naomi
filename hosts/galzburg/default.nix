@@ -511,6 +511,22 @@
           "/var/lib/davis"
           "/var/lib/misskey"
         ];
+        exclude = [
+          "/var/lib/SillyTavern/data/_cache"
+          "/var/lib/SillyTavern/data/_webpack"
+          "/var/lib/SillyTavern/data/_errors"
+          "/var/lib/SillyTavern/data/_css"
+          "/var/lib/SillyTavern/data/_storage"
+          "/var/lib/SillyTavern/data/_uploads"
+          "/var/lib/SillyTavern/data/diagnostic-reports"
+          "/var/lib/SillyTavern/data/access.log"
+          "/var/lib/SillyTavern/data/content.log*"
+          "/var/lib/SillyTavern/data/default-user/thumbnails"
+          "/var/lib/SillyTavern/extensions/*/.git"
+          "*.map"
+          "/var/backup/postgresql/all.prev.sql*"
+          "/var/lib/davis/var/cache"
+        ];
         tag = "galzburg";
       };
     };

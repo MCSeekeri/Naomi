@@ -315,10 +315,21 @@
         "/home/mcseekeri/.omp/agent"
         "/home/mcseekeri/.ssh"
         "/home/mcseekeri/.gnupg"
+        "/home/mcseekeri/.pki"
+        "/home/mcseekeri/.cloudflared"
+        "/home/mcseekeri/.wrangler"
+        "/home/mcseekeri/.config/gh"
+        "/home/mcseekeri/.config/rclone"
+        "/home/mcseekeri/.config/sops"
+        "/home/mcseekeri/.local/share/atuin"
+        "/home/mcseekeri/.local/share/fcitx5"
+        "/home/mcseekeri/.local/share/keyrings"
+        "/home/mcseekeri/.local/share/kwalletd"
       ];
       exclude = [
         "**/cache/tiny-models/**"
         "**/cache/tiny-title-runtime/**"
+        "**/rime/build*/**"
       ];
       onCalendar = "22:00";
       tag = "cyprus";

@@ -177,19 +177,31 @@ lib.extend (
           "--tag ${tag}"
           "--compression max"
           "--skip-if-unchanged"
+          "--exclude-caches"
+          "--retry-lock 10m"
+          "--stuck-request-timeout 10m"
         ]
         ++ lib.concatMap (pattern: [
           "--exclude"
           pattern
         ]) exclude;
+        extraOptions = [
+          "s3.connections=10"
+          "s3.retries=5"
+        ];
         pruneOpts = [
           "--keep-daily 7"
           "--keep-weekly 4"
           "--keep-monthly 6"
+          "--group-by=host"
+          "--retry-lock 10m"
+          "--stuck-request-timeout 10m"
         ];
         checkOpts = [
           "--with-cache"
           "--read-data-subset 5%"
+          "--retry-lock 10m"
+          "--stuck-request-timeout 10m"
         ];
         timerConfig = {
           OnCalendar = onCalendar;
