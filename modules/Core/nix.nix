@@ -2,10 +2,12 @@
   inputs,
   lib,
   config,
+  pkgs,
   ...
 }:
 {
   nix = {
+    package = pkgs.nixVersions.latest;
     channel.enable = false;
     distributedBuilds = true;
     gc = {

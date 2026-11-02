@@ -139,13 +139,17 @@
     gc = {
       options = "--delete-older-than 2d";
     };
+    settings = {
+      max-jobs = 32;
+      cores = 4;
+    };
     buildMachines = [
       {
         hostName = "ThinkStation2";
         system = "x86_64-linux";
         protocol = "ssh-ng";
-        maxJobs = 128;
-        speedFactor = 16;
+        maxJobs = 32;
+        speedFactor = 8;
         supportedFeatures = [
           "nixos-test"
           "benchmark"
@@ -628,7 +632,9 @@
               extraConfig = ''
                 encode zstd gzip
 
-                reverse_proxy 127.0.0.1:8222
+                reverse_proxy 127.0.0.1:8222 {
+                  header_up X-Real-IP {http.vars.client_ip}
+                }
               '';
             };
             "st.mcseekeri.com" = {
@@ -699,13 +705,8 @@
     };
 
     vaultwarden = {
-      configureNginx = lib.mkForce false;
       domain = "vault.mcseekeri.com";
       environmentFile = [ config.sops.secrets.vaultwarden_env.path ];
-      config = {
-        ENABLE_WEBSOCKET = true;
-        ROCKET_ADDRESS = "127.0.0.1";
-      };
     };
 
     btrfs.autoScrub = {

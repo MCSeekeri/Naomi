@@ -120,7 +120,6 @@
           }:
           let
             devPackages = with pkgs; [
-              nix
               git
               fish
               sops
@@ -151,9 +150,8 @@
             };
 
             devShells.default = pkgs.mkShell {
-              packages = devPackages;
-
               shellHook = ''
+                export PATH="$PATH:${lib.makeBinPath devPackages}"
                 export fish_complete_path="${lib.makeSearchPath "share/fish/vendor_completions.d" devPackages}:$fish_complete_path"
               '';
             };
