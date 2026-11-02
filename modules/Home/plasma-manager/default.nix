@@ -4,8 +4,6 @@
     ./powerdevil.nix
   ];
 
-  gtk.gtk2.force = lib.mkDefault true;
-
   programs = {
     plasma = {
       input.keyboard.numlockOnStartup = lib.mkDefault "on";

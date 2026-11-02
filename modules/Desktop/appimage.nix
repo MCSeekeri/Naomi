@@ -17,7 +17,6 @@
             pkgs.ffmpeg # 不解释
             pkgs.glib # Audacity ColorGenerator
             pkgs.gnutls
-            pkgs.gtk2 # AKASHA Aphelion brackets-electron BrainVerse buche dragoman Skrifa
             pkgs.icu # v2rayN
             pkgs.libayatana-appindicator # Piliplus
             pkgs.libepoxy # appimagepool
