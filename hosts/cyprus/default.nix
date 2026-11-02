@@ -132,13 +132,21 @@
   hardware = {
     cpu = {
       type = "intel";
-      # arch = "raptorlake";
     };
-    gpu.type = "nvidia";
+    gpu = {
+      igpu = "intel";
+      dgpu = "nvidia";
+    };
     deviceType = "laptop";
-    nvidia.powerManagement = {
-      enable = true;
-      finegrained = true;
+    nvidia = {
+      prime = {
+        intelBusId = "PCI:0@0:2:0";
+        nvidiaBusId = "PCI:1@0:0:0";
+      };
+      powerManagement = {
+        enable = true;
+        finegrained = true;
+      };
     };
   };
   boot = {
@@ -179,6 +187,7 @@
     kernelParams = [
       "transparent_hugepage=always"
       "rcutree.enable_rcu_lazy=1"
+      "preempt=full"
     ];
     kernel.sysfs = {
       "kernel"."mm" = {
@@ -364,8 +373,12 @@
   };
 
   environment = {
-    sessionVariables.KUBECONFIG = "/etc/rancher/k3s/k3s.yaml";
+    sessionVariables = {
+      KUBECONFIG = "/etc/rancher/k3s/k3s.yaml";
+      CUDA_PATH = "${pkgs.cudaPackages.cudatoolkit}";
+    };
     systemPackages = [
+      pkgs.cudaPackages.cudatoolkit
       pkgs.wayvr
       pkgs.monado-vulkan-layers
       pkgs.kubectl

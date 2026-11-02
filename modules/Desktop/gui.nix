@@ -8,10 +8,7 @@
   imports = [ "${self}/modules/Desktop/flatpak.nix" ];
 
   hardware = {
-    graphics = {
-      enable = true;
-      enable32Bit = true;
-    };
+    graphics.enable = true;
     bluetooth = {
       enable = true;
       powerOnBoot = true;

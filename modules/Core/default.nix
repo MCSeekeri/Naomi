@@ -195,7 +195,10 @@
     system.nixos-init.enable = lib.mkForce false;
     hardware = {
       cpu.type = lib.mkForce "qemu";
-      gpu.type = lib.mkForce "";
+      gpu = {
+        igpu = lib.mkForce "none";
+        dgpu = lib.mkForce "none";
+      };
     };
     services = {
       btrfs.autoScrub.enable = lib.mkForce false;

@@ -146,8 +146,8 @@
         ltrace
         lsof
         (btop.override {
-          rocmSupport = lib.isAttended config && config.hardware.gpu.type == "amd";
-          cudaSupport = lib.isAttended config && config.hardware.gpu.type == "nvidia";
+          rocmSupport = lib.isAttended config && lib.hasAmdGpu config;
+          cudaSupport = lib.isAttended config && lib.hasNvidiaGpu config;
         })
         dua
         nmap

@@ -22,9 +22,11 @@
   hardware = {
     cpu = {
       type = "intel";
-      #arch = "x86-64-v4";
     };
-    gpu.type = "nvidia";
+    gpu = {
+      igpu = "none";
+      dgpu = "nvidia";
+    };
     deviceType = "server";
   };
   boot = {

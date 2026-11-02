@@ -6,6 +6,42 @@ lib.extend (
     isDesktop = config: config.hardware.deviceType == "desktop";
     isAttended = config: config.hardware.deviceType != "server";
 
+    hasIgpu = config: config.hardware.gpu.igpu != "none";
+    hasDgpu = config: config.hardware.gpu.dgpu != "none";
+    hasGpu = config: final.hasIgpu config || final.hasDgpu config;
+    hasIntelGpu = config: config.hardware.gpu.igpu == "intel" || config.hardware.gpu.dgpu == "intel";
+    hasAmdGpu = config: config.hardware.gpu.igpu == "amd" || config.hardware.gpu.dgpu == "amd";
+    hasNvidiaGpu = config: config.hardware.gpu.dgpu == "nvidia";
+
+    displayGpu =
+      config:
+      let
+        gpu = config.hardware.gpu;
+      in
+      if gpu.display != "auto" then
+        gpu.display
+      else if gpu.igpu != "none" then
+        "igpu"
+      else if gpu.dgpu != "none" then
+        "dgpu"
+      else
+        "none";
+
+    vaapiDriver =
+      config:
+      let
+        gpu = config.hardware.gpu;
+        vendor = if final.displayGpu config == "igpu" then gpu.igpu else gpu.dgpu;
+      in
+      if vendor == "intel" then
+        "iHD"
+      else if vendor == "amd" then
+        "radeonsi"
+      else if vendor == "nvidia" then
+        "nvidia"
+      else
+        null;
+
     hasGui =
       config:
       (config.services.xserver.enable or false)
