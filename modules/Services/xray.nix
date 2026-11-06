@@ -1,23 +1,12 @@
 {
   config,
   lib,
-  pkgs,
   self,
   ...
 }:
 {
   services.xray = {
     enable = true;
-    package = pkgs.xray.overrideAttrs (_old: {
-      version = "26.10.31";
-      src = pkgs.fetchFromGitHub {
-        owner = "XTLS";
-        repo = "Xray-core";
-        rev = "v26.10.31";
-        hash = "sha256-wTKW8XUP/HXWI7e4jbBw3aGSPpPX7KjkxFwLMb9vxSA=";
-      };
-      vendorHash = "sha256-JLzEYsnhiATt1JpXD0SgFOhhHUFS34JIdBJXg4eAcL0=";
-    });
     settingsFile = config.sops.templates."xray-${config.networking.hostName}-config.json".path;
   };
 

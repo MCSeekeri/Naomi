@@ -74,17 +74,17 @@
         border = "pulse"
 
         [keybinds]
-        "Mod+T" = "spawn:kitty"
-        "Mod+E" = "spawn:nautilus"
+        "Mod+T" = "spawn kitty"
+        "Mod+E" = "spawn nautilus"
 
-        "Mod+R" = "spawn:noctalia msg panel-toggle launcher"
-        "Mod+V" = "spawn:noctalia msg panel-toggle clipboard"
-        "Mod+S" = "spawn:noctalia msg panel-toggle control-center"
+        "Mod+R" = "spawn noctalia msg panel-toggle launcher"
+        "Mod+V" = "spawn noctalia msg panel-toggle clipboard"
+        "Mod+S" = "spawn noctalia msg panel-toggle control-center"
         "Mod+D" = { action = "overview-toggle", repeat = false }
-        "Mod+Shift+L" = "spawn:noctalia msg session lock"
-        "Mod+Shift+A" = "spawn:noctalia msg screenshot-annotate"
-        "Alt+Tab" = "spawn:noctalia msg window-switcher hold"
-        "Print" = "spawn:noctalia msg screenshot-annotate"
+        "Mod+Shift+L" = "spawn noctalia msg session lock"
+        "Mod+Shift+A" = "spawn noctalia msg screenshot-annotate"
+        "Alt+Tab" = "spawn noctalia msg window-switcher hold"
+        "Print" = "spawn noctalia msg screenshot-annotate"
 
         "Mod+Shift+E" = "session-quit"
         "Mod+Escape" = "overview-close"
@@ -95,8 +95,8 @@
 
         "Mod+Ctrl+R" = "window-cycle-primary-extent"
         "Mod+Ctrl+Shift+R" = "window-cycle-primary-extent-back"
-        "Mod+Minus" = "window-modify-primary-extent:-0.1"
-        "Mod+Equal" = "window-modify-primary-extent:0.1"
+        "Mod+Minus" = "window-modify-primary-extent -0.1"
+        "Mod+Equal" = "window-modify-primary-extent 0.1"
 
         "Mod+Ctrl+H" = "column-move-left"
         "Mod+Ctrl+L" = "column-move-right"
@@ -357,8 +357,8 @@
 
   systemd.services = {
     llama-cpp = {
-    unitConfig.RequiresMountsFor = "/home/mcseekeri/models";
-    serviceConfig.BindReadOnlyPaths = [ "/home/mcseekeri/models:/var/lib/llama-cpp/models" ];
+      unitConfig.RequiresMountsFor = "/home/mcseekeri/models";
+      serviceConfig.BindReadOnlyPaths = [ "/home/mcseekeri/models:/var/lib/llama-cpp/models" ];
     };
     "beesd@root" = {
       wantedBy = lib.mkForce [ "ac.target" ];

@@ -18,6 +18,10 @@ dns {
 			qtype(https, svcb) -> reject # 阻止浏览器绕过
 			qname(geosite:category-ads, geosite:category-ads-all) -> reject
 			qname(geosite:cn, geosite:geolocation-cn, geosite:tld-cn) -> alidns
+			qname(
+				geosite:steam@cn, geosite:category-games@cn,
+				suffix: steamcontent.com, suffix: steampowered.com, suffix: steamserver.net
+			) -> alidns
 			fallback: googledns
 		}
 		response {
@@ -51,7 +55,12 @@ routing {
 	domain(geosite:category-ads, geosite:category-ads-all) -> block
 	dport(53) -> block # 注释此项以让床底下的国家安全战士和你一起乐
 	dip(geoip:cn) -> direct # 不能误杀国内软件的 QUIC……虽然真的有国产软件用 QUIC 吗？
-	domain(suffix: steamserver.net, geosite:cn, geosite:geolocation-cn, geosite:tld-cn) -> direct
+	domain(
+		geosite:steam@cn, geosite:category-games@cn,
+		suffix: steamcontent.com, suffix: steampowered.com, suffix: steamserver.net,
+		full: steamcdn-a.akamaihd.net,
+		geosite:cn, geosite:geolocation-cn, geosite:tld-cn
+	) -> direct
 	l4proto(udp) && dport(443) -> block # 只干掉境外 QUIC，不影响实时 UDP
 	domain(geosite:category-public-tracker) -> direct
 	fallback: proxy
