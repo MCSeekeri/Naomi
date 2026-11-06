@@ -7,16 +7,22 @@
 
   fonts = {
     packages = with pkgs; [
-      windows-fonts # vista-fonts 的上位替代
-      inter
-
-      # 代码用字体
-      cascadia-code
-      hack-font
-      fira-code
-
-      # 汉字
-      babelstone-han
+      (microsoftPackages.combine' "windows-fonts-zh" (
+        drv:
+        builtins.elem drv.pname [
+          "microsoft-microsoft-yahei"
+          "microsoft-simsun"
+          "microsoft-simhei"
+          "microsoft-kaiti"
+          "microsoft-fangsong"
+          "microsoft-dengxian"
+          "microsoft-times-new-roman"
+          "microsoft-arial"
+          "microsoft-calibri"
+          "microsoft-cambria"
+          "microsoft-courier-new"
+        ]
+      ))
       zpix-pixel-font
 
       lxgw-wenkai
@@ -24,11 +30,6 @@
       smiley-sans
       foundertype-fonts
       tianheng-fonts
-
-      lxgw-wenkai-tc
-
-      jigmo
-      mplus-outline-fonts.githubRelease # OSDN 居然还有人续命
     ];
   };
 }

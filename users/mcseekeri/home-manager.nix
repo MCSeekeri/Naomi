@@ -918,8 +918,8 @@
         name = "Sarasa UI SC";
       };
       serif = {
-        package = pkgs.sarasa-gothic;
-        name = "Sarasa UI SC";
+        package = pkgs.source-han-serif;
+        name = "Source Han Serif SC";
       };
       monospace = {
         package = pkgs.maple-mono.Normal-NF-CN-unhinted;

@@ -39,8 +39,8 @@
             terminal = lib.mkDefault 14;
           };
           sansSerif = {
-            package = lib.mkDefault pkgs.source-han-sans;
-            name = lib.mkDefault "Source Han Sans SC";
+            package = lib.mkDefault pkgs.sarasa-gothic;
+            name = lib.mkDefault "Sarasa UI SC";
           };
           serif = {
             package = lib.mkDefault pkgs.source-han-serif;

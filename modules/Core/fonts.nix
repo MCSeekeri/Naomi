@@ -1,15 +1,17 @@
 { pkgs, ... }: {
   fonts = {
-    enableDefaultPackages = true;
+    enableDefaultPackages = false;
+    # 没人需要 unifont 和 FreeFont……
+    packages = with pkgs; [
+      dejavu_fonts
+      liberation_ttf
+      noto-fonts-color-emoji
+      source-han-sans
+      source-han-serif
+    ];
     fontconfig = {
-      useEmbeddedBitmaps = true;
       cache32Bit = true;
       hinting.enable = false;
     };
-    packages = with pkgs; [
-      wqy_zenhei
-      wqy_microhei
-      unifont
-    ];
   };
 }

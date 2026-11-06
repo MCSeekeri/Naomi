@@ -86,15 +86,8 @@
     fontDir.enable = true;
     packages = with pkgs; [
       source-sans
-      source-serif
-      source-han-sans
-      source-han-serif
-      noto-fonts-color-emoji
-      maple-mono.Normal-NF-CN-unhinted
-
       material-design-icons
       font-awesome
-      jetbrains-mono
       sarasa-gothic
     ];
   };
