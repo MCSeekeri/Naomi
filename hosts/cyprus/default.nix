@@ -355,9 +355,23 @@
     };
   };
 
-  systemd.services.llama-cpp = {
+  systemd.services = {
+    llama-cpp = {
     unitConfig.RequiresMountsFor = "/home/mcseekeri/models";
     serviceConfig.BindReadOnlyPaths = [ "/home/mcseekeri/models:/var/lib/llama-cpp/models" ];
+    };
+    "beesd@root" = {
+      wantedBy = lib.mkForce [ "ac.target" ];
+      partOf = [ "ac.target" ];
+      unitConfig.ConditionACPower = true;
+      serviceConfig.TimeoutStopSec = "5min";
+    };
+    "beesd@Games" = {
+      wantedBy = lib.mkForce [ "ac.target" ];
+      partOf = [ "ac.target" ];
+      unitConfig.ConditionACPower = true;
+      serviceConfig.TimeoutStopSec = "5min";
+    };
   };
 
   sops.secrets = {

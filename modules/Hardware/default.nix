@@ -176,6 +176,10 @@ in
           "nowatchdog"
           "nmi_watchdog=0"
         ]
+        ++ lib.optionals isLaptop [
+          "snd_hda_intel.power_save=10"
+          "snd_hda_intel.power_save_controller=Y"
+        ]
       );
     };
 
@@ -198,9 +202,21 @@ in
           ACTION=="add", SUBSYSTEM=="block", KERNEL=="nvme*n*", ATTR{queue/read_ahead_kb}="1024"
         '';
       })
+      (lib.mkIf (hasDgpu && lib.hasGui config) { switcherooControl.enable = lib.mkDefault true; })
       (lib.mkIf isLaptop {
+        upower.enable = lib.mkDefault true;
         power-profiles-daemon.enable = lib.mkDefault true;
         thermald.enable = lib.mkDefault (cpuType == "intel");
+        logind.settings.Login = {
+          HandleLidSwitch = "suspend";
+          HandleLidSwitchExternalPower = "ignore";
+          HandleLidSwitchDocked = "ignore";
+        };
+        udev.extraRules = ''
+          ACTION=="change", SUBSYSTEM=="power_supply", ATTR{type}=="Mains", RUN+="${config.systemd.package}/bin/systemctl --no-block start power-profile-auto.service"
+          SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="0", RUN+="${config.systemd.package}/bin/systemctl --no-block start battery.target"
+          SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="1", RUN+="${config.systemd.package}/bin/systemctl --no-block start ac.target"
+        '';
       })
     ];
 
