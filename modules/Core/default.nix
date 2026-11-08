@@ -136,9 +136,9 @@
       rulesProvider = pkgs.ananicy-rules-cachyos;
     };
 
-    scx = lib.mkIf (lib.isAttended config) {
+    scx-loader = lib.mkIf (lib.isAttended config) {
       enable = lib.mkDefault true;
-      scheduler = "scx_bpfland";
+      config.default_sched = "scx_bpfland";
     };
   };
 
