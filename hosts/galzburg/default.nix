@@ -654,6 +654,11 @@
                   }
                 }
 
+                handle /pages/* {
+                  root * /var/lib/caddy/www
+                  file_server
+                }
+
                 ${config.services.caddy.iisCamouflage.site}
               '';
             };
