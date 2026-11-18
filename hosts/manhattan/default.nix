@@ -20,7 +20,6 @@
     "${self}/modules/Services/archisteamfarm.nix"
     # "${self}/modules/Services/privatebin.nix"
     "${self}/modules/Services/misskey.nix"
-    "${self}/modules/Services/glances.nix"
 
     "${self}/modules/Games/retro.nix"
 
