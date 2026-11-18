@@ -65,8 +65,7 @@
       imhex
       libressl
       git-filter-repo
-      # micromamba
-      reqable
+      mcp-nixos
       nur.repos.trev.chrome-devtools-mcp
       # 常用工具
       btrfs-assistant
@@ -219,6 +218,29 @@
 
   programs = {
     home-manager.enable = true;
+
+    pi-coding-agent = {
+      enable = true;
+      package = pkgs.pi-coding-agent;
+      extraPackages = [
+        pkgs.nodejs
+        pkgs.bun
+      ];
+      settings = {
+        defaultTools = [
+          "+codemode"
+          "+grep"
+          "+find"
+          "+ls"
+        ];
+
+        packages = [
+          "npm:pi-web-access"
+          "npm:pi-lens"
+        ];
+      };
+    };
+
     bash.enable = true;
     cargo.enable = true;
     aria2 = {

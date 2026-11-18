@@ -212,11 +212,6 @@ in
           HandleLidSwitchExternalPower = "ignore";
           HandleLidSwitchDocked = "ignore";
         };
-        udev.extraRules = ''
-          ACTION=="change", SUBSYSTEM=="power_supply", ATTR{type}=="Mains", RUN+="${config.systemd.package}/bin/systemctl --no-block start power-profile-auto.service"
-          SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="0", RUN+="${config.systemd.package}/bin/systemctl --no-block start battery.target"
-          SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="1", RUN+="${config.systemd.package}/bin/systemctl --no-block start ac.target"
-        '';
       })
     ];
 

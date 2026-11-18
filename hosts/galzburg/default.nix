@@ -109,6 +109,14 @@
   };
 
   boot = {
+    kernelModules = [
+      "veth"
+      "bridge"
+      "br_netfilter"
+      "nf_tables"
+      "nf_conntrack"
+      "overlay"
+    ];
     kernel.sysctl = {
       "net.core.netdev_max_backlog" = lib.mkForce 32768;
       "net.core.optmem_max" = lib.mkForce 131072;
@@ -768,7 +776,6 @@
       wal_compression = "zstd";
       wal_buffers = "64MB";
       checkpoint_timeout = "15min";
-      synchronous_commit = "off";
     };
   };
 
@@ -827,8 +834,8 @@
         serviceConfig = {
           Restart = "on-failure";
           RestartSec = "10s";
-          MemoryHigh = "800M";
-          MemoryMax = "1200M";
+          MemoryHigh = "1G";
+          MemoryMax = "1500M";
           LoadCredential = "meili-key:${config.sops.secrets.masterKey.path}";
           ExecStartPre = lib.mkAfter [
             "${lib.getExe pkgs.replace-secret} '@MEILISEARCH_KEY@' '/run/credentials/misskey.service/meili-key' /run/misskey/default.json"

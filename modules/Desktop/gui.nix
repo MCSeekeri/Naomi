@@ -24,7 +24,6 @@
       alsa.enable = true;
       alsa.support32Bit = true;
       pulse.enable = true;
-      jack.enable = true;
       extraConfig = {
         pipewire."92-low-latency" = {
           "context.properties" = {
@@ -64,6 +63,7 @@
   };
   services = {
     gnome = {
+      at-spi2-core.enable = true;
       gnome-keyring.enable = true;
       localsearch.enable = true;
     };
