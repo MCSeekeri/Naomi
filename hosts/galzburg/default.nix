@@ -14,8 +14,6 @@
 
     "${self}/modules/Core"
 
-    "${self}/modules/Server/ntfy-agent.nix"
-
     "${self}/modules/Services/archisteamfarm.nix"
     "${self}/modules/Services/cloudflared.nix"
     "${self}/modules/Services/cowrie.nix"

@@ -98,7 +98,7 @@
   outputs =
     inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } (
-      { lib, ... }: {
+      { lib, inputs, ... }: {
         flake.lib = import ./lib { inherit lib; };
 
         imports = [
@@ -132,13 +132,19 @@
               libressl # openssl rand -hex 64
               nix-melt
               nix-tree
-              config.packages.ndp
+              nix-fast-build
+              nix-eval-jobs
+              nixos-rebuild-ng
               config.treefmt.build.wrapper
             ];
           in
           {
             treefmt.config = import ./treefmt.nix;
             formatter = config.treefmt.build.wrapper;
+
+            checks = lib.mapAttrs' (
+              name: host: lib.nameValuePair "nixos-${name}" host.config.system.build.toplevel
+            ) inputs.self.nixosConfigurations;
 
             _module.args.pkgs = import inputs.nixpkgs {
               inherit system;
@@ -153,6 +159,17 @@
               shellHook = ''
                 export PATH="$PATH:${lib.makeBinPath devPackages}"
                 export fish_complete_path="${lib.makeSearchPath "share/fish/vendor_completions.d" devPackages}:$fish_complete_path"
+              '';
+            };
+
+            apps.check.program = pkgs.writeShellApplication {
+              name = "check";
+              runtimeInputs = [
+                pkgs.nix-fast-build
+                pkgs.nix-eval-jobs
+              ];
+              text = ''
+                nix-fast-build --skip-cached "$@"
               '';
             };
           };

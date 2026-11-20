@@ -17,7 +17,6 @@ in
     "${self}/modules/Core"
     "${self}/modules/Core/prc.nix"
 
-    "${self}/modules/Server/ntfy-agent.nix"
     "${self}/modules/Services/cloudflared.nix"
     "${self}/modules/Services/caddy.nix"
     "${self}/modules/Services/geph5.nix"
@@ -302,6 +301,8 @@ in
   virtualisation.oci-containers.containers = {
     siyuan = {
       image = "docker.io/b3log/siyuan:latest";
+      labels."io.containers.autoupdate" = "registry";
+      podman.sdnotify = "healthy";
       autoStart = true;
       ports = [ "127.0.0.1:${toString siyuanPort}:6806" ];
       environment.TZ = "Asia/Shanghai";
@@ -311,7 +312,12 @@ in
         "--workspace=/siyuan/workspace/"
         "serve"
       ];
-      extraOptions = [ "--label=io.containers.autoupdate=registry" ];
+      extraOptions = [
+        "--health-cmd=wget -qO- --post-data='{}' http://127.0.0.1:6806/api/system/bootProgress | grep -Eq '\"progress\"[[:space:]]*:[[:space:]]*100([,}[:space:]])'"
+        "--health-timeout=5s"
+        "--health-start-period=60s"
+        "--health-on-failure=kill"
+      ];
     };
   };
 
@@ -326,6 +332,7 @@ in
 
     services = {
       "cloudflared-tunnel-chelyabinsk".environment.TUNNEL_TRANSPORT_PROTOCOL = lib.mkForce "http2";
+      podman-siyuan.serviceConfig.TimeoutStartSec = lib.mkForce "5min";
     }
     // lib.genAttrs [ "phpfpm-transteam" "phpfpm-studio" ] (name: {
       serviceConfig = lib.phpPoolHardening (
