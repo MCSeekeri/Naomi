@@ -1,4 +1,5 @@
-name: Build and cache
+name: 构建与缓存
+run-name: ${{ inputs.update_lock && '预热缓存' || '构建缓存' }} · ${{ github.ref_name }}
 # yamllint disable rule:line-length
 
 on:
@@ -7,16 +8,8 @@ on:
       - main
   workflow_dispatch:
     inputs:
-      runner_target:
-        description: Select runner target
-        required: true
-        default: self-hosted
-        type: choice
-        options:
-          - self-hosted
-          - ubuntu-latest
       update_lock:
-        description: Update flake.lock before build
+        description: 更新锁文件后预热缓存
         required: false
         default: false
         type: boolean
@@ -26,169 +19,125 @@ permissions:
   id-token: write
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ inputs.update_lock && 'warm' || 'locked' }}
   cancel-in-progress: ${{ github.event_name == 'push' }}
 
 env:
+  NIKS3_SERVER_URL: https://niks3.mcseekeri.com
   NIX_EXTRA_CONFIG: |
-    system-features = benchmark big-parallel kvm nixos-test gccarch-x86-64 gccarch-x86-64-v2 gccarch-x86-64-v3 gccarch-x86-64-v4 gccarch-nehalem gccarch-westmere gccarch-silvermont gccarch-sandybridge gccarch-ivybridge gccarch-haswell gccarch-broadwell gccarch-skylake gccarch-skylake-avx512 gccarch-cannonlake gccarch-icelake-client gccarch-icelake-server gccarch-rocketlake gccarch-cascadelake gccarch-cooperlake gccarch-tigerlake gccarch-alderlake gccarch-raptorlake gccarch-sapphirerapids gccarch-emeraldrapids gccarch-sierraforest gccarch-btver1 gccarch-btver2 gccarch-bdver1 gccarch-bdver2 gccarch-bdver3 gccarch-bdver4 gccarch-znver1 gccarch-znver2 gccarch-znver3 gccarch-znver4 gccarch-znver5
     accept-flake-config = true
     experimental-features = nix-command flakes
-    extra-substituters = https://nix.mcseekeri.com?priority=51
-    extra-trusted-public-keys = nix.mcseekeri.com-1:3gd0/2u7IOF7YooxEiBbWTvRCYGC53S2UoqFdnCUYHc=
+    builders =
+    narinfo-cache-negative-ttl = 0
     build-dir = /nix/build
 
 jobs:
-  validate:
-    runs-on: >-
-      ${{ github.event_name == 'workflow_dispatch' && inputs.runner_target ||
-      'ubuntu-latest' }}
+  prepare:
+    name: 准备构建
+    runs-on: ubuntu-latest
     timeout-minutes: 60
     outputs:
       matrix: ${{ steps.targets.outputs.matrix }}
-      lock-updated: ${{ steps.targets.outputs.lock-updated }}
+      lock-file: ${{ steps.targets.outputs.lock-file }}
 
     steps:
-      - uses: actions/checkout@v7
+      - name: 检出代码
+        uses: actions/checkout@v7
 
-      - uses: wimpysworld/nothing-but-nix@main
-        if: ${{ runner.environment != 'self-hosted' }}
+      - name: 准备构建空间
+        uses: wimpysworld/nothing-but-nix@main
         with:
           hatchet-protocol: 'carve'
           witness-carnage: 'true'
-      - uses: cachix/install-nix-action@v31
+
+      - name: 安装 Nix
+        uses: cachix/install-nix-action@v31
         with:
           extra_nix_config: ${{ env.NIX_EXTRA_CONFIG }}
 
-      - uses: Mic92/niks3-action@v1
+      - name: 配置二进制缓存
+        uses: Mic92/niks3-action@v1
         with:
-          server-url: https://niks3.mcseekeri.com
-          drain-timeout: 3600
+          server-url: ${{ env.NIKS3_SERVER_URL }}
+          drain-timeout: 600
 
-      - name: Update flake lock
-        if: >-
-          ${{ github.event_name == 'workflow_dispatch' && inputs.update_lock }}
+      - name: 更新锁文件
+        if: inputs.update_lock
         run: nix flake update
 
-      - name: Upload updated flake lock
-        if: >-
-          ${{ github.event_name == 'workflow_dispatch' && inputs.update_lock }}
-        uses: actions/upload-artifact@v7
-        with:
-          name: updated-flake-lock
-          path: flake.lock
-          if-no-files-found: error
+      - name: 检查格式与静态规则
+        run: nix build .#checks.x86_64-linux.treefmt --no-link --option log-lines 50
 
-      - name: Validate formatting and static checks
-        run: >-
-          nix build .#checks.x86_64-linux.treefmt --no-link --show-trace
-          --option log-lines 50
-
-      - name: Generate build matrix
+      - name: 生成构建矩阵
         id: targets
         shell: bash
-        env:
-          UPDATE_LOCK: ${{ github.event_name == 'workflow_dispatch' && inputs.update_lock || false }}
         run: |
           set -euo pipefail
-
-          packages_json=$(nix eval --json .#packages.x86_64-linux \
-            --apply builtins.attrNames)
-          hosts_json=$(nix eval --json .#nixosConfigurations \
-            --apply builtins.attrNames)
-          full_matrix=$(jq -cn \
-            --argjson packages "${packages_json}" \
-            --argjson hosts "${hosts_json}" \
-            '{include:
-              (($packages | map({name: ("package-" + .),
-                target: (".#packages.x86_64-linux." + .)}))
-              + ($hosts | map({name: ("system-" + .),
-                target: (".#nixosConfigurations." + .
-                  + ".config.system.build.toplevel")}))
-              + [{name: "iso-cuba",
-                target: ".#nixosConfigurations.cuba.config.system.build.isoImage"}])}')
-
-          p=$(nix eval --json .#packages.x86_64-linux --apply 'p: builtins.mapAttrs (n: v: v.outPath or null) p')
-          s=$(nix eval --json .#nixosConfigurations --apply 'c: builtins.mapAttrs (n: v: v.config.system.build.toplevel.outPath) c')
-          q=$(nix eval --json .#nixosConfigurations.cuba.config.system.build.isoImage --apply 'i: i.outPath or null')
-          m=$(jq -cn --argjson p "$p" --argjson s "$s" --argjson q "$q" '{packages: $p, systems: $s, iso: $q}')
-          keep=()
-          while IFS= read -r n; do
-            case "$n" in
-              package-*) o=$(jq -r --arg k "${n#package-}" '.packages[$k] // empty' <<<"$m") ;;
-              system-*) o=$(jq -r --arg k "${n#system-}" '.systems[$k] // empty' <<<"$m") ;;
-              *) o=$(jq -r '.iso // empty' <<<"$m") ;;
-            esac
-            if [[ -z "$o" ]] || ! curl -fsS --retry 3 --retry-delay 2 \
-              --retry-connrefused --max-time 15 -o /dev/null \
-              "https://nix.mcseekeri.com/$(basename "$o" | cut -d- -f1).narinfo"; then
-              keep+=("$n")
-            fi
-          done < <(jq -r '.include[].name' <<<"$full_matrix")
-          if ((${#keep[@]} == 0)); then
-            matrix='{"include":[{"name":"__skip_build","target":"","skip":true}]}'
-          else
-            k=$(printf '%s\n' "${keep[@]}" | jq -R . | jq -s .)
-            matrix=$(jq -cn --argjson f "$full_matrix" --argjson k "$k" '{include: ($f.include | map(select(.name as $n | $k | index($n))))}')
-          fi
-
-          echo "matrix=${matrix}" >> "${GITHUB_OUTPUT}"
-          echo "lock-updated=${UPDATE_LOCK}" >> "${GITHUB_OUTPUT}"
-          echo "Build matrix: ${matrix}"
+          packages=$(nix eval --json .#packages.x86_64-linux --apply builtins.attrNames)
+          hosts=$(nix eval --json .#nixosConfigurations --apply builtins.attrNames)
+          matrix=$(jq -cn --argjson packages "$packages" --argjson hosts "$hosts" '
+            {include:
+              (($packages | map({name: ("package-" + .), target: (".#packages.x86_64-linux." + .)}))
+              + ($hosts | map({name: ("system-" + .), target: (".#nixosConfigurations." + . + ".config.system.build.toplevel")})))}')
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+          echo "lock-file=$(base64 -w0 flake.lock)" >> "$GITHUB_OUTPUT"
 
   build:
-    name: Build ${{ matrix.name }}
-    needs: validate
-    if: >-
-      ${{ needs.validate.result == 'success' &&
-      !contains(needs.validate.outputs.matrix, '__skip_build') }}
-    runs-on: >-
-      ${{ github.event_name == 'workflow_dispatch' && inputs.runner_target ||
-      'ubuntu-latest' }}
+    name: 构建 ${{ matrix.name }}
+    needs: prepare
+    runs-on: ubuntu-latest
     timeout-minutes: 350
     strategy:
       fail-fast: false
       max-parallel: 10
-      matrix: ${{ fromJSON(needs.validate.outputs.matrix) }}
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
 
     steps:
-      - uses: actions/checkout@v7
+      - name: 检出代码
+        uses: actions/checkout@v7
 
-      - uses: wimpysworld/nothing-but-nix@main
-        if: ${{ !matrix.skip && runner.environment != 'self-hosted' }}
+      - name: 恢复本轮锁文件
+        shell: bash
+        env:
+          LOCK_FILE: ${{ needs.prepare.outputs.lock-file }}
+        run: printf '%s' "$LOCK_FILE" | base64 --decode > flake.lock
+
+      - name: 准备构建空间
+        uses: wimpysworld/nothing-but-nix@main
         with:
           hatchet-protocol: 'carve'
           witness-carnage: 'true'
-      - uses: cachix/install-nix-action@v31
-        if: ${{ !matrix.skip }}
+
+      - name: 安装 Nix
+        uses: cachix/install-nix-action@v31
         with:
           extra_nix_config: ${{ env.NIX_EXTRA_CONFIG }}
 
-      - uses: Mic92/niks3-action@v1
-        if: ${{ !matrix.skip }}
+      - name: 配置二进制缓存
+        uses: Mic92/niks3-action@v1
+        id: cache
         with:
-          server-url: https://niks3.mcseekeri.com
-          drain-timeout: 3600
+          server-url: ${{ env.NIKS3_SERVER_URL }}
+          drain-timeout: 600
 
-      - name: Download updated flake lock
-        if: ${{ !matrix.skip && needs.validate.outputs.lock-updated == 'true' }}
-        uses: actions/download-artifact@v8
-        with:
-          name: updated-flake-lock
-          path: .ci/updated-flake-lock
-
-      - name: Apply updated flake lock
-        if: ${{ !matrix.skip && needs.validate.outputs.lock-updated == 'true' }}
-        run: cp .ci/updated-flake-lock/flake.lock flake.lock
-
-      - name: Build target
-        if: ${{ !matrix.skip }}
+      - name: 构建目标
+        timeout-minutes: 260
         shell: bash
         env:
           TARGET: ${{ matrix.target }}
         run: |
-          set -euo pipefail
-          echo "Building ${TARGET}"
-          nix build --keep-going --no-link --show-trace \
-            --option log-lines 50 --max-jobs auto \
-            "${TARGET}"
+          nix build --keep-going --print-build-logs --log-format raw \
+            --out-link "${RUNNER_TEMP}/naomi-result" --option log-lines 50 \
+            --max-jobs auto "$TARGET"
+
+      - name: 上传完整闭包
+        timeout-minutes: 45
+        shell: bash
+        env:
+          NIKS3_BIN_DIR: ${{ steps.cache.outputs.binary-dir }}
+          NIKS3_AUTH_TOKEN_SCRIPT: ${{ steps.cache.outputs.auth-token-script }}
+        run: |
+          "${NIKS3_BIN_DIR}/niks3" push \
+            --server-url "$NIKS3_SERVER_URL" \
+            --auth-token-script "${NIKS3_AUTH_TOKEN_SCRIPT:?}" \
+            --retry-timeout 15m "${RUNNER_TEMP}/naomi-result"
