@@ -5,6 +5,7 @@
   virtualisation.oci-containers.containers.cowrie = {
     image = "docker.io/cowrie/cowrie:latest";
     labels."io.containers.autoupdate" = "registry";
+    podman.sdnotify = "healthy";
     ports = [
       "22:22/tcp"
       "23:23/tcp"
@@ -31,6 +32,21 @@
       COWRIE_TELNET_LISTEN_ENDPOINTS = "tcp:23:interface=0.0.0.0";
       COWRIE_OUTPUT_PROMETHEUS_ENABLED = "yes";
     };
-    extraOptions = [ "--cap-add=NET_BIND_SERVICE" ];
+    extraOptions = [
+      "--cap-add=NET_BIND_SERVICE"
+      "--health-cmd=${
+        builtins.toJSON [
+          "CMD"
+          "python3"
+          "-c"
+          "import socket; s = socket.create_connection(('127.0.0.1', 22), timeout=3); assert s.recv(255).startswith(b'SSH-'); s.close()"
+        ]
+      }"
+      "--health-timeout=5s"
+      "--health-start-period=60s"
+      "--health-on-failure=kill"
+    ];
   };
+
+  systemd.services.podman-cowrie.serviceConfig.TimeoutStartSec = lib.mkForce "5min";
 }
