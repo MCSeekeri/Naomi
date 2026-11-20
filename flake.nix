@@ -120,15 +120,11 @@
           }:
           let
             devPackages = with pkgs; [
-              git
-              fish
               sops
               age
               home-manager
-              nix-init
               nh
               nixfmt
-              fh
               libressl # openssl rand -hex 64
               nix-melt
               nix-tree

@@ -30,38 +30,24 @@
       # 桌面应用
       qq
       wpsoffice-cn
-      kdePackages.kdenlive
       kdePackages.kleopatra
       anki-bin
       ayugram-desktop
       qbittorrent-enhanced
-      krita
       pix
       kiwix
-      remmina
-      # bitwarden-desktop
       peazip
       v2rayn
       # 主题
-      nur.repos.MCSeekeri.lain-kde-splashscreen
       # 游戏娱乐
       vlc
       splayer-next
       scanmem
       # 开发套件
-      rustc
-      clippy
-      rustfmt
-      rust-analyzer
-      gnumake
-      musl
       nixpkgs-review
       lucky-commit
-      pkg-config
-      android-studio
       nodejs
       yarn-berry
-      unityhub
       imhex
       libressl
       git-filter-repo
@@ -71,14 +57,9 @@
       btrfs-assistant
       nix-diff
       ffmpeg-full
-      httrack
       nixos-anywhere
-      cachix
-      mat2
-      exiftool
-      yad
       restic
-      wrangler
+      cf
     ];
     # ++ (lib.pipe kdePackages.sources [
     #   builtins.attrNames
